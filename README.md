@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="./assets/readme/v2/screens/overview.webp"><img src="./assets/readme/v2/screens/overview.webp" width="100%" alt="作者提供的三栏创作工作台截图，已遮盖余额及本机保存位置"></a>
+  <a href="./assets/readme/v2/screens/skin-precure-days.webp"><img src="./assets/readme/v2/screens/skin-precure-days.webp" width="100%" alt="作者提供的三栏创作工作台截图，已遮盖余额及本机保存位置"></a>
 </p>
 
 > 本页优先使用作者提供的实际截图，已裁去个人路径与署名、遮盖余额和保存位置；Teresa、Sacred Lineage 与经典版展示沿用公开版截图。部分截图来自个人版，保留了 **Grok 图标与 ComfyUI 入口**：这些集成不随公开版提供，公开版目前仅预留可折叠的 LLM 扩展位置，尚未接入模型。截图中的自建卡片与预设也不代表随包内容。角色场景插画由 Triangle 素材工作区另行制作；未为截图重新提交 NovelAI 生图请求。
@@ -86,7 +86,7 @@ NovelAI 官网已经提供正负 Prompt、强调语法与高亮、标签建议�
 普通生成和逐张批次可以在刷新后按原任务接回；你正在查看旧图时，新结果不会强行抢走当前选择。A/B/C 对照采取更保守的边界：离开或刷新页面会请求停止后续方案，当前已经开始的方案可能完成，未提交的方案不会在重开页面后自动继续；完成记录仍可查看。官网本身也有页面 History、seed 复用与参数回拖，但官方说明刷新或关闭页面后未下载图片会丢失；详见 [官方入门与 History 说明](https://docs.novelai.net/en/image/tutorial-imgintro/)。
 
 <p align="center">
-  <a href="./assets/readme/v2/screens/comparison.webp"><img src="./assets/readme/v2/screens/comparison.webp" width="100%" alt="A/B/C 共 seed 对照、参数差异与采用方案界面"></a>
+  <a href="./assets/readme/v2/screens/skin-lemmtear.webp"><img src="./assets/readme/v2/screens/skin-lemmtear.webp" width="100%" alt="A/B/C 共 seed 对照、参数差异与采用方案界面"></a>
 </p>
 
 <p align="center">
