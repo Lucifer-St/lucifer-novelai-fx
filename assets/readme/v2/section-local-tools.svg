@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 132" role="img" aria-labelledby="title desc">
+  <title id="title">Local tools section divider</title>
+  <desc id="desc">An editorial divider representing the local CLI and MCP with an ink line leading into a bound command folio.</desc>
+  <rect width="1200" height="132" rx="20" fill="#f7f2e8"/>
+  <path d="M32 28H1168M32 104H1168" stroke="#b89b63" opacity=".6"/>
+  <g transform="translate(54 37)">
+    <path d="M0 27c55-29 105-29 160 0s105 29 160 0" fill="none" stroke="#667d86" stroke-width="3"/>
+    <circle cx="0" cy="27" r="8" fill="#7b5062"/>
+    <circle cx="160" cy="27" r="8" fill="#b89b63"/>
+    <circle cx="320" cy="27" r="8" fill="#667d86"/>
+  </g>
+  <g transform="translate(432 27)">
+    <text x="0" y="37" fill="#262b3a" font-family="Georgia, 'Times New Roman', serif" font-size="30">The same workflow, available to local agents.</text>
+    <text x="0" y="72" fill="#606779" font-family="'Segoe UI', Arial, sans-serif" font-size="17" letter-spacing="1.5">LOCAL CLI · MCP · PLAN OFFLINE · EXPLICIT GENERATION</text>
+  </g>
+  <g transform="translate(1084 34)" fill="none" stroke="#626a79" stroke-width="2">
+    <path d="M0 0h66v64H0z"/>
+    <path d="M12 17l10 9-10 9M30 38h24"/>
+    <path d="M8 0v64" stroke="#b89b63"/>
+  </g>
+</svg>

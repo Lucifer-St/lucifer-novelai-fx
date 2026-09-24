@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 132" role="img" aria-labelledby="title desc">
+  <title id="title">Themes and gallery section divider</title>
+  <desc id="desc">A linen and brass section divider for themes, waiting illustrations, tags, and history.</desc>
+  <rect width="1200" height="132" rx="20" fill="#2d3040"/>
+  <path d="M32 28H1168M32 104H1168" stroke="#c9ad72" opacity=".5"/>
+  <g transform="translate(49 40)">
+    <rect width="34" height="52" rx="3" fill="#ece4d2"/>
+    <rect x="42" width="34" height="52" rx="3" fill="#314a62"/>
+    <rect x="84" width="34" height="52" rx="3" fill="#8a4f5f"/>
+    <rect x="126" width="34" height="52" rx="3" fill="#587162"/>
+    <rect x="168" width="34" height="52" rx="3" fill="#d6bfc3"/>
+    <rect x="210" width="34" height="52" rx="3" fill="#8d9aa6"/>
+    <rect x="252" width="34" height="52" rx="3" fill="#5b485f"/>
+    <rect x="294" width="34" height="52" rx="3" fill="#bda788"/>
+    <path d="M17 0v52M59 0v52M101 0v52M143 0v52M185 0v52M227 0v52M269 0v52M311 0v52" stroke="#c9ad72" opacity=".5"/>
+  </g>
+  <g transform="translate(420 27)">
+    <text x="0" y="37" fill="#fbf7ee" font-family="Georgia, 'Times New Roman', serif" font-size="30">A studio that keeps its visual memory.</text>
+    <text x="0" y="72" fill="#c9c5bc" font-family="'Segoe UI', Arial, sans-serif" font-size="17" letter-spacing="1.5">8 THEMES · 9 WAITING ART · TAGS · HISTORY</text>
+  </g>
+  <g transform="translate(1102 34)" fill="none" stroke="#c9ad72" stroke-width="2">
+    <rect width="48" height="64" rx="4"/>
+    <path d="M12 16h24M12 26h24M12 36h18M12 48h24"/>
+    <path d="M24 0v64" opacity=".22"/>
+  </g>
+</svg>
+

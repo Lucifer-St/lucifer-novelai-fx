@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 132" role="img" aria-labelledby="title desc">
+  <title id="title">Compose and compare section divider</title>
+  <desc id="desc">A parchment section divider showing prompt cards flowing into three comparison proofs.</desc>
+  <rect width="1200" height="132" rx="20" fill="#f7f2e8"/>
+  <path d="M32 28H1168M32 104H1168" stroke="#b89b63" opacity=".6"/>
+  <g transform="translate(55 37)" fill="#fffdf8" stroke="#626a79">
+    <rect width="44" height="56" rx="5"/>
+    <rect x="55" width="44" height="56" rx="5"/>
+    <rect x="110" width="44" height="56" rx="5"/>
+    <circle cx="22" cy="23" r="7" fill="#a6c9bf" stroke="none"/>
+    <path d="M68 36l9-18 9 18z" fill="#bd6674" stroke="none"/>
+    <rect x="124" y="17" width="16" height="16" fill="#8971a1" stroke="none"/>
+  </g>
+  <path d="M229 65h118" stroke="#7b5062" stroke-width="2"/>
+  <path d="M338 58l10 7-10 7" fill="none" stroke="#7b5062" stroke-width="2"/>
+  <g transform="translate(378 26)">
+    <text x="0" y="35" fill="#262b3a" font-family="Georgia, 'Times New Roman', serif" font-size="30">Compose the prompt. Stage the cast.</text>
+    <text x="0" y="70" fill="#606779" font-family="'Segoe UI', Arial, sans-serif" font-size="17" letter-spacing="1.5">PROMPT → POSITION → PARAMETERS → A/B/C</text>
+  </g>
+  <g transform="translate(1010 34)" fill="#fffdf8" stroke="#626a79">
+    <rect width="45" height="63" rx="5"/>
+    <rect x="52" width="45" height="63" rx="5"/>
+    <rect x="104" width="45" height="63" rx="5"/>
+    <circle cx="22.5" cy="49" r="5" fill="none"/>
+    <path d="M69 54l6-11 6 11z"/>
+    <rect x="120" y="44" width="9" height="9"/>
+  </g>
+</svg>
+
