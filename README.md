@@ -1,6 +1,6 @@
 # Lucifer NovelAI FX
 
-**面向 NovelAI Diffusion V5 Full 的 Windows 中文创作工作台。** 它把长 Prompt、角色、参数、图片配方、对照实验与本地资料组织在同一个界面中；只有你明确点击生成，才会向自己配置的 NovelAI 官方接口或兼容网关提交生图请求。
+**面向 NovelAI Diffusion V5 Full 的 Windows 中文创作工作台。** 这是个人维护的非官方前端，与 NovelAI 官方没有隶属关系。 它把长 Prompt、角色、参数、图片配方、对照实验与本地资料组织在同一个界面中；只有你明确点击生成，才会向自己配置的 NovelAI 官方接口或兼容网关提交生图请求。
 
 [下载最新版](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/latest) · [直接下载 v1.4.0 Windows x64](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.4.0/Lucifer-NovelAI-FX-Share-1.4.0-Windows-x64.zip) · [核对 SHA-256](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.4.0/SHA256SUMS-1.4.0.txt) · [报告 Bug](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=bug_report.yml) · [提出改进](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=feature_request.yml)
 
