@@ -1,0 +1,26 @@
+name: 改进建议
+description: 提议功能或体验改进；提交前请先检查本地生成的建议预览。
+title: "[Improvement] "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        请先在应用中生成并检查改进建议预览，再把脱敏后的内容粘贴到下方。应用不会自动上传反馈。
+        请勿包含 API key、Token、Cookie、私有 Prompt、本机路径、原始日志、图片或上游响应正文。
+  - type: textarea
+    id: preview
+    attributes:
+      label: 已检查的改进建议预览
+      description: 粘贴由应用生成、经过你检查和脱敏的结构化预览。
+      placeholder: 在这里粘贴改进建议预览。
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: 提交前检查
+      options:
+        - label: 我已检查文本并删除凭据、私有内容和不必要的个人信息。
+          required: true

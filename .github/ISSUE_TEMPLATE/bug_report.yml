@@ -1,0 +1,29 @@
+name: Bug 报告
+description: 报告可复现的问题；提交前请先检查本地生成的反馈预览。
+title: "[Bug] "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        请先在应用中生成并检查反馈预览，再把脱敏后的内容粘贴到下方。应用不会自动上传反馈。
+        请删除 API key、Token、Cookie、私有 Prompt、本机路径、原始日志、图片和上游响应正文。
+        安全漏洞或敏感证据请使用私密漏洞报告：https://github.com/Lucifer-St/lucifer-novelai-fx/security/advisories/new
+  - type: textarea
+    id: preview
+    attributes:
+      label: 已检查的反馈预览
+      description: 粘贴由应用生成、经过你检查和脱敏的结构化预览。
+      placeholder: 在这里粘贴反馈预览。
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: 提交前检查
+      options:
+        - label: 我已检查文本并删除凭据、私有内容和不必要的个人信息。
+          required: true
+        - label: 这不是安全漏洞报告。
+          required: true

@@ -1,0 +1,15 @@
+# Release binaries are uploaded as GitHub Release assets, not committed here.
+*.zip
+SHA256SUMS*.txt
+
+# Local editor and operating-system files.
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*~
+
+# Local repository governance; never publish these files.
+/AGENTS.md
+/MEMORY.md
