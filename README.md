@@ -1,6 +1,6 @@
 # Lucifer NovelAI FX
 
-**面向 NovelAI Diffusion V5 Full 的 Windows 中文创作工作台。** 这是个人维护的非官方前端，与 NovelAI 官方没有隶属关系。 它把长 Prompt、角色、参数、图片配方、对照实验与本地资料组织在同一个界面中；只有你明确点击生成，才会向自己配置的 NovelAI 官方接口或兼容网关提交生图请求。
+**面向 NovelAI Diffusion V5 Full 的 Windows 中文创作工作台。** 这是个人维护的非官方前端，与 NovelAI 官方没有隶属关系。它把长 Prompt、角色、参数、图片配方、对照实验与本地资料组织在同一个界面中；只有你明确点击生成，才会向自己配置的 NovelAI 官方接口或兼容网关提交生图请求。
 
 [下载最新版](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/latest) · [直接下载 v1.4.0 Windows x64](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.4.0/Lucifer-NovelAI-FX-Share-1.4.0-Windows-x64.zip) · [核对 SHA-256](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.4.0/SHA256SUMS-1.4.0.txt) · [报告 Bug](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=bug_report.yml) · [提出改进](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=feature_request.yml)
 
@@ -22,11 +22,10 @@ NovelAI 官网已经提供正负 Prompt、强调语法与高亮、标签建议�
 
 | 创作环节 | NovelAI 官网已有 | FX 的实现重点 |
 |---|---|---|
-| 写 Prompt | 正负 Prompt、强调、高亮、标签建议 | 原生长文本编辑器、正负 tabs、本地建议、卡片/preset/草稿分层 |
+| 写 Prompt | 正负 Prompt、强调、高亮、标签建议 | 原生长文本编辑器、正负标签页、本地建议、卡片 / 预设 / 草稿分层 |
 | 多角色与旧图 | 角色 Prompt、位置画布、图生图、参数回读 | 按画布比例定位；PNG/JPEG/WebP 逐组选取、append 与未知字段隔离 |
 | 试验与批次 | seed、Varieties、Enhance、多图 | A/B/C 共 seed、差异覆盖、采用方案、串行与 stop-after-current |
 | 连续工作 | 当前页面 History | 本地历史、任务接回、选择保持、布局与外观偏好持久化 |
-
 
 <p align="center">
   <a href="./assets/readme/v2/section-workflow.svg"><img src="./assets/readme/v2/section-workflow.svg" width="100%" alt="卡片、构图与对照的工作流章节"></a>
@@ -43,10 +42,10 @@ NovelAI 官网已经提供正负 Prompt、强调语法与高亮、标签建议�
 从一次编辑到长期资料，FX 分成三个层次：
 
 1. **提示词卡**是一段可组合的画风、角色或场景词。插入后仍可继续改写，也可以只移除这张卡对应的文本；卡片可设置分类与本地封面。
-2. **完整 preset**保存正面、负面、角色与生成参数，用来恢复一整套配方。
+2. **完整预设**保存正面、负面、角色与生成参数，用来恢复一整套配方。
 3. **草稿**再保存输入图、蒙版和 A/B/C 差异，用来接回正在进行的工作；恢复草稿不会自动生图。
 
-官网也有可分类、嵌套并跨设备保存的 [Prompt Chunks](https://docs.novelai.net/en/image/promptchunks/)。FX 的区别是把可移除卡片实例、完整 preset 和含图片的草稿放进本机资料库，而不是声称官网没有复用能力。
+官网也有可分类、嵌套并跨设备保存的 [Prompt Chunks](https://docs.novelai.net/en/image/promptchunks/)。FX 的区别是把可移除卡片实例、完整预设和含图片的草稿放进本机资料库，而不是声称官网没有复用能力。
 
 <p align="center">
   <a href="./assets/readme/v2/screens/cards.webp"><img src="./assets/readme/v2/screens/cards.webp" width="620" alt="作者自建卡片的组合示例：已使用的卡片与常用卡片架"></a>
@@ -76,7 +75,7 @@ NovelAI 官网已经提供正负 Prompt、强调语法与高亮、标签建议�
   <a href="./assets/readme/v2/screens/import.webp"><img src="./assets/readme/v2/screens/import.webp" width="100%" alt="PNG、JPEG、WebP 参数分组选择导入界面"></a>
 </p>
 
-常用创作控制保留文生图、图生图、局部重绘、PGR、采样与尺寸参数；高级生成设置和原始请求查看集中在图像工具／API 工作台。部分工具能否使用仍取决于所配置服务的支持范围。
+常用创作控制保留文生图、图生图、局部重绘、PGR、采样与尺寸参数；高级生成设置和原始请求查看集中在图像工具 / API 工作台。部分工具能否使用仍取决于所配置服务的支持范围。
 
 ## A/B/C 对照、串行任务与本地历史
 
@@ -90,14 +89,13 @@ NovelAI 官网已经提供正负 Prompt、强调语法与高亮、标签建议�
   <a href="./assets/readme/v2/screens/comparison.webp"><img src="./assets/readme/v2/screens/comparison.webp" width="100%" alt="A/B/C 共 seed 对照、参数差异与采用方案界面"></a>
 </p>
 
-
 <p align="center">
   <a href="./assets/readme/v2/section-gallery.svg"><img src="./assets/readme/v2/section-gallery.svg" width="100%" alt="图库、主题与等待画面的画廊章节"></a>
 </p>
 
 ## 找灵感：D 站图库与法典图鉴
 
-D 站图库可以按标签、评分、排序和上传时间浏览；进入详情后，可以按 artist、character、copyright、general 等类别取舍标签，在 NovelAI 格式与原始 tag 之间切换，把选中内容存成本机卡片。原图只在你打开查看器后读取，可缩放、拖动，也能作为真实图片文件拖回导入区。
+D 站（Danbooru）图库可以按标签、评分、排序和上传时间浏览；进入详情后，可以按 artist、character、copyright、general 等类别取舍标签，在 NovelAI 格式与原始 tag 之间切换，把选中内容存成本机卡片。原图只在你打开查看器后读取，可缩放、拖动，也能作为真实图片文件拖回导入区。
 
 中文释义提供本地词典与自定义词条；未知词保留原文，外部翻译由你主动复制并打开网页。
 
@@ -137,12 +135,13 @@ D 站图库可以按标签、评分、排序和上传时间浏览；进入详情
 
 </details>
 
-等待画面与工作台主题是两套独立选择。当前有 **9 张插画等待图**，另有简洁状态图和随机模式；随机图只在提交任务时选一次，不会在同一任务等待过程中跳来跳去。新安装附带的 **Claire、Noire、Rena 三张内容是提示词卡**，不是三套完整 preset，也不是等待插画数量。
-
+等待画面与工作台主题是两套独立选择。当前有 **9 张插画等待图**，另有简洁状态图和随机模式；随机图只在提交任务时选一次，不会在同一任务等待过程中跳来跳去。新安装附带的 **Claire、Noire、Rena 三张内容是提示词卡**，不是三套完整预设，也不是等待插画数量。
 
 <p align="center">
   <a href="./assets/readme/v2/screens/waiting.webp"><img src="./assets/readme/v2/screens/waiting.webp" width="100%" alt="生成等待时显示独立插画并继续浏览本地旧图"></a>
 </p>
+
+图为 9 张等待插画中的 3 张示例。
 
 ## Sugar 的更新课堂
 
@@ -160,9 +159,9 @@ D 站图库可以按标签、评分、排序和上传时间浏览；进入详情
 
 ## 本机数据、费用与联网边界
 
-- 使用者自备 NovelAI 账号与 Token，或自行确认兼容性、计费和隐私条款的网关。分享包不附带作者凭据或私人服务。
-- Windows 凭据由当前账户的 DPAPI 保护；图片、历史、卡片、preset、草稿和连接设置默认保存在便携目录的 `userdata`。主题、三栏宽度等界面选择保存在应用的浏览器本地存储中。
-- 工具备份包含卡片、完整预设、非秘密连接设置、新手模式及已列入导出的界面选择（包括主题和三栏宽度）；它不是全部浏览器状态的完整镜像，也不包含 API Key、生成图片、历史、账本或草稿。迁移全部创作内容时，请备份整个 `userdata` 和自选图片目录。去参数分享会另存副本；它不能代替作品授权判断。
+- 使用者自备 NovelAI 账号与 Token，或使用已自行确认兼容性、计费和隐私条款的兼容网关。分享包不附带作者凭据或私人服务。
+- Windows 凭据由当前账户的 DPAPI 保护；图片、历史、卡片、预设、草稿和连接设置默认保存在便携目录的 `userdata`。主题、三栏宽度等界面选择保存在应用的浏览器本地存储中。
+- 工具备份包含卡片、完整预设、非秘密连接设置、新手模式及已列入导出的界面选择（包括主题和三栏宽度）；它不是全部浏览器状态的完整镜像，也不包含 API key、生成图片、历史、账本或草稿。迁移全部创作内容时，请备份整个 `userdata` 和自选图片目录。去参数分享会另存副本；它不能代替作品授权判断。
 - Anlas 面板区分条件估算、手动官网校准、账户回读和未知消费。Opus 的 0 Anlas 有账户、额度、尺寸、步数、单张和无 base image 等条件；V5 还有可恢复 usage limit，因此这不是“免费承诺”。当前规则以 [NovelAI FAQ](https://docs.novelai.net/en/faq/) 为准。
 - 启动时应用会读取可用模型：官方连接使用随包模型定义；已配置 OpenAI-compatible 网关时，可能向该服务的模型列表做只读检查。主动连接检查和生成访问用户配置的服务；打开 D 站图库或法典图鉴会访问相应公开数据与图片；外部翻译只复制文字并打开由用户操作的网页；更新检查只在点击后访问 GitHub。
 
@@ -177,23 +176,24 @@ fx.cmd plan --prompt "a quiet lake" --seed 42 --out plan.json
 fx.cmd generate --plan plan.json --wait
 ```
 
-Agent 使用同一份本机设置，但配置不包含 API Key。普通桌面使用不依赖 Agent，也不要求另装 Node 或 Python。
+Agent 使用同一份本机设置，但配置不包含 API key。普通桌面使用不依赖 Agent，也不要求另装 Node 或 Python。
+
 </details>
 
 ## Windows 安装与升级
 
-支持 Windows 10/11 x64。下载 ZIP 后用同一 Release 中的 `SHA256SUMS-1.4.0.txt` 核对哈希，完整解压到普通可写目录，再双击 `启动 Lucifer FX.exe`。不要直接在 ZIP 预览中运行。首次进入后填写自己的连接，先做只读检查，再从单张、普通尺寸和较低步数开始。想使用完整的角色、对照与高级参数控制时，点击“展开完整功能”。
+支持 Windows 10/11 x64。下载 ZIP 后用同一 Release 中的 `SHA256SUMS-1.4.0.txt` 核对哈希，完整解压到普通可写目录，再双击 `启动 Lucifer FX.exe`。不要直接在 ZIP 预览中运行。首次进入后填写自己的连接，先做只读检查，再从单张、普通尺寸和较低步数开始。想使用完整的角色、对照与高级参数控制时，点击“展开完整功能”。完整步骤、文件位置与回退方法见 [Windows 安装、升级与隐私说明](./docs/WINDOWS.md)。
 
 升级前退出旧服务并备份整个目录。保持原位 `userdata` 不动，只替换 `app`、`runtime`、启动器、`fx.cmd` 与随包说明文件。应用可以在用户点击后检查 GitHub 稳定版，但不会自动下载、安装、替换文件或重启。
 
-公开版聚焦 V5 Full 的当前工作流；Vibe Transfer 与 Precise Reference 尚未加入当前操作界面，个人版的 Grok／ComfyUI 集成不随公开版提供。
+公开版聚焦 V5 Full 的当前工作流；Vibe Transfer 与 Precise Reference 尚未加入当前操作界面，个人版的 Grok / ComfyUI 集成不随公开版提供。
 
-本轮只发布 Windows x64；Android 版仍封存在 `1.1.1`，不随 `v1.4.0` 发布。
+本轮只发布 Windows x64；Android 版仍封存在 `v1.1.1`，不随 `v1.4.0` 发布。
 
 ## 反馈、安全与公开范围
 
-普通问题使用 [Bug 表单](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=bug_report.yml)，想法使用 [改进建议表单](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=feature_request.yml)。应用只在本机生成反馈预览，不会替你提交。API Key、Cookie、私有 Prompt、本机路径、原始日志和上游响应正文不得粘贴到公开 Issue；安全漏洞请使用 [GitHub 私密漏洞报告](https://github.com/Lucifer-St/lucifer-novelai-fx/security/advisories/new)。
+普通问题使用 [Bug 表单](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=bug_report.yml)，想法使用 [改进建议表单](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=feature_request.yml)。应用只在本机生成反馈预览，不会替你提交。API key、Token、Cookie、私有 Prompt、本机路径、原始日志、图片、用户数据和上游响应正文不得粘贴到公开 Issue；安全漏洞请使用 [GitHub 私密漏洞报告](https://github.com/Lucifer-St/lucifer-novelai-fx/security/advisories/new)，详见 [安全报告说明](./SECURITY.md)。
 
-本公开仓库只保存说明、截图、Issue 模板与 Windows Release，不公开开发源码。便携包包含运行所需的编译后 JavaScript 等资源；这不等于公开开发源码仓库，也不表示运行文件不可查看。GitHub 自动生成的 Source ZIP/TAR 只含本仓库文档与素材，不是可运行应用。
+本公开仓库只保存说明、截图、Issue 模板与 Windows Release，不公开开发源码。便携包包含运行所需的编译后 JavaScript 等资源；这不等于公开开发源码仓库，也不表示运行文件不可查看。GitHub 自动生成的 Source code（zip / tar.gz）只含本仓库文档与素材，不是可运行应用。
 
 应用及截图中可能出现第三方名称、商标、角色或美术素材，相关权利归各自权利人。程序依赖的许可证文本随 Windows 下载包提供。

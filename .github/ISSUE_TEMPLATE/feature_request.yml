@@ -8,7 +8,7 @@ body:
     attributes:
       value: |
         请先在应用中生成并检查改进建议预览，再把脱敏后的内容粘贴到下方。应用不会自动上传反馈。
-        请勿包含 API key、Token、Cookie、私有 Prompt、本机路径、原始日志、图片或上游响应正文。
+        请勿包含 API key、Token、Cookie、私有 Prompt、本机路径、原始日志、图片、用户数据或上游响应正文。
   - type: textarea
     id: preview
     attributes:

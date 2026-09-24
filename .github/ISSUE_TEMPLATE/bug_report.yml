@@ -8,7 +8,7 @@ body:
     attributes:
       value: |
         请先在应用中生成并检查反馈预览，再把脱敏后的内容粘贴到下方。应用不会自动上传反馈。
-        请删除 API key、Token、Cookie、私有 Prompt、本机路径、原始日志、图片和上游响应正文。
+        请删除 API key、Token、Cookie、私有 Prompt、本机路径、原始日志、图片、用户数据和上游响应正文。
         安全漏洞或敏感证据请使用私密漏洞报告：https://github.com/Lucifer-St/lucifer-novelai-fx/security/advisories/new
   - type: textarea
     id: preview
