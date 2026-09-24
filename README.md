@@ -2,7 +2,7 @@
 
 **面向 NovelAI Diffusion V5 Full 的 Windows 中文创作工作台。** 这是个人维护的非官方前端，与 NovelAI 官方没有隶属关系。它把长 Prompt、角色、参数、图片配方、对照实验与本地资料组织在同一个界面中；只有你明确点击生成，才会向自己配置的 NovelAI 官方接口或兼容网关提交生图请求。
 
-[下载最新版](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/latest) · [直接下载 v1.4.0 Windows x64](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.4.0/Lucifer-NovelAI-FX-Share-1.4.0-Windows-x64.zip) · [核对 SHA-256](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.4.0/SHA256SUMS-1.4.0.txt) · [报告 Bug](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=bug_report.yml) · [提出改进](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=feature_request.yml)
+[下载最新版](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/latest) · [安装与升级说明](./docs/WINDOWS.md) · [报告 Bug](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=bug_report.yml) · [提出改进](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=feature_request.yml)
 
 <p align="center">
   <a href="./assets/readme/v2/hero.webp"><img src="./assets/readme/v2/hero.webp" width="100%" alt="Sugar、Lily、Claire 与 Noire 在创作工房共同整理画面、构图和配方"></a>
@@ -106,12 +106,12 @@ D 站（Danbooru）图库可以按标签、评分、排序和上传时间浏览�
 </p>
 
 <p align="center">
-  <a href="./assets/readme/v2/theme-archive.webp"><img src="./assets/readme/v2/theme-archive.webp" width="100%" alt="Claire 与 Noire 整理八种装帧布样和等待插画画册"></a>
+  <a href="./assets/readme/v2/theme-archive.webp"><img src="./assets/readme/v2/theme-archive.webp" width="100%" alt="Claire 与 Noire 整理主题装帧布样和等待插画画册"></a>
 </p>
 
-## 8 套工作台主题，9 张独立等待插画
+## 工作台主题与独立等待插画
 
-主题改变工作台的装帧、角色装饰与信息层级，不改变 Prompt、参数、历史或生成请求。三栏宽度可以拖动调整并保存；收起参数栏或切换窄屏时，主题立绘按原始比例重新排布。
+目前共有 8 套工作台主题。主题改变工作台的装帧、角色装饰与信息层级，不改变 Prompt、参数、历史或生成请求。三栏宽度可以拖动调整并保存；收起参数栏或切换窄屏时，主题立绘按原始比例重新排布。
 
 | 工作台主题 | 视觉方向 |
 |---|---|
@@ -125,7 +125,7 @@ D 站（Danbooru）图库可以按标签、评分、排序和上传时间浏览�
 | 名探偵の道も一歩から | るるか & くれあ · 日常相册 |
 
 <p align="center">
-  <a href="./assets/readme/v2/screens/themes.webp"><img src="./assets/readme/v2/screens/themes.webp" width="100%" alt="八款已实装主题的真实工作台缩略图：包含新增 Teresa"></a>
+  <a href="./assets/readme/v2/screens/themes.webp"><img src="./assets/readme/v2/screens/themes.webp" width="100%" alt="全部已实装主题的真实工作台缩略图"></a>
 </p>
 
 <details>
@@ -141,17 +141,17 @@ D 站（Danbooru）图库可以按标签、评分、排序和上传时间浏览�
   <a href="./assets/readme/v2/screens/waiting.webp"><img src="./assets/readme/v2/screens/waiting.webp" width="100%" alt="生成等待时显示独立插画并继续浏览本地旧图"></a>
 </p>
 
-图为 9 张等待插画中的 3 张示例。
+图为其中 3 张等待插画示例。
 
 ## Sugar 的更新课堂
 
 新版本第一次打开时，Sugar 会带来本次新增与改进的更新报告。读完可以关闭，也能从工作台右上角的信箱再次查看；说明随程序提供，不需要联网读取。
 
 <p align="center">
-  <a href="./assets/readme/v2/screens/sugar-update-classroom.webp"><img src="./assets/readme/v2/screens/sugar-update-classroom.webp" width="100%" alt="Sugar 引导阅读更新报告的真实界面，图为 v1.1.0 旧版示例"></a>
+  <a href="./assets/readme/v2/screens/sugar-update-classroom.webp"><img src="./assets/readme/v2/screens/sugar-update-classroom.webp" width="100%" alt="Sugar 引导阅读更新报告的真实界面（旧版示例）"></a>
 </p>
 
-图为之前制作的 **v1.1.0 更新报告**，用来展示 Sugar 的讲解界面；当前 Windows 下载为 v1.4.0，具体变化见 [本版更新说明](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/tag/v1.4.0)。想查找尚未安装的新版本，可使用独立的“更新 / 反馈”入口主动检查 GitHub。
+图为之前制作的 **v1.1.0 更新报告**，用来展示 Sugar 的讲解界面；各版本的具体变化见 [Releases 更新说明](https://github.com/Lucifer-St/lucifer-novelai-fx/releases)。想查找尚未安装的新版本，可使用独立的“更新 / 反馈”入口主动检查 GitHub。
 
 <p align="center">
   <a href="./assets/readme/v2/section-local-tools.svg"><img src="./assets/readme/v2/section-local-tools.svg" width="100%" alt="本地资料、可选 Agent 与工具章节"></a>
@@ -182,13 +182,13 @@ Agent 使用同一份本机设置，但配置不包含 API key。普通桌面使
 
 ## Windows 安装与升级
 
-支持 Windows 10/11 x64。下载 ZIP 后用同一 Release 中的 `SHA256SUMS-1.4.0.txt` 核对哈希，完整解压到普通可写目录，再双击 `启动 Lucifer FX.exe`。不要直接在 ZIP 预览中运行。首次进入后填写自己的连接，先做只读检查，再从单张、普通尺寸和较低步数开始。想使用完整的角色、对照与高级参数控制时，点击“展开完整功能”。完整步骤、文件位置与回退方法见 [Windows 安装、升级与隐私说明](./docs/WINDOWS.md)。
+支持 Windows 10/11 x64。从 [最新 Release](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/latest) 下载 ZIP 后，用同一 Release 中的 `SHA256SUMS-<版本号>.txt` 核对哈希，完整解压到普通可写目录，再双击 `启动 Lucifer FX.exe`。不要直接在 ZIP 预览中运行。首次进入后填写自己的连接，先做只读检查，再从单张、普通尺寸和较低步数开始。想使用完整的角色、对照与高级参数控制时，点击“展开完整功能”。完整步骤、文件位置与回退方法见 [Windows 安装、升级与隐私说明](./docs/WINDOWS.md)。
 
 升级前退出旧服务并备份整个目录。保持原位 `userdata` 不动，只替换 `app`、`runtime`、启动器、`fx.cmd` 与随包说明文件。应用可以在用户点击后检查 GitHub 稳定版，但不会自动下载、安装、替换文件或重启。
 
 公开版聚焦 V5 Full 的当前工作流；Vibe Transfer 与 Precise Reference 尚未加入当前操作界面，个人版的 Grok / ComfyUI 集成不随公开版提供。
 
-本轮只发布 Windows x64；Android 版仍封存在 `v1.1.1`，不随 `v1.4.0` 发布。
+目前只发布 Windows x64；Android 版仍封存在 `v1.1.1`，不随 Windows 版更新。
 
 ## 反馈、安全与公开范围
 

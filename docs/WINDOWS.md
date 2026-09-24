@@ -2,15 +2,16 @@
 
 ## 下载
 
-- 最新版本页面：<https://github.com/Lucifer-St/lucifer-novelai-fx/releases/latest>
-- `v1.4.0` Windows x64：<https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.4.0/Lucifer-NovelAI-FX-Share-1.4.0-Windows-x64.zip>
-- `v1.4.0` SHA-256：<https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.4.0/SHA256SUMS-1.4.0.txt>
+从最新版本页面下载：<https://github.com/Lucifer-St/lucifer-novelai-fx/releases/latest>
+
+- Windows x64 程序包：`Lucifer-NovelAI-FX-Share-<版本号>-Windows-x64.zip`
+- 校验文件：`SHA256SUMS-<版本号>.txt`
 
 只从本仓库的 GitHub Release 下载。GitHub 页面中自动生成的“Source code”文件只含公开说明和截图，不是应用源码或 Windows 程序。
 
 ## 第一次启动
 
-1. 下载 ZIP，并核对 `SHA256SUMS-1.4.0.txt` 中对应文件的 SHA-256。
+1. 下载 ZIP，并核对 `SHA256SUMS-<版本号>.txt` 中对应文件的 SHA-256。
 2. 完整解压到普通可写目录。不要直接在 ZIP 预览中运行，也不要解压进已有旧版本目录。
 3. 双击 `启动 Lucifer FX.exe`。应用自带 Node.js 运行环境，不要求另装 Node、Python、Agent 或 ComfyUI。
 4. 在设置中选择连接类型：
