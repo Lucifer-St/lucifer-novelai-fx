@@ -9,10 +9,10 @@
 </p>
 
 <p align="center">
-  <a href="./assets/readme/v2/screens/overview.webp"><img src="./assets/readme/v2/screens/overview.webp" width="100%" alt="Lucifer NovelAI FX v1.4.0 三栏创作工作台总览"></a>
+  <a href="./assets/readme/v2/screens/overview.webp"><img src="./assets/readme/v2/screens/overview.webp" width="100%" alt="作者提供的三栏创作工作台截图，已遮盖余额及本机保存位置"></a>
 </p>
 
-> 界面截图使用作者已有画面，在公开版中重拍；等待和任务状态采用演示数据，没有为制作本页重新调用付费生图。D 站图库与完整预设示例为作者提供截图的主体裁剪。角色场景插画由 Triangle 素材工作区另行制作，与真实软件截图分开展示。
+> 本页优先使用作者提供的实际截图，已裁去个人路径与署名、遮盖余额和保存位置；Teresa、Sacred Lineage 与经典版展示沿用公开版截图。部分截图来自个人版，保留了 **Grok 图标与 ComfyUI 入口**：这些集成不随公开版提供，公开版目前仅预留可折叠的 LLM 扩展位置，尚未接入模型。截图中的自建卡片与预设也不代表随包内容。角色场景插画由 Triangle 素材工作区另行制作；未为截图重新提交 NovelAI 生图请求。
 
 ## 把分散步骤接成一条本机工作流
 
@@ -49,8 +49,10 @@ NovelAI 官网已经提供正负 Prompt、强调语法与高亮、标签建议�
 官网也有可分类、嵌套并跨设备保存的 [Prompt Chunks](https://docs.novelai.net/en/image/promptchunks/)。FX 的区别是把可移除卡片实例、完整 preset 和含图片的草稿放进本机资料库，而不是声称官网没有复用能力。
 
 <p align="center">
-  <a href="./assets/readme/v2/screens/cards.webp"><img src="./assets/readme/v2/screens/cards.webp" width="620" alt="已使用的卡片与常用卡片架：选用 Claire 和 Noire，可独立移除与组合"></a>
+  <a href="./assets/readme/v2/screens/cards.webp"><img src="./assets/readme/v2/screens/cards.webp" width="620" alt="作者自建卡片的组合示例：已使用的卡片与常用卡片架"></a>
 </p>
+
+图中包含作者自己的卡片；新安装只预置 Claire、Noire、Rena，其他卡片可自行创建或导入。
 
 <details>
 <summary>完整预设：把整套参数保存下来（作者示例）</summary>
@@ -141,6 +143,16 @@ D 站图库可以按标签、评分、排序和上传时间浏览；进入详情
 <p align="center">
   <a href="./assets/readme/v2/screens/waiting.webp"><img src="./assets/readme/v2/screens/waiting.webp" width="100%" alt="生成等待时显示独立插画并继续浏览本地旧图"></a>
 </p>
+
+## Sugar 的更新课堂
+
+新版本第一次打开时，Sugar 会带来本次新增与改进的更新报告。读完可以关闭，也能从工作台右上角的信箱再次查看；说明随程序提供，不需要联网读取。
+
+<p align="center">
+  <a href="./assets/readme/v2/screens/sugar-update-classroom.webp"><img src="./assets/readme/v2/screens/sugar-update-classroom.webp" width="100%" alt="Sugar 引导阅读更新报告的真实界面，图为 v1.1.0 旧版示例"></a>
+</p>
+
+图为之前制作的 **v1.1.0 更新报告**，用来展示 Sugar 的讲解界面；当前 Windows 下载为 v1.4.0，具体变化见 [本版更新说明](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/tag/v1.4.0)。想查找尚未安装的新版本，可使用独立的“更新 / 反馈”入口主动检查 GitHub。
 
 <p align="center">
   <a href="./assets/readme/v2/section-local-tools.svg"><img src="./assets/readme/v2/section-local-tools.svg" width="100%" alt="本地资料、可选 Agent 与工具章节"></a>
