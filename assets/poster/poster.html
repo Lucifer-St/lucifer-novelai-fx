@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>Lucifer NovelAI FX 宣传海报</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700;900&family=Noto+Sans+SC:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f7f2e8;
+    --paper-2: #efe6d4;
+    --card: #fffdf8;
+    --ink: #262b3a;
+    --ink-2: #606779;
+    --gold: #b89b63;
+    --plum: #7b5062;
+    --rose: #bd6674;
+    --mint: #a6c9bf;
+    --violet: #8971a1;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1200px; height: 2200px; background: var(--paper); }
+  body {
+    font-family: "Noto Sans SC", "WenQuanYi Zen Hei", sans-serif;
+    color: var(--ink);
+    overflow: hidden;
+  }
+  .poster {
+    position: relative;
+    width: 1200px; height: 2200px;
+    background:
+      radial-gradient(circle at 12% 55%, rgba(166,201,191,.22), transparent 38%),
+      radial-gradient(circle at 92% 72%, rgba(137,113,161,.16), transparent 40%),
+      radial-gradient(circle at 50% 100%, rgba(184,155,99,.18), transparent 45%),
+      var(--paper);
+    overflow: hidden;
+  }
+
+  /* Hero */
+  .hero {
+    position: absolute; top: 0; left: 0; width: 1200px; height: 800px;
+    background: url("../readme/v2/hero.webp") center / cover no-repeat;
+  }
+  .hero::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(180deg,
+      rgba(38,43,58,.55) 0%, rgba(38,43,58,0) 16%,
+      rgba(247,242,232,0) 58%, rgba(247,242,232,.85) 84%, var(--paper) 100%);
+  }
+  .top-bar {
+    position: absolute; top: 44px; left: 56px; right: 56px;
+    display: flex; justify-content: space-between; align-items: center;
+    color: #fffdf8; z-index: 3;
+  }
+  .brand-mark {
+    font-family: "Cormorant Garamond", serif; font-style: italic; font-weight: 600;
+    font-size: 30px; letter-spacing: 1px; text-shadow: 0 2px 10px rgba(0,0,0,.45);
+  }
+  .top-tags { display: flex; gap: 10px; }
+  .top-tags span {
+    font-size: 17px; font-weight: 500; letter-spacing: 1px;
+    padding: 7px 16px; border-radius: 999px;
+    background: rgba(38,43,58,.55); border: 1px solid rgba(255,253,248,.45);
+    backdrop-filter: blur(4px);
+  }
+
+  /* Frame */
+  .frame {
+    position: absolute; inset: 22px; border: 1.5px solid rgba(184,155,99,.55);
+    border-radius: 18px; pointer-events: none; z-index: 5;
+  }
+  .frame::before {
+    content: ""; position: absolute; inset: 8px; border: 1px solid rgba(184,155,99,.3); border-radius: 12px;
+  }
+
+  /* Title */
+  .title {
+    position: absolute; top: 648px; left: 0; right: 0; text-align: center; z-index: 2;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 14px;
+    font-family: "Cormorant Garamond", serif; font-weight: 600;
+    font-size: 26px; letter-spacing: 6px; color: var(--plum); text-transform: uppercase;
+  }
+  .eyebrow::before, .eyebrow::after {
+    content: ""; width: 70px; height: 1.5px; background: var(--gold);
+  }
+  h1 {
+    margin-top: 14px;
+    font-family: "Noto Serif SC", serif; font-weight: 900;
+    font-size: 78px; line-height: 1.22; letter-spacing: 4px; color: var(--ink);
+  }
+  h1 em { font-style: normal; color: var(--plum); position: relative; }
+  h1 em::after {
+    content: ""; position: absolute; left: 2%; right: 2%; bottom: 6px; height: 14px;
+    background: rgba(189,102,116,.18); z-index: -1; border-radius: 4px;
+  }
+  .sub {
+    margin-top: 20px; font-size: 25px; color: var(--ink-2); letter-spacing: 1.5px;
+  }
+  .sub b { color: var(--ink); font-weight: 700; }
+
+  /* Showcase */
+  .showcase { position: absolute; top: 1060px; left: 64px; width: 1072px; height: 560px; }
+  .window {
+    position: absolute; left: 0; top: 0; width: 760px;
+    background: var(--card); border-radius: 16px; overflow: hidden;
+    border: 1px solid rgba(98,106,121,.28);
+    box-shadow: 0 30px 60px -20px rgba(38,43,58,.35), 0 8px 18px rgba(38,43,58,.10);
+    transform: rotate(-1.6deg);
+  }
+  .window .chrome {
+    height: 34px; display: flex; align-items: center; gap: 8px; padding: 0 14px;
+    background: var(--paper-2); border-bottom: 1px solid rgba(98,106,121,.2);
+  }
+  .window .chrome i { width: 11px; height: 11px; border-radius: 50%; display: block; }
+  .window .chrome i:nth-child(1) { background: var(--rose); }
+  .window .chrome i:nth-child(2) { background: var(--gold); }
+  .window .chrome i:nth-child(3) { background: var(--mint); }
+  .window .chrome span { margin-left: 12px; font-size: 14px; color: var(--ink-2); letter-spacing: .5px; }
+  .window img { display: block; width: 100%; }
+  .thumb {
+    position: absolute; background: var(--card); padding: 8px 8px 30px; border-radius: 6px;
+    box-shadow: 0 16px 30px -10px rgba(38,43,58,.35);
+    border: 1px solid rgba(98,106,121,.2);
+  }
+  .thumb img { display: block; width: 100%; border-radius: 3px; }
+  .thumb span {
+    position: absolute; bottom: 6px; left: 0; right: 0; text-align: center;
+    font-size: 14px; color: var(--ink-2); letter-spacing: 1px;
+  }
+  .thumb.t1 { width: 250px; left: 560px; top: 378px; transform: rotate(4deg); }
+  .sugar {
+    position: absolute; right: -86px; top: -120px; width: 470px; z-index: 2;
+    filter: drop-shadow(0 18px 24px rgba(38,43,58,.25));
+  }
+  .bubble {
+    position: absolute; right: 250px; top: -52px; z-index: 3;
+    background: var(--card); border: 1.5px solid var(--plum); border-radius: 18px;
+    padding: 12px 22px; font-family: "Noto Serif SC", serif; font-weight: 700;
+    font-size: 23px; color: var(--plum); letter-spacing: 1px;
+    box-shadow: 0 10px 20px -8px rgba(123,80,98,.35);
+  }
+  .bubble::after {
+    content: ""; position: absolute; right: -11px; bottom: 16px; width: 18px; height: 18px;
+    background: var(--card); border-right: 1.5px solid var(--plum); border-top: 1.5px solid var(--plum);
+    transform: rotate(45deg);
+  }
+
+  /* Features */
+  .features {
+    position: absolute; top: 1716px; left: 64px; right: 64px;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+  }
+  .feat {
+    background: rgba(255,253,248,.88); border: 1px solid rgba(184,155,99,.45);
+    border-radius: 14px; padding: 16px 20px 16px 20px;
+    display: grid; grid-template-columns: 44px 1fr; column-gap: 14px; align-items: start;
+  }
+  .feat .ic {
+    width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center;
+    font-family: "Cormorant Garamond", serif; font-weight: 600; font-size: 24px; color: #fffdf8;
+  }
+  .feat h3 { font-family: "Noto Serif SC", serif; font-size: 22px; font-weight: 700; color: var(--ink); line-height: 1.3; }
+  .feat p { margin-top: 5px; font-size: 16px; line-height: 1.5; color: var(--ink-2); }
+  .c1 { background: var(--plum); } .c2 { background: var(--gold); } .c3 { background: #5f8f84; }
+  .c4 { background: var(--violet); } .c5 { background: var(--rose); } .c6 { background: #4f5b78; }
+
+  /* Footer */
+  .footer {
+    position: absolute; left: 64px; right: 64px; bottom: 50px; height: 150px;
+    display: flex; align-items: center; gap: 30px;
+    padding: 0 30px; border-radius: 16px;
+    background: var(--ink); color: #f7f2e8;
+  }
+  .qr { width: 118px; height: 118px; background: #fffdf8; border-radius: 10px; padding: 10px; flex: none; }
+  .qr svg { width: 100%; height: 100%; display: block; }
+  .dl { flex: 1; }
+  .dl .cta { font-family: "Noto Serif SC", serif; font-size: 32px; font-weight: 900; letter-spacing: 2px; }
+  .dl .cta small { font-family: "Cormorant Garamond", serif; font-size: 26px; color: #e3cf9f; margin-left: 10px; letter-spacing: 1px; font-weight: 600; }
+  .dl .url { margin-top: 6px; font-size: 17px; color: #c9ccd6; letter-spacing: .3px; }
+  .dl .chips { margin-top: 12px; display: flex; gap: 8px; }
+  .dl .chips span {
+    font-size: 14.5px; padding: 4px 12px; border-radius: 999px;
+    border: 1px solid rgba(227,207,159,.55); color: #e3cf9f;
+  }
+  .note {
+    width: 280px; flex: none; font-size: 14px; line-height: 1.65; color: #aeb2c0;
+    border-left: 1px solid rgba(227,207,159,.35); padding-left: 22px;
+  }
+  .note b { color: #f7f2e8; font-weight: 500; }
+</style>
+</head>
+<body>
+<div class="poster">
+  <div class="hero"></div>
+  <div class="frame"></div>
+
+  <div class="top-bar">
+    <div class="brand-mark">Lucifer NovelAI FX</div>
+    <div class="top-tags"><span>V5 Full</span><span>V4.5 Full / Curated</span><span>Windows 中文版</span></div>
+  </div>
+
+  <div class="title">
+    <div class="eyebrow">Creative Atelier for NovelAI</div>
+    <h1>把每一次灵感<br>整理成<em>可复用的配方</em></h1>
+    <p class="sub">面向 <b>NovelAI Diffusion V5 / V4.5</b> 的 Windows 中文创作工作台</p>
+  </div>
+
+  <div class="showcase">
+    <div class="window">
+      <div class="chrome"><i></i><i></i><i></i><span>Lucifer NovelAI FX · 三栏创作工作台</span></div>
+      <img src="../readme/v2/screens/overview.webp" alt="">
+    </div>
+    <div class="thumb t1"><img src="../readme/v2/screens/comparison.webp" alt=""><span>A/B/C 共 seed 对照</span></div>
+    <div class="bubble">长 Prompt、角色、参数，一处搞定！</div>
+    <img class="sugar" src="../readme/v2/sugar-pointer.png" alt="">
+  </div>
+
+  <div class="features">
+    <div class="feat"><div class="ic c1">P</div><div><h3>长 Prompt 编辑器</h3><p>权重嵌套直接高亮，本地 Danbooru 标签建议与中文释义</p></div></div>
+    <div class="feat"><div class="ic c2">卡</div><div><h3>卡片 · 预设 · 草稿</h3><p>三层本机资料库，插入可撤，整套配方一键恢复</p></div></div>
+    <div class="feat"><div class="ic c3">角</div><div><h3>多角色定位</h3><p>分角色正负 Prompt，按真实画布比例拖动位置</p></div></div>
+    <div class="feat"><div class="ic c4">入</div><div><h3>选择性图片导入</h3><p>PNG / JPEG / WebP 参数先看、再选、再导入</p></div></div>
+    <div class="feat"><div class="ic c5" style="font-size:17px">ABC</div><div><h3>A/B/C 对照实验</h3><p>共用 seed，只比差异；串行批次可在当前张后停止</p></div></div>
+    <div class="feat"><div class="ic c6">8</div><div><h3>8 套主题 · 9 张等待图</h3><p>本地历史与任务接回，布局与外观偏好自动记忆</p></div></div>
+  </div>
+
+  <div class="footer">
+    <div class="qr"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37" shape-rendering="crispEdges"><path stroke="#262b3a" d="M0 0.5h7m1 0h3m5 0h2m3 0h1m6 0h1m1 0h7M0 1.5h1m5 0h1m1 0h2m1 0h3m2 0h2m4 0h1m2 0h2m1 0h1m1 0h1m5 0h1M0 2.5h1m1 0h3m1 0h1m4 0h2m1 0h2m2 0h2m3 0h5m2 0h1m1 0h3m1 0h1M0 3.5h1m1 0h3m1 0h1m1 0h2m2 0h2m2 0h2m4 0h5m3 0h1m1 0h3m1 0h1M0 4.5h1m1 0h3m1 0h1m3 0h1m1 0h5m2 0h1m2 0h1m1 0h5m1 0h1m1 0h3m1 0h1M0 5.5h1m5 0h1m2 0h1m3 0h1m1 0h1m1 0h4m1 0h1m2 0h2m1 0h1m1 0h1m5 0h1M0 6.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M8 7.5h2m1 0h5m3 0h2m1 0h1m1 0h1m1 0h3M0 8.5h1m1 0h2m1 0h3m3 0h2m1 0h2m2 0h2m2 0h1m1 0h1m1 0h3m1 0h1m2 0h1m1 0h2M1 9.5h1m2 0h1m2 0h1m1 0h2m1 0h1m1 0h2m2 0h1m1 0h3m1 0h2m5 0h1m1 0h3M1 10.5h1m2 0h3m2 0h2m2 0h2m1 0h1m1 0h4m1 0h3m2 0h1m2 0h3M0 11.5h4m3 0h4m2 0h1m2 0h1m3 0h1m1 0h1m2 0h6m3 0h1M3 12.5h1m1 0h2m1 0h3m1 0h2m1 0h1m1 0h1m1 0h1m4 0h4m1 0h2m1 0h5M1 13.5h1m1 0h1m1 0h1m1 0h1m7 0h3m1 0h1m1 0h1m2 0h1m1 0h2m1 0h5m1 0h2M0 14.5h1m3 0h3m3 0h2m1 0h2m1 0h1m2 0h3m2 0h2m2 0h3m1 0h1m1 0h2M1 15.5h2m1 0h1m3 0h3m1 0h1m1 0h1m1 0h1m3 0h1m3 0h1m1 0h1m3 0h3m2 0h2M0 16.5h2m3 0h2m3 0h1m3 0h1m2 0h1m4 0h1m2 0h1m2 0h1m4 0h3M0 17.5h2m3 0h1m2 0h1m3 0h1m1 0h1m3 0h2m1 0h2m1 0h1m1 0h2m2 0h1m2 0h1m1 0h2M2 18.5h2m1 0h3m1 0h1m2 0h2m6 0h5m1 0h3m3 0h1m2 0h2M4 19.5h1m2 0h3m3 0h1m1 0h4m1 0h1m1 0h1m1 0h1m3 0h1m3 0h2m1 0h1M2 20.5h2m1 0h2m2 0h4m2 0h1m1 0h4m2 0h1m4 0h2m1 0h2m3 0h1M1 21.5h3m1 0h1m1 0h2m1 0h1m1 0h1m1 0h1m1 0h2m1 0h5m4 0h2m3 0h1M0 22.5h1m4 0h3m5 0h1m2 0h1m1 0h1m1 0h1m2 0h2m3 0h1m2 0h1M0 23.5h1m2 0h3m4 0h2m1 0h3m1 0h1m1 0h2m2 0h1m1 0h1m3 0h1m2 0h3M0 24.5h1m1 0h1m1 0h5m4 0h1m2 0h1m2 0h1m1 0h1m2 0h4m1 0h4m1 0h2M2 25.5h1m14 0h1m4 0h2m1 0h9m1 0h2M1 26.5h2m1 0h1m1 0h1m2 0h2m2 0h2m2 0h1m3 0h2m3 0h1m2 0h1m2 0h1m2 0h1M0 27.5h1m2 0h1m1 0h1m2 0h1m1 0h4m1 0h1m2 0h5m3 0h1m3 0h3m3 0h1M2 28.5h1m3 0h2m1 0h2m2 0h1m5 0h5m4 0h8M8 29.5h1m2 0h1m1 0h3m4 0h2m1 0h3m1 0h2m3 0h1m1 0h1m1 0h1M0 30.5h7m1 0h1m6 0h1m2 0h1m1 0h1m1 0h1m3 0h1m1 0h1m1 0h1m1 0h1m1 0h3M0 31.5h1m5 0h1m1 0h2m1 0h1m1 0h7m1 0h1m1 0h2m2 0h2m3 0h1M0 32.5h1m1 0h3m1 0h1m7 0h3m3 0h1m3 0h1m1 0h1m1 0h6m1 0h1M0 33.5h1m1 0h3m1 0h1m1 0h3m1 0h1m2 0h3m3 0h1m1 0h1m1 0h3m1 0h2m1 0h3m1 0h1M0 34.5h1m1 0h3m1 0h1m1 0h2m4 0h2m1 0h2m3 0h3m3 0h3m1 0h1M0 35.5h1m5 0h1m2 0h1m1 0h1m1 0h3m2 0h2m2 0h2m1 0h1m1 0h1m3 0h2m1 0h1M0 36.5h7m1 0h5m4 0h1m7 0h2m2 0h2m1 0h5"/></svg>
+</div>
+    <div class="dl">
+      <div class="cta">扫码下载 · 解压即用<small>v1.5.1</small></div>
+      <div class="url">github.com/Lucifer-St/lucifer-novelai-fx</div>
+      <div class="chips"><span>Windows 10 / 11 x64</span><span>无需另装 Node / Python</span><span>SHA-256 可核对</span></div>
+    </div>
+    <div class="note"><b>个人维护的非官方前端</b>，与 NovelAI 官方无隶属关系。需自备 NovelAI 账号与 Token，只有点击生成才会提交请求。角色与美术素材权利归各自权利人。</div>
+  </div>
+</div>
+</body>
+</html>
