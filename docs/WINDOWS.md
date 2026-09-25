@@ -3,14 +3,14 @@
 ## 下载
 
 - 最新版本页面：<https://github.com/Lucifer-St/lucifer-novelai-fx/releases/latest>
-- `v1.4.0` Windows x64：<https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.4.0/Lucifer-NovelAI-FX-Share-1.4.0-Windows-x64.zip>
-- `v1.4.0` SHA-256：<https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.4.0/SHA256SUMS-1.4.0.txt>
+- `v1.4.1` Windows x64：<https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.4.1/Lucifer-NovelAI-FX-Share-1.4.1-Windows-x64.zip>
+- `v1.4.1` SHA-256：<https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.4.1/SHA256SUMS-1.4.1.txt>
 
 只从本仓库的 GitHub Release 下载。GitHub 页面中自动生成的“Source code”文件只含公开说明和截图，不是应用源码或 Windows 程序。
 
 ## 第一次启动
 
-1. 下载 ZIP，并核对 `SHA256SUMS-1.4.0.txt` 中对应文件的 SHA-256。
+1. 下载 ZIP，并核对 `SHA256SUMS-1.4.1.txt` 中对应文件的 SHA-256。
 2. 完整解压到普通可写目录。不要直接在 ZIP 预览中运行，也不要解压进已有旧版本目录。
 3. 双击 `启动 Lucifer FX.exe`。应用自带 Node.js 运行环境，不要求另装 Node、Python、Agent 或 ComfyUI。
 4. 在设置中选择连接类型：
@@ -33,12 +33,34 @@ Windows 可能显示未知发布者提醒。请先确认文件来自本仓库 Re
 
 应用可以在用户主动操作时检查 GitHub 上的稳定版本，但不会自动下载、安装、替换文件或重启。
 
-1. 退出旧界面，并确认后台服务已停止。
+1. 等待生成、批次与对照任务结束。在“设置 → 保存位置”点击“退出服务”，看到退出提示后关闭页面；关闭浏览器标签本身不会停止服务。旧版没有此按钮时，请按下节处理。
 2. 复制整个旧目录作为备份，重点保留 `userdata`。
 3. 把新版本解压到一个新的临时目录并先核对文件。
 4. 保持原位 `userdata` 不动，只替换 `app`、`runtime`、启动器、`fx.cmd` 与随包说明文件；不要让新包覆盖唯一一份 `userdata`。
 5. 启动新版，检查设置、历史和自建内容仍在。
 6. 若新版异常，关闭它并回到完整的旧版备份目录。不要使用 Git 或清理工具处理用户数据。
+
+### 从没有退出按钮的旧版本升级
+
+v1.4.0 及更早的安装没有“退出服务”按钮。先确认所有生成任务已结束，再打开旧安装的 `userdata/launcher.pid`，记下进程 ID；在任务管理器“详细信息”中核对同一 PID 的 `node.exe`，其可执行文件必须是这个安装目录下的 `runtime/node.exe`，命令行必须指向同一安装的 `app/server/index.mjs`，然后结束这个进程。PID 文件可能已过期，任何一项不匹配就不要操作该进程，也不要批量结束所有 Node 进程。
+
+完成后继续上面的备份与替换步骤。新版启动器遇到同一安装的旧后台时会阻止混用版本，不会自动结束旧进程。通过开发终端启动的服务请在原终端按 Ctrl+C 退出。
+
+## 工具备份与迁移
+
+在“设置 → 备份迁移”导出工具备份。文件包含卡片、完整预设、非秘密连接设置及已列入导出的界面偏好，不含 API key、图片、历史、草稿或账本；完整迁移仍需备份 `userdata` 和自选图片目录。
+
+选择备份文件后，先选恢复方式并点击“预览导入”，核对新增、跳过和冲突数量，再执行：
+
+- **恢复资料与连接类型**：相同条目跳过，同 ID 内容冲突保留本地；恢复备份中的连接类型及地址，不导入密钥或保存目录。
+- **合并资料**：相同内容跳过，同 ID 不同内容另存为新条目；保留本地条目与连接，重复导入同一内容不会持续增加副本。
+- **仅恢复界面偏好**：不改资料库和连接。已经复制完整 `userdata` 的迁移场景优先使用此项。
+
+执行后刷新页面加载界面偏好。若更换连接地址，需重新填写密钥；换电脑或 Windows 账户时，旧 DPAPI 密文不能保证可解密，应重新设置自己的凭据。导入不会删除当前资料；旧版导入已产生的重复条目不会自动清理。
+
+## 查看更早的历史
+
+历史先读取最近 200 条。展开历史区域，点击“加载更早记录”继续翻阅；分批加载不会重新生成图片，也不会删除旧记录。请保留相关图片目录，历史记录本身不是图像文件备份。
 
 ## 隐私与费用
 

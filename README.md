@@ -2,7 +2,7 @@
 
 **面向 NovelAI Diffusion V5 Full 的 Windows 中文创作工作台。** 这是个人维护的非官方前端，与 NovelAI 官方没有隶属关系。它把长 Prompt、角色、参数、图片配方、对照实验与本地资料组织在同一个界面中；只有你明确点击生成，才会向自己配置的 NovelAI 官方接口或兼容网关提交生图请求。
 
-[下载最新版](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/latest) · [直接下载 v1.4.0 Windows x64](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.4.0/Lucifer-NovelAI-FX-Share-1.4.0-Windows-x64.zip) · [核对 SHA-256](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.4.0/SHA256SUMS-1.4.0.txt) · [报告 Bug](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=bug_report.yml) · [提出改进](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=feature_request.yml)
+[下载最新版](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/latest) · [直接下载 v1.4.1 Windows x64](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.4.1/Lucifer-NovelAI-FX-Share-1.4.1-Windows-x64.zip) · [核对 SHA-256](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.4.1/SHA256SUMS-1.4.1.txt) · [报告 Bug](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=bug_report.yml) · [提出改进](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=feature_request.yml)
 
 <p align="center">
   <a href="./assets/readme/v2/hero.webp"><img src="./assets/readme/v2/hero.webp" width="100%" alt="Sugar、Lily、Claire 与 Noire 在创作工房共同整理画面、构图和配方"></a>
@@ -81,6 +81,8 @@ NovelAI 官网已经提供正负 Prompt、强调语法与高亮、标签建议�
 
 对照模式把 A 设为共同基准，B/C 只保存相对 A 的差异。每轮共用 seed，界面直接列出改了哪些字段；不满意可以恢复继承，满意可以采用某个方案继续编辑。这样比较的是明确变量，而不是凭记忆猜上一张用了什么参数。
 
+历史先读取最近 200 条；展开历史区域后点击“加载更早记录”，即可继续访问磁盘中更早的创作记录。
+
 多图任务会先固定本轮参数，再按单张串行提交。点击停止时，当前张完成后不再提交后续图片，已经完成的结果仍可查看和保存。请求回执不明确时，FX 会继续查询原任务，不创建新任务自动重试可能收费的生成。
 
 普通生成和逐张批次可以在刷新后按原任务接回；你正在查看旧图时，新结果不会强行抢走当前选择。A/B/C 对照采取更保守的边界：离开或刷新页面会请求停止后续方案，当前已经开始的方案可能完成，未提交的方案不会在重开页面后自动继续；完成记录仍可查看。官网本身也有页面 History、seed 复用与参数回拖，但官方说明刷新或关闭页面后未下载图片会丢失；详见 [官方入门与 History 说明](https://docs.novelai.net/en/image/tutorial-imgintro/)。
@@ -151,7 +153,7 @@ D 站（Danbooru）图库可以按标签、评分、排序和上传时间浏览�
   <a href="./assets/readme/v2/screens/sugar-update-classroom.webp"><img src="./assets/readme/v2/screens/sugar-update-classroom.webp" width="100%" alt="Sugar 引导阅读更新报告的真实界面，图为 v1.1.0 旧版示例"></a>
 </p>
 
-图为之前制作的 **v1.1.0 更新报告**，用来展示 Sugar 的讲解界面；当前 Windows 下载为 v1.4.0，具体变化见 [本版更新说明](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/tag/v1.4.0)。想查找尚未安装的新版本，可使用独立的“更新 / 反馈”入口主动检查 GitHub。
+图为之前制作的 **v1.1.0 更新报告**，用来展示 Sugar 的讲解界面；当前 Windows 下载为 v1.4.1，具体变化见 [本版更新说明](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/tag/v1.4.1)。想查找尚未安装的新版本，可使用独立的“更新 / 反馈”入口主动检查 GitHub。
 
 <p align="center">
   <a href="./assets/readme/v2/section-local-tools.svg"><img src="./assets/readme/v2/section-local-tools.svg" width="100%" alt="本地资料、可选 Agent 与工具章节"></a>
@@ -182,13 +184,13 @@ Agent 使用同一份本机设置，但配置不包含 API key。普通桌面使
 
 ## Windows 安装与升级
 
-支持 Windows 10/11 x64。下载 ZIP 后用同一 Release 中的 `SHA256SUMS-1.4.0.txt` 核对哈希，完整解压到普通可写目录，再双击 `启动 Lucifer FX.exe`。不要直接在 ZIP 预览中运行。首次进入后填写自己的连接，先做只读检查，再从单张、普通尺寸和较低步数开始。想使用完整的角色、对照与高级参数控制时，点击“展开完整功能”。完整步骤、文件位置与回退方法见 [Windows 安装、升级与隐私说明](./docs/WINDOWS.md)。
+支持 Windows 10/11 x64。下载 ZIP 后用同一 Release 中的 `SHA256SUMS-1.4.1.txt` 核对哈希，完整解压到普通可写目录，再双击 `启动 Lucifer FX.exe`。不要直接在 ZIP 预览中运行。首次进入后填写自己的连接，先做只读检查，再从单张、普通尺寸和较低步数开始。想使用完整的角色、对照与高级参数控制时，点击“展开完整功能”。完整步骤、文件位置与回退方法见 [Windows 安装、升级与隐私说明](./docs/WINDOWS.md)。
 
-升级前退出旧服务并备份整个目录。保持原位 `userdata` 不动，只替换 `app`、`runtime`、启动器、`fx.cmd` 与随包说明文件。应用可以在用户点击后检查 GitHub 稳定版，但不会自动下载、安装、替换文件或重启。
+升级前在“设置 → 保存位置”点击“退出服务”，等待后台结束后备份整个目录；正在生成时会阻止退出。保持原位 `userdata` 不动，只替换 `app`、`runtime`、启动器、`fx.cmd` 与随包说明文件。启动器会核对后台版本。旧版没有退出按钮时，先按 [旧版升级步骤](./docs/WINDOWS.md#从没有退出按钮的旧版本升级) 停止对应服务。应用不会自动下载、安装、替换文件或重启。
 
 公开版聚焦 V5 Full 的当前工作流；Vibe Transfer 与 Precise Reference 尚未加入当前操作界面，个人版的 Grok / ComfyUI 集成不随公开版提供。
 
-本轮只发布 Windows x64；Android 版仍封存在 `v1.1.1`，不随 `v1.4.0` 发布。
+本轮只发布 Windows x64；Android 版仍封存在 `v1.1.1`，不随 `v1.4.1` 发布。
 
 ## 反馈、安全与公开范围
 
