@@ -2,7 +2,7 @@
 
 **面向 NovelAI Diffusion V5 Full 与 V4.5 Full / Curated 的 Windows 中文创作工作台。** 这是个人维护的非官方前端，与 NovelAI 官方没有隶属关系。它把长 Prompt、角色、参数、图片配方、对照实验与本地资料组织在同一个界面中；只有你明确点击生成，才会向自己配置的 NovelAI 官方接口或兼容网关提交生图请求。
 
-[下载最新版](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/latest) · [直接下载 v1.5.1 Windows x64](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.5.1/Lucifer-NovelAI-FX-Share-1.5.1-Windows-x64.zip) · [核对 SHA-256](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.5.1/SHA256SUMS-1.5.1.txt) · [报告 Bug](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=bug_report.yml) · [提出改进](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=feature_request.yml)
+[下载最新版](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/latest) · [直接下载 v1.6.0 Windows x64](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.6.0/Lucifer-NovelAI-FX-Share-1.6.0-Windows-x64.zip) · [核对 SHA-256](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.6.0/SHA256SUMS-1.6.0.txt) · [报告 Bug](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=bug_report.yml) · [提出改进](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=feature_request.yml)
 
 <p align="center">
   <a href="./assets/readme/v2/hero.webp"><img src="./assets/readme/v2/hero.webp" width="100%" alt="Sugar、Lily、Claire 与 Noire 在创作工房共同整理画面、构图和配方"></a>
@@ -147,6 +147,16 @@ D 站（Danbooru）图库可以按标签、评分、排序和上传时间浏览�
 
 ## 更新说明
 
+### [v1.6.0](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/tag/v1.6.0) · 2026-09-25
+
+- **D 站不限时间排行**：修复热门评分／收藏排序的大范围查询超时，保留筛选条件、精确排序和分页；不会偷偷改成近一周或截断低分结果。
+- **角色框自适应**：正负面输入框随内容伸缩，保留手动调整、Undo、输入法和权重高亮。
+- **官方预设**：按模型提供正面 Standard／Light 和适用的负面 Heavy／Light／Human Focus／Furry Focus，保留自写词；配方和图片参数回读保持一致。预设依据 [官方质量标签](https://docs.novelai.net/en/image/qualitytags/) 与 [官方负面预设](https://docs.novelai.net/en/image/undesiredcontent/)。
+- **图片恢复与网络提示**：缩略图、预览和原图支持手动重新加载；法典图鉴显示连接超时、DNS、TLS 等具体错误。未把外部服务异常一概标为生图离线，也不会自动重试可能计费的生成。
+- **应用内升级**：启动后检查 GitHub 稳定版，可关闭；点击下载、SHA-256 校验后安装并重启。生成期间拒绝安装，保留数据与旧版备份，失败可回滚，意外中断可恢复。
+
+1.5.1 及更早版本需先手动升级到本版，之后才能使用应用内安装。此次修复验证了本地错误恢复与公开素材读取；反馈中的偶发生成掉图仍需结合具体网络／上游状态诊断，不能保证外部服务不再中断。
+
 ### [v1.5.1](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/tag/v1.5.1) · 2026-09-25
 
 - **全皮肤模型切换**：修复非经典皮肤隐藏模型入口的问题；统一使用紧凑下拉框，直接选择 V5 Full、V4.5 Full 或 V4.5 Curated。
@@ -218,13 +228,13 @@ Agent 使用同一份本机设置，但配置不包含 API key。普通桌面使
 
 ## Windows 安装与升级
 
-支持 Windows 10/11 x64。下载 ZIP 后用同一 Release 中的 `SHA256SUMS-1.5.1.txt` 核对哈希，完整解压到普通可写目录，再双击 `启动 Lucifer FX.exe`。不要直接在 ZIP 预览中运行。首次进入后填写自己的连接，先做只读检查，再从单张、普通尺寸和较低步数开始。想使用完整的角色、对照与高级参数控制时，点击“展开完整功能”。完整步骤、文件位置与回退方法见 [Windows 安装、升级与隐私说明](./docs/WINDOWS.md)。
+支持 Windows 10/11 x64。下载 ZIP 后用同一 Release 中的 `SHA256SUMS-1.6.0.txt` 核对哈希，完整解压到普通可写目录，再双击 `启动 Lucifer FX.exe`。不要直接在 ZIP 预览中运行。首次进入后填写自己的连接，先做只读检查，再从单张、普通尺寸和较低步数开始。想使用完整的角色、对照与高级参数控制时，点击“展开完整功能”。完整步骤、文件位置与回退方法见 [Windows 安装、升级与隐私说明](./docs/WINDOWS.md)。
 
-升级前在“设置 → 保存位置”点击“退出服务”，等待后台结束后备份整个目录；正在生成时会阻止退出。保持原位 `userdata` 不动，只替换 `app`、`runtime`、启动器、`fx.cmd` 与随包说明文件。启动器会核对后台版本。旧版没有退出按钮时，先按 [旧版升级步骤](./docs/WINDOWS.md#从没有退出按钮的旧版本升级) 停止对应服务。应用不会自动下载、安装、替换文件或重启。
+从 1.6.0 起，可在“更新 / 反馈”完成下载、校验、安装与重启；生成期间不会安装。启动后的版本检查可关闭，下载和安装都需要主动点击。1.5.1 及更早版本先按 [升级步骤](./docs/WINDOWS.md#升级与回退) 退出服务、备份并手动升级；始终保留原位 `userdata`。
 
 公开版覆盖 V5 Full 与 V4.5 Full / Curated 工作流；Precise Reference 与 Vibe Transfer 仅用于 V4.5。个人版的 Grok / ComfyUI 集成不随公开版提供。
 
-本轮只发布 Windows x64；Android 版仍封存在 `v1.1.1`，不随 `v1.5.1` 发布。
+本轮只发布 Windows x64；Android 版仍封存在 `v1.1.1`，不随 `v1.6.0` 发布。
 
 ## 反馈、安全与公开范围
 
