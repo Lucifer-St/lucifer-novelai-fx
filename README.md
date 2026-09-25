@@ -2,7 +2,7 @@
 
 **面向 NovelAI Diffusion V5 Full 与 V4.5 Full / Curated 的 Windows 中文创作工作台。** 这是个人维护的非官方前端，与 NovelAI 官方没有隶属关系。它把长 Prompt、角色、参数、图片配方、对照实验与本地资料组织在同一个界面中；只有你明确点击生成，才会向自己配置的 NovelAI 官方接口或兼容网关提交生图请求。
 
-[下载最新版](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/latest) · [直接下载 v1.5.0 Windows x64](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.5.0/Lucifer-NovelAI-FX-Share-1.5.0-Windows-x64.zip) · [核对 SHA-256](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.5.0/SHA256SUMS-1.5.0.txt) · [报告 Bug](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=bug_report.yml) · [提出改进](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=feature_request.yml)
+[下载最新版](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/latest) · [直接下载 v1.5.1 Windows x64](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.5.1/Lucifer-NovelAI-FX-Share-1.5.1-Windows-x64.zip) · [核对 SHA-256](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.5.1/SHA256SUMS-1.5.1.txt) · [报告 Bug](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=bug_report.yml) · [提出改进](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=feature_request.yml)
 
 <p align="center">
   <a href="./assets/readme/v2/hero.webp"><img src="./assets/readme/v2/hero.webp" width="100%" alt="Sugar、Lily、Claire 与 Noire 在创作工房共同整理画面、构图和配方"></a>
@@ -145,11 +145,13 @@ D 站（Danbooru）图库可以按标签、评分、排序和上传时间浏览�
 
 图为 9 张等待插画中的 3 张示例。
 
-## Sugar 的更新课堂
+## 更新说明
 
-### v1.5.0 · 2026-09-25
+### v1.5.1 · 2026-09-25
 
-- **模型与模式**：V5 / V4.5 使用模型系列页签；V4.5 内可选择 Full 或 Curated。Precise Reference 与 Vibe Transfer 仅适用于 V4.5，并可通过关闭控制退出。图生图也可明确退出。
+- **全皮肤模型切换修复**：所有皮肤统一使用紧凑的模型下拉框，点击即可选择 V5 Full、V4.5 Full 或 V4.5 Curated；切换保留提示词，参考图功能仍仅用于 V4.5。
+
+- **模型与模式**：在模型下拉框中选择 V5 Full、V4.5 Full 或 Curated。Precise Reference 与 Vibe Transfer 仅适用于 V4.5，并可通过关闭控制退出。图生图也可明确退出。
 - **中文标签词典**：标签建议支持本地中文释义和自定义词条。
 - **V5 文本预处理**：可单独输入画面文字，并可选提取引号内容；组装并预览最终 `Text:` 后再使用，不会改写正在编辑的 Prompt。
 - **图库整理**：支持搜索、筛选、收藏、标签、双图对比与导出；图片标注及备份管理更方便。
@@ -158,15 +160,11 @@ D 站（Danbooru）图库可以按标签、评分、排序和上传时间浏览�
 - **逐张批次停止**：停止后续图片与立即停止接收分开；已完成图片保留，上游取消及计费状态可能未知，不自动重试。
 - **Windows 发布**：本次仅更新 Windows x64；Android 仍冻结于 v1.1.1。
 
-Vibe 编码费用提示不代表已验证真实付费生成。本页沿用的版本截图和说明仍可能展示早期版本功能；当前 Windows 下载为 v1.5.0。
-
-新版本第一次打开时，Sugar 会带来本次新增与改进的更新报告。读完可以关闭，也能从工作台右上角的信箱再次查看；说明随程序提供，不需要联网读取。
+Vibe 编码费用提示不代表已验证真实付费生成。本页沿用的版本截图和说明仍可能展示早期版本功能；当前 Windows 下载为 v1.5.1。
 
 <p align="center">
-  <a href="./assets/readme/v2/screens/sugar-update-classroom.webp"><img src="./assets/readme/v2/screens/sugar-update-classroom.webp" width="100%" alt="Sugar 引导阅读更新报告的真实界面，图为 v1.1.0 旧版示例"></a>
+  <img src="./assets/readme/v2/sugar-pointer.png" width="360" alt="Sugar">
 </p>
-
-图为之前制作的 **v1.1.0 更新报告**，用来展示 Sugar 的讲解界面；当前 Windows 下载为 v1.5.0，具体变化见 [本版更新说明](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/tag/v1.5.0)。想查找尚未安装的新版本，可使用独立的“更新 / 反馈”入口主动检查 GitHub。
 
 <p align="center">
   <a href="./assets/readme/v2/section-local-tools.svg"><img src="./assets/readme/v2/section-local-tools.svg" width="100%" alt="本地资料、可选 Agent 与工具章节"></a>
@@ -197,13 +195,13 @@ Agent 使用同一份本机设置，但配置不包含 API key。普通桌面使
 
 ## Windows 安装与升级
 
-支持 Windows 10/11 x64。下载 ZIP 后用同一 Release 中的 `SHA256SUMS-1.5.0.txt` 核对哈希，完整解压到普通可写目录，再双击 `启动 Lucifer FX.exe`。不要直接在 ZIP 预览中运行。首次进入后填写自己的连接，先做只读检查，再从单张、普通尺寸和较低步数开始。想使用完整的角色、对照与高级参数控制时，点击“展开完整功能”。完整步骤、文件位置与回退方法见 [Windows 安装、升级与隐私说明](./docs/WINDOWS.md)。
+支持 Windows 10/11 x64。下载 ZIP 后用同一 Release 中的 `SHA256SUMS-1.5.1.txt` 核对哈希，完整解压到普通可写目录，再双击 `启动 Lucifer FX.exe`。不要直接在 ZIP 预览中运行。首次进入后填写自己的连接，先做只读检查，再从单张、普通尺寸和较低步数开始。想使用完整的角色、对照与高级参数控制时，点击“展开完整功能”。完整步骤、文件位置与回退方法见 [Windows 安装、升级与隐私说明](./docs/WINDOWS.md)。
 
 升级前在“设置 → 保存位置”点击“退出服务”，等待后台结束后备份整个目录；正在生成时会阻止退出。保持原位 `userdata` 不动，只替换 `app`、`runtime`、启动器、`fx.cmd` 与随包说明文件。启动器会核对后台版本。旧版没有退出按钮时，先按 [旧版升级步骤](./docs/WINDOWS.md#从没有退出按钮的旧版本升级) 停止对应服务。应用不会自动下载、安装、替换文件或重启。
 
 公开版覆盖 V5 Full 与 V4.5 Full / Curated 工作流；Precise Reference 与 Vibe Transfer 仅用于 V4.5。个人版的 Grok / ComfyUI 集成不随公开版提供。
 
-本轮只发布 Windows x64；Android 版仍封存在 `v1.1.1`，不随 `v1.5.0` 发布。
+本轮只发布 Windows x64；Android 版仍封存在 `v1.1.1`，不随 `v1.5.1` 发布。
 
 ## 反馈、安全与公开范围
 
