@@ -67,22 +67,22 @@
   }
 
   /* 标语 */
-  .title { position: absolute; top: 612px; left: 0; right: 0; text-align: center; z-index: 2; }
+  .title { position: absolute; top: 668px; left: 0; right: 0; text-align: center; z-index: 2; }
   .eyebrow, .section-label {
     display: inline-flex; align-items: center; gap: 16px;
     font-family: var(--serif); font-weight: 700; color: var(--plum);
   }
-  .eyebrow { font-size: 27px; letter-spacing: 3px; }
+  .eyebrow { font-family: var(--latin); font-weight: 600; font-size: 26px; letter-spacing: 6px; }
   .eyebrow::before, .eyebrow::after, .section-label::before, .section-label::after {
     content: ""; width: 64px; height: 1.5px; background: var(--gold);
   }
   h1 {
     margin-top: 10px; font-family: var(--serif); font-weight: 900;
-    font-size: 112px; line-height: 1.16; letter-spacing: 10px; color: var(--ink);
+    font-size: 80px; line-height: 1.22; letter-spacing: 4px; color: var(--ink);
   }
   h1 em { font-style: normal; color: var(--plum); position: relative; display: inline-block; }
   h1 em::after {
-    content: ""; position: absolute; left: 0; right: 10px; bottom: 10px; height: 20px;
+    content: ""; position: absolute; left: 0; right: 4px; bottom: 8px; height: 16px;
     background: rgba(189,102,116,.18); z-index: -1; border-radius: 4px;
   }
   .sub { margin-top: 18px; font-size: 26px; color: var(--ink-2); letter-spacing: 1.5px; }
@@ -196,9 +196,9 @@
   </div>
 
   <div class="title">
-    <div class="eyebrow">NovelAI 画图，换个顺手的地方</div>
-    <h1>刷新不丢图<br><em>调参不靠猜</em></h1>
-    <p class="sub">还是你的 NovelAI 账号和 <b>V5 / V4.5</b> 模型，换成装在自己电脑上的全中文工作台</p>
+    <div class="eyebrow">CREATIVE ATELIER FOR NOVELAI</div>
+    <h1>把每一次灵感<br>整理成<em>可复用的配方</em></h1>
+    <p class="sub">面向 <b>NovelAI Diffusion V5 / V4.5</b> 的 Windows 中文创作工作台</p>
   </div>
 
   <div class="showcase">
@@ -211,16 +211,16 @@
     <img class="sugar" src="../readme/v2/sugar-pointer.png" alt="">
   </div>
 
-  <div class="section-head"><div class="section-label">比网页版多出来的几样东西</div></div>
+  <div class="section-head"><div class="section-label">网页版没有的部分</div></div>
   <div class="features">
-    <div class="feat"><div class="ic c1">存</div><div><h3>图和历史都存本机</h3><p>每张图、每组参数都落进本机，刷新后还能接回没跑完的任务</p></div></div>
-    <div class="feat"><div class="ic c5 latin">ABC</div><div><h3>A/B/C 同 seed 对照</h3><p>B、C 只记与 A 的差异，改了哪几项一眼看清，看中哪套就用哪套</p></div></div>
-    <div class="feat"><div class="ic c2">停</div><div><h3>排队出图，随时刹车</h3><p>逐张排队随时可停，网络抽风也不会自动重发、白扣 Anlas</p></div></div>
-    <div class="feat"><div class="ic c3 latin">D</div><div><h3>D 站图库搬进软件</h3><p>按标签逛 Danbooru，分类勾选 tag，一键存成提示词卡</p></div></div>
-    <div class="feat"><div class="ic c4">卡</div><div><h3>卡片 · 预设 · 草稿</h3><p>常用词做成卡片随插随删，草稿连参考图和蒙版一起存下</p></div></div>
-    <div class="feat"><div class="ic c6 latin">&gt;_</div><div><h3>能交给 Agent 干活</h3><p>自带 21 条 CLI 命令和 14 个 MCP 工具，接上自己的 Agent 就能用</p></div></div>
+    <div class="feat"><div class="ic c1">存</div><div><h3>出过的图都在本机</h3><p>图和记录自动存下来，刷新后还能接回正在跑的任务</p></div></div>
+    <div class="feat"><div class="ic c5 latin">ABC</div><div><h3>A/B/C 对照</h3><p>三套共用一个 seed，B、C 只标出和 A 不一样的地方</p></div></div>
+    <div class="feat"><div class="ic c2">停</div><div><h3>这张出完就停</h3><p>一张张排队出图；网络卡了先查原任务，不会自己重发</p></div></div>
+    <div class="feat"><div class="ic c3 latin">D</div><div><h3>在软件里逛 D 站</h3><p>看着图按画师、角色、分类勾 tag，一键存成卡片</p></div></div>
+    <div class="feat"><div class="ic c4">卡</div><div><h3>卡片、预设、草稿</h3><p>插进去的卡能整张删，草稿连参考图和蒙版一起存</p></div></div>
+    <div class="feat"><div class="ic c6">中</div><div><h3>全中文界面</h3><p>标签附中文释义，8 套带立绘的主题，9 张等图插画</p></div></div>
   </div>
-  <p class="extras"><b>还有</b>全中文界面 · 标签中文释义 · 8 套主题 · 9 张等待插画 · 三栏宽度可调 · Anlas 用量估算</p>
+  <p class="extras"><b>还有</b>21 条 CLI 命令 · 14 个 MCP 工具，可接 Agent · 法典图鉴 · 三栏宽度可调 · Anlas 用量估算</p>
 
   <div class="footer">
     <div class="qr"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37" shape-rendering="crispEdges"><path stroke="#262b3a" d="M0 0.5h7m1 0h3m5 0h2m3 0h1m6 0h1m1 0h7M0 1.5h1m5 0h1m1 0h2m1 0h3m2 0h2m4 0h1m2 0h2m1 0h1m1 0h1m5 0h1M0 2.5h1m1 0h3m1 0h1m4 0h2m1 0h2m2 0h2m3 0h5m2 0h1m1 0h3m1 0h1M0 3.5h1m1 0h3m1 0h1m1 0h2m2 0h2m2 0h2m4 0h5m3 0h1m1 0h3m1 0h1M0 4.5h1m1 0h3m1 0h1m3 0h1m1 0h5m2 0h1m2 0h1m1 0h5m1 0h1m1 0h3m1 0h1M0 5.5h1m5 0h1m2 0h1m3 0h1m1 0h1m1 0h4m1 0h1m2 0h2m1 0h1m1 0h1m5 0h1M0 6.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M8 7.5h2m1 0h5m3 0h2m1 0h1m1 0h1m1 0h3M0 8.5h1m1 0h2m1 0h3m3 0h2m1 0h2m2 0h2m2 0h1m1 0h1m1 0h3m1 0h1m2 0h1m1 0h2M1 9.5h1m2 0h1m2 0h1m1 0h2m1 0h1m1 0h2m2 0h1m1 0h3m1 0h2m5 0h1m1 0h3M1 10.5h1m2 0h3m2 0h2m2 0h2m1 0h1m1 0h4m1 0h3m2 0h1m2 0h3M0 11.5h4m3 0h4m2 0h1m2 0h1m3 0h1m1 0h1m2 0h6m3 0h1M3 12.5h1m1 0h2m1 0h3m1 0h2m1 0h1m1 0h1m1 0h1m4 0h4m1 0h2m1 0h5M1 13.5h1m1 0h1m1 0h1m1 0h1m7 0h3m1 0h1m1 0h1m2 0h1m1 0h2m1 0h5m1 0h2M0 14.5h1m3 0h3m3 0h2m1 0h2m1 0h1m2 0h3m2 0h2m2 0h3m1 0h1m1 0h2M1 15.5h2m1 0h1m3 0h3m1 0h1m1 0h1m1 0h1m3 0h1m3 0h1m1 0h1m3 0h3m2 0h2M0 16.5h2m3 0h2m3 0h1m3 0h1m2 0h1m4 0h1m2 0h1m2 0h1m4 0h3M0 17.5h2m3 0h1m2 0h1m3 0h1m1 0h1m3 0h2m1 0h2m1 0h1m1 0h2m2 0h1m2 0h1m1 0h2M2 18.5h2m1 0h3m1 0h1m2 0h2m6 0h5m1 0h3m3 0h1m2 0h2M4 19.5h1m2 0h3m3 0h1m1 0h4m1 0h1m1 0h1m1 0h1m3 0h1m3 0h2m1 0h1M2 20.5h2m1 0h2m2 0h4m2 0h1m1 0h4m2 0h1m4 0h2m1 0h2m3 0h1M1 21.5h3m1 0h1m1 0h2m1 0h1m1 0h1m1 0h1m1 0h2m1 0h5m4 0h2m3 0h1M0 22.5h1m4 0h3m5 0h1m2 0h1m1 0h1m1 0h1m2 0h2m3 0h1m2 0h1M0 23.5h1m2 0h3m4 0h2m1 0h3m1 0h1m1 0h2m2 0h1m1 0h1m3 0h1m2 0h3M0 24.5h1m1 0h1m1 0h5m4 0h1m2 0h1m2 0h1m1 0h1m2 0h4m1 0h4m1 0h2M2 25.5h1m14 0h1m4 0h2m1 0h9m1 0h2M1 26.5h2m1 0h1m1 0h1m2 0h2m2 0h2m2 0h1m3 0h2m3 0h1m2 0h1m2 0h1m2 0h1M0 27.5h1m2 0h1m1 0h1m2 0h1m1 0h4m1 0h1m2 0h5m3 0h1m3 0h3m3 0h1M2 28.5h1m3 0h2m1 0h2m2 0h1m5 0h5m4 0h8M8 29.5h1m2 0h1m1 0h3m4 0h2m1 0h3m1 0h2m3 0h1m1 0h1m1 0h1M0 30.5h7m1 0h1m6 0h1m2 0h1m1 0h1m1 0h1m3 0h1m1 0h1m1 0h1m1 0h1m1 0h3M0 31.5h1m5 0h1m1 0h2m1 0h1m1 0h7m1 0h1m1 0h2m2 0h2m3 0h1M0 32.5h1m1 0h3m1 0h1m7 0h3m3 0h1m3 0h1m1 0h1m1 0h6m1 0h1M0 33.5h1m1 0h3m1 0h1m1 0h3m1 0h1m2 0h3m3 0h1m1 0h1m1 0h3m1 0h2m1 0h3m1 0h1M0 34.5h1m1 0h3m1 0h1m1 0h2m4 0h2m1 0h2m3 0h3m3 0h3m1 0h1M0 35.5h1m5 0h1m2 0h1m1 0h1m1 0h3m2 0h2m2 0h2m1 0h1m1 0h1m3 0h2m1 0h1M0 36.5h7m1 0h5m4 0h1m7 0h2m2 0h2m1 0h5"/></svg></div>
