@@ -1,8 +1,8 @@
 # Lucifer NovelAI FX
 
-**面向 NovelAI Diffusion V5 Full 的 Windows 中文创作工作台。** 这是个人维护的非官方前端，与 NovelAI 官方没有隶属关系。它把长 Prompt、角色、参数、图片配方、对照实验与本地资料组织在同一个界面中；只有你明确点击生成，才会向自己配置的 NovelAI 官方接口或兼容网关提交生图请求。
+**面向 NovelAI Diffusion V5 Full 与 V4.5 Full / Curated 的 Windows 中文创作工作台。** 这是个人维护的非官方前端，与 NovelAI 官方没有隶属关系。它把长 Prompt、角色、参数、图片配方、对照实验与本地资料组织在同一个界面中；只有你明确点击生成，才会向自己配置的 NovelAI 官方接口或兼容网关提交生图请求。
 
-[下载最新版](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/latest) · [直接下载 v1.4.1 Windows x64](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.4.1/Lucifer-NovelAI-FX-Share-1.4.1-Windows-x64.zip) · [核对 SHA-256](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.4.1/SHA256SUMS-1.4.1.txt) · [报告 Bug](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=bug_report.yml) · [提出改进](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=feature_request.yml)
+[下载最新版](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/latest) · [直接下载 v1.5.0 Windows x64](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.5.0/Lucifer-NovelAI-FX-Share-1.5.0-Windows-x64.zip) · [核对 SHA-256](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.5.0/SHA256SUMS-1.5.0.txt) · [报告 Bug](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=bug_report.yml) · [提出改进](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=feature_request.yml)
 
 <p align="center">
   <a href="./assets/readme/v2/hero.webp"><img src="./assets/readme/v2/hero.webp" width="100%" alt="Sugar、Lily、Claire 与 Noire 在创作工房共同整理画面、构图和配方"></a>
@@ -147,13 +147,26 @@ D 站（Danbooru）图库可以按标签、评分、排序和上传时间浏览�
 
 ## Sugar 的更新课堂
 
+### v1.5.0 · 2026-09-25
+
+- **模型与模式**：V5 / V4.5 使用模型系列页签；V4.5 内可选择 Full 或 Curated。Precise Reference 与 Vibe Transfer 仅适用于 V4.5，并可通过关闭控制退出。图生图也可明确退出。
+- **中文标签词典**：标签建议支持本地中文释义和自定义词条。
+- **V5 文本预处理**：可单独输入画面文字，并可选提取引号内容；组装并预览最终 `Text:` 后再使用，不会改写正在编辑的 Prompt。
+- **图库整理**：支持搜索、筛选、收藏、标签、双图对比与导出；图片标注及备份管理更方便。
+- **参考图草稿与费用提示**：参考图草稿跨重启保留；Vibe 编码费用明确显示。请求状态不明时查询原任务，不自动重试。
+- **法典图鉴**：修复法典图鉴中 NovelAI V5／V4.5 社区精选图包无法打开、反复刷新仍加载失败的问题。
+- **逐张批次停止**：停止后续图片与立即停止接收分开；已完成图片保留，上游取消及计费状态可能未知，不自动重试。
+- **Windows 发布**：本次仅更新 Windows x64；Android 仍冻结于 v1.1.1。
+
+Vibe 编码费用提示不代表已验证真实付费生成。本页沿用的版本截图和说明仍可能展示早期版本功能；当前 Windows 下载为 v1.5.0。
+
 新版本第一次打开时，Sugar 会带来本次新增与改进的更新报告。读完可以关闭，也能从工作台右上角的信箱再次查看；说明随程序提供，不需要联网读取。
 
 <p align="center">
   <a href="./assets/readme/v2/screens/sugar-update-classroom.webp"><img src="./assets/readme/v2/screens/sugar-update-classroom.webp" width="100%" alt="Sugar 引导阅读更新报告的真实界面，图为 v1.1.0 旧版示例"></a>
 </p>
 
-图为之前制作的 **v1.1.0 更新报告**，用来展示 Sugar 的讲解界面；当前 Windows 下载为 v1.4.1，具体变化见 [本版更新说明](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/tag/v1.4.1)。想查找尚未安装的新版本，可使用独立的“更新 / 反馈”入口主动检查 GitHub。
+图为之前制作的 **v1.1.0 更新报告**，用来展示 Sugar 的讲解界面；当前 Windows 下载为 v1.5.0，具体变化见 [本版更新说明](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/tag/v1.5.0)。想查找尚未安装的新版本，可使用独立的“更新 / 反馈”入口主动检查 GitHub。
 
 <p align="center">
   <a href="./assets/readme/v2/section-local-tools.svg"><img src="./assets/readme/v2/section-local-tools.svg" width="100%" alt="本地资料、可选 Agent 与工具章节"></a>
@@ -163,7 +176,7 @@ D 站（Danbooru）图库可以按标签、评分、排序和上传时间浏览�
 
 - 使用者自备 NovelAI 账号与 Token，或使用已自行确认兼容性、计费和隐私条款的兼容网关。分享包不附带作者凭据或私人服务。
 - Windows 凭据由当前账户的 DPAPI 保护；图片、历史、卡片、预设、草稿和连接设置默认保存在便携目录的 `userdata`。主题、三栏宽度等界面选择保存在应用的浏览器本地存储中。
-- 工具备份包含卡片、完整预设、非秘密连接设置、新手模式及已列入导出的界面选择（包括主题和三栏宽度）；它不是全部浏览器状态的完整镜像，也不包含 API key、生成图片、历史、账本或草稿。迁移全部创作内容时，请备份整个 `userdata` 和自选图片目录。去参数分享会另存副本；它不能代替作品授权判断。
+- 工具备份为 JSON，包含卡片、完整预设、非秘密连接设置、新手模式、已列入导出的界面选择，以及生成图库收藏、标签和标注；不包含 API key、图片、历史、账本或创作草稿。参考图草稿保存在浏览器来源对应的 IndexedDB，JSON 备份不包含这些浏览器数据。完整迁移请备份整个 `userdata`、相关浏览器数据和自选图片目录；SQLite 派生索引可重建，图片标注与参考图编码记录则保存在 `userdata` 中。去参数分享会另存副本；它不能代替作品授权判断。
 - Anlas 面板区分条件估算、手动官网校准、账户回读和未知消费。Opus 的 0 Anlas 有账户、额度、尺寸、步数、单张和无 base image 等条件；V5 还有可恢复 usage limit，因此这不是“免费承诺”。当前规则以 [NovelAI FAQ](https://docs.novelai.net/en/faq/) 为准。
 - 启动时应用会读取可用模型：官方连接使用随包模型定义；已配置 OpenAI-compatible 网关时，可能向该服务的模型列表做只读检查。主动连接检查和生成访问用户配置的服务；打开 D 站图库或法典图鉴会访问相应公开数据与图片；外部翻译只复制文字并打开由用户操作的网页；更新检查只在点击后访问 GitHub。
 
@@ -184,13 +197,13 @@ Agent 使用同一份本机设置，但配置不包含 API key。普通桌面使
 
 ## Windows 安装与升级
 
-支持 Windows 10/11 x64。下载 ZIP 后用同一 Release 中的 `SHA256SUMS-1.4.1.txt` 核对哈希，完整解压到普通可写目录，再双击 `启动 Lucifer FX.exe`。不要直接在 ZIP 预览中运行。首次进入后填写自己的连接，先做只读检查，再从单张、普通尺寸和较低步数开始。想使用完整的角色、对照与高级参数控制时，点击“展开完整功能”。完整步骤、文件位置与回退方法见 [Windows 安装、升级与隐私说明](./docs/WINDOWS.md)。
+支持 Windows 10/11 x64。下载 ZIP 后用同一 Release 中的 `SHA256SUMS-1.5.0.txt` 核对哈希，完整解压到普通可写目录，再双击 `启动 Lucifer FX.exe`。不要直接在 ZIP 预览中运行。首次进入后填写自己的连接，先做只读检查，再从单张、普通尺寸和较低步数开始。想使用完整的角色、对照与高级参数控制时，点击“展开完整功能”。完整步骤、文件位置与回退方法见 [Windows 安装、升级与隐私说明](./docs/WINDOWS.md)。
 
 升级前在“设置 → 保存位置”点击“退出服务”，等待后台结束后备份整个目录；正在生成时会阻止退出。保持原位 `userdata` 不动，只替换 `app`、`runtime`、启动器、`fx.cmd` 与随包说明文件。启动器会核对后台版本。旧版没有退出按钮时，先按 [旧版升级步骤](./docs/WINDOWS.md#从没有退出按钮的旧版本升级) 停止对应服务。应用不会自动下载、安装、替换文件或重启。
 
-公开版聚焦 V5 Full 的当前工作流；Vibe Transfer 与 Precise Reference 尚未加入当前操作界面，个人版的 Grok / ComfyUI 集成不随公开版提供。
+公开版覆盖 V5 Full 与 V4.5 Full / Curated 工作流；Precise Reference 与 Vibe Transfer 仅用于 V4.5。个人版的 Grok / ComfyUI 集成不随公开版提供。
 
-本轮只发布 Windows x64；Android 版仍封存在 `v1.1.1`，不随 `v1.4.1` 发布。
+本轮只发布 Windows x64；Android 版仍封存在 `v1.1.1`，不随 `v1.5.0` 发布。
 
 ## 反馈、安全与公开范围
 

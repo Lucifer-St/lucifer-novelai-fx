@@ -3,14 +3,14 @@
 ## 下载
 
 - 最新版本页面：<https://github.com/Lucifer-St/lucifer-novelai-fx/releases/latest>
-- `v1.4.1` Windows x64：<https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.4.1/Lucifer-NovelAI-FX-Share-1.4.1-Windows-x64.zip>
-- `v1.4.1` SHA-256：<https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.4.1/SHA256SUMS-1.4.1.txt>
+- `v1.5.0` Windows x64：<https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.5.0/Lucifer-NovelAI-FX-Share-1.5.0-Windows-x64.zip>
+- `v1.5.0` SHA-256：<https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.5.0/SHA256SUMS-1.5.0.txt>
 
 只从本仓库的 GitHub Release 下载。GitHub 页面中自动生成的“Source code”文件只含公开说明和截图，不是应用源码或 Windows 程序。
 
 ## 第一次启动
 
-1. 下载 ZIP，并核对 `SHA256SUMS-1.4.1.txt` 中对应文件的 SHA-256。
+1. 下载 ZIP，并核对 `SHA256SUMS-1.5.0.txt` 中对应文件的 SHA-256。
 2. 完整解压到普通可写目录。不要直接在 ZIP 预览中运行，也不要解压进已有旧版本目录。
 3. 双击 `启动 Lucifer FX.exe`。应用自带 Node.js 运行环境，不要求另装 Node、Python、Agent 或 ComfyUI。
 4. 在设置中选择连接类型：
@@ -25,7 +25,7 @@ Windows 可能显示未知发布者提醒。请先确认文件来自本仓库 Re
 
 - 自动结果：`userdata/output`
 - 手动保存的精选：`userdata/saved`
-- 设置、历史、自建卡片与预设：同一便携目录的 `userdata`
+- 设置、历史、自建卡片与预设：同一便携目录的 `userdata`。SQLite 派生索引可重建；图片标注和参考图编码记录作为独立数据持久保存在 `userdata`。
 
 设置中可以改用其他输出目录，但更改目录不会自动搬运旧图片。
 
@@ -34,7 +34,7 @@ Windows 可能显示未知发布者提醒。请先确认文件来自本仓库 Re
 应用可以在用户主动操作时检查 GitHub 上的稳定版本，但不会自动下载、安装、替换文件或重启。
 
 1. 等待生成、批次与对照任务结束。在“设置 → 保存位置”点击“退出服务”，看到退出提示后关闭页面；关闭浏览器标签本身不会停止服务。旧版没有此按钮时，请按下节处理。
-2. 复制整个旧目录作为备份，重点保留 `userdata`。
+2. 复制整个旧目录作为备份，务必完整保留 `userdata`，其中有图片标注和参考图编码记录；SQLite 派生索引可重建。
 3. 把新版本解压到一个新的临时目录并先核对文件。
 4. 保持原位 `userdata` 不动，只替换 `app`、`runtime`、启动器、`fx.cmd` 与随包说明文件；不要让新包覆盖唯一一份 `userdata`。
 5. 启动新版，检查设置、历史和自建内容仍在。
@@ -48,7 +48,7 @@ v1.4.0 及更早的安装没有“退出服务”按钮。先确认所有生成�
 
 ## 工具备份与迁移
 
-在“设置 → 备份迁移”导出工具备份。文件包含卡片、完整预设、非秘密连接设置及已列入导出的界面偏好，不含 API key、图片、历史、草稿或账本；完整迁移仍需备份 `userdata` 和自选图片目录。
+在“设置 → 备份迁移”导出 JSON 工具备份。文件包含卡片、完整预设、非秘密连接设置、已列入导出的界面偏好，以及生成图库收藏、标签和标注；不含 API key、图片、历史、账本或创作草稿。参考图草稿储存在浏览器来源对应的 IndexedDB，JSON 备份不包含这些浏览器数据。要完整迁移，请复制整个 `userdata`，并另行迁移相关浏览器数据和自选图片目录。SQLite 派生索引可重建，持久标注和参考图编码记录保存在 `userdata`。
 
 选择备份文件后，先选恢复方式并点击“预览导入”，核对新增、跳过和冲突数量，再执行：
 
