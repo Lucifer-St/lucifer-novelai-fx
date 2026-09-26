@@ -3,14 +3,14 @@
 ## 下载
 
 - 最新版本页面：<https://github.com/Lucifer-St/lucifer-novelai-fx/releases/latest>
-- `v1.7.0` Windows x64：<https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.7.0/Lucifer-NovelAI-FX-Share-1.7.0-Windows-x64.zip>
-- `v1.7.0` SHA-256：<https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.7.0/SHA256SUMS-1.7.0.txt>
+- `v1.8.0` Windows x64：<https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.8.0/Lucifer-NovelAI-FX-Share-1.8.0-Windows-x64.zip>
+- `v1.8.0` SHA-256：<https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.8.0/SHA256SUMS-1.8.0.txt>
 
 只从本仓库的 GitHub Release 下载。GitHub 页面中自动生成的“Source code”文件只含公开说明和截图，不是应用源码或 Windows 程序。
 
 ## 第一次启动
 
-1. 下载 ZIP，并核对 `SHA256SUMS-1.7.0.txt` 中对应文件的 SHA-256。
+1. 下载 ZIP，并核对 `SHA256SUMS-1.8.0.txt` 中对应文件的 SHA-256。
 2. 完整解压到普通可写目录。不要直接在 ZIP 预览中运行，也不要解压进已有旧版本目录。
 3. 双击 `启动 Lucifer FX.exe`。应用自带 Node.js 运行环境，不要求另装 Node、Python、Agent 或 ComfyUI。
 4. 在设置中选择连接类型：
@@ -20,6 +20,10 @@
 6. 输入简单 Prompt，选择普通尺寸与较低步数，阅读费用提示后再主动点击生成。
 
 Windows 可能显示未知发布者提醒。请先确认文件来自本仓库 Release，并核对 SHA-256，再决定是否运行。
+
+## 提示词布局
+
+在“图像工具 / API → 工作区布局”选择“经典标签布局”或“合并滚动布局”。合并布局把主提示词和各角色放在同一栏，每块可以单独折叠；折叠不会停用角色。切换布局保留文本框和撤销历史。布局偏好独立保存，不写入生成配方。此版不包含简易双栏；布局切换入口不放在主工作区。
 
 ## 选择和打开文件夹
 
