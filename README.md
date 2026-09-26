@@ -2,7 +2,7 @@
 
 **面向 NovelAI Diffusion V5 Full 与 V4.5 Full / Curated 的 Windows 中文创作工作台。** 这是个人维护的非官方前端，与 NovelAI 官方没有隶属关系。它把长 Prompt、角色、参数、图片配方、对照实验与本地资料组织在同一个界面中；只有你明确点击生成，才会向自己配置的 NovelAI 官方接口或兼容网关提交生图请求。
 
-[下载最新版](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/latest) · [直接下载 v1.6.0 Windows x64](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.6.0/Lucifer-NovelAI-FX-Share-1.6.0-Windows-x64.zip) · [核对 SHA-256](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.6.0/SHA256SUMS-1.6.0.txt) · [报告 Bug](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=bug_report.yml) · [提出改进](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=feature_request.yml)
+[下载最新版](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/latest) · [直接下载 v1.7.0 Windows x64](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.7.0/Lucifer-NovelAI-FX-Share-1.7.0-Windows-x64.zip) · [核对 SHA-256](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.7.0/SHA256SUMS-1.7.0.txt) · [报告 Bug](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=bug_report.yml) · [提出改进](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=feature_request.yml)
 
 <p align="center">
   <a href="./assets/readme/v2/hero.webp"><img src="./assets/readme/v2/hero.webp" width="100%" alt="Sugar、Lily、Claire 与 Noire 在创作工房共同整理画面、构图和配方"></a>
@@ -147,6 +147,16 @@ D 站（Danbooru）图库可以按标签、评分、排序和上传时间浏览�
 
 ## 更新说明
 
+### [v1.7.0](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/tag/v1.7.0) · 2026-09-26
+
+- **D 站保留浏览现场**：关闭再打开保持当前页、筛选、滚动、选图和标签选择，不因缓存到期重新检索。隐藏时停止图片读取；右上角刷新会重新读取当前页。
+- **直接跳页**：输入 1–1000 的页码并回车跳转，保持当前每页张数。
+- **现代文件夹选择器**：带地址栏、磁盘导航与新建文件夹，可直接粘贴路径；取消不会改变设置。选择后点击“检查目录并保存”。
+- **文件夹快捷按钮**：打开已保存的输出／精选目录，或在资源管理器中选中当前图片。
+- **两款名侦探皮肤**：扩大主提示词编辑区，左栏整体滚动，保留插画比例和手动尺寸调整。
+
+已验证发布过的 1.6.0 程序能用原有更新器升级到本版，并保留数据、在原端口重启。目录切换与生成／保存互斥；旧图片不会被搬动。1.5.1 及更早版本仍需先手动升级。
+
 ### [v1.6.0](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/tag/v1.6.0) · 2026-09-25
 
 - **D 站不限时间排行**：修复热门评分／收藏排序的大范围查询超时，保留筛选条件、精确排序和分页；不会偷偷改成近一周或截断低分结果。
@@ -228,13 +238,13 @@ Agent 使用同一份本机设置，但配置不包含 API key。普通桌面使
 
 ## Windows 安装与升级
 
-支持 Windows 10/11 x64。下载 ZIP 后用同一 Release 中的 `SHA256SUMS-1.6.0.txt` 核对哈希，完整解压到普通可写目录，再双击 `启动 Lucifer FX.exe`。不要直接在 ZIP 预览中运行。首次进入后填写自己的连接，先做只读检查，再从单张、普通尺寸和较低步数开始。想使用完整的角色、对照与高级参数控制时，点击“展开完整功能”。完整步骤、文件位置与回退方法见 [Windows 安装、升级与隐私说明](./docs/WINDOWS.md)。
+支持 Windows 10/11 x64。下载 ZIP 后用同一 Release 中的 `SHA256SUMS-1.7.0.txt` 核对哈希，完整解压到普通可写目录，再双击 `启动 Lucifer FX.exe`。不要直接在 ZIP 预览中运行。首次进入后填写自己的连接，先做只读检查，再从单张、普通尺寸和较低步数开始。想使用完整的角色、对照与高级参数控制时，点击“展开完整功能”。完整步骤、文件位置与回退方法见 [Windows 安装、升级与隐私说明](./docs/WINDOWS.md)。
 
 从 1.6.0 起，可在“更新 / 反馈”完成下载、校验、安装与重启；生成期间不会安装。启动后的版本检查可关闭，下载和安装都需要主动点击。1.5.1 及更早版本先按 [升级步骤](./docs/WINDOWS.md#升级与回退) 退出服务、备份并手动升级；始终保留原位 `userdata`。
 
 公开版覆盖 V5 Full 与 V4.5 Full / Curated 工作流；Precise Reference 与 Vibe Transfer 仅用于 V4.5。个人版的 Grok / ComfyUI 集成不随公开版提供。
 
-本轮只发布 Windows x64；Android 版仍封存在 `v1.1.1`，不随 `v1.6.0` 发布。
+本轮只发布 Windows x64；Android 版仍封存在 `v1.1.1`，不随 `v1.7.0` 发布。
 
 ## 反馈、安全与公开范围
 
