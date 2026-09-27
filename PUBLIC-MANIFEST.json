@@ -1666,8 +1666,8 @@
     },
     {
       "path": "tests/app-updater.test.mjs",
-      "bytes": 12733,
-      "sha256": "32daa7ed43eda37966aaefc0dfb9c1dbe2fdd7fe1aff8a27047fe6ed4b32a149"
+      "bytes": 12747,
+      "sha256": "8929c7e58b792c0d881bb49d8adfca7f737fd5e46675c355b94281d2ac044925"
     },
     {
       "path": "tests/atlas-resource.test.mjs",
@@ -1796,8 +1796,8 @@
     },
     {
       "path": "tests/model-server.test.mjs",
-      "bytes": 6707,
-      "sha256": "f75701f7ba3d46510d4d00e5c11bb3288478e995740aa4291bd35607ef4d4672"
+      "bytes": 6915,
+      "sha256": "6d59a0af6f16af944db1f5bfecc979873dff1792aedf3be5e097290e86cb2f56"
     },
     {
       "path": "tests/model-switch-ui.spec.mjs",

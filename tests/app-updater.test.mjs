@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import os from 'node:os';
-import {mkdtemp,mkdir,writeFile,readFile,rm,cp,symlink,unlink} from 'node:fs/promises';
+import {mkdtemp,mkdir,writeFile,readFile,rm,cp,symlink,unlink,realpath} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {zipSync} from 'fflate';
 import {createAppUpdater,validateUpdateArchive,downloadReleaseAsset,safeUpdatePath,assertUpdateStorage} from '../server/app-updater.mjs';
@@ -15,7 +15,7 @@ function archive(version='9.0.0',extra={}){
  const manifest={product:'Lucifer NovelAI FX Share',version,files:Object.entries(files).map(([name,b])=>({path:name,bytes:b.length,sha256:hash(b)}))};
  files['manifest.json']=encode(manifest);const bytes=zipSync(files);return {bytes,files,sha256:hash(bytes),version,manifestSHA256:hash(files['manifest.json'])};
 }
-async function temporary(t){const root=await mkdtemp(path.join(os.tmpdir(),'fx-update-test-'));t.after(async()=>{assert.ok(path.resolve(root).startsWith(path.resolve(os.tmpdir())+path.sep+'fx-update-test-'));await rm(root,{recursive:true,force:true});});return root;}
+async function temporary(t){const base=await realpath(os.tmpdir()),root=await mkdtemp(path.join(base,'fx-update-test-'));t.after(async()=>{assert.ok(path.resolve(root).startsWith(base+path.sep+'fx-update-test-'));await rm(root,{recursive:true,force:true});});return root;}
 async function filesTo(root,files){for(const [name,b] of Object.entries(files)){const file=path.join(root,name);await mkdir(path.dirname(file),{recursive:true});await writeFile(file,b);}}
 test('update ZIP requires repository digest, exact version, per-file hashes and safe allowlist',()=>{
  const valid=archive();assert.equal(validateUpdateArchive(valid.bytes,valid).manifest.version,'9.0.0');

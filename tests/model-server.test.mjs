@@ -53,6 +53,8 @@ test('V5 reference payloads are blocked before upstream on job, request and nati
   assert.equal(accepted.status, 202);
   const job = await until(async () => { const r = await f.send('/api/generation-jobs/' + jobId); return ['error', 'success'].includes(r.data.status) ? r.data : null; });
   assert.equal(job.status, 'error');
+  // Terminal status is observable before the durable write releases the job slot.
+  await until(async () => { const r=await f.send('/api/status');return !r.data.activeGeneration&&!r.data.generationBusy; });
   const shortcut = await f.send('/api/request', 'POST', { payload: request });
   assert.equal(shortcut.status, 400, JSON.stringify(shortcut.data));
   const native = await f.send('/api/native', 'POST', { route: '/ai/generate-image', body: request.novelai.body });
