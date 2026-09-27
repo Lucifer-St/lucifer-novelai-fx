@@ -406,8 +406,8 @@
     },
     {
       "path": "assets/readme/v2/hero.webp",
-      "bytes": 463104,
-      "sha256": "773e207ccb9ac1afdb032e65f6e3ea31e246eb47ef99a674a06fb09157a3603b"
+      "bytes": 1835754,
+      "sha256": "d6dccfa3461be139b783355f826dc9cffcbb31110d8ff3d87a20f735d9027b26"
     },
     {
       "path": "assets/readme/v2/screens/cards.webp",
@@ -516,13 +516,13 @@
     },
     {
       "path": "assets/readme/v2/theme-archive.webp",
-      "bytes": 411824,
-      "sha256": "11fa4827a7863ce8ee912bc22932a9461283fe7e81274c9518368638e7ef1765"
+      "bytes": 1645268,
+      "sha256": "b7666c47954cb23e1f9e17bd9a477f59bcc3f7c99510f955f715fc0ce5082f82"
     },
     {
       "path": "assets/readme/v2/workflow.webp",
-      "bytes": 383582,
-      "sha256": "e89cc31267554f7237c6624079c3c6ffb7e18df56398d7746e52d73064674a03"
+      "bytes": 1664784,
+      "sha256": "99a5f72e46bcf18ac56bd670e824de6cb1010b8043088300d4adb49e4866aa9b"
     },
     {
       "path": "assets/readme/workbench.png",
