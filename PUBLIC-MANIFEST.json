@@ -20,6 +20,11 @@
       "sha256": "277019802aa889ac8111ef7e36186a3dc46e1f80b5f129b26075a38a515b6c77"
     },
     {
+      "path": ".github/workflows/source-checks.yml",
+      "bytes": 530,
+      "sha256": "35678b00a0a886ff601c8089f13fbbbf2a8543a470c4ba3241fc5a61ff73e57b"
+    },
+    {
       "path": ".gitignore",
       "bytes": 417,
       "sha256": "d7aa615475b8f405252d1eddb32b6a965faf84e8c01a07a7016be7ae4f1c990a"
@@ -536,8 +541,8 @@
     },
     {
       "path": "docs/ANDROID-SOURCE.md",
-      "bytes": 997,
-      "sha256": "6ad28c853a7996c19a6db07ef0b95d4fca967bf37ce6977378577e635ccc4c4f"
+      "bytes": 1348,
+      "sha256": "e3a6fabf03db53a2988407b4c20f097c250c793b5f19c951e734077cd655f613"
     },
     {
       "path": "docs/ART-NOTICE.md",
@@ -551,8 +556,8 @@
     },
     {
       "path": "docs/EDITION-DIFFERENCES.md",
-      "bytes": 1481,
-      "sha256": "0365f8bc8573708647abeff0f4e7036d0f6cf9c9ed586f449bb5718b65d75fcb"
+      "bytes": 1352,
+      "sha256": "53a3724d200fb2ed89379027f388c80d7c3ecd0facaeeb7242d7c81843f5b491"
     },
     {
       "path": "docs/SOURCE-LICENSE.md",
@@ -561,8 +566,8 @@
     },
     {
       "path": "docs/WINDOWS-QUICKSTART.md",
-      "bytes": 8649,
-      "sha256": "71baf5368efd99e3d346cea1b7af861c52599b29bc97fedc410a0d4919a975d9"
+      "bytes": 8727,
+      "sha256": "983f894074fdaaf032c2f35931b2bcec461fdb28d82f68d604c7652c6baceccb"
     },
     {
       "path": "docs/WINDOWS.md",
@@ -597,7 +602,7 @@
     {
       "path": "playwright.themes.config.mjs",
       "bytes": 646,
-      "sha256": "e2b16f60f639bd7fb4220ec7b33350e6f9c0d3c4cc91e8f1d79c2ebdff5ca1f5"
+      "sha256": "ae1e448066dc19a1a0e4293f6df47732a6d4fbc24a85482a882d7263173cebd4"
     },
     {
       "path": "public/assets/character-ui/lily.png",
@@ -896,8 +901,8 @@
     },
     {
       "path": "SECURITY.md",
-      "bytes": 663,
-      "sha256": "6d1adbb36724ca6dddb96b4e190ce45eb2907cbd6b31354f745d67bbe3d6ba68"
+      "bytes": 780,
+      "sha256": "998c68954fdfe6c022959c918ab8a7725d4cb7ebf74d7266f82bd63a00a79e22"
     },
     {
       "path": "server/agent-setup.mjs",
@@ -1681,8 +1686,8 @@
     },
     {
       "path": "tests/cli.test.mjs",
-      "bytes": 11605,
-      "sha256": "ce25288f968379a7e86823169c210eeb2e4fac67c16003d78493b9504cc05a09"
+      "bytes": 11945,
+      "sha256": "a4ce997682928f7902166808180594e880412ae6d7268cf59133bf614a678a8e"
     },
     {
       "path": "tests/cover-crop.test.mjs",
@@ -1701,8 +1706,8 @@
     },
     {
       "path": "tests/desktop-files.test.mjs",
-      "bytes": 4538,
-      "sha256": "7d9c4cff44d5aad2c9d564d705c085d4b7eb57ad962eef1823a5ea376b7044df"
+      "bytes": 4704,
+      "sha256": "d1cbbd474c58280f7657c37f3a7871a7ce4236ec06d0c4a37193d0fa0bfa251a"
     },
     {
       "path": "tests/feedback2-prompt-ui.spec.mjs",

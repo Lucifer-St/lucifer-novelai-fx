@@ -8,15 +8,18 @@ import {createStudioServer} from '../server/index.mjs';
 import {CURATED_SEED_IDS} from '../server/library.mjs';
 const CLI=path.resolve('scripts/fx.mjs'),exec=promisify(execFile);
 const PNG=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aV1cAAAAASUVORK5CYII=','base64');
+// Test-only reversible vault: never used by the application runtime.
+const fixtureVault={seal:async key=>Buffer.from(key).toString('base64'),open:async value=>Buffer.from(value,'base64').toString()};
 const TEST_KEY='synthetic-cli-gateway-secret';
 const ID='11111111-1111-4111-a111-111111111111';
 async function temporary(t,{deferCleanup=false}={}){const dir=await mkdtemp(path.join(os.tmpdir(),'fx-cli-test-'));if(!deferCleanup)t.after(async()=>{assert.ok(path.resolve(dir).startsWith(path.resolve(os.tmpdir())+path.sep));await rm(dir,{recursive:true,force:true});});return dir;}
 async function fixture(t,{stall=false}={}){
  const dir=await temporary(t,{deferCleanup:true}),keyPath=path.join(dir,'test.key'),calls=[];await writeFile(keyPath,TEST_KEY);await mkdir(path.join(dir,'dist'));await writeFile(path.join(dir,'dist','index.html'),'fixture');
  await mkdir(path.join(dir,'data','bootstrap'),{recursive:true});await writeFile(path.join(dir,'data','bootstrap','curated-v1.json'),'{"installed":true}');
- const server=createStudioServer({root:dir,dataDir:path.join(dir,'data'),outputDir:path.join(dir,'output'),saveDir:path.join(dir,'saved'),distDir:path.join(dir,'dist'),authDir:path.join(dir,'auth'),keyPath,fetchImpl:async(url,init)=>{calls.push({url:String(url),method:init.method,body:init.body});if(stall)await new Promise((resolve,reject)=>init.signal.addEventListener('abort',()=>reject(init.signal.reason),{once:true}));return Response.json({data:[{b64_json:PNG.toString('base64')}]});}});
+ const server=createStudioServer({vault:fixtureVault,root:dir,dataDir:path.join(dir,'data'),outputDir:path.join(dir,'output'),saveDir:path.join(dir,'saved'),distDir:path.join(dir,'dist'),authDir:path.join(dir,'auth'),keyPath,fetchImpl:async(url,init)=>{calls.push({url:String(url),method:init.method,body:init.body});if(stall)await new Promise((resolve,reject)=>init.signal.addEventListener('abort',()=>reject(init.signal.reason),{once:true}));return Response.json({data:[{b64_json:PNG.toString('base64')}]});}});
  server.listen(0,'127.0.0.1');await once(server,'listening');t.after(async()=>{server.closeAllConnections();await new Promise(r=>server.close(r));assert.ok(path.resolve(dir).startsWith(path.resolve(os.tmpdir())+path.sep));await rm(dir,{recursive:true,force:true});});const port=String(server.address().port);
- await fetch('http://127.0.0.1:'+port+'/api/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({provider:'openai',baseURL:'https://fixture.invalid',key:TEST_KEY,tutorialComplete:true})});
+ const configured=await fetch('http://127.0.0.1:'+port+'/api/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({provider:'openai',baseURL:'https://fixture.invalid',key:TEST_KEY,tutorialComplete:true})});
+ assert.equal(configured.status,200,'fixture credentials must be configured before CLI subprocesses');
  await fetch('http://127.0.0.1:'+port+'/api/anlas',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'pricingPolicy',value:'opus'})});
  return {dir,calls,port,run:async args=>{const result=await exec(process.execPath,[CLI,...args,'--port',port],{timeout:10000,maxBuffer:2*1024*1024});assert.equal(result.stderr,'');assert.ok(!result.stdout.includes(TEST_KEY));return JSON.parse(result.stdout);}};
 }

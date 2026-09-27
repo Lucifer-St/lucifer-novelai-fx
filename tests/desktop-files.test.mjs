@@ -7,11 +7,11 @@ import http from 'node:http';
 import {createDesktopFiles,validateLocalPath} from '../server/desktop-files.mjs';
 import {createStudioServer} from '../server/index.mjs';
 
-test('native folder actions preserve Unicode and cancel, serialize pickers, and pass paths as data',async t=>{
+test('native folder actions preserve Unicode and cancel, serialize pickers, and pass paths as data',{timeout:10000},async t=>{
  const root=await mkdtemp(path.join(os.tmpdir(),'fx-desktop-'));t.after(()=>rm(root,{recursive:true,force:true}));
- const helper=path.join(root,'helper.exe');await writeFile(helper,'fixture');const seen=[];let finish;
- const files=createDesktopFiles({cacheDir:root,helperPath:helper,runImpl:async input=>{seen.push(input);if(input.action==='choose')return new Promise(r=>finish=r);return {ok:true};}});
- const folder=path.join(root,"中文 O'Brien & 空格");const choosing=files.choose(folder);while(!finish)await new Promise(r=>setTimeout(r,1));
+ const helper=path.join(root,'helper.exe');await writeFile(helper,'fixture');const seen=[];let finish,notifyStarted;const started=new Promise(resolve=>{notifyStarted=resolve;});
+ const files=createDesktopFiles({platform:'win32',cacheDir:root,helperPath:helper,runImpl:async input=>{seen.push(input);if(input.action==='choose')return new Promise(r=>{finish=r;notifyStarted();});return {ok:true};}});
+ const folder=path.join(root,"中文 O'Brien & 空格");const choosing=files.choose(folder);await Promise.race([started,choosing.then(()=>assert.fail('picker must remain pending'))]);
  await assert.rejects(()=>files.choose(folder),/已有目录选择/);finish({ok:true,cancelled:true,path:null});assert.equal((await choosing).cancelled,true);
  await files.open(folder);await writeFile(path.join(folder,'图片.png'),'fixture');await files.reveal(path.join(folder,'图片.png'));
  assert.deepEqual(seen.map(x=>x.action),['choose','open','reveal']);assert.equal(seen[0].path,folder);assert.equal(seen[2].path,path.join(folder,'图片.png'));

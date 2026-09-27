@@ -1,3 +1,3 @@
 import{defineConfig}from'@playwright/test';import base from'./playwright.config.mjs';import{WORKBENCH_SKINS,APPEARANCE_KEY}from'./src/lib/loading-skins.mjs';
-const baseURL=process.env.FX_UI_BASE_URL||'http://127.0.0.1:18936';
+const baseURL=process.env.FX_UI_BASE_URL||'http://127.0.0.1:18920';
 export default defineConfig({...base,testMatch:['precure-themes-ui.spec.mjs','theme-parity-ui.spec.mjs'],workers:2,outputDir:'.local/theme-artifacts',projects:WORKBENCH_SKINS.map(s=>({name:s.id,use:{...base.use,baseURL,storageState:{cookies:[],origins:[{origin:new URL(baseURL).origin,localStorage:[{name:APPEARANCE_KEY,value:JSON.stringify({version:1,workbenchSkin:s.id,loadingSkin:'classic',motion:'off'})}]}]}}}))});

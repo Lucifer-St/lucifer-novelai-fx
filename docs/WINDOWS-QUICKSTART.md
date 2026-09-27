@@ -6,7 +6,7 @@
 - `v1.8.0` Windows x64：<https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.8.0/Lucifer-NovelAI-FX-Share-1.8.0-Windows-x64.zip>
 - `v1.8.0` SHA-256：<https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.8.0/SHA256SUMS-1.8.0.txt>
 
-只从本仓库的 GitHub Release 下载。GitHub 页面中自动生成的“Source code”文件只含公开说明和截图，不是应用源码或 Windows 程序。
+只从本仓库的 GitHub Release 下载。源码公开后的 main 分支包含分享版应用源码，需要安装依赖并构建。直接使用请下载 Windows ZIP；旧版本 tag 的自动 Source code 存档保留当时的文档和截图。
 
 ## 第一次启动
 
