@@ -1,0 +1,28 @@
+.studio{position:relative;transition:none}
+.panel-resizer{display:none}
+.opus-batch-controls{padding:12px 0;border-bottom:1px solid var(--line,#dfe8f4)}
+.opus-batch-controls .toggle>span{display:flex;flex-direction:column;gap:3px}
+.opus-batch-controls small{font-size:11px;opacity:.7}
+.opus-batch-results{flex:none;min-width:0;padding:10px 14px;border-top:1px solid var(--line,#dfe8f4)}
+.opus-batch-results>header{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
+.opus-batch-results>header>div{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.opus-batch-results small{font-size:11px;opacity:.8}
+.opus-batch-strip{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 7px}
+.opus-batch-strip>button{flex:0 0 100px;padding:4px;border:1px solid var(--line,#cbd8e9);border-radius:8px;background:transparent;color:inherit;display:flex;flex-direction:column;gap:4px;font-size:11px}
+.opus-batch-strip>button:disabled{opacity:.8}
+.opus-batch-strip>button.selected{outline:2px solid #739fde;outline-offset:-1px}
+.opus-batch-strip img,.opus-slot-placeholder{width:90px;height:74px;object-fit:contain;border-radius:4px}
+.opus-slot-placeholder{display:grid;place-items:center;background:rgba(115,145,175,.1);font-size:24px}
+@media(min-width:901px){
+ .studio[data-user-columns]{grid-template-columns:var(--panel-columns);transition:none}
+ .studio>.panel-resizer{display:block;position:absolute;z-index:8;top:14px;bottom:16px;width:10px;cursor:col-resize;touch-action:none;border-radius:6px;outline-offset:1px}
+ .panel-resizer-left{left:calc(16px + var(--panel-left,480px) + 1px)}
+ .panel-resizer-right{right:calc(16px + var(--panel-right,296px) + 1px)}
+ .studio.settings-hidden>.panel-resizer-right{display:none}
+ .panel-resizer:hover,.panel-resizer:focus-visible,.studio.is-resizing>.panel-resizer{background:rgba(78,137,205,.35);outline:1px solid #739fde}
+ .studio.is-resizing{cursor:col-resize;user-select:none;transition:none}
+ .studio>.left-panel,.studio>.right-panel,.studio>.canvas-panel{min-width:0}
+}
+@media(max-width:900px){.layout-reset{display:none}.opus-batch-results>header{align-items:flex-start}.opus-batch-results>header>div{gap:3px;flex-direction:column;align-items:flex-start}}
+
+.opus-batch-dismiss{flex:none;align-self:flex-start;min-width:32px;min-height:32px;padding:5px}

@@ -1,0 +1,8 @@
+.app .left-panel .model-chooser{display:flex;align-items:center;gap:12px;flex:none;min-width:0;padding:12px 18px 10px;background:var(--fx-panel,transparent);color:var(--fx-text,#29435e)}
+.model-chooser>label{flex:none;margin:0;font-size:11px;font-weight:500;color:var(--fx-muted,#74869b);white-space:nowrap}
+.model-chooser-control{position:relative;flex:1;min-width:0}
+.app .model-chooser-control select{display:block;width:100%;min-width:0;height:36px;margin:0;padding:0 32px 0 12px;appearance:none;border:1px solid var(--fx-line,#dce5ef);border-radius:8px;background:var(--fx-field,var(--fx-panel,#f8faff));color:var(--fx-text,#29435e);font:inherit;font-size:12px;font-weight:600;text-overflow:ellipsis;cursor:pointer;box-shadow:none}
+.app .model-chooser-control select:hover{border-color:var(--fx-accent,#7098c4)}
+.app .model-chooser-control select:focus-visible{outline:2px solid var(--fx-accent,#548bcb);outline-offset:2px}
+.model-chooser-control>svg{position:absolute;right:11px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--fx-muted,#74869b)}
+@media(max-width:900px){.app .left-panel .model-chooser{padding:10px 15px 8px}}

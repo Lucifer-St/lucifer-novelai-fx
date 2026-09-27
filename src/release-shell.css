@@ -1,0 +1,5 @@
+.llm-extension{margin:12px 0 4px;border-top:1px solid var(--fx-line,#dce3ed);padding-top:12px;color:var(--fx-muted,#6e7d90);font-size:12px}
+.llm-extension summary{cursor:pointer;min-height:26px;line-height:26px}
+.llm-extension summary span{font-size:10px;margin-left:7px;opacity:.85}
+.llm-extension p{line-height:1.7;margin:7px 0 4px}
+.release-center-entry{white-space:nowrap}

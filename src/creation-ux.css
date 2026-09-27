@@ -1,0 +1,42 @@
+/* The editor keeps its own space; card racks scroll with the prompt column. */
+.left-panel .prompt-editor{height:580px;min-height:400px;max-height:1400px;flex:0 0 auto;resize:vertical;overflow:hidden}
+.left-panel .prompt-editor .weighted-prompt-input,.left-panel .prompt-editor textarea{min-height:0;max-height:none}
+.left-panel .prompt-editor textarea{height:100%;resize:none}
+.prompt-content{flex:0 0 auto}
+.character .weighted-prompt-input{flex:none;min-height:100px}
+.character .weighted-prompt-input textarea{min-height:100px}
+.character .prompt-card-strip{border:0;border-bottom:1px solid #e6edf7;padding:8px 0 12px;margin:0 0 16px}
+.character .empty-rack{display:none}
+.character .prompt-card-strip>header{flex-wrap:wrap}
+.character .prompt-card-strip>header>div{margin-left:auto}
+.studio.settings-hidden{grid-template-columns:minmax(390px,500px) minmax(300px,1fr) 58px}
+.studio.settings-hidden>.right-panel{display:block}
+.right-panel.collapsed-inspector{padding:16px;overflow:hidden}
+.collapsed-inspector .inspector-heading{justify-content:flex-end}
+.collapsed-inspector-label{writing-mode:vertical-rl;letter-spacing:3px;font-size:11px;color:#8ca1bc;margin:5px auto;display:block}
+.generation-settings-workspace{max-width:1080px;margin:0 auto;padding:25px;background:white;border:1px solid #dce7f5;border-radius:12px}
+.generation-settings-workspace h3{font-size:17px;margin-bottom:8px}
+.tools-heading>.segment{background:#eff5fd;border-color:#dce7f5;padding:4px;border-radius:8px;gap:4px}
+.tools-heading>.segment button{background:transparent;color:#758ba8;border-color:transparent}
+.tools-heading>.segment button.selected{background:#fff;color:#247bee;border-color:#dce8fa;box-shadow:0 2px 6px #3c659015}
+.generation-advanced>details{padding:18px 0;border-bottom:1px solid #e5edf6}
+.generation-advanced>details>summary{cursor:pointer;font-size:13px;color:#547399}
+.generation-advanced .field{margin-top:15px}
+.generation-advanced>.request-button{margin-top:22px}
+.pending-image{width:100%;height:100%;min-height:360px;max-width:100%;background:#11141c;color:#dfe5f1;display:grid;place-items:center;position:relative;isolation:isolate;overflow:hidden;border-radius:6px}
+.pending-image-content{display:flex;align-items:center;flex-direction:column;gap:18px;text-align:center;padding:35px;max-width:480px;z-index:1}
+.pending-image-content>strong{font-size:17px;font-weight:500;letter-spacing:1px}
+.pending-image-content>small{font-size:12px;color:#a7b4ca;overflow-wrap:anywhere;max-width:100%}
+.pending-image-content>p{font-size:11px;line-height:1.9;color:#7f8ca4;margin:5px 0}
+.pending-stream{position:absolute;width:100%;height:100%;object-fit:contain;opacity:.3}
+.pending-progress{display:block;position:relative;overflow:hidden;height:3px;width:min(240px,100%);border-radius:4px;background:#303847}
+.pending-progress>span{display:block;position:absolute;width:35%;height:100%;background:#90bafa;border-radius:inherit;animation:pending-progress 2s ease-in-out infinite}
+.pending-history{background:#11141c!important;color:#aec6ed;gap:5px;flex-direction:column;justify-content:center}
+.pending-history small{position:static!important;color:#b4c4db!important;background:transparent!important;font-size:9px}
+.pending-history .pending-progress{width:80%;height:2px}
+.canvas:has(.pending-image){padding:16px;min-height:400px}
+@keyframes pending-progress{from{transform:translateX(-110%)}to{transform:translateX(400%)}}
+@media(min-width:1800px){.studio.settings-hidden{grid-template-columns:540px minmax(400px,1fr) 58px}}
+@media(max-width:1250px) and (min-width:901px){.studio.settings-hidden{grid-template-columns:365px minmax(200px,1fr) 58px}}
+@media(max-width:900px){.studio.settings-hidden{display:block}.studio.settings-hidden>.right-panel{display:none}.studio.mobile-settings>.right-panel{display:block}.studio .inspector-heading>button{display:inline-flex}.left-panel .prompt-editor{height:530px;min-height:370px}.tools-heading>.segment{flex-wrap:wrap}.generation-settings-workspace{padding:16px}.pending-image-content{padding:25px 18px}.pending-image-content>strong{font-size:15px}}
+@media(prefers-reduced-motion:reduce){.pending-progress>span{animation:none;left:30%}.pending-image .spin,.pending-history .spin{animation:none}}

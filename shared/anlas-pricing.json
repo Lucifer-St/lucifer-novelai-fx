@@ -1,0 +1,169 @@
+{
+  "clientBuild": "ac00ce9-production",
+  "sourceUrl": "https://novelai.net/_next/static/chunks/1601-570fd9e21fc1a9a0.js",
+  "module": 50464,
+  "function": "GI",
+  "functionSha256": "76dc7117b526482bc21ce6a75d5315e9228f9d5344c5762a81bbb8e010b9f2fc",
+  "validatedAt": "2026-09-21T03:22:57.817Z",
+  "mode": "paid Anlas before subscription exemptions; fixtures evaluated from official client function in isolated VM",
+  "fixtures": [
+    {
+      "parameters": {
+        "width": 512,
+        "height": 512,
+        "steps": 8,
+        "n_samples": 1,
+        "sm": false,
+        "sm_dyn": false
+      },
+      "expected": 3
+    },
+    {
+      "parameters": {
+        "width": 832,
+        "height": 1216,
+        "steps": 23,
+        "n_samples": 1,
+        "sm": false,
+        "sm_dyn": false
+      },
+      "expected": 26
+    },
+    {
+      "parameters": {
+        "width": 832,
+        "height": 1216,
+        "steps": 25,
+        "n_samples": 1,
+        "sm": false,
+        "sm_dyn": false
+      },
+      "expected": 27
+    },
+    {
+      "parameters": {
+        "width": 1024,
+        "height": 1024,
+        "steps": 28,
+        "n_samples": 1,
+        "sm": false,
+        "sm_dyn": false
+      },
+      "expected": 30
+    },
+    {
+      "parameters": {
+        "width": 1216,
+        "height": 832,
+        "steps": 50,
+        "n_samples": 1,
+        "sm": false,
+        "sm_dyn": false
+      },
+      "expected": 50
+    },
+    {
+      "parameters": {
+        "width": 1536,
+        "height": 1024,
+        "steps": 28,
+        "n_samples": 1,
+        "sm": false,
+        "sm_dyn": false
+      },
+      "expected": 45
+    },
+    {
+      "parameters": {
+        "width": 832,
+        "height": 1216,
+        "steps": 28,
+        "n_samples": 3,
+        "sm": false,
+        "sm_dyn": false
+      },
+      "expected": 90
+    },
+    {
+      "parameters": {
+        "width": 832,
+        "height": 1216,
+        "steps": 28,
+        "n_samples": 1,
+        "image": "test",
+        "strength": 0.5
+      },
+      "expected": 15
+    }
+  ],
+  "opus": {
+    "verifiedAt": "2026-09-21T05:29:41.587Z",
+    "sourceUrl": "https://novelai.net/_next/static/chunks/1601-570fd9e21fc1a9a0.js",
+    "eligibilityUrl": "https://novelai.net/_next/static/chunks/pages/_app-82fe03e3291d150d.js",
+    "eligibilityFunction": "63509/t1",
+    "eligibilityCodeSha256": "6fa4efdae13550d99a9e5a176c26aa3ff5659ccae64fb24ec31580f2d0b751c9",
+    "rule": "Active tier >= 3, allowance not negative, no characterRef, area <= 1048576, steps <= 28; subtract ONE sample from request before paid amount multiplication",
+    "fixtures": [
+      {
+        "parameters": {
+          "width": 832,
+          "height": 1216,
+          "steps": 25,
+          "n_samples": 1
+        },
+        "expected": 0,
+        "paidFallback": 27
+      },
+      {
+        "parameters": {
+          "width": 832,
+          "height": 1216,
+          "steps": 25,
+          "n_samples": 2
+        },
+        "expected": 27,
+        "paidFallback": 54
+      },
+      {
+        "parameters": {
+          "width": 832,
+          "height": 1216,
+          "steps": 25,
+          "n_samples": 3
+        },
+        "expected": 54,
+        "paidFallback": 81
+      },
+      {
+        "parameters": {
+          "width": 1024,
+          "height": 1024,
+          "steps": 28,
+          "n_samples": 1
+        },
+        "expected": 0,
+        "paidFallback": 30
+      },
+      {
+        "parameters": {
+          "width": 1024,
+          "height": 1024,
+          "steps": 29,
+          "n_samples": 1
+        },
+        "expected": 32,
+        "paidFallback": 32
+      },
+      {
+        "parameters": {
+          "width": 1088,
+          "height": 1024,
+          "steps": 28,
+          "n_samples": 1
+        },
+        "expected": 33,
+        "paidFallback": 33
+      }
+    ]
+  }
+}

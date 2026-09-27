@@ -1,0 +1,50 @@
+/* Approved character controls. Native React attributes own placement; no preview fixtures. */
+.app[data-character-ui=on][data-workbench-skin=symphonic]{--chibi-main:url('/assets/character-ui/lily.png');--chibi-save:url('/assets/character-ui/sugar.png');--chibi-library:url('/assets/character-ui/sugar.png');--chibi-history:url('/assets/character-ui/lily.png');--chibi-empty:url('/assets/character-ui/sugar.png');--chibi-main-width:60px;--chibi-small-size:contain;--chibi-library-position:center;--chibi-history-position:center;--chibi-save-position:center}
+.app[data-character-ui=on][data-workbench-skin=book-contract]{--chibi-main:url('/assets/character-ui/twins.png');--chibi-save:url('/assets/character-ui/twins.png');--chibi-library:url('/assets/character-ui/twins.png');--chibi-history:url('/assets/character-ui/twins.png');--chibi-empty:url('/assets/character-ui/twins.png');--chibi-main-width:104px;--chibi-small-size:200% 100%;--chibi-library-position:left center;--chibi-history-position:right center;--chibi-save-position:right center}
+.app[data-character-ui=on] .generate{position:relative;overflow:visible;padding-left:calc(var(--chibi-main-width) + 25px);border-radius:8px}
+.app[data-character-ui=on] .generate::before{content:"";position:absolute;left:14px;bottom:0;width:var(--chibi-main-width);height:58px;background:var(--chibi-main) center bottom/contain no-repeat;pointer-events:none}
+.app[data-character-ui=on] .generate>svg{display:none}
+.app[data-character-ui=on] .generate>span{flex:1;text-align:center}
+.app[data-character-ui=on] .generate:disabled::before{opacity:.65}
+.app[data-character-ui=on] [data-character-role=save]{position:relative;padding-left:41px;min-height:34px;background:var(--fx-tint);color:var(--fx-accent)}
+.app[data-character-ui=on] [data-character-role=save]>svg{display:none}
+.app[data-character-ui=on] [data-character-role=save]::before{content:"";position:absolute;left:4px;bottom:1px;width:32px;height:32px;background-image:var(--chibi-save);background-position:var(--chibi-save-position);background-size:var(--chibi-small-size);background-repeat:no-repeat;pointer-events:none}
+.app[data-character-ui=on] .feature-nav>[data-character-role=library]{position:relative;padding-left:36px;min-height:34px;border-radius:6px;background:var(--fx-tint)}
+.app[data-character-ui=on] .feature-nav>[data-character-role=library]::before{content:"";position:absolute;left:2px;bottom:1px;width:32px;height:32px;background-image:var(--chibi-library);background-position:var(--chibi-library-position);background-size:var(--chibi-small-size);background-repeat:no-repeat;pointer-events:none}
+.app[data-character-ui=on] [data-character-role=history]{position:relative;padding-left:36px;min-height:28px}
+.app[data-character-ui=on] [data-character-role=history]::before{content:"";position:absolute;left:0;bottom:0;width:29px;height:29px;background-image:var(--chibi-history);background-position:var(--chibi-history-position);background-size:var(--chibi-small-size);background-repeat:no-repeat;pointer-events:none}
+.app[data-character-ui=on] [data-character-role=rack]{position:relative;padding-left:29px}
+.app[data-character-ui=on] [data-character-role=rack]::before{content:"";position:absolute;left:-1px;bottom:0;width:25px;height:25px;background-image:var(--chibi-library);background-position:var(--chibi-library-position);background-size:var(--chibi-small-size);background-repeat:no-repeat;pointer-events:none}
+.app[data-character-ui=on] .empty-rack>p{position:relative;padding-left:54px;min-height:50px;justify-content:flex-start;font-size:10px;text-align:left}
+.app[data-character-ui=on] .empty-rack>p>svg{display:none}
+.app[data-character-ui=on] .empty-rack>p::before{content:"";position:absolute;left:0;bottom:0;width:48px;height:48px;background-image:var(--chibi-empty);background-position:var(--chibi-library-position);background-size:var(--chibi-small-size);background-repeat:no-repeat;pointer-events:none}
+/* Character branding keeps the original text/link and inspector art intact. */
+.app[data-character-ui=on][data-workbench-skin=book-contract]{--chibi-brand:url('/assets/character-ui/teresa.png')}
+.app[data-character-ui=on][data-workbench-skin=symphonic]{--chibi-brand:url('/assets/character-ui/lily.png')}
+.app[data-character-ui=on] .brand>svg{display:none}
+.app[data-character-ui=on] .brand::before{content:"";display:block;flex:0 0 42px;width:42px;height:48px;background:var(--chibi-brand) center/contain no-repeat;pointer-events:none}
+.app[data-character-ui=on][data-workbench-skin=symphonic] .generate{box-shadow:0 2px 0 #096b7590,inset 0 0 0 3px #ffffff28}
+.app[data-character-ui=on][data-workbench-skin=book-contract] .generate{box-shadow:0 2px 0 #51406c,inset 0 0 0 3px #e8c9a04d}
+.app[data-character-ui=on] :is(button,a.button):focus-visible{outline:2px solid var(--fx-accent,#60478c);outline-offset:4px}
+
+.appearance-character-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:18px;font-size:12px;color:inherit}
+.appearance-character-controls input{accent-color:var(--fx-accent,#287ff1)}
+.appearance-character-controls>span{font-size:11px;color:var(--fx-muted,#7c8fa9);margin-left:auto}
+@media(min-width:901px) and (max-width:1250px){
+ .app[data-character-ui=on] .topbar{height:auto;min-height:94px;flex-wrap:wrap;padding-top:8px;padding-bottom:8px;row-gap:6px}
+ .app[data-character-ui=on] .topbar>.feature-nav{order:10;flex:0 0 100%;justify-content:flex-start}
+ .app[data-character-ui=on] .topbar>:is(.brand,nav,button,.connection){flex-shrink:0}
+ .app[data-character-ui=on] .topbar button{white-space:nowrap}
+ .app[data-character-ui=on] .brand{gap:8px}
+ .app[data-character-ui=on] .brand::before{flex-basis:30px;width:30px;height:38px}
+}
+@media(max-width:900px){
+ .app[data-character-ui=on] .feature-nav>[data-character-role=library]{font-size:10px;padding-left:26px}
+ .app[data-character-ui=on] .feature-nav>[data-character-role=library]::before{width:23px;height:25px}
+ .app[data-character-ui=on] .generate::before{height:54px}
+ .app[data-character-ui=on] [data-character-role=rack]{padding-left:22px}
+ .app[data-character-ui=on] [data-character-role=rack]::before{width:20px;height:23px}
+ .app[data-character-ui=on] .brand{gap:8px}
+ .app[data-character-ui=on] .brand::before{flex-basis:30px;width:30px;height:34px}
+ .appearance-character-controls>span{flex-basis:100%;margin-left:23px}
+}

@@ -1,0 +1,127 @@
+/* Theme choices are independent from loading artwork. Classic inherits the existing UI. */
+.workbench-skin-fieldset{border:0;padding:0 0 25px;margin:0 0 24px;border-bottom:1px solid #e3eaf5;min-width:0}
+.workbench-skin-fieldset legend{font-size:16px;font-weight:600;padding:0}
+.workbench-skin-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.workbench-skin-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.workbench-skin-thumb.symphonic{background:linear-gradient(115deg,#fff4f9,#f3fdfb)}
+.workbench-skin-thumb.symphonic img{width:60%;height:100%;object-fit:contain}
+.workbench-skin-thumb.symphonic img:last-child{width:40%}
+.workbench-skin-thumb.elixir{background:linear-gradient(110deg,#efd9dc,#fffcf8 45%,#d7e4df)}
+.workbench-skin-thumb.elixir img{width:100%;height:100%;object-fit:contain}
+.workbench-skin-thumb.lemmtear{background:#192b38}
+.workbench-skin-thumb.lemmtear img{width:100%;height:100%;object-fit:contain}
+.workbench-skin-choice{position:relative;display:block;border:1px solid #dce5f3;border-radius:9px;overflow:hidden;cursor:pointer;min-width:0;background:#fff}
+.workbench-skin-choice.chosen{border-color:#4688df;box-shadow:0 0 0 2px #a2caff55}
+.workbench-skin-choice:focus-within{outline:2px solid #287ff1;outline-offset:3px}
+.appearance-workspace .workbench-skin-choice input[type=radio]{position:absolute;right:12px;top:12px;width:16px;height:16px;min-width:16px;max-width:16px;min-height:16px;max-height:16px;padding:0;margin:0;z-index:2;accent-color:#287ff1}
+.workbench-skin-thumb{height:110px;display:flex;justify-content:center;align-items:center;overflow:hidden;background:#f7faff}
+.workbench-skin-thumb.book-contract{background:#fcfbff}
+.workbench-skin-thumb.book-contract img:first-child{width:76%;height:100%;object-fit:contain}
+.workbench-skin-thumb.book-contract img:last-child{width:24%;height:100%;object-fit:contain}
+.classic-mini{display:flex;gap:7px;width:80%;height:73%;padding:7px;border:1px solid #e2eaf7;border-radius:5px;background:#f2f7ff}
+.classic-mini i{flex:1;background:#fff;border:1px solid #dce7f6;border-radius:3px}
+.classic-mini i:nth-child(2){flex:1.8;background:#e6f0ff}
+.workbench-skin-label{display:flex;flex-direction:column;gap:5px;padding:12px 14px 14px}
+.workbench-skin-label strong{font-size:13px;font-weight:600}
+.workbench-skin-label small{font-size:11px;color:#8392a8}
+
+/* Approved book-contract edition; every rule is scoped so switching is reversible. */
+.app[data-workbench-skin=book-contract]{--fx-bg:#f6f5fa;--fx-panel:#fff;--fx-field:#fff;--fx-text:#352f4b;--fx-muted:#7c718e;--fx-line:#ded7e9;--fx-accent:#60478c;--fx-tint:#f2edf8;--fx-gold:#bfa275;background:var(--fx-bg);color:var(--fx-text)}
+.themed-workbench .studio{background:var(--fx-bg)}
+.themed-workbench .topbar{background:var(--fx-panel);border-bottom:1px solid var(--fx-gold);box-shadow:0 2px 12px #34234406}
+.themed-workbench .topbar .brand,.themed-workbench .topbar .brand em{color:var(--fx-text)}
+.themed-workbench .topbar .brand svg{color:var(--fx-accent)}
+.themed-workbench .topbar nav button,.themed-workbench .topbar .feature-nav button,.themed-workbench .connection{color:var(--fx-muted)}
+.themed-workbench .topbar nav .active,.themed-workbench .skin-button{background:var(--fx-tint);color:var(--fx-accent);border-color:var(--fx-gold)}
+.themed-workbench :is(.left-panel,.right-panel,.history-panel){background:var(--fx-panel);border-color:var(--fx-line);box-shadow:0 5px 16px #34253d05;position:relative}
+[data-workbench-skin=book-contract] :is(.left-panel,.right-panel,.history-panel)::after{content:"";position:absolute;inset:-1px;z-index:4;pointer-events:none;border:19px solid transparent;border-image:url('/assets/themes/book-contract/corners.svg') 40 stretch;opacity:.8}
+[data-workbench-skin=book-contract] .history-panel::after{opacity:.4}
+[data-workbench-skin=book-contract] .left-panel{border-left-color:#9dcedc;border-right-color:#b09bbd}
+.themed-workbench .left-scroll{scrollbar-width:thin;scrollbar-color:var(--fx-line) transparent}
+.themed-workbench .left-panel .tabs{background:var(--fx-panel);border-color:var(--fx-line)}
+.themed-workbench .left-panel .tabs>button{color:var(--fx-muted)}
+.themed-workbench .left-panel .tabs>button[aria-selected=true]{color:var(--fx-accent);border-color:var(--fx-accent)}
+.themed-workbench .prompt-editor{background:var(--fx-field);border-color:var(--fx-line);border-radius:6px}
+.themed-workbench .prompt-mode-tabs{background:var(--fx-tint);border-color:var(--fx-line)}
+.themed-workbench .prompt-mode-tabs>button{color:var(--fx-muted)}
+.themed-workbench .prompt-mode-tabs>button[aria-selected=true]{background:var(--fx-field);border-color:var(--fx-line);color:var(--fx-accent)}
+.themed-workbench :is(.weighted-prompt-input,.prompt-editor-footer){background:var(--fx-field)}
+.themed-workbench .prompt-editor-footer{border-color:var(--fx-line)}
+.themed-workbench .prompt-editor-footer :is(small,button){color:var(--fx-muted)}
+/* Defaults must not outrank component transparency, focus, or semantic states.
+   :is() inherited the three input exclusions' specificity even for textareas. */
+.themed-workbench :where(textarea,select,input:not([type=checkbox]):not([type=range]):not([type=radio])){background:var(--fx-field);color:var(--fx-text);border-color:var(--fx-line)}
+/* Native textarea owns visible text and caret; its mirror only paints weight backgrounds. */
+.themed-workbench .weighted-prompt-input>textarea{background:transparent;color:var(--fx-text);caret-color:var(--fx-text)}
+.themed-workbench :is(.prompt-weight-mirror,.prompt-weight-mirror span){color:transparent;-webkit-text-fill-color:transparent}
+.themed-workbench input:is([type=range],[type=checkbox]){accent-color:var(--fx-accent)}
+.themed-workbench .generate-dock{background:var(--fx-panel);border-color:var(--fx-gold)}
+.themed-workbench .generate-dock .generate{background:var(--fx-accent);color:var(--fx-on,#fff);border:1px solid var(--fx-accent);border-radius:5px;box-shadow:0 5px 13px #3a214417;position:relative}
+[data-workbench-skin=book-contract] .generate-dock .generate::after{content:"";position:absolute;inset:4px;border:1px solid #f1d5aa40;pointer-events:none;border-radius:3px}
+.themed-workbench :is(.prompt-dock-options,.generate-dock small,.generate-dock .text-button){color:var(--fx-muted)}
+.themed-workbench .canvas-toolbar{background:var(--fx-panel);border-color:var(--fx-line)}
+.themed-workbench :is(.canvas-toolbar>span,.canvas-toolbar button,.history-panel .section-label){color:var(--fx-muted)}
+.themed-workbench .canvas:not(:has(.pending-image)){background:var(--fx-canvas,#eceef0);background-image:none;border:1px solid var(--fx-line);border-radius:7px;box-shadow:inset 0 0 30px #353c4210}
+.themed-workbench .result-actions :is(button,.button){background:var(--fx-panel);color:var(--fx-muted);border-color:var(--fx-line)}
+.themed-workbench .history-strip .history-item{border-color:var(--fx-line);border-radius:5px}
+.themed-workbench .history-strip .history-item.selected{border-color:var(--fx-accent);box-shadow:0 0 0 2px var(--fx-tint)}
+.themed-workbench .right-panel .inspector-heading{background:var(--fx-panel);position:relative;z-index:5}
+.themed-workbench .right-panel .inspector-heading :is(h3,button){color:var(--fx-accent);background:var(--fx-panel)}
+.themed-workbench .right-panel :is(.field>label,.field-label,.slider-label,.section-label,.section-label h3,.toggle,summary,small,.hint,.fixed-schedule){color:var(--fx-muted)}
+.themed-workbench .right-panel .segment{background:var(--fx-tint);border-color:var(--fx-line)}
+.themed-workbench .right-panel .segment button{color:var(--fx-muted)}
+.themed-workbench .right-panel .segment button.selected{background:var(--fx-field);color:var(--fx-accent);border-color:var(--fx-line)}
+.themed-workbench .right-panel input[type=range]::-webkit-slider-thumb{background:var(--fx-accent)}
+.themed-workbench .right-panel input[type=range]::-moz-range-thumb{background:var(--fx-accent)}
+.themed-workbench :is(.statusbar,.model-block){background:var(--fx-panel);border-color:var(--fx-line);color:var(--fx-muted)}
+.themed-workbench :is(.statusbar a,.statusbar .author-signature,.collapsed-inspector-label){color:var(--fx-muted)}
+.themed-workbench .prompt-card-strip{background:var(--fx-panel);border:1px solid var(--fx-gold);border-radius:8px;padding:11px 12px 9px;box-shadow:0 4px 10px #4a315506;margin:13px 0 18px;position:relative}
+[data-workbench-skin=book-contract] .prompt-card-strip::after{content:"";pointer-events:none;position:absolute;inset:-2px;border:17px solid transparent;border-image:url('/assets/themes/book-contract/corners.svg') 40 stretch;opacity:.85}
+.themed-workbench .prompt-card-strip>header{color:var(--fx-muted)}
+.themed-workbench .prompt-card-rack{background:linear-gradient(var(--fx-gold),var(--fx-gold)) 0 13px/100% 2px no-repeat}
+.themed-workbench .hanging-card-frame{border-color:var(--fx-gold)}
+.themed-workbench .card-hanger{background:#f8f2e2;border-color:var(--fx-gold)}
+.themed-workbench .hanging-card-slot:nth-child(2n) .card-hanger{background:#cab6e4}
+.themed-workbench .hanging-card-slot:first-child .card-hanger{background:#d1edf1}
+.themed-workbench :is(.hanging-card-title,.quick-card>span){color:var(--fx-text)}
+.themed-workbench :is(.quick-card-window,.quick-card-window button,.quick-card,.empty-rack>p){background:var(--fx-panel);border-color:var(--fx-line);color:var(--fx-muted)}
+.themed-workbench .quick-card.selected{border-color:var(--fx-accent)}
+.themed-workbench .feature-dialog{background:var(--fx-panel);color:var(--fx-text);border-color:var(--fx-gold)}
+.themed-workbench .feature-dialog-header{background:var(--fx-panel);border-color:var(--fx-line)}
+.themed-workbench .feature-dialog-header :is(h2,button){color:var(--fx-text)}
+.themed-workbench :is(.workbench-skin-fieldset,.loading-skin-choice,.workbench-skin-choice){border-color:var(--fx-line)}
+.themed-workbench :is(.loading-skin-choice.chosen,.workbench-skin-choice.chosen){border-color:var(--fx-accent);box-shadow:0 0 0 2px var(--fx-tint)}
+
+.book-contract-plaque{position:relative;flex:none;height:146px;overflow:hidden;background:#fcfbff;border-bottom:1px solid #cbbbdb;border-radius:10px 10px 0 0;pointer-events:none}
+.book-contract-plaque>img{display:block;position:absolute;width:100%;height:auto;top:-20px;left:0;max-width:none}
+.book-contract-plaque>strong{position:absolute;left:34%;right:34%;top:49%;transform:translateY(-50%);text-align:center;color:#533b80;font-size:18px;letter-spacing:.3px}
+.teresa-bookmark{height:196px;position:relative;overflow:hidden;background:#fcfbff;border-bottom:1px solid #bd916a;margin:0 -18px 16px;pointer-events:none}
+.teresa-bookmark>img{display:block;width:100%;height:100%;object-fit:contain;object-position:right top}
+.teresa-bookmark>span{position:absolute;left:18px;top:54px;color:#765178;font:30px Allura,Georgia,serif}
+.teresa-bookmark.is-compact{height:150px;margin:6px -12px 7px;background:transparent;border:0}
+.teresa-bookmark.is-compact>img{width:100%;height:148px;max-width:100%;object-fit:contain;object-position:center top}
+@media(max-width:1250px) and (min-width:901px){.book-contract-plaque{height:120px}.book-contract-plaque>img{top:-11px}.book-contract-plaque>strong{font-size:15px}.teresa-bookmark{margin-left:-13px;margin-right:-13px}}
+/* Keep the card entry reachable without scrolling away the prompt-mode tabs on
+   shorter desktops. Fit the complete bookplate rather than cropping faces. */
+@media(min-width:901px) and (max-height:1020px){
+ .book-contract-plaque{height:100px}
+ .book-contract-plaque>img{position:absolute;width:100%;height:140px;top:-18px;object-fit:contain}
+ .book-contract-plaque>strong{left:calc(50% - 40px);right:auto;width:80px;font-size:13px;top:49%}
+}
+@media(max-width:900px){
+ .workbench-skin-grid{gap:10px}.workbench-skin-thumb{height:83px}.workbench-skin-label{padding:10px}.workbench-skin-label small{font-size:10px}
+ .book-contract-mobile{display:flex;flex:none;height:108px;align-items:stretch;overflow:hidden;border-bottom:1px solid #bfa275;background:#fcfbff}
+ .book-contract-mobile>.book-contract-plaque{flex:1;min-width:0;width:calc(100% - 82px);height:108px;border:0;border-radius:0}
+ .book-contract-mobile .book-contract-plaque>img{top:-6px}
+ .book-contract-mobile .book-contract-plaque>strong{left:35%;right:35%;top:48%;font-size:12px}
+ .book-contract-mobile>.teresa-bookmark{width:82px;min-width:82px;flex:0 0 82px;height:108px;margin:0;border-left:1px solid #dfd5e7;background:#fcfbff}
+ .book-contract-mobile .teresa-bookmark>img{height:106px}
+ .themed-workbench .mobile-tabs{background:var(--fx-panel);border-color:var(--fx-line)}
+ .themed-workbench .mobile-tabs button{color:var(--fx-muted);background:var(--fx-panel);border-color:var(--fx-line)}
+ .themed-workbench .mobile-tabs button.selected{background:var(--fx-accent);color:#fff}
+}
+
+/* Public Claire variant; original personal hybrid remains separate. */
+.teresa-bookmark.is-compact>img{width:100%;height:148px;object-fit:cover;object-position:76% top}
+.book-contract-mobile .teresa-bookmark>img{height:106px;object-fit:cover;object-position:76% top}
+.workbench-skin-thumb.book-contract img:last-child{object-fit:cover;object-position:76% top}

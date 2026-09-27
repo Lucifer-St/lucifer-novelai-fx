@@ -1,0 +1,12 @@
+import {copyFile,mkdir,readFile,writeFile} from 'node:fs/promises';
+import {atlasParts} from '../src/lib/atlas-embed.mjs';
+const assets='android/app/src/main/assets';
+await mkdir(assets+'/native',{recursive:true});
+await copyFile('shared/schema.json',assets+'/native/schema.json');
+await writeFile('shared/atlas-envelope.json',JSON.stringify(atlasParts()));
+await copyFile('shared/atlas-envelope.json',assets+'/native/atlas-envelope.json');
+await mkdir('android/app/src/main/res/drawable-nodpi',{recursive:true});
+await copyFile('public/icons/launcher.png','android/app/src/main/res/drawable-nodpi/fx_launcher.png');
+const path='android/app/src/main/AndroidManifest.xml',manifest=await readFile(path,'utf8');
+await writeFile(path,manifest.replace('android:icon="@mipmap/ic_launcher"','android:icon="@drawable/fx_launcher"').replace('android:roundIcon="@mipmap/ic_launcher_round"','android:roundIcon="@drawable/fx_launcher"'));
+console.log('Native schema and approved launcher icon prepared.');

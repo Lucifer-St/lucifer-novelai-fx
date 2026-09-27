@@ -1,0 +1,12 @@
+import {mkdir,readFile,writeFile,copyFile,stat} from 'node:fs/promises';import path from 'node:path';import {execFile}from'node:child_process';import {promisify}from'node:util';import {randomBytes,createHash}from'node:crypto';
+const exec=promisify(execFile),root=process.cwd(),sdk=process.env.ANDROID_HOME,jdk=process.env.JAVA_HOME;
+if(!sdk||!jdk)throw Error('Set ANDROID_HOME and JAVA_HOME to the installed build tools.');
+const local=path.join(root,'.local','signing'),release=path.join(root,'release');await mkdir(local,{recursive:true});await mkdir(release,{recursive:true});
+const key=path.join(local,'lucifer-fx-release.jks'),password=path.join(local,'password.txt');
+try{await stat(key);await stat(password);}catch(error){if(error.code!=='ENOENT')throw error;try{await stat(key);throw Error('Signing key exists but password is missing; do not replace the key.');}catch(e){if(e.code!=='ENOENT')throw e;}await writeFile(password,randomBytes(32).toString('base64url'),{flag:'wx'});await exec(path.join(jdk,'bin','keytool.exe'),['-genkeypair','-keystore',key,'-storepass:file',password,'-keypass:file',password,'-alias','lucifer-fx','-keyalg','RSA','-keysize','3072','-validity','10000','-dname','CN=Lucifer FX Release,O=Lucifer FX,C=CN'],{windowsHide:true});}
+const unsigned=path.join(root,'android','app','build','outputs','apk','release','app-release-unsigned.apk'),aligned=path.join(root,'.local','app-release-aligned.apk'),apk=path.join(release,'Lucifer-NovelAI-FX-Share-1.1.1-Android.apk'),tools=path.join(sdk,'build-tools','36.0.0');
+await exec(path.join(tools,'zipalign.exe'),['-f','-p','4',unsigned,aligned],{windowsHide:true});
+// Invoke the signer JAR directly to avoid shell quoting or exposing passwords in arguments.
+await exec(path.join(jdk,'bin','java.exe'),['-jar',path.join(tools,'lib','apksigner.jar'),'sign','--ks',key,'--ks-key-alias','lucifer-fx','--ks-pass','file:'+password,'--out',apk,aligned],{windowsHide:true});
+const {stdout}=await exec(path.join(jdk,'bin','java.exe'),['-jar',path.join(tools,'lib','apksigner.jar'),'verify','--verbose','--print-certs',apk],{windowsHide:true});await writeFile(path.join(root,'.local','apk-signature.txt'),stdout);
+const receipt={apk,sha256:createHash('sha256').update(await readFile(apk)).digest('hex'),signed:true};await writeFile(path.join(root,'.local','android-package.json'),JSON.stringify(receipt,null,2));console.log(JSON.stringify(receipt));

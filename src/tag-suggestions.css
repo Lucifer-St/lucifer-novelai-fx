@@ -1,0 +1,13 @@
+.prompt-suggestion-mode{display:flex;align-items:center;gap:4px;margin-left:auto;font-size:10px;color:#8098b6;white-space:nowrap}
+.prompt-suggestion-mode select{width:auto;max-width:119px;min-height:25px!important;height:25px;padding:2px 4px!important;font-size:10px!important;border:1px solid #e3ebf6;background:#fff;color:#58799f}
+.tag-suggestions{z-index:80;display:flex;flex-direction:column;overflow:hidden;background:#fff;border:1px solid #c7d9ef;border-radius:9px;box-shadow:0 8px 26px #244a7226;color:#3c597c;font:12px/1.5 system-ui,sans-serif;box-sizing:border-box}
+.tag-suggestions>header{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:#f6f9fe;min-height:28px;border-bottom:1px solid #e9eff7;font-size:10px}
+.tag-suggestions>header small{color:#8a9fb9}.tag-suggestions>header button{padding:0;min-height:20px;width:22px;border:0;background:transparent;font-size:16px;color:#7991b2}
+.tag-options{overflow-y:auto;overscroll-behavior:contain;min-height:0;scrollbar-width:thin}
+.tag-options>.tag-option{display:flex;align-items:center;text-align:left;width:100%;border:0;border-radius:0;padding:7px 10px;gap:8px;min-height:32px;background:#fff;color:#345a88;cursor:pointer}
+.tag-options>.tag-option:hover,.tag-options>.tag-option.active{background:#eaf3ff;color:#185fb8}
+.tag-option>span{flex:1;min-width:0}.tag-option strong{font-weight:500;font-size:12px;overflow-wrap:anywhere}.tag-option>small{font-size:9px;color:#8c9eb5;white-space:nowrap}.tag-option>span>small{display:block;font-size:9px;color:#8c9eb5}
+.tag-category{width:6px;height:6px;border-radius:50%;background:#6b9dd8;flex:none}.tag-category.category-1{background:#bc7dc5}.tag-category.category-3{background:#bf9a4c}.tag-category.category-4{background:#5aa594}.tag-category.category-5{background:#949aa7}
+.tag-options>p{padding:12px;font-size:11px;color:#8c9eb5;margin:0}
+.tag-suggestions>footer{display:flex;align-items:center;justify-content:space-between;gap:5px;padding:5px 9px;border-top:1px solid #edf2f9;font-size:9px;color:#8b9eb8;min-height:24px;background:#fbfdff}.tag-suggestions>footer small{font-size:9px;white-space:nowrap}
+@media(max-width:900px){.prompt-suggestion-mode select{max-width:104px}.tag-options>.tag-option{min-height:36px}.tag-suggestions>footer{flex-wrap:wrap}}

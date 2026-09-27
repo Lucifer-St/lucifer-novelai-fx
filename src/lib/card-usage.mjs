@@ -1,0 +1,4 @@
+const KEY='lucifer-card-usage-v1';
+export function readCardUsage(){try{const value=JSON.parse(localStorage.getItem(KEY)||'{}');return value&&typeof value==='object'&&!Array.isArray(value)?value:{};}catch{return {};}}
+export function recordCardUse(id){if(!id)return;const usage=readCardUsage();usage[id]={count:Math.min(100000,(Number(usage[id]?.count)||0)+1),at:Date.now()};const entries=Object.entries(usage).sort((a,b)=>(b[1]?.at||0)-(a[1]?.at||0)).slice(0,500);try{localStorage.setItem(KEY,JSON.stringify(Object.fromEntries(entries)));}catch{}}
+export function rankQuickCards(entries,usage={}){return [...entries].sort((a,b)=>(Number(usage[b.id]?.count)||0)-(Number(usage[a.id]?.count)||0)||(Number(usage[b.id]?.at)||0)-(Number(usage[a.id]?.at)||0)||String(b.updatedAt||'').localeCompare(String(a.updatedAt||'')));}

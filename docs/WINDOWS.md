@@ -6,7 +6,7 @@
 - `v1.8.0` Windows x64：<https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.8.0/Lucifer-NovelAI-FX-Share-1.8.0-Windows-x64.zip>
 - `v1.8.0` SHA-256：<https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.8.0/SHA256SUMS-1.8.0.txt>
 
-只从本仓库的 GitHub Release 下载。GitHub 页面中自动生成的“Source code”文件只含公开说明和截图，不是应用源码或 Windows 程序。
+只从本仓库的 GitHub Release 下载。需要直接运行时请选择 Windows ZIP。源码公开后的 main 包含应用代码，需要按开发说明安装依赖并构建；旧版本 tag 的 Source code 存档仍保留当时的文档与截图。
 
 ## 第一次启动
 
@@ -79,7 +79,7 @@ v1.4.0 及更早的安装没有“退出服务”按钮。先确认所有生成�
 - Token 只应填写在本地应用设置中。不要把它粘贴到 Issue、截图、反馈正文或聊天记录。
 - Windows 凭据由当前 Windows 用户的 DPAPI 保护。复制整个便携目录不代表其他账户或电脑能够解密凭据。
 - 应用不会自动上传反馈、Prompt、图片、日志或备份。反馈中心只在本机生成结构化预览；用户检查后自行复制、导出或打开 GitHub Issue。
-- 启动时可能对已配置的服务做只读模型检查；主动连接检查和生成访问用户自行配置的 NovelAI 或兼容网关。打开 D 站图库或法典图鉴会访问各自的公开数据与图片；检查更新仅在点击后访问 GitHub；外部翻译只复制文本并打开由用户操作的网页。
+- 启动时可能对已配置的服务做只读模型检查；主动连接检查和生成访问用户自行配置的 NovelAI 或兼容网关。打开 D 站图库或法典图鉴会访问各自的公开数据与图片；更新检查可在启动后及定期间隔访问 GitHub，并可关闭；下载与安装需主动点击；外部翻译只复制文本并打开由用户操作的网页。
 - “只读检查”与“生成”是不同动作。只有用户主动提交生成时才会发出生图请求。
 - 失败或中断不会自动重试可能收费的生成。请先检查历史和上游状态，再决定是否重新提交。
 - Anlas/Opus 展示可能包含估算或未知回执，不能替代官方账单。

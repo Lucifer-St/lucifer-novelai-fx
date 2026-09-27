@@ -1,0 +1,2 @@
+import {defineConfig} from '@playwright/test';
+export default defineConfig({testDir:'./tests',testMatch:'*-ui.spec.mjs',workers:1,timeout:30000,reporter:'list',outputDir:'.local/ui-artifacts',use:{baseURL:process.env.FX_UI_BASE_URL||'http://127.0.0.1:18920',viewport:{width:1440,height:1000},headless:true,...(process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE?{launchOptions:{executablePath:process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE}}:{})}});

@@ -1,15 +1,38 @@
-# Release binaries are uploaded as GitHub Release assets, not committed here.
-*.zip
-SHA256SUMS*.txt
-
-# Local editor and operating-system files.
+node_modules/
+dist/
+userdata/
+logs/
+.tools/
+.local/
+build/
+release/
+test-results/
+playwright-report/
+android/**/build/
+android/.gradle/
+android/local.properties
+android/app/src/main/assets/public/
+*.key
+*.pem
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.apk
+*.idsig
+*.log
+*.map
+.env*
+AGENTS.md
+MEMORY.md
+docs/plans/
+docs/PUBLIC-RIGHTS.md
+docs/RELEASE-CHECKLIST.md
 .DS_Store
 Thumbs.db
+*.zip
+SHA256SUMS*.txt
 .idea/
 .vscode/
 *.swp
 *~
-
-# Local repository governance; never publish these files.
-/AGENTS.md
-/MEMORY.md

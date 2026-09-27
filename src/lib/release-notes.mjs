@@ -1,0 +1,25 @@
+export const RELEASE_NOTES={version:'1.8.0',title:'更新说明',date:'2026-09-26',features:[
+ {title:'主提示词与角色同栏',description:'图像工具 / API → 工作区布局中可选择经典标签布局或合并滚动布局。合并模式把主提示词与角色连续排列，主区及每个角色均可独立折叠；折叠不会停用角色。'},
+ {title:'切换时保留编辑现场',description:'进入工具页、切换布局或折叠时保留文本框、光标、撤销历史及卡片归属，布局偏好独立保存。两种布局覆盖全部皮肤；本版不包含简易双栏。'},
+ {title:'D 站保留浏览现场',description:'关闭图库后保留当前页、筛选、滚动、选图和标签；重新打开不必重载。隐藏时停止在途图片读取，右上角可主动刷新当前页。'},
+ {title:'D 站直接跳页',description:'支持输入页码并回车跳转，不再需要逐页翻回。页码范围 1–1000，保持本次搜索的每页张数。'},
+ {title:'现代文件夹选择器',description:'保存位置改用带地址栏、磁盘导航和新建文件夹的 Windows 选择器，支持直接粘贴路径；取消不会改变原设置。'},
+ {title:'一键打开图片目录',description:'保存目录旁和图片操作栏新增文件夹图标，可以打开保存目录，或在文件资源管理器中定位当前图片。'},
+ {title:'名侦探皮肤扩大编辑区',description:'两款名侦探光之美少女皮肤的主提示词区域加大；左栏可整体滚动，保留插画比例与手动调整。'},
+ {title:'应用内更新',description:'启动后检查 GitHub 稳定版并提醒，可关闭自动检查。在更新中心下载、校验后安装并重启；生成期间不安装，保留创作数据与旧版备份。1.5.1 及更早版本需先手动升级到本版。'},
+ {title:'D 站不限时间热门排序',description:'修复不限时间评分／收藏排序的大范围查询超时，保留原筛选条件和精确排序；失败时不连续重试原站。'},
+ {title:'角色提示词自适应',description:'角色正负面输入框随内容伸缩，短标签不再占满整栏；保留手动调整、权重标色、撤销与输入法。'},
+ {title:'官方正负面预设',description:'按模型提供正面 Standard／Light 与负面 Heavy／Light／Human Focus／Furry Focus 等适用选项，保留自写提示词，并支持配方恢复。'},
+ {title:'图片加载恢复与错误提示',description:'D 站缩略图、预览和大图可手动重新加载；法典图鉴区分连接超时、DNS 与 TLS 错误。外部网络与生成请求偶发失败仍需按具体环境诊断，不自动重复计费请求。'},
+ {title:'全皮肤模型切换修复',description:'修复非经典皮肤隐藏模型切换的问题。所有皮肤改用紧凑下拉选择器，点击即可选择模型；切换保留提示词。'},
+ {title:'V4.5 Full 与 Curated',description:'在模型下拉框中选择 V5 Full、V4.5 Full 或 V4.5 Curated。Precise Reference 和 Vibe Transfer 仅适用于 V4.5；关闭控制可退出相关模式，图生图也可明确退出。'},
+ {title:'中文本地标签与自定义词典',description:'标签建议支持中文本地释义，可维护自己的词典条目；词条查询留在本机。'},
+ {title:'V5 文本预处理',description:'可单独输入画面文字，并可选提取引号内容；组装并预览最终 Text: 后再使用，不会改写正在编辑的 Prompt。'},
+ {title:'生成图库更好查找与整理',description:'图库可搜索并按条件筛选，支持收藏、标签、两图对比和导出；图片标注与备份也可一并管理。'},
+ {title:'参考图草稿跨重启保留',description:'参考图草稿可在重启后接续；Vibe 的编码费用会明确显示。请求不明确时继续查询原任务，不自动重试。'},
+ {title:'法典图鉴社区包修复',description:'修复法典图鉴中 NovelAI V5／V4.5 社区精选图包无法打开、反复刷新仍加载失败的问题。'},
+ {title:'逐张生成可立即停止接收',description:'停止后续图片与立即停止接收分开操作。已经完成的图片保留；立即停止不能保证上游取消或免于计费，也不会自动重试。'},
+ {title:'Windows 发布',description:'本次发布为 Windows x64。Android 继续冻结在 1.1.1，不包含本版更新。'},
+]};
+export const RELEASE_SEEN_KEY='lucifer-share-release-seen-v1';
+export function needsReleaseNotes(storage){try{return storage.getItem(RELEASE_SEEN_KEY)!==RELEASE_NOTES.version;}catch{return true;}}

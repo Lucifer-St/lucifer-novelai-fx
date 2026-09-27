@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 220" preserveAspectRatio="none">
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#fffdf8"/>
+      <stop offset="1" stop-color="#f6e8e8"/>
+    </linearGradient>
+    <linearGradient id="silk" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#fff"/>
+      <stop offset=".45" stop-color="#fbf5f5"/>
+      <stop offset="1" stop-color="#e9d7df"/>
+    </linearGradient>
+    <linearGradient id="plum" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#6e294c"/>
+      <stop offset=".6" stop-color="#9b4761"/>
+      <stop offset="1" stop-color="#58213f"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#e4c48f"/>
+      <stop offset=".48" stop-color="#a97945"/>
+      <stop offset="1" stop-color="#efd7a6"/>
+    </linearGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#5c2940" flood-opacity=".13"/>
+    </filter>
+    <pattern id="grain" width="14" height="14" patternUnits="userSpaceOnUse">
+      <path d="M0 14 14 0" stroke="#8e5364" stroke-opacity=".055" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <path d="M0 0h720v220H0z" fill="url(#grain)"/>
+  <path d="M22 57h252M22 65h172" stroke="#b28c75" stroke-opacity=".22" stroke-width="1"/>
+  <g filter="url(#soft)">
+    <path d="M44 81h230l18 18v92H44z" fill="#ead8dd" stroke="#b88c75" stroke-width="1.1"/>
+    <path d="M67 66h238l18 18v97H67z" fill="#f4e8e7" stroke="#b88c75" stroke-width="1.2"/>
+    <path d="M88 51h244l22 22v99H88z" fill="url(#paper)" stroke="#aa7a62" stroke-width="1.3"/>
+    <path d="M332 51v22h22" fill="#ead9d9" stroke="#aa7a62" stroke-width="1.1"/>
+    <path d="M112 82h157M112 95h190M112 108h145M112 121h176" stroke="#9d6673" stroke-opacity=".34" stroke-width="1.2"/>
+    <path d="M112 138h78" stroke="#c5a071" stroke-opacity=".6" stroke-width="1.2"/>
+    <g transform="translate(287 136)">
+      <circle r="24" fill="url(#plum)" stroke="#d0ab70" stroke-width="2"/>
+      <circle r="17" fill="none" stroke="#f1d5aa" stroke-opacity=".62"/>
+      <path d="M-7-8 0-13 7-8 4 0 10 9 0 5-10 9-4 0Z" fill="none" stroke="#f7e2bd" stroke-width="1.4"/>
+      <path d="M-14 19-31 43-9 34 0 51 8 33 29 43 14 19" fill="#73304f" stroke="#bf8b5a" stroke-width="1.3"/>
+    </g>
+  </g>
+
+  <g opacity=".97" filter="url(#soft)">
+    <path d="M475 147c16-27 21-55 15-87 24 8 39 22 49 42 5-31 22-55 51-71 29 17 46 41 51 71 11-20 27-34 51-42-7 33-2 62 16 88-31-4-59 1-83 15-11-20-23-34-35-42-13 9-25 23-35 42-24-14-50-19-80-16Z" fill="#782f54" fill-opacity=".08" stroke="#9f684e" stroke-width="1.5"/>
+    <path d="M503 135c12-22 16-43 13-64 19 12 32 29 38 49 2-29 14-52 36-69 22 17 34 40 36 69 7-20 20-37 39-49-4 22 0 43 13 64-20-3-39 1-56 12-9-17-20-29-32-37-12 8-22 20-31 37-18-11-36-15-56-12Z" fill="none" stroke="url(#gold)" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M554 119c4-24 16-47 36-68 20 21 31 44 36 68M529 88l25 31m97-31-25 31" fill="none" stroke="#7c3557" stroke-width="2"/>
+    <path d="M590 44l15 27-15 31-15-31Z" fill="url(#plum)" stroke="#d4ae72" stroke-width="2"/>
+    <path d="M590 50l8 20-8 17-8-17Z" fill="#fff8ef" fill-opacity=".72"/>
+    <g fill="#fff9ee" stroke="#b58150" stroke-width="2">
+      <circle cx="516" cy="69" r="6"/>
+      <circle cx="543" cy="51" r="7"/>
+      <circle cx="590" cy="32" r="8"/>
+      <circle cx="637" cy="51" r="7"/>
+      <circle cx="664" cy="69" r="6"/>
+    </g>
+    <path d="M498 150q92 39 184 0" fill="none" stroke="#7a3553" stroke-width="2"/>
+    <path d="M520 157q70 24 140 0" fill="none" stroke="#c39960" stroke-width="1.4"/>
+  </g>
+
+  <g filter="url(#soft)">
+    <path d="M-30 164C80 126 150 125 230 148c79 23 143 30 238 5 94-25 166-29 282 5v67H-30Z" fill="url(#silk)" stroke="#9b405a" stroke-width="2"/>
+    <path d="M-25 171c91-26 160-22 238 0 86 24 175 26 263 4 96-24 175-22 273 0" fill="none" stroke="#d1aa70" stroke-width="1.6"/>
+    <path d="M-18 192c88-13 159-7 232 7 93 18 174 18 268 0 91-18 177-19 259 0" fill="none" stroke="#aa7686" stroke-opacity=".24" stroke-width="1.1"/>
+    <path d="M350 159c14-10 27-15 39-16 12-1 26 3 42 12-15 8-28 12-40 12-12 0-25-3-41-8Z" fill="#fffdf9" stroke="#c8a269" stroke-width="1.4"/>
+    <path d="M389 146v18" stroke="#8c3b59" stroke-width="1.3"/>
+  </g>
+  <path d="M22 204h676" stroke="#b88f62" stroke-opacity=".55"/>
+  <path d="m30 204 8-8 8 8-8 8Zm644 0 8-8 8 8-8 8Z" fill="#7c3553" stroke="#c49a62"/>
+</svg>

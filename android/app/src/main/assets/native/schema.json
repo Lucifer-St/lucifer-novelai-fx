@@ -1,0 +1,2405 @@
+{
+  "source": {
+    "officialSchemaURL": "https://image.novelai.net/docs/doc.json",
+    "fetchedAt": "2026-09-20T22:46:02.422308+00:00",
+    "note": "Source support does not prove aggregator forwarding or account entitlement.",
+    "officialClientBuild": "ac00ce9-production",
+    "officialClientURL": "https://novelai.net/_next/static/chunks/pages/_app-82fe03e3291d150d.js",
+    "officialSamplerClientURL": "https://novelai.net/_next/static/chunks/1601-570fd9e21fc1a9a0.js",
+    "currentUIScope": "V5 Full only; full gateway catalogue retained for expert API inspection."
+  },
+  "models": [
+    {
+      "id": "nai-diffusion-5-full",
+      "name": "NovelAI Diffusion V5 Full",
+      "qualitySuffix": ", very aesthetic, masterpiece, no text",
+      "negativePrompt": "lowres, artistic error, film grain, scan artifacts, worst quality, bad quality, jpeg artifacts, very displeasing, chromatic aberration, dithering, halftone, screentone, multiple views, logo, too many watermarks, negative space, blank page",
+      "v5": true,
+      "defaultParameters": {
+        "params_version": 4,
+        "width": 832,
+        "height": 1216,
+        "scale": 7,
+        "steps": 28,
+        "n_samples": 1,
+        "sampler": "k_euler_ancestral",
+        "noise_schedule": "karras",
+        "cfg_rescale": 0,
+        "qualityToggle": true,
+        "ucPreset": 0,
+        "negative_prompt": "lowres, artistic error, film grain, scan artifacts, worst quality, bad quality, jpeg artifacts, very displeasing, chromatic aberration, dithering, halftone, screentone, multiple views, logo, too many watermarks, negative space, blank page",
+        "deliberate_euler_ancestral_bug": false,
+        "prefer_brownian": true,
+        "tag_hint_qt": 1,
+        "tag_hint_uc_preset": 0
+      },
+      "webCapabilities": {
+        "controlnet": false,
+        "vibetransfer": false,
+        "scaleMax": 10,
+        "negativePromptGuidance": true,
+        "noiseSchedule": false,
+        "cfgRescale": true,
+        "inpainting": true,
+        "cfgDelay": false,
+        "characterPrompts": true,
+        "maxCharacters": 32,
+        "canPositionOneCharacter": true,
+        "v4Prompts": true,
+        "smea": false,
+        "smeaDyn": false,
+        "text": true,
+        "autoText": true,
+        "dynamicThresholding": false,
+        "autoSmea": false,
+        "v4_0legacyUC": false,
+        "scaleRecommendedMin": 0,
+        "scaleRecommendedMax": null,
+        "numericEmphasis": true,
+        "encodedVibes": false,
+        "cfgDelaySigma": 58,
+        "enhancePromptAdd": true,
+        "hasFurryMode": true,
+        "img2imgInpainting": true,
+        "streamedResponses": true,
+        "characterReferences": false,
+        "charRefInpainting": false,
+        "freeformCharacterPosition": true,
+        "transparency": true,
+        "e2eUpscale": false,
+        "maxEnhance": true,
+        "opusUsageLimit": true
+      },
+      "inpaintingModel": "nai-diffusion-5-full-inpainting",
+      "webSamplers": [
+        "k_euler_ancestral",
+        "k_euler",
+        "k_dpmpp_2s_ancestral",
+        "k_dpmpp_2m_sde",
+        "k_dpmpp_2m",
+        "k_dpmpp_sde"
+      ]
+    },
+    {
+      "id": "nai-diffusion-5-curated",
+      "name": "NovelAI Diffusion V5 Curated",
+      "qualitySuffix": ", very aesthetic, masterpiece, no text",
+      "negativePrompt": "lowres, artistic error, film grain, scan artifacts, worst quality, bad quality, jpeg artifacts, very displeasing, chromatic aberration, dithering, halftone, screentone, multiple views, logo, too many watermarks, negative space, blank page",
+      "v5": true,
+      "defaultParameters": {
+        "params_version": 4,
+        "width": 832,
+        "height": 1216,
+        "scale": 7,
+        "steps": 28,
+        "n_samples": 1,
+        "sampler": "k_euler_ancestral",
+        "noise_schedule": "karras",
+        "cfg_rescale": 0,
+        "qualityToggle": true,
+        "ucPreset": 0,
+        "negative_prompt": "lowres, artistic error, film grain, scan artifacts, worst quality, bad quality, jpeg artifacts, very displeasing, chromatic aberration, dithering, halftone, screentone, multiple views, logo, too many watermarks, negative space, blank page",
+        "deliberate_euler_ancestral_bug": false,
+        "prefer_brownian": true,
+        "tag_hint_qt": 1,
+        "tag_hint_uc_preset": 0
+      },
+      "webCapabilities": {
+        "controlnet": false,
+        "vibetransfer": false,
+        "scaleMax": 10,
+        "negativePromptGuidance": true,
+        "noiseSchedule": false,
+        "cfgRescale": true,
+        "inpainting": true,
+        "cfgDelay": false,
+        "characterPrompts": true,
+        "maxCharacters": 32,
+        "canPositionOneCharacter": true,
+        "v4Prompts": true,
+        "smea": false,
+        "smeaDyn": false,
+        "text": true,
+        "autoText": true,
+        "dynamicThresholding": false,
+        "autoSmea": false,
+        "v4_0legacyUC": false,
+        "scaleRecommendedMin": 0,
+        "scaleRecommendedMax": null,
+        "numericEmphasis": true,
+        "encodedVibes": false,
+        "cfgDelaySigma": 58,
+        "enhancePromptAdd": true,
+        "hasFurryMode": true,
+        "img2imgInpainting": true,
+        "streamedResponses": true,
+        "characterReferences": false,
+        "charRefInpainting": false,
+        "freeformCharacterPosition": true,
+        "transparency": true,
+        "e2eUpscale": false,
+        "maxEnhance": true,
+        "opusUsageLimit": true
+      },
+      "inpaintingModel": "nai-diffusion-4-5-curated-inpainting",
+      "inpaintingNote": "Official client routes V5 Curated inpainting to V4.5 Curated inpainting; do not blindly append a suffix.",
+      "webSamplers": [
+        "k_euler_ancestral",
+        "k_euler",
+        "k_dpmpp_2s_ancestral",
+        "k_dpmpp_2m_sde",
+        "k_dpmpp_2m",
+        "k_dpmpp_sde"
+      ]
+    },
+    {
+      "id": "nai-diffusion-4-5-full",
+      "name": "NovelAI Diffusion V4.5 Full",
+      "qualitySuffix": ", location, very aesthetic, masterpiece, no text",
+      "negativePrompt": "lowres, artistic error, film grain, scan artifacts, worst quality, bad quality, jpeg artifacts, very displeasing, chromatic aberration, dithering, halftone, screentone, multiple views, logo, too many watermarks, negative space, blank page",
+      "v5": false,
+      "defaultParameters": {
+        "params_version": 4,
+        "width": 832,
+        "height": 1216,
+        "scale": 7,
+        "steps": 28,
+        "n_samples": 1,
+        "sampler": "k_euler_ancestral",
+        "noise_schedule": "karras",
+        "cfg_rescale": 0,
+        "qualityToggle": true,
+        "ucPreset": 0,
+        "negative_prompt": "lowres, artistic error, film grain, scan artifacts, worst quality, bad quality, jpeg artifacts, very displeasing, chromatic aberration, dithering, halftone, screentone, multiple views, logo, too many watermarks, negative space, blank page",
+        "deliberate_euler_ancestral_bug": false,
+        "prefer_brownian": true
+      },
+      "webCapabilities": {
+        "controlnet": false,
+        "vibetransfer": true,
+        "scaleMax": 10,
+        "negativePromptGuidance": true,
+        "noiseSchedule": true,
+        "cfgRescale": true,
+        "inpainting": true,
+        "cfgDelay": true,
+        "characterPrompts": true,
+        "maxCharacters": 6,
+        "canPositionOneCharacter": false,
+        "v4Prompts": true,
+        "smea": false,
+        "smeaDyn": false,
+        "text": true,
+        "autoText": false,
+        "dynamicThresholding": false,
+        "autoSmea": false,
+        "v4_0legacyUC": false,
+        "scaleRecommendedMin": 0,
+        "scaleRecommendedMax": null,
+        "numericEmphasis": true,
+        "encodedVibes": true,
+        "cfgDelaySigma": 58,
+        "enhancePromptAdd": true,
+        "hasFurryMode": true,
+        "img2imgInpainting": true,
+        "streamedResponses": true,
+        "characterReferences": true,
+        "charRefInpainting": true,
+        "freeformCharacterPosition": false,
+        "transparency": false,
+        "e2eUpscale": false,
+        "maxEnhance": false,
+        "opusUsageLimit": false
+      },
+      "inpaintingModel": "nai-diffusion-4-5-full-inpainting",
+      "webSamplers": [
+        "k_euler_ancestral",
+        "k_euler",
+        "k_dpmpp_2s_ancestral",
+        "k_dpmpp_2m_sde",
+        "k_dpmpp_2m",
+        "k_dpmpp_sde"
+      ]
+    },
+    {
+      "id": "nai-diffusion-4-5-curated",
+      "name": "NovelAI Diffusion V4.5 Curated",
+      "qualitySuffix": ", location, masterpiece, no text, -0.8::feet::, rating:general",
+      "negativePrompt": "blurry, lowres, upscaled, artistic error, film grain, scan artifacts, worst quality, bad quality, jpeg artifacts, very displeasing, chromatic aberration, halftone, multiple views, logo, too many watermarks, negative space, blank page",
+      "v5": false,
+      "defaultParameters": {
+        "params_version": 4,
+        "width": 832,
+        "height": 1216,
+        "scale": 7,
+        "steps": 28,
+        "n_samples": 1,
+        "sampler": "k_euler_ancestral",
+        "noise_schedule": "karras",
+        "cfg_rescale": 0,
+        "qualityToggle": true,
+        "ucPreset": 0,
+        "negative_prompt": "blurry, lowres, upscaled, artistic error, film grain, scan artifacts, worst quality, bad quality, jpeg artifacts, very displeasing, chromatic aberration, halftone, multiple views, logo, too many watermarks, negative space, blank page",
+        "deliberate_euler_ancestral_bug": false,
+        "prefer_brownian": true
+      },
+      "webCapabilities": {
+        "controlnet": false,
+        "vibetransfer": true,
+        "scaleMax": 10,
+        "negativePromptGuidance": true,
+        "noiseSchedule": true,
+        "cfgRescale": true,
+        "inpainting": true,
+        "cfgDelay": true,
+        "characterPrompts": true,
+        "maxCharacters": 6,
+        "canPositionOneCharacter": false,
+        "v4Prompts": true,
+        "smea": false,
+        "smeaDyn": false,
+        "text": true,
+        "autoText": false,
+        "dynamicThresholding": false,
+        "autoSmea": false,
+        "v4_0legacyUC": false,
+        "scaleRecommendedMin": 0,
+        "scaleRecommendedMax": null,
+        "numericEmphasis": true,
+        "encodedVibes": true,
+        "cfgDelaySigma": 58,
+        "enhancePromptAdd": true,
+        "hasFurryMode": true,
+        "img2imgInpainting": true,
+        "streamedResponses": true,
+        "characterReferences": true,
+        "charRefInpainting": true,
+        "freeformCharacterPosition": false,
+        "transparency": false,
+        "e2eUpscale": false,
+        "maxEnhance": false,
+        "opusUsageLimit": false
+      },
+      "inpaintingModel": "nai-diffusion-4-5-curated-inpainting",
+      "webSamplers": [
+        "k_euler_ancestral",
+        "k_euler",
+        "k_dpmpp_2s_ancestral",
+        "k_dpmpp_2m_sde",
+        "k_dpmpp_2m",
+        "k_dpmpp_sde"
+      ]
+    },
+    {
+      "id": "nai-diffusion-4-full",
+      "name": "NovelAI Diffusion V4 Full",
+      "qualitySuffix": ", no text, best quality, very aesthetic, absurdres",
+      "negativePrompt": "blurry, lowres, error, film grain, scan artifacts, worst quality, bad quality, jpeg artifacts, very displeasing, chromatic aberration, multiple views, logo, too many watermarks",
+      "v5": false,
+      "defaultParameters": {
+        "params_version": 4,
+        "width": 832,
+        "height": 1216,
+        "scale": 7,
+        "steps": 28,
+        "n_samples": 1,
+        "sampler": "k_euler_ancestral",
+        "noise_schedule": "karras",
+        "cfg_rescale": 0,
+        "qualityToggle": true,
+        "ucPreset": 0,
+        "negative_prompt": "blurry, lowres, error, film grain, scan artifacts, worst quality, bad quality, jpeg artifacts, very displeasing, chromatic aberration, multiple views, logo, too many watermarks",
+        "deliberate_euler_ancestral_bug": false,
+        "prefer_brownian": true
+      },
+      "webCapabilities": {
+        "controlnet": false,
+        "vibetransfer": true,
+        "scaleMax": 10,
+        "negativePromptGuidance": true,
+        "noiseSchedule": true,
+        "cfgRescale": true,
+        "inpainting": true,
+        "cfgDelay": true,
+        "characterPrompts": true,
+        "maxCharacters": 6,
+        "canPositionOneCharacter": false,
+        "v4Prompts": true,
+        "smea": false,
+        "smeaDyn": false,
+        "text": true,
+        "autoText": false,
+        "dynamicThresholding": false,
+        "autoSmea": false,
+        "v4_0legacyUC": true,
+        "scaleRecommendedMin": 2,
+        "scaleRecommendedMax": 6,
+        "numericEmphasis": true,
+        "encodedVibes": true,
+        "cfgDelaySigma": 19,
+        "enhancePromptAdd": false,
+        "hasFurryMode": true,
+        "img2imgInpainting": true,
+        "streamedResponses": true,
+        "characterReferences": false,
+        "charRefInpainting": false,
+        "freeformCharacterPosition": false,
+        "transparency": false,
+        "e2eUpscale": false,
+        "maxEnhance": false,
+        "opusUsageLimit": false
+      },
+      "inpaintingModel": "nai-diffusion-4-full-inpainting",
+      "webSamplers": [
+        "k_euler_ancestral",
+        "k_euler",
+        "k_dpmpp_2s_ancestral",
+        "k_dpmpp_2m_sde",
+        "k_dpmpp_2m",
+        "k_dpmpp_sde"
+      ]
+    },
+    {
+      "id": "nai-diffusion-4-curated-preview",
+      "name": "NovelAI Diffusion V4 Curated",
+      "qualitySuffix": ", rating:general, amazing quality, very aesthetic, absurdres",
+      "negativePrompt": "blurry, lowres, error, film grain, scan artifacts, worst quality, bad quality, jpeg artifacts, very displeasing, chromatic aberration, logo, dated, signature, multiple views, gigantic breasts",
+      "v5": false,
+      "defaultParameters": {
+        "params_version": 4,
+        "width": 832,
+        "height": 1216,
+        "scale": 7,
+        "steps": 28,
+        "n_samples": 1,
+        "sampler": "k_euler_ancestral",
+        "noise_schedule": "karras",
+        "cfg_rescale": 0,
+        "qualityToggle": true,
+        "ucPreset": 0,
+        "negative_prompt": "blurry, lowres, error, film grain, scan artifacts, worst quality, bad quality, jpeg artifacts, very displeasing, chromatic aberration, logo, dated, signature, multiple views, gigantic breasts",
+        "deliberate_euler_ancestral_bug": false,
+        "prefer_brownian": true
+      },
+      "webCapabilities": {
+        "controlnet": false,
+        "vibetransfer": true,
+        "scaleMax": 10,
+        "negativePromptGuidance": true,
+        "noiseSchedule": true,
+        "cfgRescale": true,
+        "inpainting": true,
+        "cfgDelay": true,
+        "characterPrompts": true,
+        "maxCharacters": 6,
+        "canPositionOneCharacter": false,
+        "v4Prompts": true,
+        "smea": false,
+        "smeaDyn": false,
+        "text": true,
+        "autoText": false,
+        "dynamicThresholding": false,
+        "autoSmea": false,
+        "v4_0legacyUC": true,
+        "scaleRecommendedMin": 2,
+        "scaleRecommendedMax": 6,
+        "numericEmphasis": true,
+        "encodedVibes": true,
+        "cfgDelaySigma": 19,
+        "enhancePromptAdd": false,
+        "hasFurryMode": true,
+        "img2imgInpainting": true,
+        "streamedResponses": true,
+        "characterReferences": false,
+        "charRefInpainting": false,
+        "freeformCharacterPosition": false,
+        "transparency": false,
+        "e2eUpscale": false,
+        "maxEnhance": false,
+        "opusUsageLimit": false
+      },
+      "inpaintingModel": "nai-diffusion-4-curated-inpainting",
+      "webSamplers": [
+        "k_euler_ancestral",
+        "k_euler",
+        "k_dpmpp_2s_ancestral",
+        "k_dpmpp_2m_sde",
+        "k_dpmpp_2m",
+        "k_dpmpp_sde"
+      ]
+    }
+  ],
+  "imageParameters": {
+    "add_original_image": {
+      "type": "boolean",
+      "title": "附加原图",
+      "group": "image",
+      "source": "official-swagger"
+    },
+    "cfg_rescale": {
+      "type": "number",
+      "title": "引导重缩放",
+      "group": "generation",
+      "source": "official-swagger",
+      "gatewayDefault": 0
+    },
+    "color_correct": {
+      "type": "boolean",
+      "title": "色彩校正",
+      "group": "image",
+      "source": "official-swagger"
+    },
+    "controlnet_condition": {
+      "description": "used by ControlNet",
+      "type": "string",
+      "title": "ControlNet条件图",
+      "group": "controlnet",
+      "source": "official-swagger"
+    },
+    "controlnet_model": {
+      "type": "string",
+      "title": "ControlNet模型",
+      "group": "controlnet",
+      "source": "official-swagger"
+    },
+    "controlnet_strength": {
+      "type": "number",
+      "title": "ControlNet强度",
+      "group": "controlnet",
+      "source": "official-swagger"
+    },
+    "deliberate_euler_ancestral_bug": {
+      "description": "(Summer Sampler update) add ancestral noise even on the final step of sampling, despite the fact we're not going to run the denoiser again, default true (maintaining bug-for-bug compatibility)",
+      "type": "boolean",
+      "title": "兼容旧Euler行为",
+      "group": "generation",
+      "source": "official-swagger",
+      "gatewayDefault": false
+    },
+    "director_reference_descriptions": {
+      "description": "For CR: set `caption` with a `base_caption` of `\"character\"` or `\"character&style\"`",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/image.V4ConditionInput"
+      },
+      "title": "精准参考描述",
+      "group": "precise",
+      "source": "official-swagger"
+    },
+    "director_reference_images": {
+      "description": "For CR: 1024x1536 or 1536x1024 or 1472x1472 with black padding to fit",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "title": "精准参考图像",
+      "group": "precise",
+      "source": "official-swagger"
+    },
+    "director_reference_information_extracted": {
+      "description": "For CR: 0-1",
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "title": "精准参考信息提取",
+      "group": "precise",
+      "source": "official-swagger"
+    },
+    "director_reference_secondary_strength_values": {
+      "description": "For CR: Maps to Fidelity slider (0-1)",
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "title": "精准参考保真度",
+      "group": "precise",
+      "source": "official-swagger"
+    },
+    "director_reference_strength_values": {
+      "description": "API external name. 0-1",
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "title": "精准参考强度",
+      "group": "precise",
+      "source": "official-swagger"
+    },
+    "dynamic_thresholding": {
+      "type": "boolean",
+      "title": "动态阈值",
+      "group": "generation",
+      "source": "official-swagger"
+    },
+    "extra_noise_seed": {
+      "type": "integer",
+      "title": "额外噪声种子",
+      "group": "image",
+      "source": "official-swagger"
+    },
+    "height": {
+      "type": "integer",
+      "title": "高度",
+      "group": "generation",
+      "source": "official-swagger",
+      "gatewayDefault": 1216
+    },
+    "image": {
+      "type": "string",
+      "title": "输入图像Base64",
+      "group": "image",
+      "source": "official-swagger"
+    },
+    "image_format": {
+      "$ref": "#/definitions/image.ImageFormat",
+      "title": "原生图像格式",
+      "group": "output",
+      "source": "official-swagger",
+      "type": "string",
+      "enum": [
+        "png",
+        "webp"
+      ]
+    },
+    "img2img": {
+      "description": "used by inpaint",
+      "allOf": [
+        {
+          "$ref": "#/definitions/image.Img2ImgParams"
+        }
+      ],
+      "title": "重绘区域图生图参数",
+      "group": "image",
+      "source": "official-swagger"
+    },
+    "legacy": {
+      "type": "boolean",
+      "title": "旧版兼容",
+      "group": "output",
+      "source": "official-swagger"
+    },
+    "legacy_v3_extend": {
+      "type": "boolean",
+      "title": "V3扩展兼容",
+      "group": "output",
+      "source": "official-swagger"
+    },
+    "mask": {
+      "type": "string",
+      "title": "遮罩Base64",
+      "group": "image",
+      "source": "official-swagger"
+    },
+    "n_samples": {
+      "type": "integer",
+      "title": "图像数量",
+      "group": "generation",
+      "source": "official-swagger",
+      "gatewayDefault": 1
+    },
+    "negative_prompt": {
+      "type": "string",
+      "title": "排除内容",
+      "group": "prompt",
+      "source": "official-swagger",
+      "gatewayDefault": "lowres, artistic error, film grain, scan artifacts, worst quality, bad quality, jpeg artifacts, very displeasing, chromatic aberration, dithering, halftone, screentone, multiple views, logo, too many watermarks, negative space, blank page"
+    },
+    "noise": {
+      "type": "number",
+      "title": "噪声",
+      "group": "image",
+      "source": "official-swagger"
+    },
+    "noise_schedule": {
+      "type": "string",
+      "title": "噪声调度",
+      "group": "generation",
+      "source": "official-swagger",
+      "gatewayDefault": "karras",
+      "suggestions": [
+        "karras",
+        "native",
+        "exponential",
+        "polyexponential"
+      ],
+      "suggestionsNote": "Enumerated by official web client; V5 UI hides schedules, V4/V4.5 excludes native."
+    },
+    "params_version": {
+      "type": "integer",
+      "title": "参数版本",
+      "group": "output",
+      "source": "official-swagger",
+      "gatewayDefault": 4
+    },
+    "prefer_brownian": {
+      "type": "boolean",
+      "title": "偏好Brownian噪声",
+      "group": "generation",
+      "source": "official-swagger",
+      "gatewayDefault": true
+    },
+    "prompt": {
+      "type": "string",
+      "title": "参数内提示词",
+      "group": "prompt",
+      "source": "official-swagger"
+    },
+    "qualityToggle": {
+      "type": "boolean",
+      "title": "附加质量标签",
+      "group": "prompt",
+      "source": "official-swagger",
+      "gatewayDefault": true
+    },
+    "reference_image": {
+      "type": "string",
+      "title": "单张Vibe参考",
+      "group": "vibe",
+      "source": "official-swagger"
+    },
+    "reference_image_multiple": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "title": "多张Vibe参考",
+      "group": "vibe",
+      "source": "official-swagger"
+    },
+    "reference_information_extracted": {
+      "type": "number",
+      "title": "Vibe信息提取",
+      "group": "vibe",
+      "source": "official-swagger"
+    },
+    "reference_information_extracted_multiple": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "title": "多张Vibe信息提取",
+      "group": "vibe",
+      "source": "official-swagger"
+    },
+    "reference_strength": {
+      "type": "number",
+      "title": "Vibe参考强度",
+      "group": "vibe",
+      "source": "official-swagger"
+    },
+    "reference_strength_multiple": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "title": "多张Vibe强度",
+      "group": "vibe",
+      "source": "official-swagger"
+    },
+    "sampler": {
+      "type": "string",
+      "title": "采样器",
+      "group": "generation",
+      "source": "official-swagger",
+      "gatewayDefault": "k_euler_ancestral",
+      "suggestions": [
+        "plms",
+        "ddim",
+        "k_euler",
+        "k_euler_ancestral",
+        "k_dpm_2",
+        "k_dpm_2_ancestral",
+        "k_lms",
+        "k_dpmpp_2s_ancestral",
+        "k_dpmpp_sde",
+        "k_dpmpp_2m",
+        "k_dpm_adaptive",
+        "k_dpm_fast",
+        "k_dpmpp_2m_sde",
+        "k_dpmpp_3m_sde",
+        "ddim_v3",
+        "nai_smea",
+        "nai_smea_dyn"
+      ],
+      "suggestionsNote": "Enumerated by official web client; some are legacy/hidden and model compatibility still applies."
+    },
+    "scale": {
+      "type": "number",
+      "title": "提示词引导",
+      "group": "generation",
+      "source": "official-swagger",
+      "gatewayDefault": 7
+    },
+    "seed": {
+      "type": "integer",
+      "title": "随机种子",
+      "group": "generation",
+      "source": "official-swagger"
+    },
+    "skip_cfg_above_sigma": {
+      "description": "(Summer Sampler update) triggers Variety Boost",
+      "type": "number",
+      "title": "VarietyBoost阈值",
+      "group": "generation",
+      "source": "official-swagger"
+    },
+    "sm": {
+      "type": "boolean",
+      "title": "SMEA",
+      "group": "generation",
+      "source": "official-swagger"
+    },
+    "sm_dyn": {
+      "type": "boolean",
+      "title": "SMEA DYN",
+      "group": "generation",
+      "source": "official-swagger"
+    },
+    "steps": {
+      "type": "number",
+      "title": "步数",
+      "group": "generation",
+      "source": "official-swagger",
+      "gatewayDefault": 28
+    },
+    "straight_alpha": {
+      "type": "boolean",
+      "title": "Straight alpha",
+      "group": "output",
+      "source": "official-swagger"
+    },
+    "stream": {
+      "$ref": "#/definitions/image.StreamingType",
+      "title": "原生流格式",
+      "group": "output",
+      "source": "official-swagger",
+      "type": "string",
+      "enum": [
+        "msgpack",
+        "sse"
+      ]
+    },
+    "strength": {
+      "type": "number",
+      "title": "图生图强度",
+      "group": "image",
+      "source": "official-swagger"
+    },
+    "tag_hint_qt": {
+      "type": "integer",
+      "title": "质量标签提示",
+      "group": "prompt",
+      "source": "official-swagger",
+      "gatewayDefault": 1
+    },
+    "tag_hint_transparent_background": {
+      "description": "Pure pass-through hint for the model: the prompt is asking for a transparent\nbackground. Omegalaser does not interpret it.",
+      "type": "boolean",
+      "title": "透明背景标签提示",
+      "group": "prompt",
+      "source": "official-swagger"
+    },
+    "tag_hint_uc_preset": {
+      "type": "integer",
+      "title": "排除内容标签提示",
+      "group": "prompt",
+      "source": "official-swagger",
+      "gatewayDefault": 0
+    },
+    "ucPreset": {
+      "type": "integer",
+      "title": "排除内容预设标记",
+      "group": "prompt",
+      "source": "official-swagger",
+      "gatewayDefault": 0
+    },
+    "upscale": {
+      "$ref": "#/definitions/image.UpscaleParams",
+      "title": "生成时放大参数",
+      "group": "output",
+      "source": "official-swagger"
+    },
+    "upscaled_enhance": {
+      "type": "boolean",
+      "title": "放大增强",
+      "group": "output",
+      "source": "official-swagger"
+    },
+    "v4_negative_prompt": {
+      "$ref": "#/definitions/image.V4ConditionInput",
+      "title": "多角色负向提示",
+      "group": "prompt",
+      "source": "official-swagger"
+    },
+    "v4_prompt": {
+      "$ref": "#/definitions/image.V4ConditionInput",
+      "title": "多角色正向提示",
+      "group": "prompt",
+      "source": "official-swagger"
+    },
+    "width": {
+      "type": "integer",
+      "title": "宽度",
+      "group": "generation",
+      "source": "official-swagger",
+      "gatewayDefault": 832
+    }
+  },
+  "textParameters": {
+    "bad_words_ids": {
+      "type": "array",
+      "maxItems": 2048,
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "integer"
+        }
+      }
+    },
+    "bracket_ban": {
+      "type": "boolean"
+    },
+    "cfg_scale": {
+      "type": "number",
+      "minimum": 0
+    },
+    "cfg_uc": {
+      "type": "string"
+    },
+    "cropped_token": {
+      "type": "integer"
+    },
+    "eos_token_id": {
+      "type": "integer"
+    },
+    "force_emotion": {
+      "type": "boolean"
+    },
+    "generate_until_sentence": {
+      "type": "boolean"
+    },
+    "line_start_ids": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "integer"
+        }
+      }
+    },
+    "logit_bias_exp": {
+      "type": "array",
+      "maxItems": 1024,
+      "items": {
+        "$ref": "#/definitions/text.LogitBiasParameters"
+      }
+    },
+    "math1_quad": {
+      "description": "Configures Unified Quad",
+      "type": "number"
+    },
+    "math1_quad_entropy_scale": {
+      "description": "Configures Unified Conf",
+      "type": "number"
+    },
+    "math1_temp": {
+      "description": "Configures Unified Linear",
+      "type": "number"
+    },
+    "max_length": {
+      "description": "Maximum generation length (in tokens)",
+      "type": "integer",
+      "maximum": 2048,
+      "minimum": 1
+    },
+    "min_length": {
+      "description": "Minimum generation length (in tokens)",
+      "type": "integer",
+      "maximum": 2048,
+      "minimum": 1
+    },
+    "min_p": {
+      "type": "number",
+      "maximum": 1,
+      "minimum": 0
+    },
+    "mirostat_lr": {
+      "type": "number",
+      "maximum": 1,
+      "minimum": 0
+    },
+    "mirostat_tau": {
+      "type": "number",
+      "minimum": 0
+    },
+    "num_logprobs": {
+      "description": "Amount of logprobs wanted under the logprobs response field",
+      "type": "integer",
+      "maximum": 30,
+      "minimum": 0
+    },
+    "order": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "phrase_rep_pen": {
+      "$ref": "#/definitions/text.PhraseRepPenChoice"
+    },
+    "prefix": {
+      "type": "string"
+    },
+    "repetition_penalty": {
+      "type": "number"
+    },
+    "repetition_penalty_frequency": {
+      "type": "number",
+      "maximum": 16,
+      "minimum": -16
+    },
+    "repetition_penalty_presence": {
+      "type": "number",
+      "maximum": 16,
+      "minimum": -16
+    },
+    "repetition_penalty_range": {
+      "type": "integer",
+      "maximum": 8192,
+      "minimum": 0
+    },
+    "repetition_penalty_slope": {
+      "type": "number",
+      "maximum": 10,
+      "minimum": 0
+    },
+    "repetition_penalty_whitelist": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "stop_sequences": {
+      "type": "array",
+      "maxItems": 1024,
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "integer"
+        }
+      }
+    },
+    "tail_free_sampling": {
+      "type": "number",
+      "maximum": 1,
+      "minimum": 0
+    },
+    "temperature": {
+      "type": "number",
+      "maximum": 100,
+      "minimum": 0.1
+    },
+    "top_a": {
+      "type": "number"
+    },
+    "top_g": {
+      "type": "number",
+      "maximum": 65536,
+      "minimum": 0
+    },
+    "top_k": {
+      "type": "integer"
+    },
+    "top_p": {
+      "type": "number"
+    },
+    "typical_p": {
+      "type": "number"
+    },
+    "use_string": {
+      "description": "If the response's output should be a string containing the detokenized text, or if it should be the packed representation of the tokens (format specified on `input`'s documentation).",
+      "type": "boolean",
+      "default": true
+    },
+    "valid_first_tokens": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    }
+  },
+  "definitions": {
+    "image.AugmentImageRequest": {
+      "type": "object",
+      "properties": {
+        "defry": {
+          "type": "integer"
+        },
+        "height": {
+          "type": "integer"
+        },
+        "image": {
+          "type": "string"
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "req_type": {
+          "type": "string"
+        },
+        "width": {
+          "type": "integer"
+        }
+      }
+    },
+    "image.Coordinates": {
+      "type": "object",
+      "properties": {
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        }
+      }
+    },
+    "image.EncodeVibeRequest": {
+      "type": "object",
+      "properties": {
+        "crop_to_mask": {
+          "description": "Whether to crop the image to the bounding box of the mask's visible area (if a mask is provided)",
+          "type": "boolean"
+        },
+        "focus_seed": {
+          "description": "seed used for random choice of which areas of the image to give a closer look to. leave unspecified to use a deterministic seed chosen based on the image content (recommended).",
+          "type": "integer"
+        },
+        "image": {
+          "description": "base64 encoded image",
+          "type": "string"
+        },
+        "info_extract_seed": {
+          "description": "seed used for random noising out of the image's information (to extent specified by information_extracted). leave unspecified to use a deterministic seed chosen based on the image content (recommended)",
+          "type": "integer"
+        },
+        "information_extracted": {
+          "type": "number",
+          "maximum": 1,
+          "minimum": 0
+        },
+        "mask": {
+          "description": "Base64 encoded mask to be applied to the image",
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        }
+      }
+    },
+    "image.ImageFormat": {
+      "type": "string",
+      "enum": [
+        "png",
+        "webp"
+      ],
+      "x-enum-varnames": [
+        "ImageFormatPNG",
+        "ImageFormatWEBP"
+      ]
+    },
+    "image.ImageGenerationJsonResponse": {
+      "type": "object",
+      "properties": {
+        "images": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/image.ImageJson"
+          }
+        }
+      }
+    },
+    "image.ImageGenerationRequest": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string"
+        },
+        "input": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "parameters": {
+          "$ref": "#/definitions/image.RequestParameters"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "image.ImageJson": {
+      "type": "object",
+      "properties": {
+        "image": {
+          "description": "base64 encoded image",
+          "type": "string"
+        },
+        "index": {
+          "type": "integer"
+        },
+        "seed": {
+          "type": "integer"
+        }
+      }
+    },
+    "image.Img2ImgParams": {
+      "type": "object",
+      "properties": {
+        "color_correct": {
+          "type": "boolean"
+        },
+        "extra_noise_seed": {
+          "type": "integer"
+        },
+        "noise": {
+          "type": "number"
+        },
+        "strength": {
+          "type": "number"
+        }
+      }
+    },
+    "image.RequestParameters": {
+      "type": "object",
+      "properties": {
+        "add_original_image": {
+          "type": "boolean"
+        },
+        "cfg_rescale": {
+          "type": "number"
+        },
+        "color_correct": {
+          "type": "boolean"
+        },
+        "controlnet_condition": {
+          "description": "used by ControlNet",
+          "type": "string"
+        },
+        "controlnet_model": {
+          "type": "string"
+        },
+        "controlnet_strength": {
+          "type": "number"
+        },
+        "deliberate_euler_ancestral_bug": {
+          "description": "(Summer Sampler update) add ancestral noise even on the final step of sampling, despite the fact we're not going to run the denoiser again, default true (maintaining bug-for-bug compatibility)",
+          "type": "boolean"
+        },
+        "director_reference_descriptions": {
+          "description": "For CR: set `caption` with a `base_caption` of `\"character\"` or `\"character&style\"`",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/image.V4ConditionInput"
+          }
+        },
+        "director_reference_images": {
+          "description": "For CR: 1024x1536 or 1536x1024 or 1472x1472 with black padding to fit",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "director_reference_information_extracted": {
+          "description": "For CR: 0-1",
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "director_reference_secondary_strength_values": {
+          "description": "For CR: Maps to Fidelity slider (0-1)",
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "director_reference_strength_values": {
+          "description": "API external name. 0-1",
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "dynamic_thresholding": {
+          "type": "boolean"
+        },
+        "extra_noise_seed": {
+          "type": "integer"
+        },
+        "height": {
+          "type": "integer"
+        },
+        "image": {
+          "type": "string"
+        },
+        "image_format": {
+          "$ref": "#/definitions/image.ImageFormat"
+        },
+        "img2img": {
+          "description": "used by inpaint",
+          "allOf": [
+            {
+              "$ref": "#/definitions/image.Img2ImgParams"
+            }
+          ]
+        },
+        "legacy": {
+          "type": "boolean"
+        },
+        "legacy_v3_extend": {
+          "type": "boolean"
+        },
+        "mask": {
+          "type": "string"
+        },
+        "n_samples": {
+          "type": "integer"
+        },
+        "negative_prompt": {
+          "type": "string"
+        },
+        "noise": {
+          "type": "number"
+        },
+        "noise_schedule": {
+          "type": "string"
+        },
+        "params_version": {
+          "type": "integer"
+        },
+        "prefer_brownian": {
+          "type": "boolean"
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "qualityToggle": {
+          "type": "boolean"
+        },
+        "reference_image": {
+          "type": "string"
+        },
+        "reference_image_multiple": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "reference_information_extracted": {
+          "type": "number"
+        },
+        "reference_information_extracted_multiple": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "reference_strength": {
+          "type": "number"
+        },
+        "reference_strength_multiple": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "sampler": {
+          "type": "string"
+        },
+        "scale": {
+          "type": "number"
+        },
+        "seed": {
+          "type": "integer"
+        },
+        "skip_cfg_above_sigma": {
+          "description": "(Summer Sampler update) triggers Variety Boost",
+          "type": "number"
+        },
+        "sm": {
+          "type": "boolean"
+        },
+        "sm_dyn": {
+          "type": "boolean"
+        },
+        "steps": {
+          "type": "number"
+        },
+        "straight_alpha": {
+          "type": "boolean"
+        },
+        "stream": {
+          "$ref": "#/definitions/image.StreamingType"
+        },
+        "strength": {
+          "type": "number"
+        },
+        "tag_hint_qt": {
+          "type": "integer"
+        },
+        "tag_hint_transparent_background": {
+          "description": "Pure pass-through hint for the model: the prompt is asking for a transparent\nbackground. Omegalaser does not interpret it.",
+          "type": "boolean"
+        },
+        "tag_hint_uc_preset": {
+          "type": "integer"
+        },
+        "ucPreset": {
+          "type": "integer"
+        },
+        "upscale": {
+          "$ref": "#/definitions/image.UpscaleParams"
+        },
+        "upscaled_enhance": {
+          "type": "boolean"
+        },
+        "v4_negative_prompt": {
+          "$ref": "#/definitions/image.V4ConditionInput"
+        },
+        "v4_prompt": {
+          "$ref": "#/definitions/image.V4ConditionInput"
+        },
+        "width": {
+          "type": "integer"
+        }
+      }
+    },
+    "image.StreamingType": {
+      "type": "string",
+      "enum": [
+        "msgpack",
+        "sse"
+      ],
+      "x-enum-varnames": [
+        "StreamingTypeMsgpack",
+        "StreamingTypeSSE"
+      ]
+    },
+    "image.TagSuggestion": {
+      "type": "object",
+      "properties": {
+        "confidence": {
+          "type": "number"
+        },
+        "count": {
+          "type": "integer"
+        },
+        "tag": {
+          "type": "string"
+        }
+      }
+    },
+    "image.TagSuggestionResponse": {
+      "type": "object",
+      "properties": {
+        "tags": {
+          "$ref": "#/definitions/image.TagSuggestion"
+        }
+      }
+    },
+    "image.UpscaleParams": {
+      "type": "object",
+      "properties": {
+        "declared_blur_sigma": {
+          "description": "round it to one of these values: [0.0, 0.30, 0.35, 0.40, 0.45, 0.50]",
+          "type": "number"
+        }
+      }
+    },
+    "image.UpscaleRequest": {
+      "type": "object",
+      "properties": {
+        "declared_blur_sigma": {
+          "description": "same param as generation param",
+          "type": "number"
+        },
+        "image": {
+          "description": "can be given as base64 or as multipart pointer",
+          "type": "string"
+        },
+        "model": {
+          "description": "must be an existing image model API name",
+          "type": "string"
+        }
+      }
+    },
+    "image.V4ConditionInput": {
+      "type": "object",
+      "properties": {
+        "caption": {
+          "$ref": "#/definitions/image.V4ExternalCaption"
+        },
+        "legacy_uc": {
+          "type": "boolean"
+        },
+        "use_coords": {
+          "type": "boolean"
+        },
+        "use_order": {
+          "type": "boolean"
+        }
+      }
+    },
+    "image.V4ExternalCaption": {
+      "type": "object",
+      "properties": {
+        "base_caption": {
+          "type": "string"
+        },
+        "char_captions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/image.V4ExternalCharacterCaption"
+          }
+        }
+      }
+    },
+    "image.V4ExternalCharacterCaption": {
+      "type": "object",
+      "properties": {
+        "centers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/image.Coordinates"
+          }
+        },
+        "char_caption": {
+          "type": "string"
+        }
+      }
+    },
+    "text.CompletionNewParamsPromptUnion": {
+      "description": "A union type. This is inlined into the parent field, rather than dedicated properties. Do not attempt to e.g set {\"ofString\": \"\"}",
+      "type": "object",
+      "properties": {
+        "ofArrayOfStrings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "ofArrayOfTokenArrays": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        },
+        "ofArrayOfTokens": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "ofString": {
+          "type": "string"
+        }
+      }
+    },
+    "text.CompletionNewParamsStopUnion": {
+      "description": "A union type. This is inlined into the parent field, rather than dedicated properties. Do not attempt to e.g set {\"ofString\": \"\"}",
+      "type": "object",
+      "properties": {
+        "ofString": {
+          "type": "string"
+        },
+        "ofStringArray": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "text.LMGenerateRequest": {
+      "type": "object",
+      "required": [
+        "input",
+        "model",
+        "parameters"
+      ],
+      "properties": {
+        "input": {
+          "description": "Input can be either a representation of the tokenized or non-tokenized input (see the `use_string` parameter)\nWhen requesting tokenized input (via `use_string`), input's format must be a Base64 string representation of the tokens as follows:\n - Little endian sequence of bytes that represent an integer of a specific size, determined by the tokenizer used for the model.\n - For Nerdstash V2, that is 2 bytes (16 bits) per token, Llama3 is 4 bytes (32 bits) per token\n\nNOTE: Be aware that the token length of the input + wanted max length will be validated against the user's current subscription level (via GET /user/data's subscription field)'s context size.\nRequests that trigger the validation will get an API Error if the requested context length is too large.\nIt is recommended to run tokenization using https://github.com/NovelAI/nai-js-tokenizer to get an exact number that represents the request's context size and strip accordingly. We use nerdstash v2 for Kayra.\n\nContext length per subscription:\n - Tablet: 4096 tokens\n - Scroll: 8192 tokens\n - Opus: 8192 tokens\n\n`max_length` limit per subscription:\n - Tablet: 150 tokens\n - Scroll: 150 tokens\n - Opus: 250 tokens",
+          "type": "string",
+          "maxLength": 100000
+        },
+        "model": {
+          "description": "Wanted model for generations, currently only `kayra-v1` and `llama-3-erato-v1` are available. Other models are not available at the current moment. Trial users may only use `kayra-v1`.",
+          "type": "string"
+        },
+        "n_samples": {
+          "type": "integer"
+        },
+        "parameters": {
+          "$ref": "#/definitions/text.RequestParameters"
+        },
+        "prefix": {
+          "type": "string"
+        }
+      }
+    },
+    "text.LMGenerationResponse": {
+      "type": "object",
+      "properties": {
+        "logprobs": {
+          "description": "A map for each token containing the logprobs, which are an ordered array of before and after sampling, as well as the chosen probabilities of the top N tokens (N being configured by `num_logprobs`).",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/text.LMLogprobs"
+          }
+        },
+        "output": {
+          "description": "Contains either the model output string (if `use_string` is set) or the packed representation of tokens",
+          "type": "string"
+        }
+      }
+    },
+    "text.LMLogprobs": {
+      "type": "object",
+      "properties": {
+        "after": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "format": "float64"
+              }
+            }
+          }
+        },
+        "before": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "format": "float64"
+              }
+            }
+          }
+        },
+        "chosen": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "format": "float64"
+              }
+            }
+          }
+        }
+      }
+    },
+    "text.LogitBiasParameters": {
+      "type": "object",
+      "required": [
+        "ensure_sequence_finish",
+        "generate_once"
+      ],
+      "properties": {
+        "bias": {
+          "type": "number"
+        },
+        "ensure_sequence_finish": {
+          "type": "boolean"
+        },
+        "generate_once": {
+          "type": "boolean"
+        },
+        "sequence": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "text.OAIChatGenerateRequest": {
+      "type": "object",
+      "properties": {
+        "best_of": {
+          "type": "integer"
+        },
+        "echo": {
+          "type": "boolean"
+        },
+        "enable_thinking": {
+          "type": "boolean"
+        },
+        "frequency_penalty": {
+          "type": "number"
+        },
+        "generation_prefix": {
+          "description": "Transformed to OutgoingOAINAIExtensions.StructuredOutputs",
+          "type": "string"
+        },
+        "logit_bias": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number",
+            "format": "float64"
+          }
+        },
+        "logprobs": {
+          "type": "integer"
+        },
+        "max_tokens": {
+          "type": "integer"
+        },
+        "messages": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/text.OAIChatMessage"
+          }
+        },
+        "min_p": {
+          "type": "number"
+        },
+        "model": {
+          "type": "string"
+        },
+        "n": {
+          "type": "integer"
+        },
+        "presence_penalty": {
+          "type": "number"
+        },
+        "seed": {
+          "type": "integer"
+        },
+        "stop": {
+          "$ref": "#/definitions/text.CompletionNewParamsStopUnion"
+        },
+        "stream": {
+          "type": "boolean"
+        },
+        "suffix": {
+          "type": "string"
+        },
+        "temperature": {
+          "type": "number"
+        },
+        "top_k": {
+          "type": "integer"
+        },
+        "top_p": {
+          "type": "number"
+        },
+        "unified_cubic": {
+          "type": "number"
+        },
+        "unified_increase_linear_with_entropy": {
+          "type": "number"
+        },
+        "unified_linear": {
+          "type": "number"
+        },
+        "unified_quadratic": {
+          "type": "number"
+        },
+        "user": {
+          "type": "string"
+        }
+      }
+    },
+    "text.OAIChatMessage": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "description": "non-tokenized input",
+          "type": "string"
+        },
+        "name": {
+          "description": "Optional name of the message author",
+          "type": "string"
+        },
+        "role": {
+          "description": "\"system\", \"user\", \"assistant\"",
+          "type": "string"
+        }
+      }
+    },
+    "text.OAITextGenerateRequest": {
+      "type": "object",
+      "properties": {
+        "best_of": {
+          "type": "integer"
+        },
+        "echo": {
+          "type": "boolean"
+        },
+        "frequency_penalty": {
+          "type": "number"
+        },
+        "generation_prefix": {
+          "description": "Transformed to OutgoingOAINAIExtensions.StructuredOutputs",
+          "type": "string"
+        },
+        "logit_bias": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number",
+            "format": "float64"
+          }
+        },
+        "logprobs": {
+          "type": "integer"
+        },
+        "max_tokens": {
+          "type": "integer"
+        },
+        "min_p": {
+          "type": "number"
+        },
+        "model": {
+          "type": "string"
+        },
+        "n": {
+          "type": "integer"
+        },
+        "presence_penalty": {
+          "type": "number"
+        },
+        "prompt": {
+          "$ref": "#/definitions/text.CompletionNewParamsPromptUnion"
+        },
+        "seed": {
+          "type": "integer"
+        },
+        "stop": {
+          "$ref": "#/definitions/text.CompletionNewParamsStopUnion"
+        },
+        "stream": {
+          "type": "boolean"
+        },
+        "suffix": {
+          "type": "string"
+        },
+        "temperature": {
+          "type": "number"
+        },
+        "top_k": {
+          "type": "integer"
+        },
+        "top_p": {
+          "type": "number"
+        },
+        "unified_cubic": {
+          "type": "number"
+        },
+        "unified_increase_linear_with_entropy": {
+          "type": "number"
+        },
+        "unified_linear": {
+          "type": "number"
+        },
+        "unified_quadratic": {
+          "type": "number"
+        },
+        "user": {
+          "type": "string"
+        }
+      }
+    },
+    "text.OAITokenCountResponse": {
+      "type": "object",
+      "properties": {
+        "encoded": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "length": {
+          "type": "integer"
+        }
+      }
+    },
+    "text.OpenAIModelObject": {
+      "type": "object",
+      "properties": {
+        "created": {
+          "type": "integer"
+        },
+        "id": {
+          "type": "string"
+        },
+        "object": {
+          "type": "string"
+        },
+        "owned_by": {
+          "type": "string"
+        }
+      }
+    },
+    "text.OpenAIModelsResponse": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/text.OpenAIModelObject"
+          }
+        },
+        "object": {
+          "type": "string"
+        }
+      }
+    },
+    "text.PhraseRepPenChoice": {
+      "type": "string",
+      "enum": [
+        "off",
+        "very_light",
+        "light",
+        "medium",
+        "aggressive",
+        "very_aggressive"
+      ],
+      "x-enum-varnames": [
+        "Off",
+        "VeryLight",
+        "Light",
+        "Medium",
+        "Aggressive",
+        "VeryAggressive"
+      ]
+    },
+    "text.RequestParameters": {
+      "type": "object",
+      "required": [
+        "logit_bias_exp"
+      ],
+      "properties": {
+        "bad_words_ids": {
+          "type": "array",
+          "maxItems": 2048,
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        },
+        "bracket_ban": {
+          "type": "boolean"
+        },
+        "cfg_scale": {
+          "type": "number",
+          "minimum": 0
+        },
+        "cfg_uc": {
+          "type": "string"
+        },
+        "cropped_token": {
+          "type": "integer"
+        },
+        "eos_token_id": {
+          "type": "integer"
+        },
+        "force_emotion": {
+          "type": "boolean"
+        },
+        "generate_until_sentence": {
+          "type": "boolean"
+        },
+        "line_start_ids": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        },
+        "logit_bias_exp": {
+          "type": "array",
+          "maxItems": 1024,
+          "items": {
+            "$ref": "#/definitions/text.LogitBiasParameters"
+          }
+        },
+        "math1_quad": {
+          "description": "Configures Unified Quad",
+          "type": "number"
+        },
+        "math1_quad_entropy_scale": {
+          "description": "Configures Unified Conf",
+          "type": "number"
+        },
+        "math1_temp": {
+          "description": "Configures Unified Linear",
+          "type": "number"
+        },
+        "max_length": {
+          "description": "Maximum generation length (in tokens)",
+          "type": "integer",
+          "maximum": 2048,
+          "minimum": 1
+        },
+        "min_length": {
+          "description": "Minimum generation length (in tokens)",
+          "type": "integer",
+          "maximum": 2048,
+          "minimum": 1
+        },
+        "min_p": {
+          "type": "number",
+          "maximum": 1,
+          "minimum": 0
+        },
+        "mirostat_lr": {
+          "type": "number",
+          "maximum": 1,
+          "minimum": 0
+        },
+        "mirostat_tau": {
+          "type": "number",
+          "minimum": 0
+        },
+        "num_logprobs": {
+          "description": "Amount of logprobs wanted under the logprobs response field",
+          "type": "integer",
+          "maximum": 30,
+          "minimum": 0
+        },
+        "order": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "phrase_rep_pen": {
+          "$ref": "#/definitions/text.PhraseRepPenChoice"
+        },
+        "prefix": {
+          "type": "string"
+        },
+        "repetition_penalty": {
+          "type": "number"
+        },
+        "repetition_penalty_frequency": {
+          "type": "number",
+          "maximum": 16,
+          "minimum": -16
+        },
+        "repetition_penalty_presence": {
+          "type": "number",
+          "maximum": 16,
+          "minimum": -16
+        },
+        "repetition_penalty_range": {
+          "type": "integer",
+          "maximum": 8192,
+          "minimum": 0
+        },
+        "repetition_penalty_slope": {
+          "type": "number",
+          "maximum": 10,
+          "minimum": 0
+        },
+        "repetition_penalty_whitelist": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "stop_sequences": {
+          "type": "array",
+          "maxItems": 1024,
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        },
+        "tail_free_sampling": {
+          "type": "number",
+          "maximum": 1,
+          "minimum": 0
+        },
+        "temperature": {
+          "type": "number",
+          "maximum": 100,
+          "minimum": 0.1
+        },
+        "top_a": {
+          "type": "number"
+        },
+        "top_g": {
+          "type": "number",
+          "maximum": 65536,
+          "minimum": 0
+        },
+        "top_k": {
+          "type": "integer"
+        },
+        "top_p": {
+          "type": "number"
+        },
+        "typical_p": {
+          "type": "number"
+        },
+        "use_string": {
+          "description": "If the response's output should be a string containing the detokenized text, or if it should be the packed representation of the tokens (format specified on `input`'s documentation).",
+          "type": "boolean",
+          "default": true
+        },
+        "valid_first_tokens": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        }
+      }
+    }
+  },
+  "operations": [
+    {
+      "id": "generate",
+      "name": "图像生成",
+      "endpoint": "/ai/generate-image",
+      "method": "POST",
+      "bodyDefinition": "image.ImageGenerationRequest",
+      "responseKind": "images",
+      "chargeable": true,
+      "requiresRaw": false,
+      "requiresBody": false,
+      "transport": "POST /v1/images/generations with novelai extension"
+    },
+    {
+      "id": "stream",
+      "name": "实时生成",
+      "endpoint": "/ai/generate-image-stream",
+      "method": "POST",
+      "bodyDefinition": "image.ImageGenerationRequest",
+      "responseKind": "sse",
+      "chargeable": true,
+      "requiresRaw": true,
+      "requiresBody": true,
+      "transport": "POST /v1/images/generations with novelai extension"
+    },
+    {
+      "id": "upscale",
+      "name": "放大",
+      "endpoint": "/ai/upscale",
+      "method": "POST",
+      "bodyDefinition": "image.UpscaleRequest",
+      "responseKind": "images",
+      "chargeable": true,
+      "requiresRaw": false,
+      "requiresBody": true,
+      "transport": "POST /v1/images/generations with novelai extension"
+    },
+    {
+      "id": "augment",
+      "name": "Director Tools",
+      "endpoint": "/ai/augment-image",
+      "method": "POST",
+      "bodyDefinition": "image.AugmentImageRequest",
+      "responseKind": "images",
+      "chargeable": true,
+      "requiresRaw": false,
+      "requiresBody": true,
+      "transport": "POST /v1/images/generations with novelai extension"
+    },
+    {
+      "id": "encode-vibe",
+      "name": "编码Vibe",
+      "endpoint": "/ai/encode-vibe",
+      "method": "POST",
+      "bodyDefinition": "image.EncodeVibeRequest",
+      "responseKind": "binary",
+      "chargeable": true,
+      "requiresRaw": true,
+      "requiresBody": true,
+      "transport": "POST /v1/images/generations with novelai extension"
+    },
+    {
+      "id": "tags",
+      "name": "标签建议",
+      "endpoint": "/ai/generate-image/suggest-tags",
+      "method": "GET",
+      "bodyDefinition": null,
+      "responseKind": "json",
+      "chargeable": false,
+      "requiresRaw": true,
+      "requiresBody": false,
+      "transport": "POST /v1/images/generations with novelai extension",
+      "queryFields": [
+        "model",
+        "prompt",
+        "lang"
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "id": "generation",
+      "label": "生成与采样",
+      "fields": [
+        "width",
+        "height",
+        "n_samples",
+        "steps",
+        "scale",
+        "seed",
+        "sampler",
+        "noise_schedule",
+        "cfg_rescale",
+        "dynamic_thresholding",
+        "skip_cfg_above_sigma",
+        "sm",
+        "sm_dyn",
+        "deliberate_euler_ancestral_bug",
+        "prefer_brownian"
+      ]
+    },
+    {
+      "id": "prompt",
+      "label": "提示词与标签",
+      "fields": [
+        "prompt",
+        "negative_prompt",
+        "qualityToggle",
+        "ucPreset",
+        "tag_hint_qt",
+        "tag_hint_uc_preset",
+        "tag_hint_transparent_background",
+        "v4_prompt",
+        "v4_negative_prompt"
+      ]
+    },
+    {
+      "id": "image",
+      "label": "图生图与局部重绘",
+      "fields": [
+        "image",
+        "mask",
+        "strength",
+        "noise",
+        "extra_noise_seed",
+        "color_correct",
+        "img2img",
+        "add_original_image"
+      ]
+    },
+    {
+      "id": "vibe",
+      "label": "Vibe Transfer",
+      "fields": [
+        "reference_image",
+        "reference_strength",
+        "reference_information_extracted",
+        "reference_image_multiple",
+        "reference_strength_multiple",
+        "reference_information_extracted_multiple"
+      ]
+    },
+    {
+      "id": "precise",
+      "label": "精准参考",
+      "fields": [
+        "director_reference_images",
+        "director_reference_descriptions",
+        "director_reference_information_extracted",
+        "director_reference_strength_values",
+        "director_reference_secondary_strength_values"
+      ]
+    },
+    {
+      "id": "controlnet",
+      "label": "ControlNet",
+      "fields": [
+        "controlnet_condition",
+        "controlnet_model",
+        "controlnet_strength"
+      ]
+    },
+    {
+      "id": "output",
+      "label": "输出与兼容",
+      "fields": [
+        "image_format",
+        "straight_alpha",
+        "stream",
+        "upscale",
+        "upscaled_enhance",
+        "params_version",
+        "legacy",
+        "legacy_v3_extend"
+      ]
+    }
+  ],
+  "gateway": {
+    "baseURL": "",
+    "maxRequestBytes": 16777216,
+    "maxConvertedResponseBytes": 33554432,
+    "maxConcurrency": 1,
+    "upstreamTimeoutSeconds": 240,
+    "urlExpirySeconds": 3600,
+    "size": {
+      "minimum": 64,
+      "maximum": 4096,
+      "multipleOf": 64
+    },
+    "n": {
+      "minimum": 1,
+      "maximum": 8
+    },
+    "responseFormats": [
+      "b64_json",
+      "url"
+    ],
+    "wrapperFields": [
+      "endpoint",
+      "query",
+      "body",
+      "parameters",
+      "action",
+      "response"
+    ],
+    "standardFields": [
+      "model",
+      "prompt",
+      "size",
+      "n",
+      "response_format",
+      "stream",
+      "quality",
+      "output_format",
+      "background",
+      "style"
+    ],
+    "precedence": [
+      "built-in model defaults",
+      "deployment defaults",
+      "standard size/n",
+      "novelai.parameters"
+    ],
+    "nativeBodyBypassesTranslation": true,
+    "unsupportedStandardOptions": [
+      "quality: low/medium/high/hd",
+      "style",
+      "output_format: jpeg/webp",
+      "background: transparent",
+      "stream: true"
+    ],
+    "observedUnavailableNativeGET": [
+      "/healthz",
+      "/models",
+      "/user/subscription",
+      "/ai/generate-image/suggest-tags",
+      "/novelai/text/oa/v1/models"
+    ]
+  },
+  "actions": [
+    "generate",
+    "img2img",
+    "infill"
+  ],
+  "directorTools": [
+    {
+      "id": "bg-removal",
+      "name": "移除背景"
+    },
+    {
+      "id": "lineart",
+      "name": "线稿"
+    },
+    {
+      "id": "sketch",
+      "name": "草图"
+    },
+    {
+      "id": "colorize",
+      "name": "上色"
+    },
+    {
+      "id": "emotion",
+      "name": "表情"
+    },
+    {
+      "id": "declutter",
+      "name": "清理杂物"
+    },
+    {
+      "id": "declutter-keep-bubbles",
+      "name": "清理杂物并保留对话框",
+      "experimental": true,
+      "note": "Official client request implementation exists but current visible tool list hides it."
+    }
+  ],
+  "toolGuidance": {
+    "emotionPromptFormat": "<emotion>;;<additional prompt>",
+    "defryValues": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "upscaleBlurSigmaValues": [
+      0,
+      0.3,
+      0.35,
+      0.4,
+      0.45,
+      0.5
+    ],
+    "pixelSnap": "Official browser-local operation, not a gateway endpoint.",
+    "directorUpscale": "Use /ai/upscale, not augment req_type.",
+    "emotions": [
+      "neutral",
+      "happy",
+      "sad",
+      "angry",
+      "scared",
+      "surprised",
+      "tired",
+      "excited",
+      "nervous",
+      "thinking",
+      "confused",
+      "shy",
+      "disgusted",
+      "smug",
+      "bored",
+      "laughing",
+      "irritated",
+      "aroused",
+      "embarrassed",
+      "worried",
+      "love",
+      "determined",
+      "hurt",
+      "playful"
+    ]
+  }
+}

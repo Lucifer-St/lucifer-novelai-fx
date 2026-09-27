@@ -1,0 +1,11 @@
+import {X} from 'lucide-react';
+
+export function OpusBatchControls({enabled,onChange,disabled,reason}){
+ return <section className="opus-batch-controls"><label className="toggle"><input type="checkbox" aria-label="Opus 0 Anlas 模式（多图限定）" checked={enabled} disabled={disabled} onChange={e=>onChange(e.target.checked)}/><span>Opus 0 Anlas 模式<small>多图限定 · 逐张生成</small></span></label>{enabled&&<p className="hint">有效 Opus 且额度充足时预计 0 Anlas；仍消耗 V5 额度。聚合网关可能另行收费。仅文生图，≤28 步、≤1,048,576 像素。</p>}{reason&&<p className="hint">{reason}</p>}</section>;
+}
+const labels={queued:'等待生成',running:'正在生成',success:'已完成',error:'生成失败',unknown:'回执未知',not_submitted:'未提交'};
+export function OpusBatchResults({job,onSelect,onStop,onDismiss,selectedId}){
+ if(!job?.batch)return null;const running=['queued','running','stopping'].includes(job.status),done=job.batch.items.filter(i=>i.status==='success').length;
+ return <section className="opus-batch-results" aria-label="逐张生成结果"><header><div><strong>逐张生成 · {done}/{job.batch.items.length}</strong><small>{running&&job.cancelRequested?'正在停止当前接收':job.status==='stopping'?'已停止后续提交，仍在等待当前张':running?'结果逐张填入，可点击已完成图片':job.status==='success'?'全部完成':job.status==='stopped'?'已停止后续任务':'已停止 · 保留已完成图片'}</small></div>{running?<div><button disabled={job.status==='stopping'} onClick={()=>onStop()}>停止后续图片</button><button type="button" onClick={()=>onStop({cancelCurrent:true})} title="立即停止本地接收和后续任务；上游可能仍在生成或计费，不会自动重试。">立即停止接收</button></div>:<button type="button" className="opus-batch-dismiss" onClick={onDismiss} aria-label="关闭逐张生成结果" title="关闭结果栏，图片保留在历史记录"><X size={16}/></button>}</header>{running&&<small className="hint">停止后续会保留当前张；立即停止仅结束本地接收，上游生成与计费状态可能未知。</small>}<div className="opus-batch-strip">{job.batch.items.map(item=><button key={item.index} disabled={!item.result?.images?.length} className={selectedId===item.result?.id?'selected':''} onClick={()=>onSelect(item.result)} aria-label={`第 ${item.index+1} 张 · ${labels[item.status]||item.status}`} title={item.error?.message||`Seed ${item.seed}`}>
+ {item.result?.images?.[0]?<img src={item.result.images[0].url} alt={`批次图片 ${item.index+1}`}/>:<span className="opus-slot-placeholder">{item.index+1}</span>}<span>{item.index+1} · {labels[item.status]||item.status}</span></button>)}</div><small className="hint">逐请求 1 张 · 0 Anlas 为条件预估，网关费用另计</small></section>;
+}

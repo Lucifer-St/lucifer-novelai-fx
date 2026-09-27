@@ -1,0 +1,46 @@
+{
+  "name": "lucifer-novelai-fx-share",
+  "version": "1.8.0",
+  "private": true,
+  "engines": {
+    "node": ">=22.19.0"
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "server": "node server/index.mjs",
+    "build": "vite build",
+    "start": "node server/index.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "test:ui": "playwright test",
+    "test:themes": "playwright test --config playwright.themes.config.mjs",
+    "package:windows": "node scripts/package-windows.mjs",
+    "audit:release": "node scripts/audit-public-candidate.mjs",
+    "prepare:public": "node scripts/prepare-public-source.mjs",
+    "qa:server": "node scripts/qa-server.mjs",
+    "mcp": "node scripts/fx-mcp.mjs",
+    "fx": "node scripts/fx.mjs"
+  },
+  "dependencies": {
+    "@capacitor/android": "8.5.2",
+    "@capacitor/core": "8.5.2",
+    "fflate": "^0.8.2",
+    "lucide-react": "^0.468.0",
+    "pngjs": "7.0.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "undici": "8.10.2"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "8.5.2",
+    "@playwright/test": "^1.63.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "vite": "^7.1.0"
+  },
+  "overrides": {
+    "xcode": {
+      "uuid": "11.1.1"
+    }
+  },
+  "license": "MIT"
+}

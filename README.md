@@ -147,6 +147,12 @@ D 站（Danbooru）图库可以按标签、评分、排序和上传时间浏览�
 
 ## 更新说明
 
+### 分享版源码公开 · 2026-09-27
+
+分享版完整应用代码现以 [MIT](./LICENSE) 开源，包含前后端、Windows 启动器与更新器、目录选择器、CLI / MCP、测试与打包脚本，以及冻结的 Android 原生源码。个人版 Grok / ComfyUI 不在公开范围；角色美术保持独立权利说明。Windows 下载版本仍为 1.8.0，本次不替换已有安装包。
+
+[从源码运行](./docs/DEVELOPMENT.md) · [许可与素材边界](./docs/SOURCE-LICENSE.md)
+
 ### [v1.8.0](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/tag/v1.8.0) · 2026-09-26
 
 - **两种提示词布局**：在“图像工具 / API → 工作区布局”选择“经典标签布局”或“合并滚动布局”，主界面不增加布局设置入口。
@@ -227,7 +233,7 @@ D 站（Danbooru）图库可以按标签、评分、排序和上传时间浏览�
 - Windows 凭据由当前账户的 DPAPI 保护；图片、历史、卡片、预设、草稿和连接设置默认保存在便携目录的 `userdata`。主题、三栏宽度等界面选择保存在应用的浏览器本地存储中。
 - 工具备份为 JSON，包含卡片、完整预设、非秘密连接设置、新手模式、已列入导出的界面选择，以及生成图库收藏、标签和标注；不包含 API key、图片、历史、账本或创作草稿。参考图草稿保存在浏览器来源对应的 IndexedDB，JSON 备份不包含这些浏览器数据。完整迁移请备份整个 `userdata`、相关浏览器数据和自选图片目录；SQLite 派生索引可重建，图片标注与参考图编码记录则保存在 `userdata` 中。去参数分享会另存副本；它不能代替作品授权判断。
 - Anlas 面板区分条件估算、手动官网校准、账户回读和未知消费。Opus 的 0 Anlas 有账户、额度、尺寸、步数、单张和无 base image 等条件；V5 还有可恢复 usage limit，因此这不是“免费承诺”。当前规则以 [NovelAI FAQ](https://docs.novelai.net/en/faq/) 为准。
-- 启动时应用会读取可用模型：官方连接使用随包模型定义；已配置 OpenAI-compatible 网关时，可能向该服务的模型列表做只读检查。主动连接检查和生成访问用户配置的服务；打开 D 站图库或法典图鉴会访问相应公开数据与图片；外部翻译只复制文字并打开由用户操作的网页；更新检查只在点击后访问 GitHub。
+- 启动时应用会读取可用模型：官方连接使用随包模型定义；已配置 OpenAI-compatible 网关时，可能向该服务的模型列表做只读检查。主动连接检查和生成访问用户配置的服务；打开 D 站图库或法典图鉴会访问相应公开数据与图片；外部翻译只复制文字并打开由用户操作的网页；更新检查可在启动后及定期间隔访问 GitHub，并可在设置中关闭；下载与安装需要主动点击。
 
 <details>
 <summary><strong>CLI、MCP 与 Agent</strong></summary>
@@ -258,6 +264,6 @@ Agent 使用同一份本机设置，但配置不包含 API key。普通桌面使
 
 普通问题使用 [Bug 表单](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=bug_report.yml)，想法使用 [改进建议表单](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=feature_request.yml)。应用只在本机生成反馈预览，不会替你提交。API key、Token、Cookie、私有 Prompt、本机路径、原始日志、图片、用户数据和上游响应正文不得粘贴到公开 Issue；安全漏洞请使用 [GitHub 私密漏洞报告](https://github.com/Lucifer-St/lucifer-novelai-fx/security/advisories/new)，详见 [安全报告说明](./SECURITY.md)。
 
-本公开仓库只保存说明、截图、Issue 模板与 Windows Release，不公开开发源码。便携包包含运行所需的编译后 JavaScript 等资源；这不等于公开开发源码仓库，也不表示运行文件不可查看。GitHub 自动生成的 Source code（zip / tar.gz）只含本仓库文档与素材，不是可运行应用。
+本仓库公开分享版完整应用源码，采用 [MIT License](./LICENSE)。直接使用请下载 Windows Release；开发请按 [开发说明](./docs/DEVELOPMENT.md) 安装依赖并构建。源码公开后的提交包含应用源码；旧版本 tag 的自动 Source code 存档仍只有当时的文档与素材。角色插画、截图、内置封面和第三方资源不自动纳入 MIT，详见 [许可边界](./docs/SOURCE-LICENSE.md)。
 
 应用及截图中可能出现第三方名称、商标、角色或美术素材，相关权利归各自权利人。程序依赖的许可证文本随 Windows 下载包提供。

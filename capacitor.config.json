@@ -1,0 +1,8 @@
+{
+  "appId": "app.luciferfx.share",
+  "appName": "Lucifer NovelAI FX",
+  "webDir": "dist",
+  "server": {"url":"http://127.0.0.1:8796","cleartext":true,"allowNavigation":["127.0.0.1"]},
+  "android": {"allowMixedContent":false,"webContentsDebuggingEnabled":false},
+  "plugins": {"SplashScreen":{"launchShowDuration":0}}
+}

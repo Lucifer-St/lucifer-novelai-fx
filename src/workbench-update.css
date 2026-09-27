@@ -1,0 +1,34 @@
+.app .left-panel .character .character-prompt-editor{height:auto;min-height:0;max-height:none;resize:none;overflow:visible}
+.left-panel .character-prompt-editor .weighted-prompt-input textarea{flex:none;min-height:100px;height:100px;max-height:600px;resize:vertical;overflow-y:auto}
+.left-panel .character-prompt-editor .weighted-prompt-input{min-height:100px;flex:none}.character-prompt-editor [hidden]{display:none!important}
+.official-preset-control{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:11px;min-width:0}.official-preset-control select{width:auto;min-width:0;max-width:100%;padding:5px 7px;font:inherit}.prompt-editor-footer:has(.official-preset-control){flex-wrap:wrap;gap:8px}.official-preset-controls{flex-wrap:wrap}
+.slider-label-text{display:flex;align-items:center;gap:5px;min-width:0}.slider-label-text>label{font-size:12px;line-height:1.5}
+.parameter-help{position:relative;flex:none;display:inline-flex}.parameter-help-button{width:16px!important;height:16px!important;min-height:16px!important;padding:0!important;border-radius:50%!important;font-size:10px!important;line-height:14px!important;opacity:.7}
+.parameter-help [role=tooltip]{display:none;position:absolute;z-index:12;top:22px;right:-18px;width:205px;max-width:65vw;padding:10px 12px;border:1px solid #a8aabc;background:#252536;color:#fff;box-shadow:0 5px 18px #0003;border-radius:8px;font-size:12px;line-height:1.7;font-weight:400}
+.parameter-help:hover [role=tooltip],.parameter-help:focus-within [role=tooltip]{display:block}.slider-label{gap:6px}.slider-label>input{flex:none}
+.anlas-toolbar{display:inline-flex;align-items:center;gap:0;white-space:nowrap}.anlas-reset-button{padding:4px!important;min-width:23px}.anlas-reset-confirm{padding:20px 26px;max-width:520px;line-height:1.9}.anlas-reset-confirm .row-buttons{justify-content:flex-end;margin-top:20px}
+@media(max-width:900px){.left-panel .character-prompt-editor .weighted-prompt-input textarea{max-height:420px}}
+
+.atlas-toolbar{flex-wrap:wrap}.atlas-toolbar>div:first-child{flex:1;min-width:180px}.atlas-error{padding:9px 16px;color:#bb434f;line-height:1.7}.agent-setup-panel{padding:22px 28px;max-width:800px;line-height:1.8}.agent-setup-panel h3{display:flex;gap:9px;align-items:center}.agent-setup-panel textarea{display:block;width:100%;resize:vertical;min-height:260px;font-family:Consolas,monospace;font-size:12px;line-height:1.7;margin:14px 0}.agent-setup-panel>.primary{display:inline-flex;align-items:center;gap:7px}.atlas-dialog:not([open]){display:none!important}
+
+.android-combined .right-panel,.android-combined .panel-resizer{display:none!important}.android-combined{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr)!important}.android-settings-inline{padding:18px 16px;border-top:1px solid color-mix(in srgb,currentColor 15%,transparent);margin-top:18px}.android-settings-inline .inspector-settings-content{display:block!important;padding:0!important;overflow:visible!important}.android-settings-inline .comparison-controls,.android-settings-inline .opus-batch-controls{margin-bottom:18px}.android-combined .left-scroll{overflow:auto;min-height:0}.android-combined .left-panel{display:flex!important}.android-combined .prompt-content{--auto-prompt-height:360px!important}.android-combined .weighted-prompt-input textarea{min-height:300px}.android-combined .generate-dock{position:sticky;bottom:0;flex-shrink:0;z-index:3}
+@media(max-width:900px){.android-combined{grid-template-columns:minmax(0,1fr)!important}.android-combined.mobile-canvas .left-panel{display:none!important}.android-combined.mobile-prompt .workspace{display:none!important}.android-combined .left-panel{height:100%;min-height:0}.android-combined .model-block{padding-top:12px;padding-bottom:12px}.android-combined .left-scroll{flex:1}.android-settings-inline .inspector-settings-content{max-height:none!important}.android-combined .character-prompt-editor .weighted-prompt-input textarea{height:360px}}
+.app[data-platform=android]{height:100dvh;min-height:0;overflow:hidden}
+.app[data-platform=android] .studio{flex:1;min-height:0;overflow:hidden}
+.app[data-platform=android] .studio .left-panel{min-height:0;height:100%;overflow:hidden}
+.app[data-platform=android] .left-scroll{flex:1;min-height:0;overflow-y:auto}
+.app[data-platform=android] .generate-dock{position:relative;flex-shrink:0;padding:10px 14px}
+.app[data-platform=android] .topbar{padding:7px 12px;gap:5px;min-height:0}
+.app[data-platform=android] .topbar .brand{font-size:16px;gap:5px}
+.app[data-platform=android] .topbar .brand>svg{width:21px;height:21px}
+.app[data-platform=android] .topbar .feature-nav{display:flex;flex:0 0 100%;flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;padding:5px 0;margin:0;gap:5px}
+.app[data-platform=android] .topbar .feature-nav>button{min-height:28px;font-size:11px;white-space:nowrap;flex:none}
+.app[data-platform=android] .topbar nav{padding-top:4px;border:0;flex-basis:auto}
+.app[data-platform=android] .topbar .image-import-button{position:static;flex:0 0 auto;margin-left:auto}
+.app[data-platform=android] .topbar nav button{padding:5px 7px;font-size:11px}
+.app[data-platform=android] .mobile-tabs{flex-shrink:0;padding:5px 12px}
+.app[data-platform=android] .statusbar{display:none}
+.app[data-platform=android] .model-block{padding:9px 12px}
+.app[data-platform=android] .mobile-canvas .canvas-column{height:100%;min-height:0;overflow-y:auto}
+
+.app .canvas-toolbar.image-mode-toolbar{height:auto;min-height:48px;flex-wrap:wrap;gap:6px;padding-block:8px}.app .image-mode-toolbar>div{flex-wrap:wrap;justify-content:flex-end}

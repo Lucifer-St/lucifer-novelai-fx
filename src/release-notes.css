@@ -1,0 +1,81 @@
+/* Sugar's release notes are intentionally independent from workbench skin selectors. */
+dialog.release-notes-dialog{
+ --release-ink:#244258;
+ --release-copy:#526d80;
+ --release-line:#dcecf2;
+ --release-accent:#266f85;
+ width:min(960px,calc(100vw - 40px));
+ max-width:calc(100vw - 24px);
+ max-height:calc(100dvh - 40px);
+ margin:auto;padding:0;border:1px solid #d8e9ef;border-radius:20px;
+ background:#fbfdff;color:var(--release-ink);color-scheme:light;
+ box-shadow:0 24px 90px #14334e38,0 3px 15px #14334e12;
+ font:15px/1.8 "Segoe UI","Microsoft YaHei","PingFang SC","Noto Sans SC",sans-serif;
+ overflow:hidden;overscroll-behavior:contain;
+}
+.release-notes-dialog,.release-notes-dialog *{box-sizing:border-box}
+.release-notes-dialog::backdrop{background:#19374f73;backdrop-filter:blur(5px)}
+.release-notes-shell{
+ height:min(690px,calc(100dvh - 42px));max-height:inherit;min-height:0;
+ display:grid;grid-template-columns:minmax(0,1fr) 276px;
+ grid-template-rows:auto minmax(0,1fr) auto;
+ background:linear-gradient(110deg,#fff,#fbfdff 66%,#eff8fc);
+}
+.release-notes-header{grid-column:1/-1;position:relative;padding:28px 76px 22px 32px}
+.release-notes-heading{display:flex;align-items:center;flex-wrap:wrap;gap:10px 14px;min-width:0}
+.release-notes-heading h2{margin:0;font-size:25px;font-weight:650;line-height:1.4;letter-spacing:.3px;color:var(--release-ink);overflow-wrap:anywhere}
+.release-notes-version{display:inline-block;max-width:100%;padding:3px 12px;background:#e3f4f8;border:1px solid #d0ebf1;border-radius:20px;font-size:12px;font-weight:600;line-height:1.65;color:#286d82;overflow-wrap:anywhere}
+.release-notes-intro{margin:8px 0 0;color:var(--release-copy);font-size:13px;line-height:1.7}
+.release-notes-dialog .release-notes-close{position:absolute;right:20px;top:22px;display:grid;place-items:center;width:44px;height:44px;min-height:44px;padding:0;border:1px solid transparent;border-radius:10px;background:transparent;color:#56768a;cursor:pointer;box-shadow:none}
+.release-notes-dialog .release-notes-close:hover{background:#eaf4f8;border-color:#d7e8ef;color:#244e64}
+.release-notes-content{grid-area:2/1/3/2;min-width:0;min-height:0;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable;scrollbar-width:thin;scrollbar-color:#b8d5e2 transparent;padding:0 12px 18px 32px;outline:none}
+.release-notes-list{list-style:none;margin:0;padding:0}
+.release-notes-feature{display:grid;grid-template-columns:32px minmax(0,1fr);gap:14px;align-items:start;padding:18px 0;border-bottom:1px solid var(--release-line)}
+.release-notes-feature:first-child{padding-top:5px}
+.release-notes-feature:last-child{border-bottom:0;padding-bottom:8px}
+.release-notes-number{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#e4f4f8;color:#28748a;font-size:12px;font-weight:650;line-height:1;margin-top:1px;font-variant-numeric:tabular-nums}
+.release-notes-feature-copy{min-width:0}
+.release-notes-feature-copy h3{margin:0 0 6px;color:var(--release-ink);font-size:15px;font-weight:650;line-height:1.6;overflow-wrap:anywhere}
+.release-notes-feature-copy p{margin:0;color:var(--release-copy);font-size:14px;font-weight:400;line-height:1.85;white-space:pre-line;overflow-wrap:anywhere}
+.release-notes-empty{margin:4px 0 24px;color:var(--release-copy);font-size:14px}
+.release-notes-art{grid-area:2/2/4/3;position:relative;min-height:0;min-width:0;isolation:isolate;overflow:hidden;pointer-events:none;user-select:none;border-left:1px solid #e3f0f5;background:linear-gradient(150deg,#f1faff66,#e9f5fb 75%,#edf7f8);border-radius:18px 0 0 0}
+.release-notes-art-light{position:absolute;inset:12% 10% 3%;border-radius:50%;background:radial-gradient(ellipse,#fff 0%,#f8ffff88 50%,transparent 72%);z-index:-1}
+.release-notes-art img{display:block;position:absolute;inset:auto 0 0 auto;width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;object-position:right bottom;pointer-events:none}
+.release-notes-footer{grid-area:3/1/4/2;min-width:0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:18px 24px 22px 32px;border-top:1px solid var(--release-line);background:#f5fbfd}
+.release-notes-reopen{display:flex;align-items:center;gap:7px;color:var(--release-copy);font-size:11px;line-height:1.7;margin:0}
+.release-notes-reopen svg{flex:none;color:#6a92a6}
+.release-notes-dialog .release-notes-dismiss{display:inline-flex;align-items:center;justify-content:center;gap:12px;flex:none;min-height:44px;min-width:132px;padding:10px 19px;border:1px solid #286e82;border-radius:10px;background:var(--release-accent);color:#fff;font-family:inherit;font-size:14px;font-weight:600;line-height:1.5;cursor:pointer;box-shadow:0 3px 8px #266f8515;white-space:nowrap}
+.release-notes-dialog .release-notes-dismiss:hover{background:#1d5e74;border-color:#1d5e74;color:#fff}
+.release-notes-dialog :is(.release-notes-close,.release-notes-dismiss):focus-visible{outline:2px solid #2a7f9d;outline-offset:3px}
+.release-notes-dialog .release-notes-content:focus-visible{outline:2px solid #6aacc2;outline-offset:-3px}
+@media(min-width:701px) and (max-height:560px){
+ dialog.release-notes-dialog{max-height:calc(100dvh - 24px)}
+ .release-notes-shell{height:calc(100dvh - 26px);grid-template-columns:minmax(0,1fr) 220px}
+ .release-notes-header{padding-top:16px;padding-bottom:14px}
+ .release-notes-heading h2{font-size:21px}
+ .release-notes-dialog .release-notes-close{top:14px}
+ .release-notes-footer{padding-top:12px;padding-bottom:12px}
+}
+@media(max-width:700px){
+ dialog.release-notes-dialog{width:calc(100vw - 24px);max-width:calc(100vw - 24px);max-height:calc(100dvh - 24px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));border-radius:16px}
+ .release-notes-shell{height:min(720px,calc(100dvh - 26px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px)));grid-template-columns:minmax(0,1fr) 100px;grid-template-rows:auto minmax(0,1fr) 116px}
+ .release-notes-header{padding:20px 64px 17px 20px}
+ .release-notes-heading{gap:8px}
+ .release-notes-heading h2{font-size:21px;line-height:1.4}
+ .release-notes-version{font-size:11px;padding:2px 9px}
+ .release-notes-intro{font-size:12px;margin-top:7px}
+ .release-notes-dialog .release-notes-close{top:12px;right:10px}
+ .release-notes-content{grid-area:2/1/3/3;padding:0 15px 14px 20px}
+ .release-notes-feature{grid-template-columns:28px minmax(0,1fr);gap:11px;padding:15px 0}
+ .release-notes-number{width:27px;height:27px;font-size:11px}
+ .release-notes-feature-copy h3{font-size:15px}
+ .release-notes-feature-copy p{font-size:14px;line-height:1.85}
+ .release-notes-footer{grid-area:3/1/4/3;align-content:center;align-items:center;justify-content:flex-start;gap:8px;padding:13px 110px 13px 20px}
+ .release-notes-dialog .release-notes-dismiss{order:-1;min-width:122px}
+ .release-notes-reopen{font-size:10px;gap:5px}
+ .release-notes-reopen svg{width:13px;height:13px}
+ .release-notes-art{grid-area:3/2/4/3;border-left:0;border-radius:0;background:transparent}
+ .release-notes-art img{width:calc(100% - 12px);height:110px;right:6px;bottom:2px}
+ .release-notes-art-light{display:none}
+}
+@media(prefers-reduced-motion:reduce){.release-notes-dialog :is(.release-notes-close,.release-notes-dismiss){transition:none}}

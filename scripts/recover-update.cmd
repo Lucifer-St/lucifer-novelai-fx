@@ -1,0 +1,5 @@
+@echo off
+setlocal
+set "FX_RECOVERY_ROOT=%~dp0"
+powershell.exe -NoProfile -NonInteractive -Command "$ErrorActionPreference='Stop'; $root=[IO.Path]::GetFullPath($env:FX_RECOVERY_ROOT); $lock=Join-Path $root 'userdata\update.lock'; if(-not(Test-Path -LiteralPath $lock)){Write-Host 'No interrupted update was found.'; exit 0}; $record=Get-Content -LiteralPath $lock -Raw | ConvertFrom-Json; $transaction=[IO.Path]::GetFullPath($record.transaction); $prefix=[IO.Path]::GetFullPath((Join-Path $root 'userdata\updates'))+[IO.Path]::DirectorySeparatorChar; if(-not $transaction.StartsWith($prefix,[StringComparison]::OrdinalIgnoreCase)){throw 'Invalid recovery directory'}; $hostFile=Join-Path $transaction 'UpdateHost.exe'; $plan=Join-Path $transaction 'plan.json'; & $hostFile '--recover-update' $root $plan; if($LASTEXITCODE -ne 0){throw 'Recovery needs attention. Keep all backup files.'}; $launcher=Join-Path $root '启动 Lucifer FX.exe'; Start-Process -FilePath $launcher -WindowStyle Hidden"
+if errorlevel 1 pause

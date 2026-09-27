@@ -1,0 +1,11 @@
+{
+  "repository": "https://github.com/DominikDoom/a1111-sd-webui-tagcomplete",
+  "commit": "4170882f90b47be130a0ff9314f663c230b9153d",
+  "retrievedAt": "2026-09-21T18:46:17.5341035Z",
+  "originalSha256": "F936684FA0B041E9A55D35F2052588E28D95EEF8672BE6829241F8B1A7214732",
+  "file": "tags/danbooru.csv",
+  "entries": 140782,
+  "format": "[tag, category, post_count, comma-separated aliases]",
+  "notes": "Bundled upstream snapshot; counts are historical, not live popularity. Danbooru records do not prove NovelAI V5 familiarity.",
+  "sha256": "5a220a93c3eb1f808c6539b8f7ee1f8e6eae2ddda6dee4602d124799e87c036f"
+}

@@ -1,0 +1,2 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" fill="none"><defs><g id="c" stroke="#bd9b62" stroke-width=".8"><path d="M1 39V17Q1 1 17 1h22M6 37V20Q6 6 20 6h17M3 23C19 22 19 8 30 3M5 19c3-9 10-5 8-1s-8 0-5-5"/><path d="m3 3 6 2-4 4zM18 7l3 6-6-3zM10 28l3 4-5 1z" fill="#e6cf9a" fill-opacity=".5"/></g></defs><use href="#c"/><use href="#c" transform="translate(120 0) rotate(90)"/><use href="#c" transform="translate(120 120) rotate(180)"/><use href="#c" transform="translate(0 120) rotate(270)"/></svg>
+

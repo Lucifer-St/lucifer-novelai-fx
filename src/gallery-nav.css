@@ -1,0 +1,8 @@
+.danbooru-nav{display:inline-flex;align-items:center;gap:5px}
+@media(min-width:901px) and (max-width:1250px){
+ .app .topbar{height:auto;min-height:94px;flex-wrap:wrap;padding-top:8px;padding-bottom:8px;row-gap:6px}
+ .app .topbar>.feature-nav{order:10;flex:0 0 100%;justify-content:flex-start}
+ .app .topbar>:is(.brand,nav,button,.connection){flex-shrink:0}
+ .app .topbar button{white-space:nowrap}
+}
+@media(max-width:900px){.app .topbar>.feature-nav{flex-wrap:wrap;max-width:100%}}
