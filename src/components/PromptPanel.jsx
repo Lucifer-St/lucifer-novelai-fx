@@ -3,28 +3,17 @@ import {isV45,modelSpec} from '../lib/model-policy.mjs';
 import {characterField,promptElementId} from '../lib/prompt-targets.mjs';
 import TagSuggestionSlot from './TagSuggestionSlot';
 import PromptCardStrip from './PromptCardStrip';
-import { useState, useLayoutEffect, useRef } from "react";
+import { useState } from "react";
 import { Plus, Trash2, GripVertical, Move, ChevronDown, ChevronRight } from "lucide-react";
 import { Toggle, NumberField } from "./Fields";
 import {applyNegativePreset,negativePresets,qualityPresets,splitNegativePreset} from '../lib/official-presets.mjs';
 import WeightedPromptInput from "./WeightedPromptInput";
 import "../prompt-layout.css";
-export default function PromptPanel({ state: s, update, tab, setTab,cardSelection,savingCard,onSaveCard,onRemoveCard,onCardLibrary,onEditCard,onPickCard,libraryRevision,onReplacePromptRange,suggestionMode,onPosition,illustratedLayout=false, active=true, layout={mode:"classic",characters:{}}, onToggleMain, onToggleCharacter }) {
+export default function PromptPanel({ state: s, update, tab, setTab,cardSelection,savingCard,onSaveCard,onRemoveCard,onCardLibrary,onEditCard,onPickCard,libraryRevision,onReplacePromptRange,suggestionMode,onPosition,appearanceKey="classic", active=true, layout={mode:"classic",characters:{}}, onToggleMain, onToggleCharacter }) {
   const [promptMode, setPromptMode] = useState("positive");
   const [characterModes,setCharacterModes]=useState({});
   const merged=layout.mode==='merged',mainOpen=!merged||!layout.mainCollapsed;
   const negativePreset=splitNegativePreset(s.negative,s.model).preset;
-  const contentRef=useRef(null);
-  useLayoutEffect(()=>{
-    const content=contentRef.current,scroll=content?.closest('.left-scroll');if(!content||!scroll)return;
-    // Measure the fixed column, not the card tray, so opening cards never steals
-    // editor height. A native drag sets inline height and overrides this default.
-    // Illustrated headers keep their approved proportions. Let the left column
-    // scroll instead of reducing the useful editor to a few lines beneath them.
-    const bounds=illustratedLayout?scroll.closest('.left-panel')||scroll:scroll;
-    const resize=()=>{if(!active||!bounds.clientHeight)return;content.style.setProperty('--auto-prompt-height',`${innerWidth<=900?530:Math.max(illustratedLayout?560:500,bounds.clientHeight-(illustratedLayout?170:180)-(suggestionMode==='off'?0:128))}px`);};
-    resize();const observer=new ResizeObserver(resize);observer.observe(bounds);window.addEventListener('resize',resize);return()=>{observer.disconnect();window.removeEventListener('resize',resize);};
-  },[tab,suggestionMode,illustratedLayout,active]);
   const cardStrip = (owner, field, key, label) => <PromptCardStrip key={field} cards={validCards(owner[key+'Cards'],owner[key])} field={field} label={label} selection={cardSelection} saving={savingCard} onSave={onSaveCard} onRemove={onRemoveCard} onLibrary={onCardLibrary} onEdit={onEditCard} onPick={onPickCard} libraryRevision={libraryRevision} active={active&&(!merged?tab==='characters':!layout.characters?.[owner.id])&&(merged||(characterModes[owner.id]||'prompt')===key)}/>;
   function switchPromptTab(event) {
     if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
@@ -65,9 +54,9 @@ export default function PromptPanel({ state: s, update, tab, setTab,cardSelectio
           </button>
         ))}
       </div>
-      <div className="prompt-content prompt-layout-section" ref={contentRef} hidden={!merged&&tab!=="prompt"}>
+      <div className="prompt-content prompt-layout-section" hidden={!merged&&tab!=="prompt"}>
           <div className="prompt-layout-heading" hidden={!merged}><button type="button" aria-expanded={mainOpen} aria-controls="main-prompt-editor main-prompt-extras" onClick={onToggleMain}>{mainOpen?<ChevronDown size={16}/>:<ChevronRight size={16}/>}主提示词</button><small>正面 / 负面</small></div>
-          <div id="main-prompt-editor" className="prompt-editor" hidden={!mainOpen} title="拖动右下角调整提示词编辑区高度">
+          <div id="main-prompt-editor" className="prompt-editor" hidden={!mainOpen} title="提示词随内容伸缩，也可拖动输入框右下角调整">
             <div
               className="prompt-mode-tabs"
               role="tablist"
@@ -106,7 +95,7 @@ export default function PromptPanel({ state: s, update, tab, setTab,cardSelectio
             >
               <h4 className="merged-prompt-label" hidden={!merged}>主正面 Prompt</h4>
               <WeightedPromptInput
-                autoResize={merged} active={active&&mainOpen&&(merged||tab==='prompt'&&promptMode==='positive')}
+                autoResize resizeKey={appearanceKey+':'+layout.mode} active={active&&mainOpen&&(merged||tab==='prompt'&&promptMode==='positive')}
                 id="positive"
                 onReplaceRange={edit=>onReplacePromptRange?.('prompt',edit)}
                 suggestionMode={active&&mainOpen&&(merged||tab==='prompt')?suggestionMode:'off'}
@@ -114,7 +103,7 @@ export default function PromptPanel({ state: s, update, tab, setTab,cardSelectio
                 data-prompt-field="prompt"
                 aria-label="正面提示词"
                 className="positive"
-                rows={22}
+                rows={8}
                 placeholder={
                   "描述你想要的画面…\n\n人物、场景、构图、光线与风格，\n也可以拖入图片，继续已有的创作。"
                 }
@@ -141,7 +130,7 @@ export default function PromptPanel({ state: s, update, tab, setTab,cardSelectio
             >
               <h4 className="merged-prompt-label" hidden={!merged}>主负面 Undesired Content</h4>
               <WeightedPromptInput
-                autoResize={merged} active={active&&mainOpen&&(merged||tab==='prompt'&&promptMode==='negative')}
+                autoResize resizeKey={appearanceKey+':'+layout.mode} active={active&&mainOpen&&(merged||tab==='prompt'&&promptMode==='negative')}
                 id="negative"
                 onReplaceRange={edit=>onReplacePromptRange?.('negative',edit)}
                 suggestionMode={active&&mainOpen&&(merged||tab==='prompt')?suggestionMode:'off'}
@@ -149,7 +138,7 @@ export default function PromptPanel({ state: s, update, tab, setTab,cardSelectio
                 data-prompt-field="negative"
                 aria-label="负面提示词"
                 className="negative"
-                rows={22}
+                rows={8}
                 placeholder="描述你希望避免出现的内容…"
                 value={s.negative}
                 spellCheck="false"

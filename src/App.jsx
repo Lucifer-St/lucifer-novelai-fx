@@ -960,7 +960,7 @@ export default function App() {
                   onError={setError}
                   onReplacePromptRange={preparePromptReplacement}
                   suggestionMode={suggestionMode} onPosition={positionCharacterOnCanvas}
-                  illustratedLayout={isPrecureSkin(appearance.workbenchSkin)}
+                  appearanceKey={appearance.workbenchSkin}
                   cardSelection={cardSelection} savingCard={savingCard} onSaveCard={saveSelectedCard} onRemoveCard={removeUsedCard} onCardLibrary={field=>{const el=document.getElementById(promptElementId(field));if(el)promptSelection.current={id:el.id,field,label:el.getAttribute('aria-label'),start:el.selectionStart,end:el.selectionEnd};setFeature({type:'library'});}} onEditCard={editUsedCard} onPickCard={pickQuickCard} libraryRevision={libraryRevision}
                 />
                 {androidLayout&&<section className="android-settings-inline" aria-label="生成参数"><h3>生成参数</h3>              <div className="inspector-settings-content" hidden={!androidLayout&&settingsHidden}>

@@ -1,5 +1,5 @@
 {
-  "version": "1.8.0",
+  "version": "1.8.1",
   "gitHistory": false,
   "license": "MIT",
   "artworkLicense": "See docs/SOURCE-LICENSE.md",
@@ -542,7 +542,7 @@
     {
       "path": "docs/ANDROID-SOURCE.md",
       "bytes": 1348,
-      "sha256": "e3a6fabf03db53a2988407b4c20f097c250c793b5f19c951e734077cd655f613"
+      "sha256": "304d5368b490ac9015291628f18c9c173dcce2d6472a2f38a792a9f643a26bcb"
     },
     {
       "path": "docs/ART-NOTICE.md",
@@ -552,12 +552,12 @@
     {
       "path": "docs/DEVELOPMENT.md",
       "bytes": 1762,
-      "sha256": "9a553f837ad3c58db8ff06b66157c91aa9e96801c248efd663abc98925cc5c17"
+      "sha256": "777e3e1393251b989a7acd2fb2074f2c5ce1236ac87df0a784e40027f83f9526"
     },
     {
       "path": "docs/EDITION-DIFFERENCES.md",
       "bytes": 1352,
-      "sha256": "53a3724d200fb2ed89379027f388c80d7c3ecd0facaeeb7242d7c81843f5b491"
+      "sha256": "0aabba073733810953ed2c172df945531979dc57aba50469fa2e3cdfae00e7dd"
     },
     {
       "path": "docs/SOURCE-LICENSE.md",
@@ -567,12 +567,12 @@
     {
       "path": "docs/WINDOWS-QUICKSTART.md",
       "bytes": 8727,
-      "sha256": "983f894074fdaaf032c2f35931b2bcec461fdb28d82f68d604c7652c6baceccb"
+      "sha256": "53af8b39ead191912e1d867d0515f339f5607541066d570c379f451f3302b6f0"
     },
     {
       "path": "docs/WINDOWS.md",
       "bytes": 8733,
-      "sha256": "17b77d02260ae0bca29ee1483c127466bf5fb2c5d1b2c723777bb6cb4ebc1a11"
+      "sha256": "a75b5a5ab353cc138bc22a974bc1df21f1068223c6e7a4bb6d3755f77b9d2738"
     },
     {
       "path": "index.html",
@@ -587,12 +587,12 @@
     {
       "path": "package-lock.json",
       "bytes": 105023,
-      "sha256": "0073357dbcfa475597de15404628b60b7d30e9187b3a6c5116c502553df75981"
+      "sha256": "423c0fda66b9cdd6bbd85f84abfe6374c67951344120cf960284b5ccf6278876"
     },
     {
       "path": "package.json",
       "bytes": 1248,
-      "sha256": "b5903134b2f9481716d22c7b4df3f3c1867b30cdf1709d2a4d65ccb434bc68ca"
+      "sha256": "15bd743e3d99d6d5f4a2e92da521b17a8c60d0713908b6b6a63dbdccd0012cb6"
     },
     {
       "path": "playwright.config.mjs",
@@ -816,8 +816,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 25545,
-      "sha256": "5bcac5d2529fd59d29967072caccff620d3994c907266010cc6c374539091a1c"
+      "bytes": 26191,
+      "sha256": "66bd2d40eee0869ab48ff9c0fdc8b42f8c8093cd6860531dd453d90b2c92d890"
     },
     {
       "path": "scripts/apply-update.mjs",
@@ -1037,7 +1037,7 @@
     {
       "path": "shared/release-config.mjs",
       "bytes": 356,
-      "sha256": "ac341096ca6dd6794474d75c02fd70b3205d00e20b616523f2e11430103ac1b0"
+      "sha256": "b3feb84ae6824c83eccfb34a2a562713cae35a4a2eb5dac29f5b5e6bf39b5976"
     },
     {
       "path": "shared/schema.json",
@@ -1046,8 +1046,8 @@
     },
     {
       "path": "src/App.jsx",
-      "bytes": 83981,
-      "sha256": "529d7482147bbbc048b83fdb95e45017e2394ac1fd58be8057971233dd53f663"
+      "bytes": 83962,
+      "sha256": "5995c4a30fc2440ac2f46f050e3ab1a82fe16c348d2c1979ee2edab4787c17ef"
     },
     {
       "path": "src/appearance.css",
@@ -1246,8 +1246,8 @@
     },
     {
       "path": "src/components/PromptPanel.jsx",
-      "bytes": 17304,
-      "sha256": "709dc32f604b54e674d05c809e318042336b772e8cbd48a188cfc863ac41127d"
+      "bytes": 16253,
+      "sha256": "cf46ec8d5ea80a679bd15f2e838e606f1c4086b6390966463e1609fcf335e2bf"
     },
     {
       "path": "src/components/reference-panel.css",
@@ -1311,8 +1311,8 @@
     },
     {
       "path": "src/components/WeightedPromptInput.jsx",
-      "bytes": 7252,
-      "sha256": "f8358a2a4fded1112ce0c59c80e60ca397024a3c2428bda1de562287f3a98a9d"
+      "bytes": 7371,
+      "sha256": "5ca2abf1041e7a0781eeea4872ea1502173ee30efb7a3a4282338c974ab21a0c"
     },
     {
       "path": "src/components/WorkbenchTheme.jsx",
@@ -1541,8 +1541,8 @@
     },
     {
       "path": "src/lib/release-notes.mjs",
-      "bytes": 4571,
-      "sha256": "2200f40a574209acbb8685bc871f844f988607f44c51a06da04f6c1aca92cdfc"
+      "bytes": 5101,
+      "sha256": "99224267bfcc1627decddb2d1ac119ddd752aad553e5d429305ed635a9fd3915"
     },
     {
       "path": "src/lib/request.mjs",
@@ -1606,8 +1606,8 @@
     },
     {
       "path": "src/prompt-layout.css",
-      "bytes": 2759,
-      "sha256": "0b1de9cb1a96bd69d6b1cbb4dcfccc24710d61accc3fe1c82ae2c1ee4f5a975f"
+      "bytes": 2870,
+      "sha256": "0e42577b493cd3a79b9bafc5385ea62788a5b79b7a6c01257faf3df20e1bc796"
     },
     {
       "path": "src/release-center.css",
@@ -1711,8 +1711,8 @@
     },
     {
       "path": "tests/feedback2-prompt-ui.spec.mjs",
-      "bytes": 4379,
-      "sha256": "ec8bc4d43761d61a9d30569ee75a59ed8d8f238be2d1b2ca3bf799c2cc657fe3"
+      "bytes": 5261,
+      "sha256": "50a385bb96b74b652319bdb47cb46b77b31b18896d63020f8559cd174a4a66c5"
     },
     {
       "path": "tests/gateway-transport.test.mjs",
@@ -1831,8 +1831,8 @@
     },
     {
       "path": "tests/precure-themes-ui.spec.mjs",
-      "bytes": 6842,
-      "sha256": "55321d5ae8fa7fe56cc978670f5626150e3ca607af5de88ee2d240e048c6c460"
+      "bytes": 6898,
+      "sha256": "58261fa0dcc0e6e65f09b9b7a9b54f104ec5bfa5be7bc17a1895f2f2fe16d8ff"
     },
     {
       "path": "tests/prompt-feedback-ui.spec.mjs",

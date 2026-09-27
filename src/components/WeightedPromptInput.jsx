@@ -42,7 +42,7 @@ const mirrorProperties = [
 // The real textarea owns input, selection, undo, IME and accessibility. The
 // non-interactive mirror paints backgrounds only and contains no editable text.
 const WeightedPromptInput = forwardRef(function WeightedPromptInput(
-  { value = "", onScroll, onKeyDown, suggestionMode='off', suggestionTarget, onReplaceRange, autoResize=false, active=true, ...props },
+  { value = "", onScroll, onKeyDown, suggestionMode='off', suggestionTarget, onReplaceRange, autoResize=false, resizeKey, active=true, ...props },
   forwardedRef,
 ) {
   const input = useRef(null);
@@ -70,9 +70,10 @@ const WeightedPromptInput = forwardRef(function WeightedPromptInput(
     let width=textarea.clientWidth;
     const observer=new ResizeObserver(()=>{const next=textarea.clientWidth;if(next!==width){width=next;fitContent();}});
     observer.observe(textarea);
+    window.addEventListener('resize',fitContent);
     document.fonts?.addEventListener('loadingdone',fitContent);
-    return()=>{observer.disconnect();document.fonts?.removeEventListener('loadingdone',fitContent);};
-  },[autoResize,active,value]);
+    return()=>{observer.disconnect();window.removeEventListener('resize',fitContent);document.fonts?.removeEventListener('loadingdone',fitContent);};
+  },[autoResize,active,value,resizeKey]);
 
   function syncScroll() {
     if (!input.current || !mirror.current) return;

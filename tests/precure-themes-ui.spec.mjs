@@ -13,11 +13,11 @@ async function setup(page){
 test('approved Precure choices stay local, preserve editing and loading preference, and load no art in classic',async({page},info)=>{
  test.skip(info.project.name&&info.project.name!=='classic','This picker transition is independent of the initial project skin.');
  const ctx=await setup(page);await expect(page.getByLabel('正面提示词',{exact:true})).toBeVisible();expect(ctx.art).toEqual([]);
- await page.locator('.prompt-editor').evaluate(el=>el.style.height='615px');await page.getByLabel('正面提示词',{exact:true}).evaluate(el=>el.setSelectionRange(3,9));
+ await page.getByLabel('正面提示词',{exact:true}).evaluate(el=>el.style.height='350px');await page.getByLabel('正面提示词',{exact:true}).evaluate(el=>el.setSelectionRange(3,9));
  for(const [id,name] of skins){
   await page.getByLabel('皮肤与加载画面',{exact:true}).click();await page.getByRole('radio',{name,exact:true}).check();await page.getByLabel('关闭功能面板').click();
   await expect(page.locator('.app')).toHaveAttribute('data-workbench-skin',id);await expect(page.getByLabel('正面提示词',{exact:true})).toHaveValue('0.7::soft light::, blue sky');
-  expect(await page.locator('.prompt-editor').evaluate(el=>el.style.height)).toBe('615px');expect(await page.getByLabel('正面提示词',{exact:true}).evaluate(el=>[el.selectionStart,el.selectionEnd])).toEqual([3,9]);
+  expect(await page.getByLabel('正面提示词',{exact:true}).evaluate(el=>el.getBoundingClientRect().height)).toBeLessThan(280);expect(await page.getByLabel('正面提示词',{exact:true}).evaluate(el=>[el.selectionStart,el.selectionEnd])).toEqual([3,9]);
   expect(await page.evaluate(k=>JSON.parse(localStorage.getItem(k)),APPEARANCE_KEY)).toEqual({version:1,workbenchSkin:id,loadingSkin:'random',motion:'off',characterDecorations:false});
  }
  // Remove the fixture initializer; a new page must hydrate the actual saved choice.
