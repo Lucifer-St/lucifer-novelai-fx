@@ -2,6 +2,8 @@ import {cp,mkdir,readFile,readdir,writeFile,lstat} from 'node:fs/promises';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {stripImageMetadata} from '../server/image-privacy.mjs';
+import {assertReleaseMetadata} from './assert-release.mjs';
+await assertReleaseMetadata();
 const root=process.cwd(),version=JSON.parse(await readFile('package.json','utf8')).version;
 const destination=path.join(root,'release',`public-source-${version}-${new Date().toISOString().replace(/[:.]/g,'-')}`);
 // Explicit application-source export. Never copy Git history or local records.

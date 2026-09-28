@@ -1,4 +1,9 @@
-export const RELEASE_NOTES={version:'1.8.1',title:'更新说明',date:'2026-09-27',features:[
+import {RELEASE_CONFIG} from '../../shared/release-config.mjs';
+export const RELEASE_NOTES={version:RELEASE_CONFIG.version,title:'更新说明',date:'2026-09-27',features:[
+ {title:'光翼战姬三款皮肤',description:'新增 ExS-TiA、ExS-TiA Chevalier、ExS-TiA Magica。保留大幅官方立绘，搭配无框构图、淡色装备纹样与日文明朝体台词；从右上角「皮肤」切换。'},
+ {title:'外观与完整编辑功能同步',description:'三款皮肤覆盖展开／收起参数、手机及经典／合并布局。模型选择、提示词权重、中文输入、原生撤销、卡片和独立加载卡设置均保留。'},
+ {title:'新版通知更醒目',description:'默认启动检查，并在应用开启且联网时每6小时检查。发现新版本显示提醒卡；恢复联网后补查，检查失败不会让已发现的新版提示消失。下载和安装仍由你点击启动。'},
+ {title:'更新完成后展示本次公告',description:'更新重启后自动打开当前版本公告，关闭后本版本不再重复弹出；下次更新会重新展示，也可从顶栏信箱随时查看。'},
  {title:'主提示词中等起步，自适应内容',description:'所有皮肤的主正面、负面提示词框统一为中等默认高度。内容变长时增高，删短后缩回；超长内容在框内滚动，不再强制占据大半屏幕。'},
  {title:'经典与合并布局一致',description:'两款名侦探光之美少女皮肤取消过大的固定编辑区。经典标签布局和主角色合并布局都支持自适应，保留原有插画、折叠和角色提示词。'},
  {title:'编辑习惯继续保留',description:'支持拖动输入框右下角临时调整高度；文本、窗口尺寸或布局变化时重新适配。撤销、光标、中文输入和权重高亮保持原生编辑行为。'},

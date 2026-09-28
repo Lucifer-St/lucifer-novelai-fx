@@ -3,14 +3,14 @@
 ## 下载
 
 - 最新版本页面：<https://github.com/Lucifer-St/lucifer-novelai-fx/releases/latest>
-- `v1.8.1` Windows x64：<https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.8.1/Lucifer-NovelAI-FX-Share-1.8.1-Windows-x64.zip>
-- `v1.8.1` SHA-256：<https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.8.1/SHA256SUMS-1.8.1.txt>
+- `v1.9.0` Windows x64：<https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.9.0/Lucifer-NovelAI-FX-Share-1.9.0-Windows-x64.zip>
+- `v1.9.0` SHA-256：<https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.9.0/SHA256SUMS-1.9.0.txt>
 
 只从本仓库的 GitHub Release 下载。源码公开后的 main 分支包含分享版应用源码，需要安装依赖并构建。直接使用请下载 Windows ZIP；旧版本 tag 的自动 Source code 存档保留当时的文档和截图。
 
 ## 第一次启动
 
-1. 下载 ZIP，并核对 `SHA256SUMS-1.8.1.txt` 中对应文件的 SHA-256。
+1. 下载 ZIP，并核对 `SHA256SUMS-1.9.0.txt` 中对应文件的 SHA-256。
 2. 完整解压到普通可写目录。不要直接在 ZIP 预览中运行，也不要解压进已有旧版本目录。
 3. 双击 `启动 Lucifer FX.exe`。应用自带 Node.js 运行环境，不要求另装 Node、Python、Agent 或 ComfyUI。
 4. 在设置中选择连接类型：
@@ -39,7 +39,7 @@ Windows 可能显示未知发布者提醒。请先确认文件来自本仓库 Re
 
 ## 升级与回退
 
-从 1.6.0 起，应用启动后检查 GitHub 稳定版，此后每 6 小时检查一次；可在“更新 / 反馈”关闭自动检查。检查不上传提示词、图片、密钥或日志。
+从 1.6.0 起，应用启动后检查 GitHub 稳定版，此后每 6 小时检查一次；可在“更新 / 反馈”关闭自动检查。检查不上传提示词、图片、密钥或日志。1.9.0起，发现新版会显示提醒卡；恢复联网后补查，失败不会抹去已知新版本。应用关闭或离线时无法接收新通知，重新打开并联网后检查。更新完成重启后会弹出本版本公告，关闭后同版本不重复；顶栏信箱可重开。
 
 **1.6.0 及以后的应用内升级**：打开“更新 / 反馈” → “下载并校验更新” → 等待生成、批次和对照结束 → “安装并重启”。下载和安装均由你点击，应用会校验 GitHub 的 SHA-256、版本及每个文件。旧程序保存在 `userdata/updates`；用户数据与浏览器端草稿保持原位置，服务在原端口重启并自动刷新页面。新版无法启动时恢复旧版；意外断电后重新运行启动器会继续恢复。若启动器恰好不可用，运行同目录的 `恢复更新.cmd`。不要删除更新备份或 `update.lock` 来强行启动。
 

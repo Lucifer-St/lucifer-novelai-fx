@@ -2,6 +2,8 @@ import {memo,useSyncExternalStore} from 'react';
 import {isPrecureSkin,PrecurePromptHeader,PrecureInspectorArt,PrecureMobileBanner,PrecureSwatch} from './PrecureTheme';
 import {isTeresaSkin,TeresaPromptHeader,TeresaInspectorArt,TeresaMobileBanner,TeresaSwatch} from './TeresaTheme';
 
+import {isExstiaSkin,ExstiaPromptHeader,ExstiaInspectorArt,ExstiaMobileBanner,ExstiaSwatch} from './ExstiaTheme';
+
 const media=typeof window==='undefined'?null:window.matchMedia('(max-width: 900px)');
 const subscribe=listener=>{media?.addEventListener('change',listener);return()=>media?.removeEventListener('change',listener);};
 export const useNarrowWorkbench=()=>useSyncExternalStore(subscribe,()=>media?.matches??false,()=>false);
@@ -24,6 +26,7 @@ const images={
 };
 export const ThemePromptHeader=memo(function ThemePromptHeader({skin}){
  if(isTeresaSkin(skin))return <TeresaPromptHeader/>;
+ if(isExstiaSkin(skin))return <ExstiaPromptHeader skin={skin}/>;
  if(isPrecureSkin(skin))return <PrecurePromptHeader skin={skin}/>;
  if(skin==='book-contract')return <BookContractPlaque/>;
  if(!['symphonic','lemmtear'].includes(skin))return null;
@@ -31,6 +34,7 @@ export const ThemePromptHeader=memo(function ThemePromptHeader({skin}){
 });
 export const ThemeInspectorArt=memo(function ThemeInspectorArt({skin,compact=false}){
  if(isTeresaSkin(skin))return <TeresaInspectorArt compact={compact}/>;
+ if(isExstiaSkin(skin))return <ExstiaInspectorArt skin={skin} compact={compact}/>;
  if(isPrecureSkin(skin))return <PrecureInspectorArt skin={skin} compact={compact}/>;
  if(skin==='book-contract')return <ClaireBookmark compact={compact}/>;
  if(skin!=='symphonic')return null;
@@ -40,6 +44,7 @@ export function ThemeWorkbenchBanner({skin,narrow}){
  if(skin==='elixir')return <div className="elixir-frieze"><span className="elixir-cast rose" aria-hidden="true"><img src={images.elixir.duo} alt="" decoding="async"/></span><strong aria-hidden="true">NovelAI FX</strong><span className="elixir-cast lime" aria-hidden="true"><img src={images.elixir.duo} alt="" decoding="async"/></span></div>;
  if(!narrow)return null;
  if(isTeresaSkin(skin))return <TeresaMobileBanner/>;
+ if(isExstiaSkin(skin))return <ExstiaMobileBanner skin={skin}/>;
  if(isPrecureSkin(skin))return <PrecureMobileBanner skin={skin}/>;
  if(skin==='book-contract')return <BookContractMobile/>;
  if(skin==='symphonic')return <div className="symphonic-mobile"><img src={images.symphonic.left} alt=""/><strong>NovelAI FX</strong><img src={images.symphonic.right} alt=""/></div>;
@@ -48,6 +53,7 @@ export function ThemeWorkbenchBanner({skin,narrow}){
 }
 export function WorkbenchSwatch({skin}){
  if(isTeresaSkin(skin))return <TeresaSwatch/>;
+ if(isExstiaSkin(skin))return <ExstiaSwatch skin={skin}/>;
  if(isPrecureSkin(skin))return <PrecureSwatch skin={skin}/>;
  if(skin==='classic')return <span className="classic-mini"><i/><i/><i/></span>;
  if(skin==='book-contract')return <><img src={art+'bookplate.png'} width="1983" height="793" alt="" loading="lazy" decoding="async"/><img src={art+'claire-bookmark.png'} width="1536" height="1024" alt="" loading="lazy" decoding="async"/></>;

@@ -1,4 +1,6 @@
 import {build as buildFrontend} from 'vite';
+import {assertReleaseMetadata} from './assert-release.mjs';
+await assertReleaseMetadata();
 import {mkdir,readFile,writeFile,readdir,cp,stat,rename} from 'node:fs/promises';import path from 'node:path';import {createHash} from 'node:crypto';import {execFile}from'node:child_process';import{promisify}from'node:util';import {build}from'esbuild';import {unzipSync,zipSync}from'fflate';
 const appVersion=JSON.parse(await readFile(new URL('../package.json',import.meta.url),'utf8')).version;
 const exec=promisify(execFile),root=process.cwd(),version='v24.21.0',file=`node-${version}-win-x64.zip`,tools=path.join(root,'.tools'),release=path.join(root,'release');await mkdir(tools,{recursive:true});await mkdir(release,{recursive:true});await mkdir(path.join(root,'.local'),{recursive:true});

@@ -2,7 +2,7 @@
 
 **面向 NovelAI Diffusion V5 Full 与 V4.5 Full / Curated 的 Windows 中文创作工作台。** 这是个人维护的非官方前端，与 NovelAI 官方没有隶属关系。它把长 Prompt、角色、参数、图片配方、对照实验与本地资料组织在同一个界面中；只有你明确点击生成，才会向自己配置的 NovelAI 官方接口或兼容网关提交生图请求。
 
-[下载最新版](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/latest) · [直接下载 v1.8.1 Windows x64](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.8.1/Lucifer-NovelAI-FX-Share-1.8.1-Windows-x64.zip) · [核对 SHA-256](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.8.1/SHA256SUMS-1.8.1.txt) · [报告 Bug](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=bug_report.yml) · [提出改进](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=feature_request.yml)
+[下载最新版](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/latest) · [直接下载 v1.9.0 Windows x64](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.9.0/Lucifer-NovelAI-FX-Share-1.9.0-Windows-x64.zip) · [核对 SHA-256](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.9.0/SHA256SUMS-1.9.0.txt) · [报告 Bug](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=bug_report.yml) · [提出改进](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=feature_request.yml)
 
 <p align="center">
   <a href="./assets/readme/v2/hero.webp"><img src="./assets/readme/v2/hero.webp" width="100%" alt="Sugar、Lily、Claire 与 Noire 在创作工房共同整理画面、构图和配方"></a>
@@ -111,13 +111,16 @@ D 站（Danbooru）图库可以按标签、评分、排序和上传时间浏览�
   <a href="./assets/readme/v2/theme-archive.webp"><img src="./assets/readme/v2/theme-archive.webp" width="100%" alt="Claire 与 Noire 整理八种装帧布样和等待插画画册"></a>
 </p>
 
-## 8 套工作台主题，9 张独立等待插画
+## 11 套工作台主题，9 张独立等待插画
 
 主题改变工作台的装帧、角色装饰与信息层级，不改变 Prompt、参数、历史或生成请求。三栏宽度可以拖动调整并保存；收起参数栏或切换窄屏时，主题立绘按原始比例重新排布。
 
 | 工作台主题 | 视觉方向 |
 |---|---|
 | 经典版 | 清透蓝白 · 专注创作 |
+| ExS-TiA | 光之翼 · 蓝白光轨 |
+| ExS-TiA Chevalier | 王家之剑 · 绯色羽翼 |
+| ExS-TiA Magica | 四机翼阵 · 紫夜微光 |
 | Teresa · 特蕾莎 | 暖纸私笺 · 皇冠蜡封 |
 | Sacred Lineage | 双生书契 · Claire 书签 |
 | Symphonic | Lily & Sugar · 薄荷协奏 |
@@ -129,6 +132,14 @@ D 站（Danbooru）图库可以按标签、评分、排序和上传时间浏览�
 <p align="center">
   <a href="./assets/readme/v2/screens/themes.webp"><img src="./assets/readme/v2/screens/themes.webp" width="100%" alt="八款已实装主题的真实工作台缩略图：包含新增 Teresa"></a>
 </p>
+
+**1.9.0 新增光翼战姬系列**：大幅官方立绘、无框构图、装备线稿与分层明朝体台词。三款均支持参数栏收起、独立调整栏宽和手机布局；模型、权重高亮、卡片与加载画面选择保持完整。
+
+三款新主题截图使用分享版界面与本地模拟数据，未提交真实生图请求。
+
+![ExS-TiA Chevalier 分享版实际工作台](./assets/readme/v2/screens/skin-exstia-chevalier.png)
+
+[ExS-TiA](./assets/readme/v2/screens/skin-exstia.png) · [ExS-TiA Magica](./assets/readme/v2/screens/skin-exstia-magica.png)
 
 <details>
 <summary>查看各主题完整截图</summary>
@@ -146,6 +157,16 @@ D 站（Danbooru）图库可以按标签、评分、排序和上传时间浏览�
 图为 9 张等待插画中的 3 张示例。
 
 ## 更新说明
+
+### [v1.9.0](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/tag/v1.9.0) · 2026-09-27
+
+- **三款光翼战姬皮肤**：ExS-TiA、ExS-TiA Chevalier、ExS-TiA Magica 正式加入，支持经典／合并布局，保留原生编辑和独立加载卡。
+- **明确的新版本通知**：默认启动检查，联网运行时每6小时检查；恢复联网后补查。发现新版显示提醒卡，暂时关闭本版本提醒后仍保留顶栏入口，后续新版本独立提醒。
+- **失败后恢复**：更新检查失败不再缓存6小时，也不抹去已经发现的新版本。只读取公开发布信息，不自动下载或安装。
+- **更新后公告**：升级重启后自动展示当前版本公告；关闭后本版本不重复弹出，下次更新重新展示，信箱可随时重开。版本与公告在打包时检查一致性。
+
+自动检查可在「更新 / 反馈」关闭；应用关闭或离线时无法接收新通知，重新运行并联网后检查。1.6.0及以上可通过应用内更新升级；更早版本手动下载。Android仍冻结在1.1.1。
+
 
 ### [v1.8.1](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/tag/v1.8.1) · 2026-09-27
 
@@ -261,13 +282,13 @@ Agent 使用同一份本机设置，但配置不包含 API key。普通桌面使
 
 ## Windows 安装与升级
 
-支持 Windows 10/11 x64。下载 ZIP 后用同一 Release 中的 `SHA256SUMS-1.8.1.txt` 核对哈希，完整解压到普通可写目录，再双击 `启动 Lucifer FX.exe`。不要直接在 ZIP 预览中运行。首次进入后填写自己的连接，先做只读检查，再从单张、普通尺寸和较低步数开始。想使用完整的角色、对照与高级参数控制时，点击“展开完整功能”。完整步骤、文件位置与回退方法见 [Windows 安装、升级与隐私说明](./docs/WINDOWS.md)。
+支持 Windows 10/11 x64。下载 ZIP 后用同一 Release 中的 `SHA256SUMS-1.9.0.txt` 核对哈希，完整解压到普通可写目录，再双击 `启动 Lucifer FX.exe`。不要直接在 ZIP 预览中运行。首次进入后填写自己的连接，先做只读检查，再从单张、普通尺寸和较低步数开始。想使用完整的角色、对照与高级参数控制时，点击“展开完整功能”。完整步骤、文件位置与回退方法见 [Windows 安装、升级与隐私说明](./docs/WINDOWS.md)。
 
 从 1.6.0 起，可在“更新 / 反馈”完成下载、校验、安装与重启；生成期间不会安装。启动后的版本检查可关闭，下载和安装都需要主动点击。1.5.1 及更早版本先按 [升级步骤](./docs/WINDOWS.md#升级与回退) 退出服务、备份并手动升级；始终保留原位 `userdata`。
 
 公开版覆盖 V5 Full 与 V4.5 Full / Curated 工作流；Precise Reference 与 Vibe Transfer 仅用于 V4.5。个人版的 Grok / ComfyUI 集成不随公开版提供。
 
-本轮只发布 Windows x64；Android 版仍封存在 `v1.1.1`，不随 `v1.8.1` 发布。
+本轮只发布 Windows x64；Android 版仍封存在 `v1.1.1`，不随 `v1.9.0` 发布。
 
 ## 反馈、安全与公开范围
 

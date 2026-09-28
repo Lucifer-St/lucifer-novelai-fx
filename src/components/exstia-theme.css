@@ -1,0 +1,145 @@
+/* Approved ExS-TiA edition: decoration uses native workbench slots only. */
+.app[data-workbench-skin=exstia]{--fx-bg:#eef1f3;--fx-panel:#fffefc;--fx-field:#fff;--fx-tint:#eff2f5;--fx-text:#344864;--fx-muted:#7c8b9c;--fx-line:#d8dfe5;--fx-accent:#607fab;--fx-gold:#b0bfcd;--fx-canvas:#eaf0f4;--fx-on:#fff;--exstia-paper:#f7fafb;--exstia-ink:#425d80;--exstia-note:#e4edf2}
+.app[data-workbench-skin=exstia-chevalier]{--fx-bg:#f2eae1;--fx-panel:#fffdf9;--fx-field:#fff;--fx-tint:#f8efec;--fx-text:#594752;--fx-muted:#958189;--fx-line:#e4d5ca;--fx-accent:#986777;--fx-gold:#c6a997;--fx-canvas:#eeefef;--fx-on:#fff;--exstia-paper:#fff9ef;--exstia-ink:#7d4e59;--exstia-note:#efddd3}
+.app[data-workbench-skin=exstia-magica]{--fx-bg:#242031;--fx-panel:#2b263a;--fx-field:#322d42;--fx-tint:#3b3249;--fx-text:#efe8e3;--fx-muted:#b8abbf;--fx-line:#50465d;--fx-accent:#dcc09a;--fx-gold:#a58a78;--fx-canvas:#242332;--fx-on:#241a38;--exstia-paper:#403448;--exstia-ink:#e5ceb8;--exstia-note:#5a4556;color-scheme:dark}
+.exstia-workbench .studio{gap:14px;padding-top:17px;background-image:repeating-linear-gradient(0deg,transparent 0 28px,#95807407 28px 29px),repeating-linear-gradient(90deg,transparent 0 28px,#95807406 28px 29px)}
+.exstia-workbench :is(.topbar,.left-panel,.right-panel,.history-panel,.prompt-card-strip,.canvas-toolbar,.model-chooser-control select){border-color:var(--fx-line);box-shadow:none}
+.exstia-workbench :is(.left-panel,.right-panel){border-radius:13px}
+.exstia-workbench .canvas{box-shadow:none}
+.exstia-workbench .card-hanger{background:var(--exstia-note)!important;border-color:var(--fx-gold)}
+.exstia-workbench .generate-dock{border-color:var(--fx-line);padding-top:11px}
+.exstia-workbench .generate-dock .generate{height:60px;min-height:60px;padding-left:65px;border:1px solid var(--fx-gold);border-radius:6px;background:linear-gradient(110deg,color-mix(in srgb,var(--fx-accent),white 8%),var(--fx-accent));box-shadow:0 3px 9px #4232431a}
+.exstia-workbench .generate>span:not(.exstia-generate-badge){flex:1;text-align:center;font-size:16px;letter-spacing:1px}
+.exstia-workbench .generate>.lucide-sparkles{display:none}
+.exstia-generate-badge{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:40px;height:40px;display:grid;place-items:center;border:1px solid color-mix(in srgb,var(--fx-on),transparent 70%);border-radius:50%;color:var(--fx-on);pointer-events:none}
+.exstia-generate-badge>svg{width:32px;height:32px}.exstia-generate-badge .motif-fill{fill:currentColor;fill-opacity:.13}
+.exstia-workbench .skin-button{gap:6px;padding-left:6px;min-height:34px;border:1px solid var(--fx-line);border-radius:20px 5px 5px 20px}
+.exstia-workbench .skin-button>.lucide-shirt{display:none}
+.exstia-skin-badge{display:block;width:28px;height:28px;flex:0 0 28px;overflow:hidden;border-radius:50%;border:1px solid var(--fx-line);background:var(--fx-tint)}
+.exstia-portrait{display:block;width:100%;height:100%;position:relative;z-index:2;pointer-events:none}
+.exstia-hero{position:relative;height:290px;min-height:290px;flex:none;overflow:hidden;border-radius:12px 12px 0 0;isolation:isolate;pointer-events:none}
+.exstia-hero>.exstia-portrait{position:absolute;inset:4px 0 0;width:100%;height:calc(100% - 4px);filter:drop-shadow(0 5px 5px #2d16451c)}
+[data-workbench-skin=exstia-chevalier] .exstia-hero{height:308px;min-height:308px}
+[data-workbench-skin=exstia-chevalier] .exstia-hero>.exstia-portrait{inset:0;width:100%;height:100%}
+[data-workbench-skin=exstia-magica] .exstia-hero{height:284px;min-height:284px}
+.exstia-workbench .right-panel .inspector-heading{position:relative;isolation:isolate;min-height:228px;align-items:flex-end;margin:0 -8px 13px;padding:0 2px;overflow:visible;background:transparent}
+.exstia-companion{position:absolute;inset:-13px -8px 28px;overflow:hidden;border-radius:10px 10px 0 0;z-index:-1;pointer-events:none}
+.exstia-companion .exstia-side-wide{position:absolute;inset:4px 0 0;height:calc(100% - 4px)}
+.exstia-workbench .inspector-view-tabs{flex:1;gap:5px;z-index:4;padding:0 8px 0 0;background:transparent}
+.exstia-workbench .inspector-view-tabs>button{min-height:33px;flex:1;justify-content:center;position:relative;border:1px solid var(--fx-line);border-radius:5px;background:var(--fx-panel);font-size:12px}
+.exstia-workbench .inspector-view-tabs>button[aria-selected=true]{background:var(--fx-tint);color:var(--fx-accent);box-shadow:inset 0 -2px var(--fx-gold)}
+.exstia-workbench .right-panel .inspector-heading>button{align-self:flex-start;position:relative;z-index:6;background:var(--fx-panel);border:1px solid var(--fx-line);border-radius:4px;margin-top:-7px}
+.exstia-workbench .inspector-heading>strong{font-size:12px;padding:7px 8px;border-bottom:1px solid var(--fx-line);color:var(--fx-muted)}
+.exstia-workbench .right-panel.collapsed-inspector .inspector-heading{min-height:22px;margin:0 0 8px;padding:0}
+.exstia-workbench .exstia-companion.is-compact{position:relative;inset:auto;height:90px;flex:none;margin:0 -12px 8px;border:1px solid var(--fx-line);border-radius:22px 22px 6px 6px;background:var(--fx-tint)}
+.exstia-side-compact{position:absolute;inset:5px 0;width:100%;height:70px}
+.exstia-mobile{display:grid;grid-template-columns:1.45fr 1fr;flex:none;overflow:hidden;border-bottom:1px solid var(--fx-line);pointer-events:none}
+.exstia-mobile>div{position:relative;overflow:hidden;background:radial-gradient(ellipse at 65% 35%,var(--exstia-note),transparent 73%)}
+.exstia-mobile .exstia-portrait{position:absolute;inset:0;mask-image:linear-gradient(#000 75%,transparent 100%)}
+.exstia-swatch{display:flex;width:100%;height:100%;background:#eef1f3;overflow:hidden}.exstia-swatch>svg:first-child{width:63%}.exstia-swatch>svg:last-child{width:37%}
+.exstia-chevalier .exstia-swatch{background:#f8efec}.exstia-magica .exstia-swatch{background:#322d42}
+@media(min-width:901px){.exstia-workbench .left-scroll>.tabs{position:sticky;top:0;z-index:8;height:44px;min-height:44px;margin:0 0 10px;background:var(--fx-panel);box-shadow:0 1px var(--fx-line)}.exstia-workbench .prompt-mode-tabs{position:sticky;top:44px;z-index:7}}
+@media(min-width:901px) and (max-height:1000px){.exstia-workbench .exstia-hero{height:205px;min-height:205px}.exstia-workbench .right-panel .inspector-heading{min-height:178px}.exstia-workbench .exstia-hero>.exstia-portrait{width:calc(100% - 70px);left:35px}.exstia-workbench .generate-dock .generate{height:54px;min-height:54px}}
+@media(min-width:901px) and (max-width:1550px){.exstia-workbench .topbar{gap:6px;padding-inline:15px}.exstia-workbench .brand{font-size:20px}.exstia-workbench .topbar nav button{font-size:11px;padding:7px;white-space:nowrap}.exstia-workbench .feature-nav{gap:1px}.exstia-workbench .feature-nav button{font-size:10px;padding:6px 5px}.exstia-workbench .topbar>button{white-space:nowrap;font-size:10px;padding:5px}.exstia-workbench .connection{font-size:9px;white-space:nowrap}}
+@media(max-width:900px){.exstia-workbench .studio{padding-top:13px}.exstia-workbench .right-panel .inspector-heading{min-height:40px;align-items:center;margin:0 0 15px;padding:0}.exstia-workbench .inspector-heading>button{align-self:center;margin-top:0}.exstia-generate-badge{width:36px;height:36px}.exstia-generate-badge>svg{width:29px;height:29px}.exstia-workbench .generate-dock .generate{height:56px;min-height:56px}}
+
+/* R5: equipment as quiet linework; the quote is typography, not a pasted label. */
+@font-face{font-family:Exstia Mincho;src:url('/assets/themes/exstia/quote-mincho.woff2') format('woff2');font-weight:200 900;font-display:swap}
+.exstia-workbench .exstia-hero{container-type:inline-size;background:radial-gradient(ellipse at 75% 16%,var(--exstia-note),transparent 67%),var(--fx-panel)}
+.exstia-workbench .exstia-hero::before{display:none}
+.exstia-workbench .exstia-hero::after{content:'';position:absolute;z-index:3;inset:auto 0 0;height:112px;background:linear-gradient(0deg,var(--fx-panel) 20%,color-mix(in srgb,var(--fx-panel),transparent 8%) 49%,transparent);pointer-events:none}
+.exstia-workbench .exstia-hero>.exstia-portrait{mask-image:linear-gradient(#000 71%,#000b 85%,transparent 100%)}
+.exstia-quote{position:absolute;z-index:4;left:31px;right:25px;bottom:15px;margin:0;padding:0;border:0;background:none;box-shadow:none;transform:none;color:var(--exstia-ink);font-family:'Exstia Mincho','Noto Serif JP','Yu Mincho','MS Mincho',serif;font-weight:400;pointer-events:none;text-align:left;white-space:nowrap}
+.exstia-quote-lead{display:block;font-size:13px;line-height:1.65;letter-spacing:.24em;font-weight:450;padding-left:2px;opacity:.82}
+.exstia-quote-main{display:block;font-size:27px;line-height:1.5;font-weight:550;letter-spacing:.18em;padding-left:23px}
+.exstia-quote::before{content:'';position:absolute;left:0;top:31px;width:15px;height:1px;background:var(--fx-gold)}
+.exstia-signature-line{position:absolute;z-index:4;bottom:30px;left:68%;right:29px;height:1px;background:linear-gradient(90deg,transparent,var(--fx-gold));opacity:.6}
+.exstia-signature-line::after{content:'';position:absolute;right:-2px;top:-2px;width:5px;height:5px;transform:rotate(45deg);border:1px solid var(--fx-gold);background:var(--fx-panel)}
+.exstia-workbench[data-workbench-skin=exstia-chevalier] .exstia-quote-lead{font-size:24px;letter-spacing:.19em;line-height:1.4;font-weight:550;opacity:1;padding-left:0}
+.exstia-workbench[data-workbench-skin=exstia-chevalier] .exstia-quote-main{font-size:16px;letter-spacing:.24em;line-height:1.7;padding-left:70px;font-weight:400}
+.exstia-workbench[data-workbench-skin=exstia-chevalier] .exstia-quote::before{top:47px;width:55px}
+.exstia-motif{position:absolute;pointer-events:none;color:var(--fx-accent);z-index:1;opacity:.16}
+.exstia-motif .motif-fill{fill:currentColor;fill-opacity:.11;stroke:none}
+.exstia-motif-hero{width:210px;height:170px;right:-52px;top:-13px;transform:rotate(12deg)}
+.exstia-workbench[data-workbench-skin=exstia] .exstia-motif-hero{left:-38px;right:auto;top:-10px;transform:rotate(-12deg);opacity:.18}
+.exstia-workbench[data-workbench-skin=exstia-chevalier] .exstia-motif-hero{opacity:.14;right:-39px;top:8px;transform:rotate(20deg)}
+.exstia-workbench[data-workbench-skin=exstia-magica] .exstia-motif-hero{opacity:.23;width:240px;height:190px;right:-35px;top:-9px;transform:rotate(-10deg)}
+.exstia-workbench .exstia-companion{isolation:isolate;background:radial-gradient(ellipse at 50% 64%,var(--exstia-note),transparent 72%),var(--fx-panel)}
+.exstia-workbench .exstia-companion::after{content:'';position:absolute;z-index:3;inset:auto 0 0;height:35px;background:linear-gradient(transparent,var(--fx-panel));pointer-events:none}
+.exstia-motif-side{width:255px;height:215px;left:-54px;top:4px;opacity:.22;transform:rotate(-19deg)}
+.exstia-workbench[data-workbench-skin=exstia-chevalier] .exstia-motif-side{left:-50px;top:9px;transform:rotate(-24deg);opacity:.19}
+.exstia-workbench[data-workbench-skin=exstia-magica] .exstia-motif-side{width:290px;height:245px;left:-60px;top:-4px;transform:rotate(10deg);opacity:.24}
+.exstia-workbench .collapsed-inspector .exstia-motif-side{display:none}
+.exstia-workbench .exstia-side-wide{mask-image:linear-gradient(#000 76%,#000b 89%,transparent 100%)}
+.exstia-workbench .exstia-mobile{height:240px;grid-template-rows:174px 66px;background:var(--fx-panel)}
+.exstia-workbench .exstia-mobile>div{height:174px}
+.exstia-workbench .exstia-mobile-quote{position:relative;inset:auto;grid-column:1/-1;margin:-4px 25px 0;align-self:start}
+.exstia-workbench .exstia-mobile-quote .exstia-quote-lead{font-size:11px;line-height:1.55}
+.exstia-workbench .exstia-mobile-quote .exstia-quote-main{font-size:22px;line-height:1.6}
+.exstia-workbench .exstia-mobile-quote::before{top:29px}
+.exstia-workbench[data-workbench-skin=exstia-chevalier] .exstia-mobile-quote .exstia-quote-lead{font-size:21px;line-height:1.3}
+.exstia-workbench[data-workbench-skin=exstia-chevalier] .exstia-mobile-quote .exstia-quote-main{font-size:14px;line-height:1.6;padding-left:64px}
+.exstia-workbench[data-workbench-skin=exstia-chevalier] .exstia-mobile-quote::before{top:41px;width:50px}
+@media(min-width:901px) and (max-height:1000px){
+ .exstia-workbench .exstia-hero::after{height:70px}
+ .exstia-workbench .exstia-hero>.exstia-portrait{mask-image:linear-gradient(#000 82%,transparent 100%)}
+ .exstia-quote{left:26px;bottom:10px}.exstia-quote-lead{font-size:11px}.exstia-quote-main{font-size:23px;line-height:1.4}
+ .exstia-quote::before{top:26px}.exstia-signature-line{bottom:24px;left:73%}
+ .exstia-workbench[data-workbench-skin=exstia-chevalier] .exstia-quote-lead{font-size:21px}
+ .exstia-workbench[data-workbench-skin=exstia-chevalier] .exstia-quote-main{font-size:14px;padding-left:61px}
+ .exstia-workbench[data-workbench-skin=exstia-chevalier] .exstia-quote::before{top:40px;width:46px}
+ .exstia-motif-side{width:220px;height:180px}
+ .exstia-workbench[data-workbench-skin=exstia-magica] .exstia-motif-side{width:240px;height:200px}
+}
+@container(max-width:370px){.exstia-quote{left:23px}.exstia-signature-line{display:none}.exstia-quote-main{font-size:24px}}
+
+/* Dark component state colors, with native transparent weight editors. */
+[data-workbench-skin=exstia-magica] :is(.left-panel,.right-panel,.history-panel){border-radius:5px;box-shadow:none}
+[data-workbench-skin=exstia-magica] .left-panel{border-top-color:#a14357}
+[data-workbench-skin=exstia-magica] .right-panel{border-top:3px solid #a14357}
+[data-workbench-skin=exstia-magica] :is(.canvas,.prompt-editor,.generate-dock .generate){border-radius:4px}
+[data-workbench-skin=exstia-magica] .generate-dock .generate{box-shadow:none}
+[data-workbench-skin=exstia-magica] .generate-dock .generate::after{border-color:#183f4760}
+[data-workbench-skin=exstia-magica] .prompt-card-strip{box-shadow:none;border-radius:4px}
+[data-workbench-skin=exstia-magica] .card-hanger{background:#9b394e;border-color:#c15d72}
+[data-workbench-skin=exstia-magica] .hanging-card-slot:nth-child(2n) .card-hanger{background:#396e7b;border-color:#62a7b0}
+[data-workbench-skin=exstia-magica] .statusbar{border-bottom:3px solid #913849}
+[data-workbench-skin=exstia-magica] :is(.model-block,.tabs,.mobile-tabs,.feature-tabs,.appearance-workspace,.workbench-skin-choice,.loading-skin-choice,.character,.character-header,.tag-suggestions,.tag-suggestion-shelf,.tag-suggestion-list,.empty-rack>p,.fixed-model strong,.prompt-editor-footer,.tools-panel,.tools-heading,.tools-sidebar,.tool-parameter-editor,.generation-settings-workspace,.image-input,.empty-state,.card-library,.library-card,.preset-editor,.draft-card,.card-library-search,.collection-heading,.quick-card-window,.quick-card,.hanging-card-title,.hanging-card-frame,.comparison-controls,.comparison-board,.comparison-card,.comparison-column,.position-workspace,.position-workspace>header,.position-workspace>footer,.position-character-tabs,.mask-editor){background:var(--fx-panel);color:var(--fx-text);border-color:var(--fx-line)}
+[data-workbench-skin=exstia-magica] :is(.feature-dialog,.feature-dialog:has(.clean-chat),.metadata-dialog,.json-dialog,.confirm-dialog,.image-import-dialog){background:var(--fx-panel);color:var(--fx-text);border-color:var(--fx-line);box-shadow:0 18px 60px #050a1466}
+[data-workbench-skin=exstia-magica] :is(.feature-dialog-header,.feature-dialog:has(.clean-chat) .feature-dialog-header,.feature-dialog:has(.clean-chat) .feature-dialog-header h2){background:var(--fx-panel);color:var(--fx-text);border-color:var(--fx-line)}
+[data-workbench-skin=exstia-magica] :is(.grok-workspace,.grok-context,.grok-composer,.grok-session-panel,.grok-status,.grok-proposal,.grok-message.user,.grok-code-block,.grok-code-block>header,.grok-attachment,.grok-image,.grok-result,.grok-version-panel){background:var(--fx-panel);color:var(--fx-text);border-color:var(--fx-line)}
+[data-workbench-skin=exstia-magica] .grok-workspace :is(textarea,select,input:not([type=checkbox])){background:var(--fx-field);color:var(--fx-text);border-color:var(--fx-line)}
+[data-workbench-skin=exstia-magica] .grok-workspace :is(h3,h4,strong,.grok-message.user,.grok-prose,.grok-empty h3,.grok-code-block pre){color:var(--fx-text)}
+[data-workbench-skin=exstia-magica] :is(.grok-workspace button,.grok-workspace details>summary,.grok-workspace .hint,.grok-workspace small,.grok-empty p,.grok-send-context,.clean-chat>.feature-tabs button,.grok-compose-help,.grok-composer-footer,.grok-message-role,.grok-context h3){color:var(--fx-muted)}
+[data-workbench-skin=exstia-magica] :is(.grok-workspace button:hover:not(:disabled),.grok-workspace .selected,.clean-chat>.feature-tabs button.selected){background:var(--fx-tint);color:var(--fx-accent)}
+[data-workbench-skin=exstia-magica] :is(.grok-toolbar,.grok-sidebar-pages,.grok-code-block>header,.grok-context,.grok-composer,.clean-chat>.feature-tabs){border-color:var(--fx-line)}
+[data-workbench-skin=exstia-magica] .grok-brand-logo{filter:invert(1)}
+[data-workbench-skin=exstia-magica] :is(button:not(.primary):not(.generate):not(.history-item),a.button){color:var(--fx-muted);border-color:var(--fx-line)}
+[data-workbench-skin=exstia-magica] :is(.right-panel button,.result-actions button,.prompt-card-strip button,.quick-card-window button,.feature-dialog button,.card-categories button,.image-input button,.tools-heading button,.character-header button,.image-import-button){background-color:var(--fx-panel)}
+[data-workbench-skin=exstia-magica] :is(button.primary,.grok-workspace button.primary){background:var(--fx-accent);color:var(--fx-on);border-color:var(--fx-accent)}
+[data-workbench-skin=exstia-magica] :is(.segment button.selected,.feature-tabs button.selected,.card-categories button.selected,.position-character-tabs button.selected,.inspector-view-tabs>button[aria-selected=true]){background:var(--fx-tint);color:var(--fx-accent);border-color:var(--fx-accent)}
+[data-workbench-skin=exstia-magica] :is(.appearance-hint,.appearance-motion span,.loading-skin-label small,.workbench-skin-label small,.appearance-live>p,.appearance-live>span,.field>label,.field-label,.section-label,.section-label h3,.slider-label,.hint,.empty-rack,.history-empty,.empty-corners p,.tools-heading p,.model-block small,.prompt-editor-footer small,.fixed-model>span){color:var(--fx-muted)}
+[data-workbench-skin=exstia-magica] :is(.loading-skin-label strong,.workbench-skin-label strong,.fixed-model strong,.empty-corners h1,.collection-heading h3,.collection-heading p){color:var(--fx-text)}
+[data-workbench-skin=exstia-magica] :is(input:not([type=checkbox]):not([type=radio]):not([type=range]),select,textarea){border-color:var(--fx-line);box-shadow:none}
+.app[data-workbench-skin=exstia-magica] input:not([type=checkbox]):not([type=radio]):not([type=range]),.app[data-workbench-skin=exstia-magica] select{background:var(--fx-field);color:var(--fx-text);border-color:var(--fx-line)}
+.app[data-workbench-skin=exstia-magica] .slider-label label,.app[data-workbench-skin=exstia-magica] .fixed-schedule{color:var(--fx-muted)}
+[data-workbench-skin=exstia-magica] input[type=range]{background:transparent}
+[data-workbench-skin=exstia-magica] input[type=range]::-webkit-slider-runnable-track{background:var(--fx-line)}
+[data-workbench-skin=exstia-magica] input[type=range]::-moz-range-track{background:var(--fx-line)}
+[data-workbench-skin=exstia-magica] input[type=range]::-webkit-slider-thumb{border-color:var(--fx-panel);box-shadow:none}
+[data-workbench-skin=exstia-magica] input[type=range]::-moz-range-thumb{border-color:var(--fx-panel)}
+[data-workbench-skin=exstia-magica] .image-stage{background:transparent}
+[data-workbench-skin=exstia-magica] :is(button,input,select,textarea):focus-visible{outline-color:var(--fx-accent)}
+[data-workbench-skin=exstia-magica] .weighted-prompt-input>textarea{background:transparent}
+[data-workbench-skin=exstia-magica] .empty-corners{background:var(--fx-panel);border-color:var(--fx-line);box-shadow:none}
+[data-workbench-skin=exstia-magica] :is(.topbar>button,.empty-corners button,.empty-corners .button,.empty-corners label,.history-item){background:var(--fx-panel);color:var(--fx-muted);border-color:var(--fx-line)}
+[data-workbench-skin=exstia-magica] .banner.error{background:#432633;color:#f4c3ce;border-color:#9e5569}
+[data-workbench-skin=exstia-magica] .grok-error{background:#432633;color:#f4c3ce;border-color:#9e5569}
+[data-workbench-skin=exstia-magica] .banner.success{background:#203c36;color:#abdccc;border-color:#4f8276}
+[data-workbench-skin=exstia-magica] .appearance-workspace .workbench-skin-choice:focus-within{outline-color:var(--fx-accent)}
+[data-workbench-skin=exstia-magica] .workbench-skin-fieldset{border-color:var(--fx-line)}
+.app[data-workbench-skin=exstia-magica] .tools-workspace{background:var(--fx-bg);color:var(--fx-text)}
+.app[data-workbench-skin=exstia-magica] :is(.tools-heading,.tools-heading h1,.tools-heading h2,.tools-heading p,.tools-workspace .field-label,.tools-workspace h3){color:var(--fx-text)}
+.app[data-workbench-skin=exstia-magica] :is(.tools-heading>.segment,.tools-workspace pre,.tools-workspace .code,.tools-workspace details,.tools-workspace textarea,.tool-footer,.tool-preview,.request-preview,.api-response){background:var(--fx-panel);color:var(--fx-text);border-color:var(--fx-line)}
+.app[data-workbench-skin=exstia-magica] .tools-workspace :is(small,.hint,.field>label,.field-label,summary){color:var(--fx-muted)}
+.app[data-workbench-skin=exstia-magica] .tools-workspace :is(pre,code){color:var(--fx-text)}

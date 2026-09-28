@@ -2,6 +2,17 @@ const DEFAULT_TIMEOUT_MS = 5_000;
 const MAX_TIMEOUT_MS = 15_000;
 const API_VERSION = "2026-03-10";
 const MAX_RELEASE_NOTES = 6_000;
+/** Share callers coalesce public checks; failed reads must not suppress recovery for six hours. */
+export function createCachedReleaseCheck(checkUpdates,{now=Date.now}={}){
+ let cached=null,checkedAt=0,pending=null;
+ return function check(automatic=false){
+  const ttl=['network_error','repository_error'].includes(cached?.status)?60000:6*60*60*1000;
+  if(automatic&&cached&&now()-checkedAt<ttl)return Promise.resolve(cached);
+  if(pending)return pending;
+  pending=Promise.resolve().then(checkUpdates).then(result=>{cached=result;checkedAt=now();return result;}).finally(()=>{pending=null;});
+  return pending;
+ };
+}
 const SEMVER = /^v?(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?$/;
 const OWNER = /^(?!-)(?!.*--)[A-Za-z0-9-]{1,39}(?<!-)$/;
 const REPOSITORY = /^(?![.-])(?!.*\.git$)[A-Za-z0-9._-]{1,100}$/i;

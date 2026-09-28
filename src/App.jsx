@@ -5,6 +5,7 @@ import {modelSpec,switchModel,isV45} from './lib/model-policy.mjs';
 import ModelChooser from './components/ModelChooser';
 import useReferenceDrafts from './hooks/useReferenceDrafts';
 import useAppUpdate from './hooks/useAppUpdate';
+import UpdateNotification from './components/UpdateNotification';
 import {isPrecureSkin,ThemeGenerationKeepsake,ThemeCanvasFraming,ThemeDockDecoration,ThemeBrandMark,ThemeGenerateFrame} from './components/PrecureTheme';
 import LLMExtension from './components/LLMExtension';
 import './release-shell.css';
@@ -32,6 +33,7 @@ import './inspector.css';
 import PendingImage from './components/PendingImage';
 import LoadingArtwork from './components/LoadingArtwork';
 import useAppearance from './hooks/useAppearance';
+import {isExstiaSkin,ExstiaInspectorArt,ExstiaSkinBadge,ExstiaGenerateBadge} from './components/ExstiaTheme';
 import {ThemePromptHeader,ThemeInspectorArt,ThemeWorkbenchBanner,useNarrowWorkbench} from './components/WorkbenchTheme';
 import {resolveLoadingSkin,CHARACTER_UI_SKINS} from './lib/loading-skins.mjs';
 import CharacterPositionCanvas from './components/CharacterPositionCanvas';
@@ -109,6 +111,7 @@ import './triangle-themes.css';
 import './character-ui.css';
 import './panel-layout.css';
 import './components/precure-theme.css';
+import './components/exstia-theme.css';
 const ReleaseCenter=lazy(()=>import('./components/ReleaseCenter').then(m=>({default:m.ReleaseCenter})));
 const LibraryPanel=lazy(()=>import('./components/LibraryPanel'));
 const GeneratedLibraryPanel=lazy(()=>import('./components/GeneratedLibraryPanel'));
@@ -755,7 +758,7 @@ export default function App() {
   const savedToOutput = activeImage?.savedToLibrary === true;
   return (
     <div
-      className={`app${basicMode?" share-basic":""}${appearance.workbenchSkin!=="classic"?" themed-workbench":""}${draggingImage ? " is-file-dragging" : ""}`}
+      className={`app${isExstiaSkin(appearance.workbenchSkin)?" exstia-workbench":""}${basicMode?" share-basic":""}${appearance.workbenchSkin!=="classic"?" themed-workbench":""}${draggingImage ? " is-file-dragging" : ""}`}
       data-workbench-skin={appearance.workbenchSkin}
       data-platform={androidLayout?'android':'desktop'}
       data-character-ui={appearance.characterDecorations&&CHARACTER_UI_SKINS.includes(appearance.workbenchSkin)?'on':'off'}
@@ -855,10 +858,10 @@ export default function App() {
           <span>{connection.localPhase==='error'?'本地服务未连接':!status?.keyConfigured?'等待配置 API':connection.modelPhase==='loading'?'读取模型中':connection.modelPhase==='ready'&&models.length?'API 已配置':'接口待确认'}</span>
           <button type="button" className="connection-recheck" aria-label="重新检查连接" title="重新检查连接（不会提交生图）" onClick={connection.checkConnection}><RefreshCw size={13}/></button>
         </div>
-        <button className="release-center-entry" aria-label="更新 / 反馈" onClick={()=>setReleaseCenterOpen(true)}>{appUpdate.result?.status==='update_available'?`发现新版 ${appUpdate.result.latestVersion}`:'更新 / 反馈'}</button>
+        <button className="release-center-entry" aria-label="更新 / 反馈" onClick={()=>setReleaseCenterOpen(true)}>{appUpdate.available?`发现新版 ${appUpdate.available.latestVersion}`:'更新 / 反馈'}</button>
         <button aria-label="本次更新说明" title="本次更新说明" onClick={()=>setReleaseOpen(true)}><Mail size={18}/></button>
         <button className="agent-setup-button" aria-label="Agent / MCP 配置助手" title="Agent / MCP 配置助手" onClick={()=>setFeature({type:'agent'})}><Bot size={18}/></button>
-        <button className="skin-button" onClick={()=>setFeature({type:'appearance'})} aria-label="皮肤与加载画面"><Shirt size={16}/>皮肤</button>
+        <button className="skin-button" onClick={()=>setFeature({type:'appearance'})} aria-label="皮肤与加载画面"><ExstiaSkinBadge skin={appearance.workbenchSkin}/><Shirt size={16}/>皮肤</button>
         {page==='studio'&&<button className="layout-reset" onClick={panelLayout.reset} title="恢复三栏原始比例" aria-label="恢复布局"><RotateCcw size={16}/>恢复布局</button>}
         <button
           title="导出配方（不包含上传图像）"
@@ -964,7 +967,7 @@ export default function App() {
                   cardSelection={cardSelection} savingCard={savingCard} onSaveCard={saveSelectedCard} onRemoveCard={removeUsedCard} onCardLibrary={field=>{const el=document.getElementById(promptElementId(field));if(el)promptSelection.current={id:el.id,field,label:el.getAttribute('aria-label'),start:el.selectionStart,end:el.selectionEnd};setFeature({type:'library'});}} onEditCard={editUsedCard} onPickCard={pickQuickCard} libraryRevision={libraryRevision}
                 />
                 {androidLayout&&<section className="android-settings-inline" aria-label="生成参数"><h3>生成参数</h3>              <div className="inspector-settings-content" hidden={!androidLayout&&settingsHidden}>
-              {!narrowWorkbench&&!settingsHidden&&!isPrecureSkin(appearance.workbenchSkin)&&<ThemeInspectorArt skin={appearance.workbenchSkin}/>}
+              {!narrowWorkbench&&!settingsHidden&&!isPrecureSkin(appearance.workbenchSkin)&&!isExstiaSkin(appearance.workbenchSkin)&&<ThemeInspectorArt skin={appearance.workbenchSkin}/>}
               {(androidLayout||!settingsHidden)&&<>
               {basicMode&&<p className="share-basic-note">新手模式保留常用设置。<button onClick={switchBasic}>展开高级参数</button></p>}
               <ComparisonControls comparison={comparison} base={state}/>
@@ -993,7 +996,7 @@ export default function App() {
                     <Sparkles size={20} />
                   )}
                   <span>{busy ? `正在生成 · ${elapsed}s` : comparison.busy?'对照执行中…':connection.serverBusy?'等待服务端任务结束':connection.blocked?'暂时无法生成':comparison.config.enabled?`生成 ${comparison.config.mode} · ${comparison.config.rounds*(comparison.config.mode==='AB'?2:3)} 张`:'生成图像'}</span>
-                  <ThemeGenerateFrame skin={appearance.workbenchSkin}/>
+                  <ThemeGenerateFrame skin={appearance.workbenchSkin}/><ExstiaGenerateBadge skin={appearance.workbenchSkin}/>
                   <kbd>Ctrl ↵</kbd>
                 </button>
                 <small>
@@ -1276,6 +1279,7 @@ export default function App() {
             <aside className={`right-panel inspector-switcher${settingsHidden?" collapsed-inspector":""}`}>
               {!narrowWorkbench&&!settingsHidden&&isPrecureSkin(appearance.workbenchSkin)&&<ThemeInspectorArt skin={appearance.workbenchSkin}/>} 
               <div className="inspector-heading">
+                {!narrowWorkbench&&!settingsHidden&&isExstiaSkin(appearance.workbenchSkin)&&<ExstiaInspectorArt skin={appearance.workbenchSkin}/>}
                 {!settingsHidden&&<strong><SlidersHorizontal size={14}/> 生成参数</strong>}
                 <button title={settingsHidden?"展开参数面板":"收起参数面板"} aria-label={settingsHidden?"展开参数面板":"收起参数面板"} aria-expanded={!settingsHidden} onClick={toggleSettings}>
                   {settingsHidden?<PanelRightOpen size={16}/>:<PanelRightClose size={16} />}
@@ -1284,7 +1288,7 @@ export default function App() {
               {settingsHidden&&!narrowWorkbench&&<ThemeInspectorArt skin={appearance.workbenchSkin} compact/>}
               {settingsHidden&&<span className="collapsed-inspector-label">生成设置</span>}
               {!androidLayout&&<>              <div className="inspector-settings-content" hidden={!androidLayout&&settingsHidden}>
-              {!narrowWorkbench&&!settingsHidden&&!isPrecureSkin(appearance.workbenchSkin)&&<ThemeInspectorArt skin={appearance.workbenchSkin}/>}
+              {!narrowWorkbench&&!settingsHidden&&!isPrecureSkin(appearance.workbenchSkin)&&!isExstiaSkin(appearance.workbenchSkin)&&<ThemeInspectorArt skin={appearance.workbenchSkin}/>}
               {(androidLayout||!settingsHidden)&&<>
               {basicMode&&<p className="share-basic-note">新手模式保留常用设置。<button onClick={switchBasic}>展开高级参数</button></p>}
               <ComparisonControls comparison={comparison} base={state}/>
@@ -1341,6 +1345,7 @@ export default function App() {
         <span className="author-signature" aria-label="Lucifer FX">Lucifer FX</span>
       </footer>
       {resetAnlas&&<ResetAnlasDialog onClose={()=>setResetAnlas(false)} onReset={ledger=>{setAnlas(ledger);setResetAnlas(false);setNotice('已重置累计；余额、报价与消费记录保留。');}}/>}
+      {!releaseOpen&&!releaseCenterOpen&&<UpdateNotification release={appUpdate.notification} onOpen={()=>setReleaseCenterOpen(true)} onDismiss={appUpdate.dismissNotification}/>}
       {releaseCenterOpen&&<Suspense fallback={null}><ReleaseCenter open={releaseCenterOpen} onClose={()=>setReleaseCenterOpen(false)} appUpdate={appUpdate}/></Suspense>}
       {releaseOpen&&<ReleaseNotesDialog release={RELEASE_NOTES} onClose={closeReleaseNotes}/>}
       <AtlasWorkspace open={feature?.type==='atlas'} onClose={()=>setFeature(null)} onCollect={seed=>setFeature({type:'library',seed})} onImport={file=>{setFeature(null);return inspectImage(file);}}/>

@@ -1,5 +1,5 @@
 {
-  "version": "1.8.1",
+  "version": "1.9.0",
   "gitHistory": false,
   "license": "MIT",
   "artworkLicense": "See docs/SOURCE-LICENSE.md",
@@ -460,6 +460,21 @@
       "sha256": "d27175d1fbd99fbdb542d0605b3cb8c7d77294fca3014f37a6e83d403186553f"
     },
     {
+      "path": "assets/readme/v2/screens/skin-exstia-chevalier.png",
+      "bytes": 1361744,
+      "sha256": "2bd231c89f14e9c24009e65bfd9f2e8a954667b3360fa2e5e52b6a65c4444e89"
+    },
+    {
+      "path": "assets/readme/v2/screens/skin-exstia-magica.png",
+      "bytes": 1337388,
+      "sha256": "b7945b4f151db478eeee12e1112107297e9da973cd7d45b74644b0d2eda5b38e"
+    },
+    {
+      "path": "assets/readme/v2/screens/skin-exstia.png",
+      "bytes": 1331199,
+      "sha256": "16c19e5bdde43a29eb9938c0e36599258a62786f2ec9c9625de5de97f84dc892"
+    },
+    {
       "path": "assets/readme/v2/screens/skin-lemmtear.webp",
       "bytes": 467920,
       "sha256": "4e2a2eb20cdb58cf30d591bb6393eab5abc3a487a7cc2b7e3f19e2ee53cd0ddb"
@@ -542,22 +557,22 @@
     {
       "path": "docs/ANDROID-SOURCE.md",
       "bytes": 1348,
-      "sha256": "304d5368b490ac9015291628f18c9c173dcce2d6472a2f38a792a9f643a26bcb"
+      "sha256": "3e10e1298d9dadfb9b274935f75e8a563d0121293d934b8309193d100f8e2455"
     },
     {
       "path": "docs/ART-NOTICE.md",
-      "bytes": 1100,
-      "sha256": "1a3df5a49b03f854da25fb1d65c31eab7748e69015ab75430c819745ffcff69b"
+      "bytes": 1345,
+      "sha256": "7a2929f4c3cab22824bd9e3eafadf0e721f587c39a7c268596a6faa03a0c4ebb"
     },
     {
       "path": "docs/DEVELOPMENT.md",
       "bytes": 1762,
-      "sha256": "777e3e1393251b989a7acd2fb2074f2c5ce1236ac87df0a784e40027f83f9526"
+      "sha256": "0143d11b0b6cb75187a43198df9f28ee75ac6649de62f98fba0c2f4579164ed1"
     },
     {
       "path": "docs/EDITION-DIFFERENCES.md",
-      "bytes": 1352,
-      "sha256": "0aabba073733810953ed2c172df945531979dc57aba50469fa2e3cdfae00e7dd"
+      "bytes": 1371,
+      "sha256": "d44fcf99c7e033a9972ec481c556a882e2350d2424ea95cbbf608907b05c7ae3"
     },
     {
       "path": "docs/SOURCE-LICENSE.md",
@@ -566,13 +581,13 @@
     },
     {
       "path": "docs/WINDOWS-QUICKSTART.md",
-      "bytes": 8727,
-      "sha256": "53af8b39ead191912e1d867d0515f339f5607541066d570c379f451f3302b6f0"
+      "bytes": 9014,
+      "sha256": "7125af6af49261bf85503cd716d76fefefb0d7317fa9ecc1de87af09bcc99339"
     },
     {
       "path": "docs/WINDOWS.md",
-      "bytes": 8733,
-      "sha256": "a75b5a5ab353cc138bc22a974bc1df21f1068223c6e7a4bb6d3755f77b9d2738"
+      "bytes": 9020,
+      "sha256": "531d2fc5f8205eeb0854e01d60fb84157f276380d3188e2591fae433e163026f"
     },
     {
       "path": "index.html",
@@ -587,12 +602,12 @@
     {
       "path": "package-lock.json",
       "bytes": 105023,
-      "sha256": "423c0fda66b9cdd6bbd85f84abfe6374c67951344120cf960284b5ccf6278876"
+      "sha256": "8ece186247a55f082600f9ee6a2ae38938909bf8fe48dab7064a93b4607dcd51"
     },
     {
       "path": "package.json",
       "bytes": 1248,
-      "sha256": "15bd743e3d99d6d5f4a2e92da521b17a8c60d0713908b6b6a63dbdccd0012cb6"
+      "sha256": "2bd7218db6d1a62fc668a01e39ea1512118a3af51fad2bd22f9849d7883dad1e"
     },
     {
       "path": "playwright.config.mjs",
@@ -698,6 +713,51 @@
       "path": "public/assets/themes/elixir/duo.png",
       "bytes": 1650787,
       "sha256": "d9be39b91e58f90504e7e1604a55b96bc7327fb2e0fb0864ac7783eb613645be"
+    },
+    {
+      "path": "public/assets/themes/exstia/azarin-normal.png",
+      "bytes": 453981,
+      "sha256": "d63ce4b2f2f9478fd3e3425252d2f648b562c1db7a7cbd5cd9691a40b580f87b"
+    },
+    {
+      "path": "public/assets/themes/exstia/azarin.png",
+      "bytes": 490424,
+      "sha256": "d2b6a78e26e50ebf080f1255be2ee7dd43f8e8980d4ba3daf026d328548caf64"
+    },
+    {
+      "path": "public/assets/themes/exstia/marina-2026-normal.webp",
+      "bytes": 106876,
+      "sha256": "3ece1b0c4603fc65a215ce64b28d0023c8c036c72b47ad1cfc68b73857544db3"
+    },
+    {
+      "path": "public/assets/themes/exstia/marina-2026-transform.webp",
+      "bytes": 215952,
+      "sha256": "f25ca7bb4f91ed362257f859442325a4906ceb3057425c891781f8741eb6a67f"
+    },
+    {
+      "path": "public/assets/themes/exstia/NOTICE.md",
+      "bytes": 1041,
+      "sha256": "d44c55c5748790a90e1a95cbe0f0458b1712b49508de5ffe7023b2f9884fda13"
+    },
+    {
+      "path": "public/assets/themes/exstia/OFL.txt",
+      "bytes": 4350,
+      "sha256": "5e0da210fb04058a8c0087985d2d456b931c2579811a49655721d3cf0c36b6d6"
+    },
+    {
+      "path": "public/assets/themes/exstia/quote-mincho.woff2",
+      "bytes": 12852,
+      "sha256": "4c10bd09852a1f5fa3f4ad304c56494f7bfd623bfa851d8edcb26d97a5b9f299"
+    },
+    {
+      "path": "public/assets/themes/exstia/reese-2024-knight.png",
+      "bytes": 764809,
+      "sha256": "05955d022d21e62dd58f62f47e4d3a46af914e2f491d4fe023ce97c773453b2d"
+    },
+    {
+      "path": "public/assets/themes/exstia/reese-2024-transform.png",
+      "bytes": 1022735,
+      "sha256": "d8443c8f4f8d97c678ef1a3368741e29cbbc52d91f794f5503e0e99266df7765"
     },
     {
       "path": "public/assets/themes/lemmtear/portrait.png",
@@ -816,13 +876,18 @@
     },
     {
       "path": "README.md",
-      "bytes": 26191,
-      "sha256": "66bd2d40eee0869ab48ff9c0fdc8b42f8c8093cd6860531dd453d90b2c92d890"
+      "bytes": 27999,
+      "sha256": "74aff8d1961d9b04365f0e105f5edd5b6661575da2d3d7cf7cdf2b75b0abe353"
     },
     {
       "path": "scripts/apply-update.mjs",
       "bytes": 11068,
       "sha256": "44f688548d9346f7ea79eb0b3c6c2eb99055c647fad8baa4cda0888eb239cefb"
+    },
+    {
+      "path": "scripts/assert-release.mjs",
+      "bytes": 636,
+      "sha256": "cd0107506fc3b5732e2181158455abc2146933654a8ad46e45faf8b26daa4233"
     },
     {
       "path": "scripts/audit-public-candidate.mjs",
@@ -871,8 +936,8 @@
     },
     {
       "path": "scripts/package-windows.mjs",
-      "bytes": 6351,
-      "sha256": "646e2d770065dd6a2d5116f84c2117e9e582677cb7b0bdd0bcc56c99a9a435c2"
+      "bytes": 6442,
+      "sha256": "5085d77352323efb1860d24f865b712ef16c7232cac4670f09f05cbc51b4c707"
     },
     {
       "path": "scripts/prepare-android.mjs",
@@ -881,8 +946,8 @@
     },
     {
       "path": "scripts/prepare-public-source.mjs",
-      "bytes": 3349,
-      "sha256": "85eabf2dc0500d939f65a8d7ab434b8e02207f449e8a9317523ef5d6221c391f"
+      "bytes": 3440,
+      "sha256": "203f52689a652f2acf18b2a1293f5ceb346bfaa1220be5c6ffb5a165a6db01a2"
     },
     {
       "path": "scripts/qa-server.mjs",
@@ -986,8 +1051,8 @@
     },
     {
       "path": "server/index.mjs",
-      "bytes": 72859,
-      "sha256": "3796d7dfdfd37d4d70f4804be976f19a23f7d29a38f47de94617919de3980993"
+      "bytes": 72486,
+      "sha256": "5829e6c37acec665b39b35a58a6b80d59f119d196aae56be4cf9fa554b4110fc"
     },
     {
       "path": "server/interrupted-usage.mjs",
@@ -1021,8 +1086,8 @@
     },
     {
       "path": "server/release-services.mjs",
-      "bytes": 14349,
-      "sha256": "90844bc797050115942e5c6a3e37003c916fb970ab9c3d851f20b4c15783ffff"
+      "bytes": 14968,
+      "sha256": "51ecc326b628dc727237971254e1c6a26fefa444da55bb868928a0de15e9c737"
     },
     {
       "path": "shared/anlas-pricing.json",
@@ -1036,8 +1101,8 @@
     },
     {
       "path": "shared/release-config.mjs",
-      "bytes": 356,
-      "sha256": "b3feb84ae6824c83eccfb34a2a562713cae35a4a2eb5dac29f5b5e6bf39b5976"
+      "bytes": 355,
+      "sha256": "b6d25988cf384679cadf0b0669690e2720ca2901bbc64e3bf4231813d30b4737"
     },
     {
       "path": "shared/schema.json",
@@ -1046,8 +1111,8 @@
     },
     {
       "path": "src/App.jsx",
-      "bytes": 83962,
-      "sha256": "5995c4a30fc2440ac2f46f050e3ab1a82fe16c348d2c1979ee2edab4787c17ef"
+      "bytes": 84727,
+      "sha256": "9fc532c5b4dee5c22376170430f556660ae9d6edd6e9ca33ee5a92141e8c5d2d"
     },
     {
       "path": "src/appearance.css",
@@ -1138,6 +1203,16 @@
       "path": "src/components/DanbooruWorkspace.jsx",
       "bytes": 2070,
       "sha256": "27995352cf9e8baac8faec529de8d6fe448efadc8404f8a4b70bff3cb6251e6d"
+    },
+    {
+      "path": "src/components/exstia-theme.css",
+      "bytes": 21395,
+      "sha256": "6d58e9ef21311304c063f0cc4933b216bc5a2d39669e836d51b27d2b8a43ed61"
+    },
+    {
+      "path": "src/components/ExstiaTheme.jsx",
+      "bytes": 4808,
+      "sha256": "b6acb73d7f6e6092292fab0fa8c5a7b20b948be36e544325c443bb259adf4be0"
     },
     {
       "path": "src/components/FeatureDialog.jsx",
@@ -1310,14 +1385,19 @@
       "sha256": "d4428bb300f05d138e328d55c80392846aed0e20125fae38ca59c49f59fc9eba"
     },
     {
+      "path": "src/components/UpdateNotification.jsx",
+      "bytes": 668,
+      "sha256": "9cba9b2cafe7c5b54d26232d0016a968898a8f3a077134ce251dd431e5c324c3"
+    },
+    {
       "path": "src/components/WeightedPromptInput.jsx",
       "bytes": 7371,
       "sha256": "5ca2abf1041e7a0781eeea4872ea1502173ee30efb7a3a4282338c974ab21a0c"
     },
     {
       "path": "src/components/WorkbenchTheme.jsx",
-      "bytes": 4185,
-      "sha256": "7d2772674e57ca2d307cbfa5f99d93a660e1056519c99b1d86d23c2d21bf09d9"
+      "bytes": 4572,
+      "sha256": "e8d6f6355d6bfe07d39cf7cbd5f3c0fd81fbf99d367575449e7f633abe451e88"
     },
     {
       "path": "src/connection.css",
@@ -1351,8 +1431,8 @@
     },
     {
       "path": "src/hooks/useAppUpdate.js",
-      "bytes": 915,
-      "sha256": "7ff6df2319c6cb3d0516301287dbb9cc43647aba4137d524ca27c5cb5af72f16"
+      "bytes": 2215,
+      "sha256": "2300231bbc4d7f7da0d797a597c04e58cf12240f3c1f4f703ac8fc9408216f43"
     },
     {
       "path": "src/hooks/useComparisons.js",
@@ -1461,8 +1541,8 @@
     },
     {
       "path": "src/lib/loading-skins.mjs",
-      "bytes": 4344,
-      "sha256": "2cdd9a58e71898beb335e15b43acbf9d16691787c9f8b743a0ed7227bda6a176"
+      "bytes": 4588,
+      "sha256": "2ecc96451137c05c78adb0106199cee0141584600e25cf60e97a672705f04837"
     },
     {
       "path": "src/lib/local-files.mjs",
@@ -1541,8 +1621,8 @@
     },
     {
       "path": "src/lib/release-notes.mjs",
-      "bytes": 5101,
-      "sha256": "99224267bfcc1627decddb2d1ac119ddd752aad553e5d429305ed635a9fd3915"
+      "bytes": 6136,
+      "sha256": "31cdc0d1ea0324c9f6c2b356338d636511c65bd70b72587382296064da62b143"
     },
     {
       "path": "src/lib/request.mjs",
@@ -1645,6 +1725,11 @@
       "sha256": "44dd80c7b17ab62d236025271b7867e5b215be2f23ff221a5cf9cab85cab86e4"
     },
     {
+      "path": "src/update-notification.css",
+      "bytes": 892,
+      "sha256": "5698d2dbba7c4b742a5816e91f79a1e5c1e2b2cd013df8aadbcb3cbd93a51d16"
+    },
+    {
       "path": "src/weight-editor.css",
       "bytes": 1158,
       "sha256": "cdb419fa063cad5846c7a88b9d8b6c950b65d1ebe8c353c26d8ca9f9028db145"
@@ -1708,6 +1793,11 @@
       "path": "tests/desktop-files.test.mjs",
       "bytes": 4704,
       "sha256": "d1cbbd474c58280f7657c37f3a7871a7ce4236ec06d0c4a37193d0fa0bfa251a"
+    },
+    {
+      "path": "tests/exstia-ui.spec.mjs",
+      "bytes": 6486,
+      "sha256": "d9d1c47a208f3969b2c1e40a82b9e4c40bfaab9822c794903a348e3cff5b30ab"
     },
     {
       "path": "tests/feedback2-prompt-ui.spec.mjs",
@@ -1948,6 +2038,16 @@
       "path": "tests/thumbnail-queue.test.mjs",
       "bytes": 1544,
       "sha256": "25c3e97ec6aaa24af9c34e2cbff93e738fd5968397d6f6bee382caf208a16e1a"
+    },
+    {
+      "path": "tests/update-notification-ui.spec.mjs",
+      "bytes": 3962,
+      "sha256": "c8e6b4d87b7727016d43be034ee225a1f5238d406c196db2c8fcdc3dd56e189f"
+    },
+    {
+      "path": "tests/update-notification.test.mjs",
+      "bytes": 1481,
+      "sha256": "2d8de60879a02403ff458da109ea436640643091e561759e2f29a54f62d50884"
     },
     {
       "path": "tests/workbench-update.test.mjs",

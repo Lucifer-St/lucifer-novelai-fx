@@ -3,7 +3,7 @@ import {createHistoryIndex} from './history-index.mjs';
 import {createReferenceEncoding} from './reference-encoding.mjs';
 import {MODEL_IDS,modelSpec,isV45,validateModelPayload} from '../src/lib/model-policy.mjs';
 import {initializeCuratedLibrary} from './library.mjs';
-import {createReleaseServices} from './release-services.mjs';
+import {createReleaseServices,createCachedReleaseCheck} from './release-services.mjs';
 import {createDesktopFiles} from './desktop-files.mjs';
 import {createAppUpdater,assertUpdateStorage} from './app-updater.mjs';
 import {RELEASE_CONFIG} from '../shared/release-config.mjs';
@@ -278,12 +278,7 @@ export function createStudioServer(options = {}) {
   const dataDir = options.dataDir || path.join(runtimeRoot, "userdata");
   const desktopFiles=options.desktopFiles||createDesktopFiles({cacheDir:path.join(dataDir,'desktop-tools')});
   const updater=createAppUpdater({root:runtimeRoot,dataDir,currentVersion:RELEASE_CONFIG.version,installId:options.installId??process.env.FX_SHARE_INSTALL_ID,releaseServices,fetchImpl:options.releaseFetchImpl??globalThis.fetch,...options.updaterOptions});
-  let automaticCheck=null,automaticCheckAt=0,updateCheckPending=null;
-  async function checkRelease(automatic=false){
-    if(automatic&&automaticCheck&&Date.now()-automaticCheckAt<6*60*60*1000)return automaticCheck;
-    if(updateCheckPending)return updateCheckPending;
-    updateCheckPending=releaseServices.checkUpdates().then(result=>{automaticCheck=result;automaticCheckAt=Date.now();return result;}).finally(()=>{updateCheckPending=null;});return updateCheckPending;
-  }
+  const checkRelease=createCachedReleaseCheck(releaseServices.checkUpdates);
   const configuration=createConfiguration({directory:path.join(dataDir,"config"),root:runtimeRoot,vault:options.vault});
   const resultDir = path.join(dataDir, "results");
   const historyDir = path.join(dataDir, "history");

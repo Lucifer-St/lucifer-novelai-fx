@@ -24,6 +24,9 @@ export function resolveLoadingSkin(id,previousId='',random=Math.random){
  return candidates[Math.floor(unit*candidates.length)];
 }
 export const WORKBENCH_SKINS = Object.freeze([
+ {id:'exstia',name:'ExS-TiA',subtitle:'光之翼 · 蓝白光轨'},
+ {id:'exstia-chevalier',name:'ExS-TiA Chevalier',subtitle:'王家之剑 · 绯色羽翼'},
+ {id:'exstia-magica',name:'ExS-TiA Magica',subtitle:'四机翼阵 · 紫夜微光'},
  {id:'classic',name:'经典版',subtitle:'清透蓝白 · 专注创作'},
  {id:'teresa',name:'Teresa · 特蕾莎',subtitle:'暖纸私笺 · 皇冠蜡封'},
  {id:'book-contract',name:'Sacred Lineage',subtitle:'双生书契 · Claire 书签'},
