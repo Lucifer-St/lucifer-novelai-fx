@@ -1,5 +1,7 @@
 import {RELEASE_CONFIG} from '../../shared/release-config.mjs';
 export const RELEASE_NOTES={version:RELEASE_CONFIG.version,title:'更新说明',date:'2026-09-27',features:[
+ {title:'D站翻页保留图片详情',description:'打开的图片与已选标签不再因上一页、下一页、跳页或刷新而自动关闭。右侧保持当前图片，点另一张图才切换；需要收起时点击「返回列表」。'},
+ {title:'手机端也可在详情内翻页',description:'详情底部新增图库翻页按钮，翻页不退出当前图片；已选标签、标签筛选文字与复制内容继续保留。空页或检索失败也不会丢失详情。'},
  {title:'光翼战姬三款皮肤',description:'新增 ExS-TiA、ExS-TiA Chevalier、ExS-TiA Magica。保留大幅官方立绘，搭配无框构图、淡色装备纹样与日文明朝体台词；从右上角「皮肤」切换。'},
  {title:'外观与完整编辑功能同步',description:'三款皮肤覆盖展开／收起参数、手机及经典／合并布局。模型选择、提示词权重、中文输入、原生撤销、卡片和独立加载卡设置均保留。'},
  {title:'新版通知更醒目',description:'默认启动检查，并在应用开启且联网时每6小时检查。发现新版本显示提醒卡；恢复联网后补查，检查失败不会让已发现的新版提示消失。下载和安装仍由你点击启动。'},

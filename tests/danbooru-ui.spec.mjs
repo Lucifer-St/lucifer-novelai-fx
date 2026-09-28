@@ -122,3 +122,28 @@ test('closing a gallery cancels active and queued thumbnail reads and never craw
  try{await open(page);await expect.poll(()=>held.length).toBe(4);await page.keyboard.press('Escape');await expect.poll(()=>aborted.length).toBe(4);await page.waitForTimeout(200);expect(held).toHaveLength(4);await open(page);await expect.poll(()=>held.length).toBe(8);await page.waitForTimeout(150);expect(held).toHaveLength(8);expect(c.calls.filter(item=>item.p==='/api/danbooru/posts')).toHaveLength(1);expect(c.errors).toEqual([]);}
  finally{for(const route of held)await route.fulfill({contentType:'image/svg+xml',body:SVG}).catch(()=>{});}
 });
+
+for(const mobile of [false,true])test(`selected detail survives list paging, empty pages, errors and refresh (${mobile?'mobile':'desktop'})`,async({page})=>{
+ const c=await setup(page,{allPages:true,skin:'lemmtear'});if(mobile)await page.setViewportSize({width:390,height:844});
+ const reads=[];await page.route('**/api/danbooru/posts?**',r=>{const u=new URL(r.request().url()),n=Number(u.searchParams.get('page'));reads.push(n);if(n===4)return r.fulfill({status:502,json:{error:{message:'分页测试：原站暂不可用'}}});return r.fulfill({json:{posts:n===3||u.searchParams.has('refresh')?[]:[{...post,id:n*100,pageUrl:'https://danbooru.donmai.us/posts/'+n*100}],page:n,hasMore:n<5}});});
+ await open(page);await page.getByRole('button',{name:'查看图片 #100',exact:true}).click();const detail=page.getByRole('complementary',{name:'图片详情'}),nav=page.getByRole('navigation',{name:mobile?'详情内图库分页':'图库分页',exact:true});
+ await detail.getByRole('button',{name:'blue sky',exact:true}).click();await page.getByLabel('筛选当前图片标签').fill('land');const tags=await page.getByLabel('待复制标签').inputValue();await expect(detail.getByRole('img',{name:'预览 #100'})).toBeVisible();const src=await detail.getByRole('img',{name:'预览 #100'}).getAttribute('src');await detail.evaluate(el=>window.__retainedDetail=el);
+ const retained=async()=>{await expect(detail).toBeVisible();await expect(detail.getByRole('img',{name:'预览 #100'})).toHaveAttribute('src',src);await expect(page.getByLabel('待复制标签')).toHaveValue(tags);await expect(page.getByLabel('筛选当前图片标签')).toHaveValue('land');expect(await detail.evaluate(el=>el===window.__retainedDetail)).toBe(true);};
+ await nav.getByRole('button',{name:'下一页',exact:true}).click();await expect(nav).toContainText('第 2 页');await expect(nav.getByRole('button',{name:'下一页',exact:true})).toBeEnabled();await retained();
+ await nav.getByRole('button',{name:'下一页',exact:true}).click();await expect(nav).toContainText('第 3 页');await expect(nav.getByRole('button',{name:'下一页',exact:true})).toBeEnabled();await retained();
+ await nav.getByRole('button',{name:'下一页',exact:true}).click();await expect(nav).toContainText('第 4 页');await expect(mobile?nav:page.getByLabel('Danbooru 图片列表')).toContainText('分页测试：原站暂不可用');await retained();
+ await nav.getByRole('button',{name:'上一页',exact:true}).click();await nav.getByRole('button',{name:'上一页',exact:true}).click();await expect(nav).toContainText('第 2 页');await retained();expect(reads.filter(n=>n===2)).toHaveLength(1);
+ await page.getByLabel('刷新D站图库').click();await expect.poll(()=>reads.filter(n=>n===2).length).toBe(2);await expect(nav.getByRole('button',{name:'上一页',exact:true})).toBeEnabled();await retained();
+ await page.getByRole('button',{name:'复制所选标签',exact:true}).click();expect(await page.evaluate(()=>window.__clipboard)).toBe(tags);
+ await detail.evaluate(el=>{el.scrollTop=0;el.scrollIntoView({block:'start'});});
+ await mkdir('.local/gallery-detail-20260928/ui',{recursive:true});await page.screenshot({path:`.local/gallery-detail-20260928/ui/retained-${mobile?'mobile':'desktop'}.png`});
+ await page.getByLabel('返回图库列表').click();await expect(detail).toHaveCount(0);await expect(page.getByLabel('Danbooru 图片列表')).toBeVisible();
+ await page.getByRole('button',{name:'上一页',exact:true}).click();await page.getByRole('button',{name:'查看图片 #100',exact:true}).click();await expect(page.getByLabel('筛选当前图片标签')).toHaveValue('');expect(c.errors).toEqual([]);expect(c.calls.some(x=>x.method!=='GET')).toBe(false);
+});
+
+test('page jump preserves selected details; an explicit return cannot be undone by a late response',async({page})=>{
+ const c=await setup(page,{allPages:true});await open(page);await page.getByRole('button',{name:'查看图片 #100',exact:true}).click();
+ await page.getByLabel('跳转页码').fill('8');await page.getByRole('button',{name:'跳转',exact:true}).click();await expect(page.getByRole('button',{name:'查看图片 #800',exact:true})).toBeVisible();await expect(page.getByRole('complementary',{name:'图片详情'})).toContainText('#100');
+ await page.getByRole('button',{name:'查看图片 #800',exact:true}).click();await expect(page.getByRole('complementary',{name:'图片详情'})).toContainText('#800');
+ let held;await page.route('**/api/danbooru/posts?**',r=>{held=r;});await page.getByRole('button',{name:'下一页',exact:true}).click();await expect.poll(()=>!!held).toBe(true);await expect(page.getByRole('complementary',{name:'图片详情'})).toContainText('#800');await page.getByLabel('返回图库列表').click();await held.fulfill({json:{posts:[{...post,id:900}],page:9,hasMore:true}});await expect(page.getByRole('button',{name:'查看图片 #900',exact:true})).toBeVisible();await expect(page.getByRole('complementary',{name:'图片详情'})).toHaveCount(0);expect(c.errors).toEqual([]);
+});

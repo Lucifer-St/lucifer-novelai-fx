@@ -1,5 +1,5 @@
 {
-  "version": "1.9.0",
+  "version": "1.9.1",
   "gitHistory": false,
   "license": "MIT",
   "artworkLicense": "See docs/SOURCE-LICENSE.md",
@@ -557,7 +557,7 @@
     {
       "path": "docs/ANDROID-SOURCE.md",
       "bytes": 1348,
-      "sha256": "3e10e1298d9dadfb9b274935f75e8a563d0121293d934b8309193d100f8e2455"
+      "sha256": "12ba7b588c36085a97e2179fa094804e6005713182f12136c3955a647feb5b77"
     },
     {
       "path": "docs/ART-NOTICE.md",
@@ -567,12 +567,12 @@
     {
       "path": "docs/DEVELOPMENT.md",
       "bytes": 1762,
-      "sha256": "0143d11b0b6cb75187a43198df9f28ee75ac6649de62f98fba0c2f4579164ed1"
+      "sha256": "021b7475b26f05992d9ef1b23902bcfacc54b9380b08d784da1a7ae87572333e"
     },
     {
       "path": "docs/EDITION-DIFFERENCES.md",
       "bytes": 1371,
-      "sha256": "d44fcf99c7e033a9972ec481c556a882e2350d2424ea95cbbf608907b05c7ae3"
+      "sha256": "5afe9602909895d00fae344662b756d72ba0cbdae64ce994bd9b9160da78e588"
     },
     {
       "path": "docs/SOURCE-LICENSE.md",
@@ -582,12 +582,12 @@
     {
       "path": "docs/WINDOWS-QUICKSTART.md",
       "bytes": 9014,
-      "sha256": "7125af6af49261bf85503cd716d76fefefb0d7317fa9ecc1de87af09bcc99339"
+      "sha256": "0389992ee2930e90a885f1ada666253b634b0c15333c424911ae065890909bcb"
     },
     {
       "path": "docs/WINDOWS.md",
       "bytes": 9020,
-      "sha256": "531d2fc5f8205eeb0854e01d60fb84157f276380d3188e2591fae433e163026f"
+      "sha256": "266584bc6fc2949dcfa2e0bd6c52e4e417f64394d60737bd7343e57f24e735a4"
     },
     {
       "path": "index.html",
@@ -602,12 +602,12 @@
     {
       "path": "package-lock.json",
       "bytes": 105023,
-      "sha256": "8ece186247a55f082600f9ee6a2ae38938909bf8fe48dab7064a93b4607dcd51"
+      "sha256": "a104c28cf5d763486ef8e3096295eb9be9b66922f65c28fa30f49dfbeb5b4bc6"
     },
     {
       "path": "package.json",
       "bytes": 1248,
-      "sha256": "2bd7218db6d1a62fc668a01e39ea1512118a3af51fad2bd22f9849d7883dad1e"
+      "sha256": "85c5594392a7ba42345bd7b0b7f72116af606c08f4b6f96be1583cc99720e1ac"
     },
     {
       "path": "playwright.config.mjs",
@@ -876,8 +876,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 27999,
-      "sha256": "74aff8d1961d9b04365f0e105f5edd5b6661575da2d3d7cf7cdf2b75b0abe353"
+      "bytes": 28436,
+      "sha256": "334a90e13b395d56cb49e75e14e0f8c2792dcb3d2ddf67b919125b4cea38ab97"
     },
     {
       "path": "scripts/apply-update.mjs",
@@ -1102,7 +1102,7 @@
     {
       "path": "shared/release-config.mjs",
       "bytes": 355,
-      "sha256": "b6d25988cf384679cadf0b0669690e2720ca2901bbc64e3bf4231813d30b4737"
+      "sha256": "00bfc1a145db93bae0a05485ee5fd43f0e3bf93a80300e12e79d8237e7c62208"
     },
     {
       "path": "shared/schema.json",
@@ -1196,8 +1196,8 @@
     },
     {
       "path": "src/components/DanbooruPanel.jsx",
-      "bytes": 16246,
-      "sha256": "c7942f294b1fe20735e20d2c26b5b0e2fd3a191665eb7bd1f327c2c7c7cc1842"
+      "bytes": 16863,
+      "sha256": "0c323a12b254b83f3061b332b1ba68565b76753180ab9989deacb600f68d3746"
     },
     {
       "path": "src/components/DanbooruWorkspace.jsx",
@@ -1411,8 +1411,8 @@
     },
     {
       "path": "src/danbooru.css",
-      "bytes": 11575,
-      "sha256": "01b04717fd99231a2b2e8d2871bdd4be5cfec346f0ea029bf9aa0bfeaf08b73f"
+      "bytes": 12221,
+      "sha256": "f625a488438352c40e3c0090cab7d1ee926eafef431d953dcab5258c23f8f806"
     },
     {
       "path": "src/features.css",
@@ -1621,8 +1621,8 @@
     },
     {
       "path": "src/lib/release-notes.mjs",
-      "bytes": 6136,
-      "sha256": "31cdc0d1ea0324c9f6c2b356338d636511c65bd70b72587382296064da62b143"
+      "bytes": 6622,
+      "sha256": "14a0c6e089fa9ef90958f55f5a3be83d559ea745672b62db7ba61058aa249dd3"
     },
     {
       "path": "src/lib/request.mjs",
@@ -1781,8 +1781,8 @@
     },
     {
       "path": "tests/danbooru-ui.spec.mjs",
-      "bytes": 28814,
-      "sha256": "3bd6ad0f392d5d412483153e13a0eba1c682a634d4fe6bc46f95a34183ec775b"
+      "bytes": 33878,
+      "sha256": "9ded14cb21e40b5e1821bdf048528dceefc9a8e841d162174880e7f2e5e6a273"
     },
     {
       "path": "tests/danbooru.test.mjs",

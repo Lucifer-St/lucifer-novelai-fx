@@ -16,3 +16,6 @@
 .danbooru-pagination{flex-wrap:wrap}.danbooru-page-jump,.danbooru-page-jump label{display:flex;align-items:center;gap:6px}.danbooru-page-jump input{width:64px;min-width:0;min-height:32px;padding:4px 7px;text-align:center;font-size:12px}.danbooru-page-jump input[aria-invalid=true]{border-color:#c75460}.danbooru-page-error{flex-basis:100%;text-align:center;margin:0;color:#c75460;font-size:12px}
 
 .danbooru-page-jump label{white-space:nowrap;flex-direction:row}.danbooru-page-jump label span{flex-shrink:0}.danbooru-page-jump input{flex:0 0 64px;width:64px!important;min-width:64px;max-width:64px}
+
+.danbooru-detail>header button{display:inline-flex;align-items:center;gap:4px;white-space:nowrap}.danbooru-detail-hint{font-size:11px;line-height:1.6;opacity:.7;margin:0 0 10px}.danbooru-detail-pagination{display:none}
+@media(max-width:900px){.danbooru-detail-pagination{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:14px;padding-top:14px;border-top:1px solid color-mix(in srgb,currentColor 16%,transparent);font-size:12px}.danbooru-detail-pagination button{display:inline-flex;align-items:center;gap:4px}.danbooru-detail-pagination p{flex-basis:100%;margin:0;line-height:1.6;overflow-wrap:anywhere}}

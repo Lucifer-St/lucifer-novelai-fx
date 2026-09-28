@@ -1,6 +1,6 @@
 import {copyText} from '../lib/platform.mjs';
 import {useEffect,useRef,useState} from 'react';
-import {Search,ExternalLink,Copy,Bookmark,ChevronLeft,ChevronRight,X,Image as ImageIcon,Star} from 'lucide-react';
+import {Search,ExternalLink,Copy,Bookmark,ChevronLeft,ChevronRight,Image as ImageIcon,Star} from 'lucide-react';
 import {DANBOORU_PREFS,DANBOORU_RATINGS,DANBOORU_GROUPS,initialDanbooruPreferences,initialTagSelection,danbooruTagKey,selectedDanbooruTags,danbooruImageUrl,danbooruPageSize,parseDanbooruPage} from '../lib/danbooru.mjs';
 import '../danbooru.css';
 import DanbooruImageViewer from './DanbooruImageViewer';
@@ -43,14 +43,15 @@ export default function DanbooruPanel({onCollect,active=true,refreshRevision=0})
   const force=forcePending.current,preserve=completed.current?.key===key;
   if(force)pageCache.current.delete(key);
   const controller=new AbortController();setLoading(true);setError('');setErrorCode('');
-  if(!preserve){setData(null);setSelected(null);setNotice('');}
+  // Details belong to the user's selection, not the currently fetched result page.
+  if(!preserve)setData(null);
   try{localStorage.setItem(DANBOORU_PREFS,JSON.stringify({version:1,...params,page:1}));}catch{}
   const cached=pageCache.current.get(key);
   if(!force&&cached&&Date.now()-cached.at<120000){setData({...cached.value,cached:true});setLoading(false);completed.current={key,revision};return()=>controller.abort();}
   (async()=>{try{
    const response=await fetch('/api/danbooru/posts?'+key+(force?'&refresh=1':''),{signal:controller.signal});const result=await response.json();
    if(!response.ok)throw Object.assign(Error(result.error?.message||'图库暂时不可用。'),{code:result.error?.code});
-   if(!controller.signal.aborted){pageCache.current.set(key,{at:Date.now(),value:result});while(pageCache.current.size>32)pageCache.current.delete(pageCache.current.keys().next().value);setData(result);if(preserve)setSelected(previous=>previous?result.posts.find(post=>post.id===previous.id)||null:null);}
+   if(!controller.signal.aborted){pageCache.current.set(key,{at:Date.now(),value:result});while(pageCache.current.size>32)pageCache.current.delete(pageCache.current.keys().next().value);setData(result);}
   }catch(e){if(!controller.signal.aborted){setError(e instanceof TypeError?'无法连接应用本机服务。请确认应用仍在运行，再手动重试。':e.message);setErrorCode(e.code||'');}}
   finally{if(!controller.signal.aborted){setLoading(false);completed.current={key,revision};forcePending.current=false;}}})();
   return()=>controller.abort();
@@ -83,7 +84,8 @@ export default function DanbooruPanel({onCollect,active=true,refreshRevision=0})
     <nav className="danbooru-pagination" aria-label="图库分页"><button disabled={loading||params.page<=1} onClick={()=>setParams(p=>({...p,page:p.page-1}))}><ChevronLeft size={14}/>上一页</button><span>第 {params.page} 页{data?` · ${data.posts.length} 张`:''}</span><button disabled={loading||!data?.hasMore||params.page>=1000} onClick={()=>setParams(p=>({...p,page:p.page+1}))}>下一页<ChevronRight size={14}/></button><form className="danbooru-page-jump" onSubmit={jumpPage} noValidate><label><span>跳至</span><input aria-label="跳转页码" inputMode="numeric" autoComplete="off" maxLength={10} value={pageInput} aria-invalid={!!pageError} aria-describedby={pageError?'danbooru-page-error':undefined} onChange={event=>{setPageInput(event.target.value);setPageError('');}}/><span>页</span></label><button type="submit" disabled={loading}>跳转</button></form>{pageError&&<p id="danbooru-page-error" className="danbooru-page-error" role="alert">{pageError}</p>}</nav>
    </section>
    {selected&&<aside data-danbooru-scroll className="danbooru-detail" aria-label="图片详情">
-    <header><strong>#{selected.id} <small>{DANBOORU_RATINGS[selected.rating]}</small></strong><button aria-label="返回图库列表" onClick={()=>setSelected(null)}><X size={17}/></button></header>
+    <header><strong>#{selected.id} <small>{DANBOORU_RATINGS[selected.rating]}</small></strong><button aria-label="返回图库列表" onClick={()=>setSelected(null)}><ChevronLeft size={15}/><span>返回列表</span></button></header>
+    <p className="danbooru-detail-hint">翻页保留本图详情；选择另一张图片或返回列表即可切换。</p>
     <button className="danbooru-large-preview" disabled={!selected.original&&!selected.preview&&!selected.thumbnail} aria-label={`放大查看图片 #${selected.id}`} onClick={()=>setViewImage(selected)} title="点击查看大图，支持缩放和拖拽"><Preview active={active} revision={imageRevision} src={selected.preview||selected.thumbnail} alt={`预览 #${selected.id}`}/><span className="danbooru-enlarge-hint">点击放大 · 查看原图</span></button>
     <div className="danbooru-post-info"><span>{selected.width} × {selected.height} · 评分 {selected.score} · 收藏 {selected.favorites}</span><a href={selected.pageUrl} target="_blank" rel="noreferrer">原帖 <ExternalLink size={11}/></a></div>
     <div className="danbooru-tag-toolbar"><strong>选择要复制的标签</strong><button onClick={()=>setSelection(new Set(DANBOORU_GROUPS.flatMap(([g])=>(selected.tags[g]||[]).map(t=>danbooruTagKey(g,t)))))}>全选</button><button onClick={()=>setSelection(new Set())}>清空</button></div>
@@ -93,6 +95,10 @@ export default function DanbooruPanel({onCollect,active=true,refreshRevision=0})
     <textarea ref={outputRef} aria-label="待复制标签" readOnly value={manualCopy??text} rows={3}/>
     <div className="danbooru-copy-actions"><button className="primary" disabled={!text} onClick={()=>copy(text)}><Copy size={14}/>复制所选标签</button><button disabled={!text} onClick={()=>onCollect({kind:'favorite',title:`Danbooru #${selected.id}`,category:'其他',text,notes:`来自 Danbooru #${selected.id}；评级 ${selected.rating.toUpperCase()}。标签由原站提供，未验证 NovelAI 效果。`,sourceUrl:selected.pageUrl,cover:'',payload:null})}><Bookmark size={14}/>存为卡片</button><button disabled={!selected.rawTags} onClick={()=>copy(selected.rawTags)}>复制全部原始 Tag</button></div>
     {notice&&<p className="danbooru-copy-notice" role="status">{notice}</p>}
+    <nav className="danbooru-detail-pagination" aria-label="详情内图库分页">
+     <button disabled={loading||params.page<=1} onClick={()=>setParams(p=>({...p,page:p.page-1}))}><ChevronLeft size={14}/>上一页</button><span>第 {params.page} 页</span><button disabled={loading||!data?.hasMore||params.page>=1000} onClick={()=>setParams(p=>({...p,page:p.page+1}))}>下一页<ChevronRight size={14}/></button>
+     {(loading||error)&&<p role="status">{loading?'正在读取图库…':error}</p>}
+    </nav>
    </aside>}
   </div>
   {viewImage&&<DanbooruImageViewer active={active} post={viewImage} onClose={()=>setViewImage(null)}/>}
