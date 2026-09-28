@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {normalizePromptLayout,readPromptLayout,toggleCharacterFold,writePromptLayout,PROMPT_LAYOUT_KEY} from '../src/lib/prompt-layout.mjs';
+import {normalizePromptLayout,readPromptLayout,toggleCharacterFold,toggleFieldFold,writePromptLayout,PROMPT_LAYOUT_KEY} from '../src/lib/prompt-layout.mjs';
 import {defaults,buildRequest,exportPreset} from '../src/lib/request.mjs';
 test('layout preferences are versioned, bounded, and keyed by stable character IDs',()=>{
  assert.equal(readPromptLayout(null).mode,'classic');assert.equal(readPromptLayout({getItem:()=>'{'}).mode,'classic');assert.equal(normalizePromptLayout({version:2,mode:'merged'}).mode,'classic');
@@ -13,3 +13,5 @@ test('folding is presentation only and never changes enabled role payloads or ex
  const payload=buildRequest(state),recipe=exportPreset(state),layout=toggleCharacterFold({version:1,mode:'merged'},'alice');
  assert.equal(layout.characters.alice,true);assert.deepEqual(buildRequest(state),payload);assert.deepEqual(exportPreset(state),recipe);assert.equal(payload.novelai.body.parameters.v4_prompt.caption.char_captions.length,2);assert.equal('layout' in recipe.state,false);
 });
+
+test('negative field folds survive storage and remain independent by stable role ID',()=>{const a=toggleFieldFold({version:1,mode:'merged'},'negative'),b=toggleFieldFold(a,'character:alice:negative');assert.equal(b.fields.negative,true);assert.equal(b.fields['character:alice:negative'],true);assert.equal(b.fields['character:bob:negative'],undefined);assert.equal(toggleFieldFold(b,'negative').fields.negative,false);let raw;writePromptLayout({setItem:(_,v)=>raw=v},b);assert.deepEqual(readPromptLayout({getItem:()=>raw}),b);assert.deepEqual(normalizePromptLayout({version:1,fields:{x:'true',y:true}}).fields,{y:true});});

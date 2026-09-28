@@ -1,5 +1,5 @@
 {
-  "version": "1.10.0",
+  "version": "1.10.1",
   "gitHistory": false,
   "license": "MIT",
   "artworkLicense": "See docs/SOURCE-LICENSE.md",
@@ -557,7 +557,7 @@
     {
       "path": "docs/ANDROID-SOURCE.md",
       "bytes": 1349,
-      "sha256": "6b9819a1904b85d07c6b66286cb35069d8adf6f44ae87de3f751ec7b425c8017"
+      "sha256": "e23fc4eb7d017f786a41a0849c018d31193e30673fc34b704a2e4956e4145bb8"
     },
     {
       "path": "docs/ART-NOTICE.md",
@@ -567,12 +567,12 @@
     {
       "path": "docs/DEVELOPMENT.md",
       "bytes": 1763,
-      "sha256": "601d5357153e91f6337ebcc4e2b6fadf10280c2c72a9be6b2ec90b1f09801ae9"
+      "sha256": "00ce0ea03f3ecc739c55e8b3121189322afa862107ab34d535397b0a1ee26e5c"
     },
     {
       "path": "docs/EDITION-DIFFERENCES.md",
       "bytes": 1372,
-      "sha256": "5f91b252715b79ced964607d0ac3fb71319d37839ed019c92adec8f37ce06caa"
+      "sha256": "bc96367fdd4e60c487e7810f4e33a3f5f61f6dcaf9a02e618a3052835d03fdec"
     },
     {
       "path": "docs/SOURCE-LICENSE.md",
@@ -582,12 +582,12 @@
     {
       "path": "docs/WINDOWS-QUICKSTART.md",
       "bytes": 9426,
-      "sha256": "d11d0cfbdfcd4af4a27756e225d13b0ea3c9ad9f4d7e0941813dac75559c7db3"
+      "sha256": "9eb11972715ec706be91ec35ad03598b0fe27cd787b4450ed9928d722ead5ea3"
     },
     {
       "path": "docs/WINDOWS.md",
       "bytes": 9432,
-      "sha256": "05f7f97500af8615561948d12df7501cc6f1a39742d1e160fd108356f3e28f50"
+      "sha256": "0b8b757744872bfd70d87df4dd1f5c04562f657e85b7abd6add04dfa0b7f8090"
     },
     {
       "path": "index.html",
@@ -602,12 +602,12 @@
     {
       "path": "package-lock.json",
       "bytes": 105025,
-      "sha256": "832e00120ed4d219fe68c3e6adfd16552bdbf4e5967e6db55eea9089349a1d92"
+      "sha256": "b00d6d3eca40d99d34609f90c679635f5ee6f63f8508022a8783253164912de8"
     },
     {
       "path": "package.json",
       "bytes": 1249,
-      "sha256": "062eb5a0932f5ecb2e2612e9e490c63c017077e8c7af3575ac099425e039bc09"
+      "sha256": "f1bf93d14834ccf3e53c0f4024e7c72daf79bcd6f7c2bcd2919b145ad3e51fbf"
     },
     {
       "path": "playwright.config.mjs",
@@ -876,8 +876,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 29338,
-      "sha256": "79218f1e222a338ee1b227fd412da3076c8a609a9a7a36fbe7a49346e157d66e"
+      "bytes": 29894,
+      "sha256": "3e922ea392a4eb9e16460a9fef6d92868578816b6b6530710e00bf5b3c9a1143"
     },
     {
       "path": "scripts/apply-update.mjs",
@@ -1102,7 +1102,7 @@
     {
       "path": "shared/release-config.mjs",
       "bytes": 356,
-      "sha256": "53d08fc07959fe910243266bfd9670e59b36c2fc01c274442dcc75cd000180d9"
+      "sha256": "4994e87fe82ca7a2befa57be52541b381a662afde36ac8d27dac637d152fc0cc"
     },
     {
       "path": "shared/schema.json",
@@ -1111,8 +1111,8 @@
     },
     {
       "path": "src/App.jsx",
-      "bytes": 84927,
-      "sha256": "6c94fb0dcd000833c3e89177b421ef734d1436ec00e6b42aeac56d7f22377103"
+      "bytes": 85040,
+      "sha256": "f767ebe7484caa27eba29593f7109701ee2ddaefcf328b34490532c642804e16"
     },
     {
       "path": "src/appearance.css",
@@ -1306,8 +1306,8 @@
     },
     {
       "path": "src/components/precure-theme.css",
-      "bytes": 15934,
-      "sha256": "bb2adbf88842d504badfe8fe8010bed4d8639b8549f852242805ecbb6b8bc67d"
+      "bytes": 15613,
+      "sha256": "34365e939fae74984e4dfc447a9b1ebc87535fddface4e3a69a8dc4f3aa1febb"
     },
     {
       "path": "src/components/PrecureTheme.jsx",
@@ -1321,13 +1321,13 @@
     },
     {
       "path": "src/components/PromptLayoutSettings.jsx",
-      "bytes": 1140,
-      "sha256": "fb73158273e10a9c065e59f22b2159ef84734f63dde00b42574ea88c624f1417"
+      "bytes": 1167,
+      "sha256": "0a9548627696e2f4bba5c7692f4255dc0652ccbea1a589f5a95487ff3cd275dc"
     },
     {
       "path": "src/components/PromptPanel.jsx",
-      "bytes": 16253,
-      "sha256": "cf46ec8d5ea80a679bd15f2e838e606f1c4086b6390966463e1609fcf335e2bf"
+      "bytes": 17290,
+      "sha256": "b20ba4dd0876d509e2bcd2781b117d891b75f342b60b4ee5e24d9c2941b7602e"
     },
     {
       "path": "src/components/reference-panel.css",
@@ -1396,8 +1396,8 @@
     },
     {
       "path": "src/components/WeightedPromptInput.jsx",
-      "bytes": 7371,
-      "sha256": "5ca2abf1041e7a0781eeea4872ea1502173ee30efb7a3a4282338c974ab21a0c"
+      "bytes": 8236,
+      "sha256": "5d3a1a0fdc00d9175a33e657833b486d50db18bb6122163b17e04963e1c224c2"
     },
     {
       "path": "src/components/WorkbenchTheme.jsx",
@@ -1461,8 +1461,8 @@
     },
     {
       "path": "src/hooks/usePromptLayout.js",
-      "bytes": 803,
-      "sha256": "1334795bf113f8a8fbc7c5852c42edfc750f363581bbc99b922c896a82c53501"
+      "bytes": 880,
+      "sha256": "bec45232652c1a53e895e5dd48c59a0b64255f1754c9c25e61a0320290c33f6f"
     },
     {
       "path": "src/hooks/useReferenceDrafts.js",
@@ -1606,8 +1606,8 @@
     },
     {
       "path": "src/lib/prompt-layout.mjs",
-      "bytes": 1034,
-      "sha256": "50df357ebf5168216572b41fd7a8ebdffe077606fb9d55202208aa7dd57afb30"
+      "bytes": 1487,
+      "sha256": "89219cd618f69f041f6f52b29cacefe42bf3909a471305c6751bc742f3ef4ddf"
     },
     {
       "path": "src/lib/prompt-targets.mjs",
@@ -1631,8 +1631,8 @@
     },
     {
       "path": "src/lib/release-notes.mjs",
-      "bytes": 7587,
-      "sha256": "a529ffa5278c38e686297c33b77488ad9ac71b46053a7c9e37aada787a72b31b"
+      "bytes": 8286,
+      "sha256": "769199e0e3d3e8420883b86f4f4ecb0de01d5bfcf86f64b98bfdb1efb9e0bb33"
     },
     {
       "path": "src/lib/request.mjs",
@@ -1696,8 +1696,8 @@
     },
     {
       "path": "src/prompt-layout.css",
-      "bytes": 2870,
-      "sha256": "0e42577b493cd3a79b9bafc5385ea62788a5b79b7a6c01257faf3df20e1bc796"
+      "bytes": 3720,
+      "sha256": "eb624f5d7565db4e93021c4303e66759767eae5f407449a2cd692b61c715bcd8"
     },
     {
       "path": "src/release-center.css",
@@ -1966,8 +1966,13 @@
     },
     {
       "path": "tests/prompt-layout.test.mjs",
-      "bytes": 1958,
-      "sha256": "5a26e31e18ff6aa8b33d127d7f5fe81af03045f8d1ef9774367dbaeaaa24829d"
+      "bytes": 2599,
+      "sha256": "508da24359d83083364535339c626d82a8e60ea1946ef144413fb93e47e9bf8c"
+    },
+    {
+      "path": "tests/prompt-stability-ui.spec.mjs",
+      "bytes": 7357,
+      "sha256": "ae29be67df07d5eb50ed2c1cbe2370337224133a4cefff9239ac70e17d131091"
     },
     {
       "path": "tests/prompt-targets.test.mjs",

@@ -10,3 +10,13 @@
 .app .studio .prompt-content>.prompt-editor .weighted-prompt-input{flex:none;min-height:0}
 .app .studio .left-panel .prompt-content>.prompt-editor .weighted-prompt-input>textarea{flex:none;height:220px;min-height:220px;max-height:clamp(280px,55vh,560px);resize:vertical;overflow-y:auto}
 @media(max-width:900px){.app .studio .left-panel .prompt-content>.prompt-editor .weighted-prompt-input>textarea{height:180px;min-height:180px;max-height:clamp(240px,50vh,420px)}}
+
+.app .studio .merged-prompt-label>button{display:flex;justify-content:flex-start;min-height:24px;box-shadow:none;align-items:center;gap:6px;width:100%;border:0;background:transparent;color:inherit;font:inherit;text-align:left;padding:0;cursor:pointer}
+.studio .prompt-field-folded>.weighted-prompt-input,.studio .prompt-field-folded>.prompt-editor-footer{display:none!important}
+.app .studio .left-panel-content{min-width:0;min-height:0}
+@media(min-width:901px){
+ .app .studio>.left-panel{overflow:hidden;scrollbar-gutter:auto}
+ .app .studio .left-panel-content{flex:1 1 0;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-gutter:stable}
+ .app .studio .left-panel-content>.left-scroll{flex:none;overflow:visible;min-height:0}
+ .app .studio .left-panel>.generate-dock,.app .studio .left-panel>.precure-generation-keepsake{flex:none}
+}

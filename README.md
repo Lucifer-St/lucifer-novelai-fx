@@ -2,7 +2,7 @@
 
 **面向 NovelAI Diffusion V5 Full 与 V4.5 Full / Curated 的 Windows 中文创作工作台。** 这是个人维护的非官方前端，与 NovelAI 官方没有隶属关系。它把长 Prompt、角色、参数、图片配方、对照实验与本地资料组织在同一个界面中；只有你明确点击生成，才会向自己配置的 NovelAI 官方接口或兼容网关提交生图请求。
 
-[下载最新版](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/latest) · [直接下载 v1.10.0 Windows x64](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.10.0/Lucifer-NovelAI-FX-Share-1.10.0-Windows-x64.zip) · [核对 SHA-256](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.10.0/SHA256SUMS-1.10.0.txt) · [报告 Bug](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=bug_report.yml) · [提出改进](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=feature_request.yml)
+[下载最新版](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/latest) · [直接下载 v1.10.1 Windows x64](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.10.1/Lucifer-NovelAI-FX-Share-1.10.1-Windows-x64.zip) · [核对 SHA-256](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.10.1/SHA256SUMS-1.10.1.txt) · [报告 Bug](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=bug_report.yml) · [提出改进](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=feature_request.yml)
 
 <p align="center">
   <a href="./assets/readme/v2/hero.webp"><img src="./assets/readme/v2/hero.webp" width="100%" alt="Sugar、Lily、Claire 与 Noire 在创作工房共同整理画面、构图和配方"></a>
@@ -158,6 +158,14 @@ D 站（Danbooru）图库可以按标签、评分、排序和上传时间浏览�
 
 ## 更新说明
 
+### [v1.10.1](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/tag/v1.10.1) · 2026-09-28
+
+- **负面独立折叠**：合并布局支持单独收起主负面和各角色负面，记住状态；折叠不清空文字或停用生成参数。
+- **固定桌面生成区**：名侦探两款皮肤统一为内容区滚动、底部生成区固定，输入框伸缩不再带动按钮移动。
+- **稳定自适应**：测量文字高度时不再压缩真实输入框，保留原生撤销、光标和输入法；主提示词高度规则全皮肤一致。
+
+
+
 ### [v1.10.0](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/tag/v1.10.0) · 2026-09-28
 
 - **output 自动保存开关**：在「应用设置 → 保存位置」关闭自动输出，默认开启；仅影响新生成的图片，不删除或搬迁旧图。
@@ -303,13 +311,13 @@ Agent 使用同一份本机设置，但配置不包含 API key。普通桌面使
 
 ## Windows 安装与升级
 
-支持 Windows 10/11 x64。下载 ZIP 后用同一 Release 中的 `SHA256SUMS-1.10.0.txt` 核对哈希，完整解压到普通可写目录，再双击 `启动 Lucifer FX.exe`。不要直接在 ZIP 预览中运行。首次进入后填写自己的连接，先做只读检查，再从单张、普通尺寸和较低步数开始。想使用完整的角色、对照与高级参数控制时，点击“展开完整功能”。完整步骤、文件位置与回退方法见 [Windows 安装、升级与隐私说明](./docs/WINDOWS.md)。
+支持 Windows 10/11 x64。下载 ZIP 后用同一 Release 中的 `SHA256SUMS-1.10.1.txt` 核对哈希，完整解压到普通可写目录，再双击 `启动 Lucifer FX.exe`。不要直接在 ZIP 预览中运行。首次进入后填写自己的连接，先做只读检查，再从单张、普通尺寸和较低步数开始。想使用完整的角色、对照与高级参数控制时，点击“展开完整功能”。完整步骤、文件位置与回退方法见 [Windows 安装、升级与隐私说明](./docs/WINDOWS.md)。
 
 从 1.6.0 起，可在“更新 / 反馈”完成下载、校验、安装与重启；生成期间不会安装。启动后的版本检查可关闭，下载和安装都需要主动点击。1.5.1 及更早版本先按 [升级步骤](./docs/WINDOWS.md#升级与回退) 退出服务、备份并手动升级；始终保留原位 `userdata`。
 
 公开版覆盖 V5 Full 与 V4.5 Full / Curated 工作流；Precise Reference 与 Vibe Transfer 仅用于 V4.5。个人版的 Grok / ComfyUI 集成不随公开版提供。
 
-本轮只发布 Windows x64；Android 版仍封存在 `v1.1.1`，不随 `v1.10.0` 发布。
+本轮只发布 Windows x64；Android 版仍封存在 `v1.1.1`，不随 `v1.10.1` 发布。
 
 ## 反馈、安全与公开范围
 

@@ -36,11 +36,9 @@
 :is([data-workbench-skin=precure-scrapbook],[data-workbench-skin=precure-days]) .left-scroll{padding:0 16px 7px;position:relative}
 :is([data-workbench-skin=precure-scrapbook],[data-workbench-skin=precure-days]) .left-scroll>.tabs{margin-top:0;margin-bottom:11px;padding-top:0}
 :is([data-workbench-skin=precure-scrapbook],[data-workbench-skin=precure-days]) .tabs>button{padding:10px 2px;font-weight:600}
-:is([data-workbench-skin=precure-scrapbook],[data-workbench-skin=precure-days]) .left-panel .prompt-editor{min-height:240px;border-radius:6px;box-shadow:0 2px 5px #74669105}
-/* Preserve approved artwork proportions; the full column can scroll to editing. */
+:is([data-workbench-skin=precure-scrapbook],[data-workbench-skin=precure-days]) .left-panel .prompt-editor{border-radius:6px;box-shadow:0 2px 5px #74669105}
+/* Artwork keeps its proportions; the shared content scroller owns editing. */
 @media(min-width:901px){
- :is([data-workbench-skin=precure-scrapbook],[data-workbench-skin=precure-days]) .left-panel{overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-gutter:stable}
- :is([data-workbench-skin=precure-scrapbook],[data-workbench-skin=precure-days]) .left-scroll{flex:0 0 auto;overflow:visible}
  .app .left-panel>.precure-dock-decoration.left{position:relative;left:0;bottom:auto;flex:none;margin-top:-20px}
 }
 :is([data-workbench-skin=precure-scrapbook],[data-workbench-skin=precure-days]) .prompt-mode-tabs>button{font-size:12px}

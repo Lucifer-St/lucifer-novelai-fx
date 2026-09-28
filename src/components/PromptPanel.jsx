@@ -9,12 +9,12 @@ import { Toggle, NumberField } from "./Fields";
 import {applyNegativePreset,negativePresets,qualityPresets,splitNegativePreset} from '../lib/official-presets.mjs';
 import WeightedPromptInput from "./WeightedPromptInput";
 import "../prompt-layout.css";
-export default function PromptPanel({ state: s, update, tab, setTab,cardSelection,savingCard,onSaveCard,onRemoveCard,onCardLibrary,onEditCard,onPickCard,libraryRevision,onReplacePromptRange,suggestionMode,onPosition,appearanceKey="classic", active=true, layout={mode:"classic",characters:{}}, onToggleMain, onToggleCharacter }) {
+export default function PromptPanel({ state: s, update, tab, setTab,cardSelection,savingCard,onSaveCard,onRemoveCard,onCardLibrary,onEditCard,onPickCard,libraryRevision,onReplacePromptRange,suggestionMode,onPosition,appearanceKey="classic", active=true, layout={mode:"classic",characters:{}}, onToggleMain, onToggleCharacter, onToggleField }) {
   const [promptMode, setPromptMode] = useState("positive");
   const [characterModes,setCharacterModes]=useState({});
   const merged=layout.mode==='merged',mainOpen=!merged||!layout.mainCollapsed;
   const negativePreset=splitNegativePreset(s.negative,s.model).preset;
-  const cardStrip = (owner, field, key, label) => <PromptCardStrip key={field} cards={validCards(owner[key+'Cards'],owner[key])} field={field} label={label} selection={cardSelection} saving={savingCard} onSave={onSaveCard} onRemove={onRemoveCard} onLibrary={onCardLibrary} onEdit={onEditCard} onPick={onPickCard} libraryRevision={libraryRevision} active={active&&(!merged?tab==='characters':!layout.characters?.[owner.id])&&(merged||(characterModes[owner.id]||'prompt')===key)}/>;
+  const cardStrip = (owner, field, key, label) => <PromptCardStrip key={field} cards={validCards(owner[key+'Cards'],owner[key])} field={field} label={label} selection={cardSelection} saving={savingCard} onSave={onSaveCard} onRemove={onRemoveCard} onLibrary={onCardLibrary} onEdit={onEditCard} onPick={onPickCard} libraryRevision={libraryRevision} active={active&&(!merged?tab==='characters':!layout.characters?.[owner.id])&&!(merged&&layout.fields?.[field])&&(merged||(characterModes[owner.id]||'prompt')===key)}/>;
   function switchPromptTab(event) {
     if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
     event.preventDefault();
@@ -124,16 +124,17 @@ export default function PromptPanel({ state: s, update, tab, setTab,cardSelectio
             </div>
             <div
               id="negative-panel"
+              className={merged&&layout.fields?.negative?"prompt-field-folded":""}
               role="tabpanel"
               aria-labelledby="negative-tab"
               hidden={!merged&&promptMode !== "negative"}
             >
-              <h4 className="merged-prompt-label" hidden={!merged}>主负面 Undesired Content</h4>
+              <h4 className="merged-prompt-label" hidden={!merged}><button type="button" aria-expanded={!layout.fields?.negative} aria-controls="negative" onClick={()=>onToggleField?.("negative")}>{layout.fields?.negative?<ChevronRight size={14}/>:<ChevronDown size={14}/>}主负面 Undesired Content</button></h4>
               <WeightedPromptInput
-                autoResize resizeKey={appearanceKey+':'+layout.mode} active={active&&mainOpen&&(merged||tab==='prompt'&&promptMode==='negative')}
+                autoResize resizeKey={appearanceKey+':'+layout.mode} active={active&&mainOpen&&!(merged&&layout.fields?.negative)&&(merged||tab==='prompt'&&promptMode==='negative')}
                 id="negative"
                 onReplaceRange={edit=>onReplacePromptRange?.('negative',edit)}
-                suggestionMode={active&&mainOpen&&(merged||tab==='prompt')?suggestionMode:'off'}
+                suggestionMode={active&&mainOpen&&!(merged&&layout.fields?.negative)&&(merged||tab==='prompt')?suggestionMode:'off'}
                 suggestionTarget="main-tag-suggestions"
                 data-prompt-field="negative"
                 aria-label="负面提示词"
@@ -160,7 +161,7 @@ export default function PromptPanel({ state: s, update, tab, setTab,cardSelectio
           </div>
           <div id="main-prompt-extras" className="main-prompt-extras" hidden={!mainOpen}>
           <TagSuggestionSlot id="main-tag-suggestions" mode={suggestionMode}/>
-          {['prompt','negative'].map(key=><div key={key} hidden={!merged&&promptMode!==(key==='prompt'?'positive':'negative')}><PromptCardStrip label={merged?(key==='prompt'?'本次正面卡片':'本次负面卡片'):undefined} cards={validCards(s[key+'Cards'],s[key])} field={key} selection={cardSelection} saving={savingCard} onSave={onSaveCard} onRemove={onRemoveCard} onLibrary={onCardLibrary} onEdit={onEditCard} onPick={onPickCard} libraryRevision={libraryRevision} active={active&&mainOpen&&(merged||tab==='prompt'&&promptMode===(key==='prompt'?'positive':'negative'))}/></div>)}
+          {['prompt','negative'].map(key=><div key={key} hidden={merged?!!layout.fields?.[key]:promptMode!==(key==='prompt'?'positive':'negative')}><PromptCardStrip label={merged?(key==='prompt'?'本次正面卡片':'本次负面卡片'):undefined} cards={validCards(s[key+'Cards'],s[key])} field={key} selection={cardSelection} saving={savingCard} onSave={onSaveCard} onRemove={onRemoveCard} onLibrary={onCardLibrary} onEdit={onEditCard} onPick={onPickCard} libraryRevision={libraryRevision} active={active&&mainOpen&&!(merged&&layout.fields?.[key])&&(merged||tab==='prompt'&&promptMode===(key==='prompt'?'positive':'negative'))}/></div>)}
           </div>
         </div>
         <div className="characters prompt-layout-section" hidden={!merged&&tab!=="characters"}>
@@ -200,14 +201,14 @@ export default function PromptPanel({ state: s, update, tab, setTab,cardSelectio
                 <div className="prompt-mode-tabs" role="tablist" aria-label={`角色 ${i+1} 正负面提示词`} hidden={merged}>
                   {['prompt','negative'].map(mode=><button key={mode} id={`role-${c.id}-${mode}-tab`} role="tab" aria-selected={(characterModes[c.id]||'prompt')===mode} aria-controls={`role-${c.id}-${mode}-panel`} tabIndex={(characterModes[c.id]||'prompt')===mode?0:-1} onClick={()=>setCharacterModes(m=>({...m,[c.id]:mode}))} onKeyDown={event=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;event.preventDefault();const next=event.key==='Home'?'prompt':event.key==='End'?'negative':mode==='prompt'?'negative':'prompt';setCharacterModes(m=>({...m,[c.id]:next}));document.getElementById(`role-${c.id}-${next}-tab`)?.focus();}}>{mode==='prompt'?<>正面 <span>Prompt</span></>:<>负面 <span>Undesired Content</span></>}</button>)}
                 </div>
-                {['prompt','negative'].map(mode=><div key={mode} id={`role-${c.id}-${mode}-panel`} role="tabpanel" aria-labelledby={`role-${c.id}-${mode}-tab`} hidden={!merged&&(characterModes[c.id]||'prompt')!==mode}>
-                  <h4 className="merged-prompt-label" hidden={!merged}>{mode==='prompt'?'正面 Prompt':'负面 Undesired Content'}</h4>
-                  <WeightedPromptInput autoResize active={active&&(!merged?tab==='characters':!layout.characters?.[c.id])&&(merged||(characterModes[c.id]||'prompt')===mode)} id={promptElementId(characterField(c.id,mode))} onReplaceRange={edit=>onReplacePromptRange?.(characterField(c.id,mode),edit)} suggestionMode={active&&(!merged?tab==='characters':!layout.characters?.[c.id])?suggestionMode:'off'} suggestionTarget={`role-${c.id}-suggestions`} data-prompt-field={characterField(c.id,mode)} aria-label={`角色 ${i+1} ${mode==='prompt'?'正面':'负面'}提示词`} rows={3} placeholder={mode==='prompt'?'描述这个角色的外观、服装与动作…':'描述这个角色需要避免出现的内容…'} value={c[mode]} onChange={e=>update(characterField(c.id,mode),e.target.value,e.nativeEvent?.inputType)}/>
+                {['prompt','negative'].map(mode=><div key={mode} id={`role-${c.id}-${mode}-panel`} className={merged&&layout.fields?.[characterField(c.id,mode)]?"prompt-field-folded":""} role="tabpanel" aria-labelledby={`role-${c.id}-${mode}-tab`} hidden={!merged&&(characterModes[c.id]||'prompt')!==mode}>
+                  <h4 className="merged-prompt-label" hidden={!merged}>{mode==='prompt'?'正面 Prompt':<button type="button" aria-label={`角色 ${i+1} 负面折叠`} aria-expanded={!layout.fields?.[characterField(c.id,mode)]} aria-controls={promptElementId(characterField(c.id,mode))} onClick={()=>onToggleField?.(characterField(c.id,mode))}>{layout.fields?.[characterField(c.id,mode)]?<ChevronRight size={14}/>:<ChevronDown size={14}/>}负面 Undesired Content</button>}</h4>
+                  <WeightedPromptInput autoResize active={active&&(!merged?tab==='characters':!layout.characters?.[c.id]&&!layout.fields?.[characterField(c.id,mode)])&&(merged||(characterModes[c.id]||'prompt')===mode)} id={promptElementId(characterField(c.id,mode))} onReplaceRange={edit=>onReplacePromptRange?.(characterField(c.id,mode),edit)} suggestionMode={active&&(!merged?tab==='characters':!layout.characters?.[c.id]&&!layout.fields?.[characterField(c.id,mode)])?suggestionMode:'off'} suggestionTarget={`role-${c.id}-suggestions`} data-prompt-field={characterField(c.id,mode)} aria-label={`角色 ${i+1} ${mode==='prompt'?'正面':'负面'}提示词`} rows={3} placeholder={mode==='prompt'?'描述这个角色的外观、服装与动作…':'描述这个角色需要避免出现的内容…'} value={c[mode]} onChange={e=>update(characterField(c.id,mode),e.target.value,e.nativeEvent?.inputType)}/>
                   <div className="prompt-editor-footer"><small>随内容伸缩 · 也可拖动调整</small><small>{c[mode].length} 字符</small></div>
                 </div>)}
               </div>
               <TagSuggestionSlot id={`role-${c.id}-suggestions`} mode={suggestionMode} compact/>
-              {['prompt','negative'].map(mode=><div key={mode} hidden={!merged&&(characterModes[c.id]||'prompt')!==mode}>{cardStrip(c,characterField(c.id,mode),mode,`角色 ${i+1} ${mode==='negative'?'负面':'正面'}卡片`)}</div>)}
+              {['prompt','negative'].map(mode=><div key={mode} hidden={merged?!!layout.fields?.[characterField(c.id,mode)]:(characterModes[c.id]||'prompt')!==mode}>{cardStrip(c,characterField(c.id,mode),mode,`角色 ${i+1} ${mode==='negative'?'负面':'正面'}卡片`)}</div>)}
               {s.coords && <div className="character-position-fine">
                 <button className="wide" onClick={()=>onPosition(c.id)}><Move size={14}/>在画布中定位角色 {i+1}</button>
                 {isV45(s.model)?<div className="coordinate-fields">{['x','y'].map(axis=><label key={axis}>{`角色 ${i+1} ${axis.toUpperCase()}`}<select aria-label={`角色 ${i+1} ${axis.toUpperCase()}`} value={c[axis]} onChange={e=>charUpdate(c.id,axis,Number(e.target.value))}>{[.1,.3,.5,.7,.9].map(value=><option key={value} value={value}>{value}</option>)}</select></label>)}</div>:<div className="coordinate-fields"><NumberField label={`角色 ${i+1} X`} value={c.x} min={0} max={1} step={.001} onChange={v=>charUpdate(c.id,'x',Math.max(0,Math.min(1,Number(v)||0)))}/><NumberField label={`角色 ${i+1} Y`} value={c.y} min={0} max={1} step={.001} onChange={v=>charUpdate(c.id,'y',Math.max(0,Math.min(1,Number(v)||0)))}/></div>}

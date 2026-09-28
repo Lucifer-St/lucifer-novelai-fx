@@ -57,13 +57,21 @@ const WeightedPromptInput = forwardRef(function WeightedPromptInput(
   useLayoutEffect(() => {
     if (!autoResize || !active) return;
     const textarea=input.current;
+    const measurement=document.createElement("textarea");
+    measurement.tabIndex=-1;measurement.readOnly=true;measurement.setAttribute("aria-hidden","true");
+    Object.assign(measurement.style,{position:"fixed",left:"-10000px",top:"0",height:"0",minHeight:"0",maxHeight:"none",overflow:"hidden",visibility:"hidden",pointerEvents:"none",resize:"none"});
+    document.body.appendChild(measurement);
     function fitContent(){
       if(!textarea.clientWidth)return;
       const style=getComputedStyle(textarea),border=parseFloat(style.borderTopWidth)+parseFloat(style.borderBottomWidth);
       const min=parseFloat(style.minHeight)||100,max=parseFloat(style.maxHeight)||600;
       const scroll=textarea.scrollTop;
-      textarea.style.height='0px';
-      textarea.style.height=`${Math.max(min,Math.min(max,textarea.scrollHeight+border))}px`;
+      // Measure out of flow: never collapse the real editor or its scroll ancestors.
+      for(const property of [...mirrorProperties,'boxSizing','borderTopWidth','borderBottomWidth','borderLeftWidth','borderRightWidth','borderStyle'])measurement.style[property]=style[property];
+      measurement.style.width=`${textarea.getBoundingClientRect().width}px`;
+      measurement.value=String(value);
+      const height=Math.ceil(Math.max(min,Math.min(max,measurement.scrollHeight+border)));
+      if(textarea.style.height!==`${height}px`)textarea.style.height=`${height}px`;
       textarea.scrollTop=scroll;
     }
     fitContent();
@@ -72,7 +80,7 @@ const WeightedPromptInput = forwardRef(function WeightedPromptInput(
     observer.observe(textarea);
     window.addEventListener('resize',fitContent);
     document.fonts?.addEventListener('loadingdone',fitContent);
-    return()=>{observer.disconnect();window.removeEventListener('resize',fitContent);document.fonts?.removeEventListener('loadingdone',fitContent);};
+    return()=>{observer.disconnect();measurement.remove();window.removeEventListener('resize',fitContent);document.fonts?.removeEventListener('loadingdone',fitContent);};
   },[autoResize,active,value,resizeKey]);
 
   function syncScroll() {

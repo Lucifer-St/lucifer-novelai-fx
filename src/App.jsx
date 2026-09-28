@@ -950,11 +950,12 @@ export default function App() {
             <div className="panel-resizer panel-resizer-left" {...panelLayout.separator('left')}/>
             <div className="panel-resizer panel-resizer-right" {...panelLayout.separator('right')}/>
             <aside className="left-panel">
+              <div className="left-panel-content">
               {!narrowWorkbench&&<ThemePromptHeader skin={appearance.workbenchSkin}/>}
               <ModelChooser value={state.model} onChange={changeModel}/>
               <div className="left-scroll">
                 <PromptPanel
-                  active={page==='studio'} layout={promptLayout.preferences} onToggleMain={promptLayout.toggleMain} onToggleCharacter={promptLayout.toggleCharacter}
+                  active={page==='studio'} layout={promptLayout.preferences} onToggleMain={promptLayout.toggleMain} onToggleCharacter={promptLayout.toggleCharacter} onToggleField={promptLayout.toggleField}
                   state={editState}
                   update={update}
                   setState={comparison.setEffective}
@@ -982,6 +983,7 @@ export default function App() {
               />
               </>}
               </div></section>}
+              </div>
               </div>
               <div className="generate-dock">
                 <div className="prompt-dock-options"><Toggle label="自动添加质量标签" checked={editState.quality} onChange={v=>update('quality',v)}/>{tab==='prompt'&&<button className="text-button" onClick={addCharacter}><Plus size={13}/>添加角色</button>}</div>
