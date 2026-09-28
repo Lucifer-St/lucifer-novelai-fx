@@ -1,5 +1,7 @@
 import {RELEASE_CONFIG} from '../../shared/release-config.mjs';
-export const RELEASE_NOTES={version:RELEASE_CONFIG.version,title:'更新说明',date:'2026-09-27',features:[
+export const RELEASE_NOTES={version:RELEASE_CONFIG.version,title:'更新说明',date:'2026-09-28',features:[
+ {title:'output 自动保存可关闭',description:'在应用设置 → 保存位置中，可关闭「自动保存生成图片到 output」。默认保持开启，仅影响之后的生成；不会移动或删除旧图片。'},
+ {title:'保留历史缓存和手动保存',description:'关闭后图片仍保留在应用内部历史缓存中，仍占用磁盘空间。预览、重启查看、手动保存与下载继续可用；再次开启后，新生成图片恢复写入 output。'},
  {title:'自定义尺寸自动对齐',description:'手动输入宽度、高度后，离开输入框或按 Enter 自动显示最近的 64 倍数，如 1000→1024、1200→1216；同距向上取整，范围保持 64–4096。'},
  {title:'输入顺畅，请求尺寸一致',description:'输入过程中不打断正在输入的数字；清空后离开会恢复有效值。直接点击生成或按 Ctrl+Enter 也使用校准尺寸，交换宽高与预设选择继续正常工作。'},
  {title:'D站翻页保留图片详情',description:'打开的图片与已选标签不再因上一页、下一页、跳页或刷新而自动关闭。右侧保持当前图片，点另一张图才切换；需要收起时点击「返回列表」。'},

@@ -290,10 +290,11 @@ export function createStudioServer(options = {}) {
     return (await readFile(path.join(resultDir,decodeURIComponent(entry.rawUrl.split('/').at(-1))))).toString('base64');
   }});
   const atlasStorage=createAtlasStorage(path.join(dataDir,'atlas'));
+  let autoSaveOutput = true;
   let outputDir = path.resolve(options.outputDir || path.join(dataDir,"output"));
   let saveDir = path.resolve(options.saveDir || path.join(dataDir,"saved"));
   let storageRoots=[];
-  async function refreshStorage(){const cfg=await configuration.get();outputDir=options.outputDir||cfg.outputDirectory;saveDir=options.saveDir||cfg.saveDirectory;storageRoots=cfg.storageRoots||[];return cfg;}
+  async function refreshStorage(){const cfg=await configuration.get();autoSaveOutput=cfg.autoSaveOutput!==false;outputDir=options.outputDir||cfg.outputDirectory;saveDir=options.saveDir||cfg.saveDirectory;storageRoots=cfg.storageRoots||[];return cfg;}
   const saveLocks = new Map();
   const distDir = options.distDir || path.join(PROJECT, "dist");
   const fetchImpl = options.fetchImpl || globalThis.fetch;
@@ -474,6 +475,8 @@ export function createStudioServer(options = {}) {
       url: `/api/results/${encodeURIComponent(name)}`,
       savedToLibrary: false,
     };
+    // Keep a durable history cache without creating an output-directory copy.
+    if(!autoSaveOutput){image.url=await save(name,prepared.bytes);return image;}
     try {
       const written = await writeOutput(
         prepared.bytes,
@@ -1083,8 +1086,8 @@ export function createStudioServer(options = {}) {
       if(storageChanging&&mutation)throw new RequestError(409,'storage_busy','保存目录正在更新，请稍后操作。');
       if(url.pathname==='/api/settings'&&req.method==='GET'){json(res,200,publicSettings);
       }else if(url.pathname==='/api/settings'&&req.method==='POST'){
-        const change=await readJson(req,32768);if((generationBusy||['queued','running','stopping'].includes(generationJobs.active?.status)||features.comparisons.active)&&Object.keys(change).some(k=>!['beginner','tutorialComplete'].includes(k)))throw new RequestError(409,'generation_busy','任务执行期间不能更换连接或目录。');
-        const changing=['outputDirectory','saveDirectory'].some(key=>change[key]!==undefined&&change[key]!==publicSettings[key]);
+        const change=await readJson(req,32768);if(change.autoSaveOutput!==undefined&&typeof change.autoSaveOutput!=='boolean')throw new RequestError(400,'invalid_storage_settings','自动保存设置必须为开关值。');if((generationBusy||['queued','running','stopping'].includes(generationJobs.active?.status)||features.comparisons.active)&&Object.keys(change).some(k=>!['beginner','tutorialComplete'].includes(k)))throw new RequestError(409,'generation_busy','任务执行期间不能更换连接或目录。');
+        const changing=['outputDirectory','saveDirectory','autoSaveOutput'].some(key=>change[key]!==undefined&&change[key]!==publicSettings[key]);
         if(changing&&(storageChanging||inflightMutations>1||saveLocks.size))throw new RequestError(409,'storage_busy','还有操作未完成，请稍后更换目录。');
         if(changing)storageChanging=true;
         try{const saved=await configuration.update(change);if(changing)await refreshStorage();json(res,200,saved);}finally{if(changing)storageChanging=false;}
@@ -1192,6 +1195,7 @@ export function createStudioServer(options = {}) {
           beginner:publicSettings.beginner,
           tutorialComplete:publicSettings.tutorialComplete,
           platform:"windows",
+          autoSaveOutput,
           outputDirectory: outputDir,
           saveDirectory: saveDir,
           maxRequestBytes: maxInput,

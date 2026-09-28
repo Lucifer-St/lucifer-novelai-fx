@@ -1,6 +1,6 @@
 # 分享版范围
 
-当前公开源码对应 Windows 分享版 1.9.2，代码采用 MIT；第三方依赖和美术条款见 SOURCE-LICENSE.md。
+当前公开源码对应 Windows 分享版 1.10.0，代码采用 MIT；第三方依赖和美术条款见 SOURCE-LICENSE.md。
 
 | 范围 | Windows 分享版 |
 |---|---|

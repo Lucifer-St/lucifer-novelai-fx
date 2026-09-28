@@ -38,7 +38,7 @@ export function createWindowsVault(){
 }
 export function createConfiguration({directory,root,vault=createWindowsVault()}){
  let chain=Promise.resolve();
- const defaults=()=>({version:1,...normalizeProfile(),outputDirectory:path.join(root,'userdata','output'),saveDirectory:path.join(root,'userdata','saved'),storageRoots:[],beginner:true,tutorialComplete:false});
+ const defaults=()=>({version:1,...normalizeProfile(),outputDirectory:path.join(root,'userdata','output'),saveDirectory:path.join(root,'userdata','saved'),storageRoots:[],autoSaveOutput:true,beginner:true,tutorialComplete:false});
  async function raw(){try{const d={...defaults(),...JSON.parse(await readFile(path.join(directory,'settings.json'),'utf8'))};if(d.outputDirectory==='@app/output')d.outputDirectory=defaults().outputDirectory;if(d.saveDirectory==='@app/saved')d.saveDirectory=defaults().saveDirectory;return d;}catch(e){if(e.code!=='ENOENT')throw e;return defaults();}}
  async function save(config){await mkdir(directory,{recursive:true});const stored={...config};if(stored.outputDirectory===defaults().outputDirectory)stored.outputDirectory='@app/output';if(stored.saveDirectory===defaults().saveDirectory)stored.saveDirectory='@app/saved';const tmp=path.join(directory,'settings.'+randomUUID()+'.tmp');await writeFile(tmp,JSON.stringify(stored,null,2));await rename(tmp,path.join(directory,'settings.json'));}
  const publicConfig=d=>{const {secret,...safe}=d;return {...safe,keyConfigured:!!secret,platform:'windows',defaultPaths:{output:path.join(root,'userdata','output'),saved:path.join(root,'userdata','saved')}};};
@@ -50,6 +50,7 @@ export function createConfiguration({directory,root,vault=createWindowsVault()})
    if(typeof body.key==='string'&&body.key.trim()){const key=body.key.trim();if(!profile.baseURL)throw new FeatureError('请填写 API 地址。');if(key.length>8192||/[\r\n]/.test(key))throw new FeatureError('密钥格式无效。');next.secret=await vault.seal(key);}
    // Credentials are never silently reused for a different destination.
    if((profile.provider!==old.provider||profile.baseURL!==old.baseURL)&&!body.key?.trim())delete next.secret;
+   if(body.autoSaveOutput!==undefined){if(typeof body.autoSaveOutput!=='boolean')throw new FeatureError('自动保存设置必须为开关值。');next.autoSaveOutput=body.autoSaveOutput;}
    for(const key of ['outputDirectory','saveDirectory'])if(body[key]!==undefined){const value=String(body[key]).trim();if(!path.isAbsolute(value))throw new FeatureError('请选择绝对文件夹路径。');const folder=path.resolve(value);await mkdir(folder,{recursive:true});await access(folder,constants.W_OK);const probe=path.join(folder,'.fx-write-'+randomUUID());await writeFile(probe,'');await unlink(probe);next.storageRoots=[...new Set([...next.storageRoots,old[key],folder])];next[key]=folder;}
    for(const key of ['beginner','tutorialComplete'])if(typeof body[key]==='boolean')next[key]=body[key];await save(next);return publicConfig(next);
   });chain=run.catch(()=>{});return run;},

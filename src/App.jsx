@@ -1327,9 +1327,9 @@ export default function App() {
       <footer className="statusbar">
         <span
           className="save-directory"
-          title={`自动输出：${outputDirectory}；主动保存：${saveDirectory}`}
+          title={status?.autoSaveOutput===false?`自动输出已关闭，图片保留在历史缓存；主动保存：${saveDirectory}`:`自动输出：${outputDirectory}；主动保存：${saveDirectory}`}
         >
-          <button className="folder-shortcut" aria-label="打开自动输出目录" title="打开自动输出目录" onClick={()=>openLocalFolder('output').catch(e=>setError(e.message))}><FolderOpen size={15}/></button> 自动输出 <strong>{outputDirectory.split(/[\\/]/).filter(Boolean).slice(-2).join(" / ")}</strong>
+          <button className="folder-shortcut" aria-label="打开自动输出目录" title="打开自动输出目录" onClick={()=>openLocalFolder('output').catch(e=>setError(e.message))}><FolderOpen size={15}/></button> {status?.autoSaveOutput===false?"自动输出已关闭 · 历史缓存保留":"自动输出"} <strong>{outputDirectory.split(/[\\/]/).filter(Boolean).slice(-2).join(" / ")}</strong>
           <span>· 主动保存到精选目录</span>
         </span>
         <span>
