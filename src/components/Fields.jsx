@@ -16,21 +16,37 @@ export function NumberField({
   max,
   step = 1,
   help,
+  normalize,
 }) {
   const id = useId();
+  const [draft,setDraft]=useState(null);
+  const emitted=useRef(value);
+  useEffect(()=>{if(!Object.is(value,emitted.current))setDraft(null);emitted.current=value;},[value]);
+  function change(raw){
+    if(!normalize){onChange(raw===''?'':Number(raw));return;}
+    setDraft(raw);
+    const next=normalize(raw);
+    if(next!==null){emitted.current=next;onChange(next);}
+  }
+  function finish(event){
+    if(!normalize)return;
+    const next=normalize(event.currentTarget.value);
+    if(next!==null){emitted.current=next;onChange(next);}
+    setDraft(null);
+  }
   return (
     <div className="field">
       <label htmlFor={id}>{label}</label>
       <input
         id={id}
         type="number"
-        value={value ?? ""}
+        value={normalize&&draft!==null?draft:value ?? ""}
         min={min}
         max={max}
         step={step}
-        onChange={(e) =>
-          onChange(e.target.value === "" ? "" : Number(e.target.value))
-        }
+        onChange={event=>change(event.target.value)}
+        onBlur={finish}
+        onKeyDown={event=>{if(event.key==='Enter'&&!event.nativeEvent?.isComposing)finish(event);}}
       />
       {help && <small>{help}</small>}
     </div>

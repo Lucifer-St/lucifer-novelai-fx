@@ -1,3 +1,4 @@
+import {snapDimension} from '../lib/dimensions.mjs';
 import {useState} from 'react';
 import {changeGenerationMode} from '../lib/generation-mode.mjs';
 import { ArrowLeftRight, Dices } from "lucide-react";
@@ -99,9 +100,11 @@ export default function SettingsPanel({ state: s, update, setState, onJSON, comp
             min={64}
             max={4096}
             step={64}
+            normalize={snapDimension}
+            help="自动对齐最近的 64 倍数"
             onChange={(v) => update("width", v)}
           />
-          <button title="交换宽高" onClick={() => setSize(s.height, s.width)}>
+          <button style={{alignSelf:"center"}} title="交换宽高" onClick={() => setSize(s.height, s.width)}>
             <ArrowLeftRight size={16} />
           </button>
           <NumberField
@@ -110,6 +113,8 @@ export default function SettingsPanel({ state: s, update, setState, onJSON, comp
             min={64}
             max={4096}
             step={64}
+            normalize={snapDimension}
+            help="自动对齐最近的 64 倍数"
             onChange={(v) => update("height", v)}
           />
         </div>

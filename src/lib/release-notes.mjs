@@ -1,5 +1,7 @@
 import {RELEASE_CONFIG} from '../../shared/release-config.mjs';
 export const RELEASE_NOTES={version:RELEASE_CONFIG.version,title:'更新说明',date:'2026-09-27',features:[
+ {title:'自定义尺寸自动对齐',description:'手动输入宽度、高度后，离开输入框或按 Enter 自动显示最近的 64 倍数，如 1000→1024、1200→1216；同距向上取整，范围保持 64–4096。'},
+ {title:'输入顺畅，请求尺寸一致',description:'输入过程中不打断正在输入的数字；清空后离开会恢复有效值。直接点击生成或按 Ctrl+Enter 也使用校准尺寸，交换宽高与预设选择继续正常工作。'},
  {title:'D站翻页保留图片详情',description:'打开的图片与已选标签不再因上一页、下一页、跳页或刷新而自动关闭。右侧保持当前图片，点另一张图才切换；需要收起时点击「返回列表」。'},
  {title:'手机端也可在详情内翻页',description:'详情底部新增图库翻页按钮，翻页不退出当前图片；已选标签、标签筛选文字与复制内容继续保留。空页或检索失败也不会丢失详情。'},
  {title:'光翼战姬三款皮肤',description:'新增 ExS-TiA、ExS-TiA Chevalier、ExS-TiA Magica。保留大幅官方立绘，搭配无框构图、淡色装备纹样与日文明朝体台词；从右上角「皮肤」切换。'},
