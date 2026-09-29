@@ -70,7 +70,7 @@ export function searchTagIndex(index,raw,limit=12){
   if(chinese){
     for(const entry of index.glossary||[]){
       const meaning=entry.zh.toLowerCase();
-      const score=meaning===query?(entry.source==='personal'?0:1):meaning.startsWith(query)?2:Infinity;
+      const score=meaning===query?(entry.source==='personal'?0:1):meaning.startsWith(query)?2:meaning.includes(query)?3:Infinity;
       if(score===Infinity)continue;
       ranked.push({score,entry});
     }

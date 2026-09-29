@@ -1,3 +1,4 @@
+import DimensionCostHint from './DimensionCostHint';
 import {snapDimension} from '../lib/dimensions.mjs';
 import {useState} from 'react';
 import {changeGenerationMode} from '../lib/generation-mode.mjs';
@@ -24,7 +25,7 @@ const samplers = [
   "k_dpmpp_sde",
 ];
 
-export default function SettingsPanel({ state: s, update, setState, onJSON, comparisonEnabled=false,suggestionMode='off',onSuggestionMode,onToggleSuggestions }) {
+export default function SettingsPanel({ state: s, update, setState, onJSON, comparisonEnabled=false,pricingPolicy='opus',suggestionMode='off',onSuggestionMode,onToggleSuggestions }) {
   const [settingsTab,setSettingsTab]=useState("parameters");
   const referenceTab=isV45(s.model)&&settingsTab==="reference";
   const setSize = (width, height) => setState((v) => ({ ...v, width, height }));
@@ -118,6 +119,7 @@ export default function SettingsPanel({ state: s, update, setState, onJSON, comp
             onChange={(v) => update("height", v)}
           />
         </div>
+        <DimensionCostHint state={s} policy={pricingPolicy} comparisonEnabled={comparisonEnabled}/>
         {!comparisonEnabled?<NumberField
           label="生成数量"
           min={1}

@@ -973,7 +973,7 @@ export default function App() {
               {basicMode&&<p className="share-basic-note">新手模式保留常用设置。<button onClick={switchBasic}>展开高级参数</button></p>}
               <ComparisonControls comparison={comparison} base={state}/>
               <OpusBatchControls enabled={opusBatch} onChange={changeOpusBatch} disabled={busy||comparison.config.enabled||comparison.busy} reason={comparison.config.enabled?'A/B/C 已按单张串行生成；此开关在普通多图时生效。':batchReason}/>
-              <SettingsPanel
+              <SettingsPanel pricingPolicy={anlas?.pricingPolicy}
                 suggestionMode={suggestionMode} onSuggestionMode={setSuggestionMode} onToggleSuggestions={enabled=>setSuggestionMode(enabled?lastSuggestionMode.current:"off")}
                 comparisonEnabled={comparison.config.enabled}
                 state={editState}
@@ -1295,7 +1295,7 @@ export default function App() {
               {basicMode&&<p className="share-basic-note">新手模式保留常用设置。<button onClick={switchBasic}>展开高级参数</button></p>}
               <ComparisonControls comparison={comparison} base={state}/>
               <OpusBatchControls enabled={opusBatch} onChange={changeOpusBatch} disabled={busy||comparison.config.enabled||comparison.busy} reason={comparison.config.enabled?'A/B/C 已按单张串行生成；此开关在普通多图时生效。':batchReason}/>
-              <SettingsPanel
+              <SettingsPanel pricingPolicy={anlas?.pricingPolicy}
                 suggestionMode={suggestionMode} onSuggestionMode={setSuggestionMode} onToggleSuggestions={enabled=>setSuggestionMode(enabled?lastSuggestionMode.current:"off")}
                 comparisonEnabled={comparison.config.enabled}
                 state={editState}

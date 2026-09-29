@@ -1,3 +1,4 @@
+import {normalizeDanbooruSearch,danbooruSearchTags} from '../lib/danbooru-search.mjs';
 import DanbooruSearch from './DanbooruSearch';
 import {copyText} from '../lib/platform.mjs';
 import {useEffect,useRef,useState} from 'react';
@@ -20,7 +21,7 @@ function Thumbnail({src,alt,queue,revision,active}){
  useEffect(()=>{if(!('IntersectionObserver' in window)){setVisible(true);return;}const observer=new IntersectionObserver(entries=>setVisible(entries.some(entry=>entry.isIntersecting)),{rootMargin:'0px',threshold:0.01});observer.observe(container.current);return()=>observer.disconnect();},[]);
  return <span className="danbooru-lazy-preview" ref={container}>{!src||failed||decodeFailed?<span className="danbooru-no-image"><ImageIcon size={20}/>图片暂不可用</span>:image?<img src={image} alt={alt} decoding="async" onError={()=>setDecodeFailed(true)}/>:<span className="danbooru-thumbnail-placeholder" aria-hidden="true"><ImageIcon size={20}/></span>}</span>;
 }
-function originalUrl(params,pageSize){const tags=[params.q,params.rating==='all'?'':`rating:${params.rating}`,`order:${{latest:'id_desc',score:'score',favorites:'favcount'}[params.sort]}`].filter(Boolean);if(params.period!=='all'){const d=new Date();d.setUTCDate(d.getUTCDate()-({today:0,week:7,month:30}[params.period]));tags.push(`date:>=${d.toISOString().slice(0,10)}`);}return 'https://danbooru.donmai.us/posts?'+new URLSearchParams({tags:tags.join(' '),page:String(params.page),limit:String(pageSize||12)});}
+function originalUrl(params,pageSize){return 'https://danbooru.donmai.us/posts?'+new URLSearchParams({tags:danbooruSearchTags(params),page:String(params.page),limit:String(pageSize||12)});}
 
 export default function DanbooruPanel({onCollect,active=true,refreshRevision=0}){
  const [params,setParams]=useState(()=>initialDanbooruPreferences(localStorage)),[query,setQuery]=useState(params.q),[data,setData]=useState(null),[loading,setLoading]=useState(true),[error,setError]=useState('');
@@ -58,7 +59,7 @@ export default function DanbooruPanel({onCollect,active=true,refreshRevision=0})
   return()=>controller.abort();
  },[params,pageSize,active,refreshRevision,retryRevision]);
  function jumpPage(event){event.preventDefault();const page=parseDanbooruPage(pageInput);if(page===null){setPageError('请输入 1–1000 之间的整数页码。');return;}setPageError('');setPageInput(String(page));setParams(previous=>previous.page===page?previous:{...previous,page});}
- function search(patch={}){setPageSize(measurePageSize()||pageSize);setParams(p=>({...p,q:query.trim(),page:1,...patch}));}
+ function search(patch={}){if(/[\p{Script=Han}]/u.test(query)){setError('中文用于本地标签联想，请先在候选中选择英文标签，再点击搜索。');setErrorCode('danbooru_chinese_query');return;}const normalized=normalizeDanbooruSearch(query);setError('');setErrorCode('');setQuery(normalized);setPageSize(measurePageSize()||pageSize);setParams(p=>({...p,q:normalized,page:1,...patch}));}
  function open(post){setSelected(post);setSelection(initialTagSelection(post));setTagFilter('');setNotice('');}
  function toggle(group,tag){const key=danbooruTagKey(group,tag);setSelection(old=>{const next=new Set(old);next.has(key)?next.delete(key):next.add(key);return next;});setNotice('');}
  function groupSelection(group,on){setSelection(old=>{const next=new Set(old);for(const tag of selected.tags[group]||[]){const key=danbooruTagKey(group,tag);on?next.add(key):next.delete(key);}return next;});setNotice('');}
@@ -73,10 +74,10 @@ export default function DanbooruPanel({onCollect,active=true,refreshRevision=0})
    <label>上传时间<select aria-label="Danbooru 上传时间" value={params.period} onChange={e=>search({period:e.target.value})}><option value="all">不限时间</option><option value="today">今天</option><option value="week">最近 7 天</option><option value="month">最近 30 天</option></select></label>
    <label>内容等级<select aria-label="Danbooru 内容等级" value={params.rating} onChange={e=>search({rating:e.target.value})}>{Object.entries(DANBOORU_RATINGS).map(([v,label])=><option value={v} key={v}>{label}</option>)}</select></label>
   </form>
-  <div className="danbooru-query-info"><span>{pageSize?`每页 ${pageSize} 张`:'按整行分页'} · 滚动时加载缩略图 · 时间按 UTC；等级采用原站标记。</span><span>公开只读检索 · 不经过生图网关 <button disabled={loading||!data?.posts?.length} onClick={()=>setImageRevision(v=>v+1)}>重新加载图片</button></span></div>
+  <div className="danbooru-query-info"><span>{pageSize?`每页 ${pageSize} 张`:'按整行分页'} · 滚动时加载缩略图 · 时间按 UTC；等级采用原站标记。</span><span>匿名搜索：最新最多 2 个普通标签；热门／收藏排序通常最多 1 个 · 不经过生图网关 <button disabled={loading||!data?.posts?.length} onClick={()=>setImageRevision(v=>v+1)}>重新加载图片</button></span></div>
   <div className="danbooru-body" ref={layoutRef}>
    <section ref={resultsRef} data-danbooru-scroll className="danbooru-results" aria-label="Danbooru 图片列表" aria-busy={loading}>
-    {loading?<div className="danbooru-empty" role="status"><span className="danbooru-spinner"/>正在读取图库…</div>:error?<div className="danbooru-empty" role="alert"><p>{error}</p>{errorCode==='danbooru_query_timeout'&&<div className="danbooru-recovery-actions">{['all','month'].includes(params.period)&&<button onClick={()=>search({period:'week'})}>改查最近 7 天</button>}{params.sort!=='latest'&&<button onClick={()=>search({sort:'latest'})}>改按最新排序</button>}</div>}<button onClick={()=>setRetryRevision(value=>value+1)}>重试检索</button><a href={originalUrl(params,pageSize)} target="_blank" rel="noreferrer">在原站查看</a></div>:<>
+    {loading?<div className="danbooru-empty" role="status"><span className="danbooru-spinner"/>正在读取图库…</div>:error?<div className="danbooru-empty" role="alert"><p>{error}</p>{errorCode==='danbooru_tag_limit'&&params.sort!=='latest'&&<button onClick={()=>search({sort:'latest'})}>改按最新排序</button>}{errorCode==='danbooru_query_timeout'&&<div className="danbooru-recovery-actions">{['all','month'].includes(params.period)&&<button onClick={()=>search({period:'week'})}>改查最近 7 天</button>}{params.sort!=='latest'&&<button onClick={()=>search({sort:'latest'})}>改按最新排序</button>}</div>}<button onClick={()=>setRetryRevision(value=>value+1)}>重试检索</button><a href={originalUrl(params,pageSize)} target="_blank" rel="noreferrer">在原站查看</a></div>:<>
      {!data?.posts?.length&&<div className="danbooru-empty"><ImageIcon size={30}/><p>没有匹配的图片。试试减少标签，或调整等级与时间。</p></div>}
      <div className="danbooru-grid">{data?.posts.map(post=><button key={post.id} className={`danbooru-tile${selected?.id===post.id?' selected':''}`} aria-label={`查看图片 #${post.id}`} onClick={()=>open(post)}>
       <div className="danbooru-thumbnail"><Thumbnail src={post.thumbnail} alt={`Danbooru #${post.id}`} queue={thumbnailQueue.current} revision={imageRevision} active={active}/><span className={`danbooru-rating rating-${post.rating}`}>{post.rating.toUpperCase()}</span></div><div className="danbooru-tile-caption"><span>#{post.id}</span><span><Star size={11}/>{post.score}<Bookmark size={11}/>{post.favorites}</span></div>

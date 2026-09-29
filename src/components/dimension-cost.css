@@ -1,0 +1,2 @@
+.dimension-cost-hint{padding:9px 10px;margin:9px 0 13px;border:1px solid color-mix(in srgb,currentColor 20%,transparent);border-radius:7px;font-size:11px;line-height:1.55;overflow-wrap:anywhere;color:inherit;background:color-mix(in srgb,currentColor 4%,transparent)}
+.dimension-cost-hint strong{display:block;font-size:12px}.dimension-cost-hint p{margin:4px 0!important}.dimension-cost-hint small{display:block;font-size:10px;opacity:.8}.dimension-cost-hint.warning{border-color:#d49236;background:color-mix(in srgb,#eaae4c 13%,transparent)}

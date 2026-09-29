@@ -1,3 +1,4 @@
+import {normalizeDanbooruSearch,danbooruSearchTags} from '../src/lib/danbooru-search.mjs';
 import {FeatureError} from './local-store.mjs';
 import {publicNetworkMessage} from './public-network-errors.mjs';
 
@@ -6,17 +7,15 @@ const DEFAULT_LIMIT=12,MAX_BYTES=4*1024*1024;
 const RATINGS=new Set(['g','s','q','e','all']);
 const SORTS={latest:'id_desc',score:'score',favorites:'favcount'};
 const PERIODS={all:null,today:0,week:7,month:30};
-async function isQueryTimeout(response){
- try{const chunks=[];let bytes=0;for await(const chunk of response.body){bytes+=chunk.length;if(bytes>16384)return false;chunks.push(Buffer.from(chunk));}const detail=JSON.parse(Buffer.concat(chunks).toString('utf8'));return detail.error==='ActiveRecord::QueryCanceled'||detail.message==='The database timed out running your query.';}catch{return false;}
+async function readErrorDetail(response){
+ try{const chunks=[];let bytes=0;for await(const chunk of response.body){bytes+=chunk.length;if(bytes>16384){await response.body.cancel?.().catch(()=>{});return null;}chunks.push(Buffer.from(chunk));}const detail=JSON.parse(Buffer.concat(chunks).toString('utf8'));return detail;}catch{return null;}
 }
 export function buildDanbooruQuery(params,now=Date.now()){
- const q=String(params.get('q')||'').trim(),rating=params.get('rating')||'g',sort=params.get('sort')||'latest',period=params.get('period')||'all',page=Number(params.get('page')||1),pageSize=Number(params.get('pageSize')??DEFAULT_LIMIT);
- if(q.length>240||/[\r\n\x00-\x1f]/.test(q))throw new FeatureError('搜索词最多 240 字符，请使用空格分隔标签。');
+ const raw=String(params.get('q')||'').trim(),q=normalizeDanbooruSearch(raw),rating=params.get('rating')||'g',sort=params.get('sort')||'latest',period=params.get('period')||'all',page=Number(params.get('page')||1),pageSize=Number(params.get('pageSize')??DEFAULT_LIMIT);
+ if(raw.length>240||/[\r\n\x00-\x1f]/.test(raw))throw new FeatureError('搜索词最多 240 字符，请使用空格分隔标签。');
  if(!RATINGS.has(rating)||!Object.hasOwn(SORTS,sort)||!Object.hasOwn(PERIODS,period)||!Number.isInteger(page)||page<1||page>1000||!Number.isInteger(pageSize)||pageSize<12||pageSize>48)throw new FeatureError('图库筛选参数无效。');
  if(/(?:^|\s)[~-]?(?:rating|order|date|age|limit):/i.test(q))throw new FeatureError('请使用上方的内容等级、排序和时间筛选器，避免搜索条件冲突。');
- const tags=[q,rating==='all'?'':`rating:${rating}`,`order:${SORTS[sort]}`];
- if(period!=='all'){const date=new Date(now);date.setUTCDate(date.getUTCDate()-PERIODS[period]);tags.push(`date:>=${date.toISOString().slice(0,10)}`);}
- const query=tags.filter(Boolean).join(' '),url=new URL('/posts.json',ORIGIN);url.search=new URLSearchParams({tags:query,limit:String(pageSize),page:String(page)}).toString();
+ const query=danbooruSearchTags({q,rating,sort,period},now),url=new URL('/posts.json',ORIGIN);url.search=new URLSearchParams({tags:query,limit:String(pageSize),page:String(page)}).toString();
  return {q,rating,sort,period,page,pageSize,query,url,sourceUrl:`${ORIGIN}/posts?${new URLSearchParams({tags:query,page:String(page),limit:String(pageSize)})}`};
 }
 export function danbooruCandidateUrls(search){
@@ -83,7 +82,7 @@ export function createDanbooru({fetchImpl=fetch,now=Date.now}={}){
     let rows;const candidates=danbooruCandidateUrls(search);
     for(const candidate of candidates){
     const response=await fetchImpl(candidate,{method:'GET',headers:{Accept:'application/json','User-Agent':'LuciferNovelAIFX/2.8 (anonymous local reference browser)'},credentials:'omit',redirect:'error',signal:AbortSignal.timeout(10000)});
-    if(!response.ok){const status=response.status;if([500,504].includes(status)&&await isQueryTimeout(response))throw new FeatureError('Danbooru 原站数据库查询超时。不限时间的收藏／评分排序可能范围过大，请缩小上传时间、增加标签，或改按最新排序。','danbooru_query_timeout',504);throw new FeatureError(status===429?'Danbooru 暂时限流，请稍后重试。':status===401||status===403?'Danbooru 限制了当前匿名访问，可在原站查看。':status===422?'搜索条件超出 Danbooru 当前限制，请减少标签或在原站查看。':`Danbooru 返回 HTTP ${status}，可稍后重试或在原站查看。`,'danbooru_upstream',status===429?429:502);}
+    if(!response.ok){const status=response.status,detail=[422,500,504].includes(status)?await readErrorDetail(response):null;if(status===422&&detail?.error==='PostQuery::TagLimitError')throw new FeatureError(search.sort==='latest'?'Danbooru 当前匿名检索最多支持 2 项计数条件，请减少普通标签；内容等级和上传时间不占此额度。':'Danbooru 当前匿名检索最多支持 2 项计数条件；评分／收藏排序占 1 项，通常只能再加 1 个普通标签。可改用最新上传，或减少标签。','danbooru_tag_limit',422);if(status===422)throw new FeatureError('Danbooru 未接受这组搜索语法。请检查标签及条件，或在原站查看。','danbooru_invalid_query',422);if([500,504].includes(status)&&(detail?.error==='ActiveRecord::QueryCanceled'||detail?.message==='The database timed out running your query.'))throw new FeatureError('Danbooru 原站数据库查询超时。不限时间的收藏／评分排序可能范围过大，请缩小上传时间、增加标签，或改按最新排序。','danbooru_query_timeout',504);throw new FeatureError(status===429?'Danbooru 暂时限流，请稍后重试。':status===401||status===403?'Danbooru 限制了当前匿名访问，可在原站查看。':`Danbooru 返回 HTTP ${status}，可稍后重试或在原站查看。`,'danbooru_upstream',status===429?429:502);}
     if(Number(response.headers.get('content-length'))>MAX_BYTES)throw new FeatureError('图库响应过大，请缩小搜索范围。','danbooru_response_too_large',502);
     const chunks=[];let size=0;for await(const chunk of response.body){size+=chunk.length;if(size>MAX_BYTES)throw new FeatureError('图库响应过大，请缩小搜索范围。','danbooru_response_too_large',502);chunks.push(Buffer.from(chunk));}
     try{rows=JSON.parse(Buffer.concat(chunks).toString('utf8'));}catch{throw new FeatureError('Danbooru 没有返回有效的图库数据，可在原站查看。','danbooru_bad_response',502);}
