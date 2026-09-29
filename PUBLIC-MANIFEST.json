@@ -1,5 +1,5 @@
 {
-  "version": "1.10.1",
+  "version": "1.11.0",
   "gitHistory": false,
   "license": "MIT",
   "artworkLicense": "See docs/SOURCE-LICENSE.md",
@@ -557,7 +557,7 @@
     {
       "path": "docs/ANDROID-SOURCE.md",
       "bytes": 1349,
-      "sha256": "e23fc4eb7d017f786a41a0849c018d31193e30673fc34b704a2e4956e4145bb8"
+      "sha256": "bafc3818899077da3c534b4261d3ff2d2fdcf69ec9b0918e3261552177a0d7ba"
     },
     {
       "path": "docs/ART-NOTICE.md",
@@ -567,12 +567,12 @@
     {
       "path": "docs/DEVELOPMENT.md",
       "bytes": 1763,
-      "sha256": "00ce0ea03f3ecc739c55e8b3121189322afa862107ab34d535397b0a1ee26e5c"
+      "sha256": "94e0451f95eff8d1a3a24abd60ca1938abf892d8c18c9af27559365f6a29821c"
     },
     {
       "path": "docs/EDITION-DIFFERENCES.md",
       "bytes": 1372,
-      "sha256": "bc96367fdd4e60c487e7810f4e33a3f5f61f6dcaf9a02e618a3052835d03fdec"
+      "sha256": "bff752315b63ca3fb486d3fb35e6f1b5ac9ebe4d08caf4fa3a7f9b4df7fe888f"
     },
     {
       "path": "docs/SOURCE-LICENSE.md",
@@ -581,13 +581,13 @@
     },
     {
       "path": "docs/WINDOWS-QUICKSTART.md",
-      "bytes": 9426,
-      "sha256": "9eb11972715ec706be91ec35ad03598b0fe27cd787b4450ed9928d722ead5ea3"
+      "bytes": 9425,
+      "sha256": "90449223bed57de2ab0c0ef0e4daeffc8123c9684f63dc2d648512e05e6e792d"
     },
     {
       "path": "docs/WINDOWS.md",
-      "bytes": 9432,
-      "sha256": "0b8b757744872bfd70d87df4dd1f5c04562f657e85b7abd6add04dfa0b7f8090"
+      "bytes": 10170,
+      "sha256": "b6440f7d20a31b3e03aeb6c952df056f57528c7e30a78c4bcc65bbdab0e0775b"
     },
     {
       "path": "index.html",
@@ -602,12 +602,12 @@
     {
       "path": "package-lock.json",
       "bytes": 105025,
-      "sha256": "b00d6d3eca40d99d34609f90c679635f5ee6f63f8508022a8783253164912de8"
+      "sha256": "3bf6daf481198b3a781657e5562e3a0db0b6624ceb24df0a68c5f02000e4476d"
     },
     {
       "path": "package.json",
       "bytes": 1249,
-      "sha256": "f1bf93d14834ccf3e53c0f4024e7c72daf79bcd6f7c2bcd2919b145ad3e51fbf"
+      "sha256": "4f95cd79f1b08ffa5286e61d2a31b11541c4c288edd0e818da55b0762a40b86a"
     },
     {
       "path": "playwright.config.mjs",
@@ -876,8 +876,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 29894,
-      "sha256": "3e922ea392a4eb9e16460a9fef6d92868578816b6b6530710e00bf5b3c9a1143"
+      "bytes": 30852,
+      "sha256": "8c12b18c22db2e3d78872d87ba2cf85af5cb4e4cfe85449bc7bc8cfb26aef117"
     },
     {
       "path": "scripts/apply-update.mjs",
@@ -1035,14 +1035,19 @@
       "sha256": "dfb74aa2c46987fcac1d63b014e085092ece8685a6cb94ea35271796ccc4fe73"
     },
     {
+      "path": "server/generation-duplicate.mjs",
+      "bytes": 2751,
+      "sha256": "a33467f1597500900f3976c2ff0baf45b80cf3b0be1b561b2617c97424ee3507"
+    },
+    {
       "path": "server/generation-jobs.mjs",
-      "bytes": 8177,
-      "sha256": "5f71368ff8709d5ff463943f22925c08630ba065582266f73b062847a02b8453"
+      "bytes": 8397,
+      "sha256": "a44b49f441f240266830a2a28533afff8f773b90c81456091453f907bfdfa5b1"
     },
     {
       "path": "server/history-index.mjs",
-      "bytes": 16007,
-      "sha256": "d70d7e2b39297639b9c07d47644ea8cf5f8fed2fee1889bc898ee1e38a698c06"
+      "bytes": 18172,
+      "sha256": "b6c74d8d2b3d31fb0525a8200194c56cb02a4fdef5d55eaf9da7b45809a77eb1"
     },
     {
       "path": "server/image-privacy.mjs",
@@ -1051,13 +1056,18 @@
     },
     {
       "path": "server/index.mjs",
-      "bytes": 72936,
-      "sha256": "17b6c1604ce20df4d4cf1c340b74387486e649ce1dc4c7c026a58c9a76911823"
+      "bytes": 76359,
+      "sha256": "bd4cbf363acbcf04c24e25f03cb83a1261df0b197a318588548032707387f6c2"
     },
     {
       "path": "server/interrupted-usage.mjs",
       "bytes": 759,
       "sha256": "3134a9c063b1b20135278009c987e2857b56ceeaae32f91f1a595d5879fe7f9f"
+    },
+    {
+      "path": "server/library-cleanup.mjs",
+      "bytes": 11665,
+      "sha256": "b21c873668a227906e12528b522bd53bdb6fdb510dacaf86814e23dbd4ff611d"
     },
     {
       "path": "server/library.mjs",
@@ -1102,7 +1112,7 @@
     {
       "path": "shared/release-config.mjs",
       "bytes": 356,
-      "sha256": "4994e87fe82ca7a2befa57be52541b381a662afde36ac8d27dac637d152fc0cc"
+      "sha256": "3db9d90b41bb8b29de0f1378e1d4d35d1d70fcf47632542d61fee775e9292edd"
     },
     {
       "path": "shared/schema.json",
@@ -1111,8 +1121,8 @@
     },
     {
       "path": "src/App.jsx",
-      "bytes": 85040,
-      "sha256": "f767ebe7484caa27eba29593f7109701ee2ddaefcf328b34490532c642804e16"
+      "bytes": 85328,
+      "sha256": "d8ef619ddf6d76c389d4ac849f9f3170c7f3f57e964c5ad9af7e57b12c1bb951"
     },
     {
       "path": "src/appearance.css",
@@ -1196,8 +1206,13 @@
     },
     {
       "path": "src/components/DanbooruPanel.jsx",
-      "bytes": 16863,
-      "sha256": "0c323a12b254b83f3061b332b1ba68565b76753180ab9989deacb600f68d3746"
+      "bytes": 16646,
+      "sha256": "8c760397f132401c0ce37f220ada513e7134623a5ed00a8b2c6c1eec44569aa4"
+    },
+    {
+      "path": "src/components/DanbooruSearch.jsx",
+      "bytes": 3616,
+      "sha256": "c6ec8320f9e4fda034f1ad1bff2dfece7d79633318cd0d688c629d4b3e34c42b"
     },
     {
       "path": "src/components/DanbooruWorkspace.jsx",
@@ -1226,13 +1241,13 @@
     },
     {
       "path": "src/components/generated-library.css",
-      "bytes": 3939,
-      "sha256": "8e6f798bce20298bc465c160a7d4d723ad42d333c638004276c694fd3b13aa7f"
+      "bytes": 4866,
+      "sha256": "3ff2a6a8cd4b76865d12b9c9ff61b6ec3b2f6575cfdf9a1277a5dcd09e0fec27"
     },
     {
       "path": "src/components/GeneratedLibraryPanel.jsx",
-      "bytes": 14648,
-      "sha256": "42048b8e246b83101f6ca05e7630f2a8f1957fe7b3bec8dc8cfee1e95046b3e9"
+      "bytes": 15755,
+      "sha256": "1a7b224d04f1c3bbc33b2794f047ed2e767f0a9dbb23fa8b1acad13ab6195634"
     },
     {
       "path": "src/components/GenerationProgress.jsx",
@@ -1253,6 +1268,11 @@
       "path": "src/components/ImageInput.jsx",
       "bytes": 5644,
       "sha256": "6aa23b597e5319e24e16dbeed5d4d129a41bd48099ed9f90dd5603c5dc133121"
+    },
+    {
+      "path": "src/components/LibraryCleanupControls.jsx",
+      "bytes": 6014,
+      "sha256": "6d5701b8981def16447f9dd979a19a47ecc53b8e016857250fd70c671656dfbf"
     },
     {
       "path": "src/components/LibraryPanel.jsx",
@@ -1356,8 +1376,8 @@
     },
     {
       "path": "src/components/SettingsPanel.jsx",
-      "bytes": 8664,
-      "sha256": "8c18e256ce63bec4fc83a2252ce77e2c1a71350052f98821187c4eea5e66833f"
+      "bytes": 8646,
+      "sha256": "5af0c43e27ed05211d7ad92e9c344220b4e1b5b8a8981d1f674980efeeb6e26c"
     },
     {
       "path": "src/components/ShareSettings.jsx",
@@ -1416,8 +1436,8 @@
     },
     {
       "path": "src/danbooru.css",
-      "bytes": 12221,
-      "sha256": "f625a488438352c40e3c0090cab7d1ee926eafef431d953dcab5258c23f8f806"
+      "bytes": 13419,
+      "sha256": "ef5d31ce525ab834ead3ddf89d5a632d72448e2e5b21e88b99206c48232ef3b4"
     },
     {
       "path": "src/features.css",
@@ -1451,8 +1471,8 @@
     },
     {
       "path": "src/hooks/useGenerationJob.js",
-      "bytes": 3576,
-      "sha256": "24e34cc07e36bded61a325e9b62b907257759061255ea1ac76ea7501e4a40dac"
+      "bytes": 3633,
+      "sha256": "f2127c70a7c2487b813746f0a088fa2377d9b9fdb530b3cbc6835e29341b45df"
     },
     {
       "path": "src/hooks/usePanelLayout.js",
@@ -1518,6 +1538,11 @@
       "path": "src/lib/cover-crop.mjs",
       "bytes": 1101,
       "sha256": "6961a8781198124099ba93e5936bd4ccfcb6493d4e7651884913eb31eea084e0"
+    },
+    {
+      "path": "src/lib/danbooru-completion.mjs",
+      "bytes": 852,
+      "sha256": "c4a3bb543dc7205ca4f5c5b39271a173b8dc158a1cd68904f9c24e447242fb4c"
     },
     {
       "path": "src/lib/danbooru.mjs",
@@ -1631,8 +1656,8 @@
     },
     {
       "path": "src/lib/release-notes.mjs",
-      "bytes": 8286,
-      "sha256": "769199e0e3d3e8420883b86f4f4ecb0de01d5bfcf86f64b98bfdb1efb9e0bb33"
+      "bytes": 9544,
+      "sha256": "4ccb97712db27ac4201f3c2284292c3747dda45cacf717e3c7ad6e3c7b492230"
     },
     {
       "path": "src/lib/request.mjs",
@@ -1790,6 +1815,11 @@
       "sha256": "22471673b98ec191c1cdf963327a5c5b99b14a6fb32b4dd979fc975729539824"
     },
     {
+      "path": "tests/danbooru-completion.test.mjs",
+      "bytes": 813,
+      "sha256": "4e081f9ab7105e4610642af2baab4a26eac130132c4655ac9124fbca94e2719c"
+    },
+    {
       "path": "tests/danbooru-ui.spec.mjs",
       "bytes": 33878,
       "sha256": "9ded14cb21e40b5e1821bdf048528dceefc9a8e841d162174880e7f2e5e6a273"
@@ -1806,8 +1836,8 @@
     },
     {
       "path": "tests/dimension-ui.spec.mjs",
-      "bytes": 5852,
-      "sha256": "dae079cffe1474a8591ac7dab9886dfe3a74993a6b1df32b81beab6f479fa416"
+      "bytes": 6384,
+      "sha256": "cbefed07a88ead89c3dae95ee926477082afb4f246133aed787635c5c5dd34ac"
     },
     {
       "path": "tests/dimensions.test.mjs",
@@ -1825,14 +1855,29 @@
       "sha256": "50a385bb96b74b652319bdb47cb46b77b31b18896d63020f8559cd174a4a66c5"
     },
     {
+      "path": "tests/feedback3-ui.spec.mjs",
+      "bytes": 6305,
+      "sha256": "59d8f48145adc6bc9964d2d10d016484cec6832b483ff208d4fc61ba58371df3"
+    },
+    {
+      "path": "tests/fixtures/studio.mjs",
+      "bytes": 2494,
+      "sha256": "39b1f3c1d891c7bd07d1a45965c239d500a127a447db4aeee472b3efd1f30e6e"
+    },
+    {
       "path": "tests/gateway-transport.test.mjs",
       "bytes": 2548,
       "sha256": "279ddf571adf0b60454fa994fb58767e84c1e81d919c10af0e5012b6f33dc95f"
     },
     {
       "path": "tests/generated-library-ui.spec.mjs",
-      "bytes": 5343,
-      "sha256": "08942809c0c7ca9b3260a91bd4c44f4deb0635f382ab0cff6e8e23005a0a3c57"
+      "bytes": 5495,
+      "sha256": "4a7f86bd0b8c2e43cb887e4de3d8a32d3575d7b266a75f24e1c6cd3b58a145ac"
+    },
+    {
+      "path": "tests/generation-duplicate.test.mjs",
+      "bytes": 3684,
+      "sha256": "655af8d7329675e16f719c172f514a7237953a9d1b164e5d0f27090ede8d0474"
     },
     {
       "path": "tests/generation-jobs.test.mjs",
@@ -1863,6 +1908,11 @@
       "path": "tests/interrupted-usage.test.mjs",
       "bytes": 1420,
       "sha256": "f1d0f55b10de29adbbab4afe0425d2b952c98d739cb35f8a91246e75ca67a4a6"
+    },
+    {
+      "path": "tests/library-cleanup.test.mjs",
+      "bytes": 8434,
+      "sha256": "7da9c6d631717e883f3eb30ae49a9ef73113918b1181ec67022e134553183cd2"
     },
     {
       "path": "tests/library-curated.test.mjs",

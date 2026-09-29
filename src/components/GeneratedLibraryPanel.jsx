@@ -1,3 +1,4 @@
+import LibraryCleanupControls from './LibraryCleanupControls';
 import {useEffect,useRef,useState} from 'react';
 import {zipSync,strToU8} from 'fflate';
 import {api,downloadData} from '../lib/api.mjs';
@@ -41,9 +42,11 @@ export function imageDifferences(a,b){
  return [...new Set([...Object.keys(left),...Object.keys(right)])].sort().filter(key=>JSON.stringify(left[key])!==JSON.stringify(right[key])).map(key=>({key,before:left[key],after:right[key]}));
 }
 
-export default function GeneratedLibraryPanel({onSelect,onRestore,onError}){
+export default function GeneratedLibraryPanel({onSelect,onRestore,onError,onChanged}){
  const [draft,setDraft]=useState({q:'',seed:'',from:'',to:'',model:'',mode:'',favorite:false});
  const [filters,setFilters]=useState(draft),[items,setItems]=useState([]),[cursor,setCursor]=useState(null),[selected,setSelected]=useState([]),[comparison,setComparison]=useState([]),[loading,setLoading]=useState(false),[busy,setBusy]=useState(false),[keepMetadata,setKeepMetadata]=useState(false),[status,setStatus]=useState(null),[notice,setNotice]=useState('');
+ const [groupBy,setGroupBy]=useState('date'),[groupValue,setGroupValue]=useState(''),[cleanupRevision,setCleanupRevision]=useState(0);
+ const selectedItems=useRef(new Map());
  const generation=useRef(0),annotationsPicker=useRef(null);
  const report=error=>onError?.(error?.message||String(error));
  async function refreshStatus(quiet=false){try{setStatus(await api('/api/generated-library/status'));}catch(error){if(!quiet)report(error);}}
@@ -51,23 +54,23 @@ export default function GeneratedLibraryPanel({onSelect,onRestore,onError}){
  async function exportAnnotations(){try{await downloadData(await api('/api/generated-library/annotations'),`Lucifer-FX-图库收藏标签-${new Date().toISOString().slice(0,10)}.json`);setNotice('图库收藏与标签备份已导出。');}catch(error){report(error);}}
  async function importAnnotations(file){if(!file)return;try{if(file.size>8*1024*1024)throw Error('图库注释备份不能超过 8 MiB');const bundle=JSON.parse(await file.text());const result=await api('/api/generated-library/annotations',{method:'POST',body:bundle});setNotice(`已合并 ${result.imported} 条图库收藏与标签；原始图片未改动。`);setSelected([]);await load(filters);}catch(error){report(error);}}
  async function load(nextFilters=filters,nextCursor=null,append=false){const token=++generation.current;setLoading(true);
-  try{const params=new URLSearchParams({limit:'40'});for(const [key,value] of Object.entries(nextFilters))if(value)params.set(key,key==='favorite'?'1':value);if(nextCursor)params.set('cursor',nextCursor);
+  try{const params=new URLSearchParams({limit:'40',groupBy,groupValue});for(const [key,value] of Object.entries(nextFilters))if(value)params.set(key,key==='favorite'?'1':value);if(nextCursor)params.set('cursor',nextCursor);
    const data=await api(`/api/generated-library?${params}`);if(token!==generation.current)return;
    setItems(previous=>append?[...previous,...data.items.filter(item=>!previous.some(old=>keyOf(old)===keyOf(item)))]:data.items);
    setCursor(data.nextCursor||null);setStatus(data.index||null);
   }catch(error){if(token===generation.current)report(error);}finally{if(token===generation.current)setLoading(false);}
  }
- useEffect(()=>{load(filters);return()=>{generation.current++;};},[filters]);
+ useEffect(()=>{load(filters);return()=>{generation.current++;};},[filters,groupBy,groupValue]);
  useEffect(()=>{const timer=setInterval(()=>{void refreshStatus(true);},2000);return()=>clearInterval(timer);},[]);
  const patch=(field,value)=>setDraft(current=>({...current,[field]:value}));
  const checked=item=>selected.includes(keyOf(item));
  const toggle=item=>setSelected(previous=>previous.includes(keyOf(item))?previous.filter(key=>key!==keyOf(item)):[...previous,keyOf(item)]);
- async function updateAnnotation(item,patch){try{const result=await api('/api/generated-library/annotation',{method:'PATCH',body:{id:item.result_id,index:item.image_index,...patch}});setItems(previous=>previous.map(current=>keyOf(current)===keyOf(item)?{...current,favorite:result.favorite,tags:result.tags}:current));}catch(error){report(error);}}
+ async function updateAnnotation(item,patch){try{const result=await api('/api/generated-library/annotation',{method:'PATCH',body:{id:item.result_id,index:item.image_index,...patch}});setItems(previous=>previous.map(current=>keyOf(current)===keyOf(item)?{...current,favorite:result.favorite,tags:result.tags}:current));setCleanupRevision(n=>n+1);}catch(error){report(error);}}
  async function open(item,action){try{const detail=await api(`/api/generated-library/item?id=${encodeURIComponent(item.result_id)}&index=${item.image_index}`);if(!detail.entry)throw Error('原始历史记录不可读取，无法回填参数。');
   if(action==='restore')onRestore?.(detail.entry,item.image_index,detail);else onSelect?.(detail.entry,item.image_index,detail);
  }catch(error){report(error);}}
  async function compare(item){try{const detail=await api(`/api/generated-library/item?id=${encodeURIComponent(item.result_id)}&index=${item.image_index}`);setComparison(previous=>previous.some(entry=>keyOf(entry)===keyOf(detail))?previous.filter(entry=>keyOf(entry)!==keyOf(detail)):[...previous.slice(-1),detail]);}catch(error){report(error);}}
- async function exportSelected(){const targets=items.filter(item=>selected.includes(keyOf(item)));if(!targets.length)return;
+ async function exportSelected(){const current=new Map([...selectedItems.current,...items.map(item=>[keyOf(item),item])]);const targets=selected.map(key=>current.get(key)).filter(Boolean);if(!targets.length)return;
   if(targets.length>40){report(Error('单次最多导出 40 张，请分批选择。'));return;}
   const keep=keepMetadata;
   setBusy(true);setNotice('正在从本机读取所选图片…');
@@ -95,16 +98,17 @@ export default function GeneratedLibraryPanel({onSelect,onRestore,onError}){
    <label className="generated-library-check"><input type="checkbox" checked={draft.favorite} onChange={event=>patch('favorite',event.target.checked)}/>仅收藏</label>
    <button type="submit" disabled={loading}>搜索</button>
   </form>
+  <LibraryCleanupControls filters={filters} groupBy={groupBy} groupValue={groupValue} onGroup={(by,value)=>{setGroupBy(by);setGroupValue(value);setSelected([]);}} selected={selected} onSelect={rows=>{selectedItems.current=new Map(rows.map(row=>[keyOf(row),row]));setSelected(rows.map(keyOf));}} onRefresh={()=>{setSelected([]);setComparison([]);setCleanupRevision(n=>n+1);load(filters);onChanged?.();}} onError={onError} revision={cleanupRevision}/>
   <div className="generated-library-actions"><span>{selected.length} 张已选</span><label><input type="checkbox" checked={keepMetadata} onChange={event=>setKeepMetadata(event.target.checked)}/>导出时保留图片参数</label><button disabled={busy||!selected.length} onClick={exportSelected}>批量导出 ZIP</button><button disabled={!selected.length} onClick={()=>setSelected([])}>清空选择</button><button onClick={()=>{setItems([]);load(filters);}}>刷新</button><button onClick={exportAnnotations}>备份收藏 / 标签</button><button onClick={()=>annotationsPicker.current?.click()}>导入收藏 / 标签</button><input ref={annotationsPicker} hidden type="file" accept="application/json,.json" onChange={event=>{void importAnnotations(event.target.files?.[0]);event.target.value='';}}/><button onClick={()=>indexAction(status?.paused?'resume':'pause')} disabled={!status?.running}>{status?.paused?'继续索引':'暂停索引'}</button><button onClick={()=>indexAction('rebuild')}>重建索引</button></div>
   {notice&&<p role="status" className="generated-library-notice">{notice}</p>}
   {status?.lastError&&<p className="generated-library-warning">索引提示：{status.lastError}</p>}
-  <div className="generated-library-grid">{items.map(item=><article key={keyOf(item)} className="generated-library-card">
+  <div className="generated-library-grid">{items.map((item,position)=><div className="library-group-item" key={keyOf(item)}>{groupBy==='date'&&(position===0||items[position-1].created_at.slice(0,10)!==item.created_at.slice(0,10))&&<h4 className="library-date-heading">{item.created_at.slice(0,10)} UTC</h4>}<article key={keyOf(item)} className="generated-library-card">
    <div className="generated-library-thumb">{item.hasFile&&item.url?<img loading="lazy" src={item.url} alt={item.prompt||item.filename} onError={event=>{event.currentTarget.style.display='none';}}/>:<span>原件不可用</span>}</div>
    <div className="generated-library-card-body"><div className="generated-library-card-top"><label><input type="checkbox" checked={checked(item)} onChange={()=>toggle(item)}/>选择</label><button aria-label={item.favorite?'取消收藏':'收藏'} onClick={()=>updateAnnotation(item,{favorite:!item.favorite})}>{item.favorite?'★':'☆'}</button></div>
     <p title={item.prompt}>{item.prompt||item.final_prompt||item.filename||'无提示词'}</p><small>{item.created_at?.slice(0,19).replace('T',' ')} · Seed {describe(item.seed)}</small><small>{item.model||'未知模型'} · {item.mode||'未知模式'}</small>
     <input aria-label={`手工标签 ${item.filename}`} title="逗号分隔，回车保存" defaultValue={item.tags.join(', ')} key={`${keyOf(item)}-${item.tags.join('|')}`} onKeyDown={event=>{if(event.key==='Enter'){event.preventDefault();updateAnnotation(item,{tags:event.currentTarget.value.split(/[，,]/).map(x=>x.trim()).filter(Boolean)});event.currentTarget.blur();}}} placeholder="手工标签，回车保存"/>
     <div className="generated-library-card-buttons"><button onClick={()=>open(item,'select')}>查看</button><button onClick={()=>open(item,'restore')}>回填</button><button onClick={()=>compare(item)}>对比</button></div>
-   </div></article>)}{!loading&&!items.length&&<p className="generated-library-empty">没有匹配的图片。首次打开时索引会在后台逐批建立，可稍后刷新。</p>}</div>
+   </div></article></div>)}{!loading&&!items.length&&<p className="generated-library-empty">没有匹配的图片。首次打开时索引会在后台逐批建立，可稍后刷新。</p>}</div>
   {loading&&<p className="generated-library-loading">正在读取图库…</p>}{cursor&&<button className="generated-library-more" disabled={loading} onClick={()=>load(filters,cursor,true)}>加载更早图片</button>}
   {!!comparison.length&&<div className="generated-library-compare"><header><h4>两图对照</h4><button onClick={()=>setComparison([])}>清空</button></header><div className="generated-library-compare-images">{comparison.map((item,index)=><figure key={keyOf(item)}><figcaption>{index?'右':'左'} · {item.filename}</figcaption>{item.hasFile&&item.url?<img src={item.url} alt={item.filename}/>:<p>原件不可用</p>}<small>Seed {describe(item.seed)} · {item.model||'未知模型'}</small></figure>)}</div>{left&&right&&<details open><summary>{imageDifferences(left,right).length} 处参数或提示词差异</summary><div className="generated-library-differences">{imageDifferences(left,right).map(diff=><div key={diff.key}><strong>{diff.key}</strong><span>{short(diff.before)}</span><span>{short(diff.after)}</span></div>)}</div></details>}</div>}
  </section>;

@@ -101,7 +101,7 @@ export default function SettingsPanel({ state: s, update, setState, onJSON, comp
             max={4096}
             step={64}
             normalize={snapDimension}
-            help="自动对齐最近的 64 倍数"
+            help="64–4096 · 对齐 64"
             onChange={(v) => update("width", v)}
           />
           <button style={{alignSelf:"center"}} title="交换宽高" onClick={() => setSize(s.height, s.width)}>
@@ -114,7 +114,7 @@ export default function SettingsPanel({ state: s, update, setState, onJSON, comp
             max={4096}
             step={64}
             normalize={snapDimension}
-            help="自动对齐最近的 64 倍数"
+            help="64–4096 · 对齐 64"
             onChange={(v) => update("height", v)}
           />
         </div>

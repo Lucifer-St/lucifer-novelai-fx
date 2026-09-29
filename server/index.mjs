@@ -1,3 +1,5 @@
+import {createLibraryCleanup} from './library-cleanup.mjs';
+import {createGenerationDuplicateGuard} from './generation-duplicate.mjs';
 import {createAtlasStorage} from './atlas-storage.mjs';
 import {createHistoryIndex} from './history-index.mjs';
 import {createReferenceEncoding} from './reference-encoding.mjs';
@@ -21,7 +23,7 @@ import { fileURLToPath } from "node:url";
 import { randomUUID } from "node:crypto";
 import { unzipSync } from "fflate";
 import {createFeatures} from './features.mjs';
-import {createLocalStore} from './local-store.mjs';
+import {createLocalStore,FeatureError} from './local-store.mjs';
 import {createGenerationJobs} from './generation-jobs.mjs';
 import {createGatewayTransport,GENERATION_TIMEOUT_MS,GATEWAY_CONNECT_TIMEOUT_MS} from './gateway-transport.mjs';
 import {
@@ -283,6 +285,7 @@ export function createStudioServer(options = {}) {
   const resultDir = path.join(dataDir, "results");
   const historyDir = path.join(dataDir, "history");
   const historyStore = createLocalStore(historyDir);
+  const duplicateGuard=createGenerationDuplicateGuard({historyDir,resultDir});
   const generatedLibrary=createHistoryIndex({dataDir,historyDir,resolveImage:image=>imageSource(image)});
   const referenceEncoding=createReferenceEncoding({directory:path.join(dataDir,'reference-encoding'),encode:async({model,image,information_extracted,requestId})=>{
     const entry=await generationLease(()=>callGateway('/v1/images/generations',{body:{model,novelai:{endpoint:'/ai/encode-vibe',response:'raw',body:{model,image,information_extracted}}},metadata:{operation:'vibe-encode',encodingRequestId:requestId}}));
@@ -322,7 +325,12 @@ export function createStudioServer(options = {}) {
     })});
   const generationJobs=createGenerationJobs({directory:path.join(dataDir,'generation-jobs'),timeoutMs:options.generationJobTimeoutMs||timeoutMs,isBusy:()=>storageChanging||generationBusy||!!features.comparisons.active,
     authorizeBatch:async()=>{if((await features.anlas.get()).pricingPolicy==='paid')throw new RequestError(400,'opus_unavailable','当前计数规则是付费 / 额度用尽，不能提交 Opus 逐张模式。');},
-    run:(payload,job)=>generationLease(()=>callGateway('/v1/images/generations',{body:payload,metadata:job.batch?{batch:job.batch}:undefined,signal:job.signal,onProgress:job.onProgress,onEvent:job.onEvent,requestTimeoutMs:job.timeoutMs}))});
+    run:(payload,job)=>generationLease(()=>callGateway('/v1/images/generations',{body:payload,metadata:job.batch?{batch:job.batch}:undefined,signal:job.signal,onProgress:job.onProgress,onEvent:job.onEvent,preventDuplicate:job.preventDuplicate,requestTimeoutMs:job.timeoutMs}))});
+  const libraryCleanup=createLibraryCleanup({dataDir,historyStore,index:generatedLibrary,paths:async()=>{await refreshStorage();return {resultDir,outputDir,storageRoots};},lease:async(run,automatic)=>{
+    if(storageChanging||generationBusy||generationJobs.active||features.comparisons.active||inflightMutations>(automatic?0:1))throw new RequestError(409,'generation_busy','生成或其他操作期间不能清理图库，请等待任务结束。');
+    storageChanging=true;try{await generatedLibrary.settle();return await run();}finally{storageChanging=false;}
+  }});
+  const cleanupTimer=setInterval(()=>{if(!shuttingDown)void libraryCleanup.automatic();},options.cleanupIntervalMs||60000);cleanupTimer.unref();
   const materialsReady=(async()=>{await ready;await generationJobs.ready;await features.comparisons.list();await recoverInterruptedUsage(dataDir,features.anlas);await initializeCuratedLibrary({dataDir,bundlePath:path.join(PROJECT,'public','curated','library.json')});})();
 
   const loadKey=()=>configuration.key();
@@ -375,6 +383,7 @@ export function createStudioServer(options = {}) {
   }
 
   async function imageSource(image) {
+    if(image?.deletedAt)return null;
     return existingFile([
       // Portable userdata may have moved while history still holds its old absolute path.
       outputImageName.test(image.outputName||'')?path.join(outputDir,image.outputName):null,
@@ -642,6 +651,7 @@ export function createStudioServer(options = {}) {
       onProgress,
       onEvent,
       metadata = {},
+      preventDuplicate = false,
     } = {},
   ) {
     // The current aggregator charges suggest-tags through its image wrapper.
@@ -654,6 +664,8 @@ export function createStudioServer(options = {}) {
     }
     if(endpoint==='/ai/encode-vibe')try{const id=body?.novelai?.body?.model||body?.model;if(!isV45(id)||body?.novelai&&body.model!==modelSpec(id).id)throw Error('Vibe 编码仅用于 V4.5，内外层模型须一致。');}catch(e){throw new RequestError(400,'model_capability',e.message,{billingUnknown:false});}
     const profile=await refreshStorage();
+    await duplicateGuard.ready();
+    if(preventDuplicate)try{await duplicateGuard.assertAllowed(body,endpoint);}catch(e){throw new RequestError(e.status||409,e.code,e.message,{billingUnknown:false});}
     const key = await loadKey();
     const id = `${Date.now()}-${randomUUID().slice(0, 8)}`;
     const started = Date.now();
@@ -959,6 +971,7 @@ export function createStudioServer(options = {}) {
       }
       entry.durationMs = Date.now() - started;
       report({phase:'complete'});
+      if(persist)duplicateGuard.remember(body,endpoint,imageBytes,entry);
       if (persist) await saveHistory(entry);
       if(persist && body && body.novelai?.endpoint !== '/ai/generate-image/suggest-tags')await features.anlas.record(entry,body).catch(()=>{});
       emit({ type: "result", result: entry });
@@ -1134,6 +1147,22 @@ export function createStudioServer(options = {}) {
         try{json(res,200,await referenceEncoding.encode(await readJson(req,maxInput)));}catch(e){throw new RequestError(e.status||400,e.code||'reference_encoding',e.message,{billingUnknown:!!e.billingUnknown});}
       }else if(url.pathname==='/api/generated-library'&&req.method==='GET'){
         try{json(res,200,await generatedLibrary.search(Object.fromEntries(url.searchParams)));}catch(e){throw new RequestError(400,'library_query',e.message);}
+      }else if(url.pathname==='/api/generated-library/groups'&&req.method==='GET'){
+        json(res,200,await generatedLibrary.groups(Object.fromEntries(url.searchParams)));
+      }else if(url.pathname==='/api/generated-library/select'&&req.method==='POST'){
+        const rows=await generatedLibrary.selection(await readJson(req,32768));if(rows.length>10000)throw new RequestError(400,'selection_limit','单次最多选择 10000 张，请缩小分类。');json(res,200,{items:rows});
+      }else if(url.pathname==='/api/generated-library/cleanup/settings'&&['GET','POST'].includes(req.method)){
+        if(libraryCleanup.busy)throw new RequestError(409,'generation_busy','图库正在清理。');json(res,200,await libraryCleanup.settings(req.method==='POST'?await readJson(req,1024):undefined));
+      }else if(url.pathname==='/api/generated-library/cleanup/preview'&&req.method==='POST'){
+        const body=await readJson(req,524288);json(res,200,await libraryCleanup.preview(body.keys));
+      }else if(url.pathname==='/api/generated-library/cleanup/execute'&&req.method==='POST'){
+        const body=await readJson(req,1024);json(res,200,await libraryCleanup.execute(body.token));
+      }else if(url.pathname==='/api/generated-library/cleanup/trash'&&req.method==='GET'){
+        json(res,200,await libraryCleanup.trash());
+      }else if(url.pathname==='/api/generated-library/cleanup/restore'&&req.method==='POST'){
+        const body=await readJson(req,1024);json(res,200,await libraryCleanup.restore(body.id));
+      }else if(url.pathname==='/api/generated-library/cleanup/purge'&&req.method==='POST'){
+        const body=await readJson(req,1024);if(body.confirm!==true)throw new RequestError(400,'confirmation_required','请确认永久清空回收站。');json(res,200,await libraryCleanup.purge());
       }else if(url.pathname==='/api/generated-library/status'&&req.method==='GET'){
         json(res,200,await generatedLibrary.status());
       }else if(url.pathname==='/api/generated-library/item'&&req.method==='GET'){
@@ -1268,7 +1297,7 @@ export function createStudioServer(options = {}) {
           .reverse().filter(name=>!before||name<`${before}.json`);
         const found=[];
         for(const name of names){
-          try{const entry=JSON.parse(await readFile(path.join(historyDir,name),'utf8'));if(entry&&typeof entry==='object'&&!Array.isArray(entry)&&entry.id===name.slice(0,-5))found.push({name,entry});}catch{}
+          try{const entry=JSON.parse(await readFile(path.join(historyDir,name),'utf8'));if(entry&&typeof entry==='object'&&!Array.isArray(entry)&&entry.id===name.slice(0,-5)&&!(entry.images?.length&&entry.images.every(image=>image.deletedAt)))found.push({name,entry});}catch{}
           if(found.length>limit)break;
         }
         const page=found.slice(0,limit);
@@ -1326,6 +1355,7 @@ export function createStudioServer(options = {}) {
           if(features.comparisons.active)throw new RequestError(409,'comparison_busy','A/B/C 对照仍在执行，请停止后续任务或等待完成。');
           const result = await generationLease(()=>callGateway("/v1/images/generations", {
             body: body.payload,
+            preventDuplicate: body.preventDuplicate===true,
             req,
             res,
             stream,
@@ -1401,7 +1431,7 @@ export function createStudioServer(options = {}) {
         throw new RequestError(405, "method_not_allowed", "不支持此方法。");
     } catch (error) {
       const status =
-        error instanceof RequestError
+        (error instanceof RequestError||error instanceof FeatureError)
           ? error.status
           : error.code === "ENOENT"
             ? 404
@@ -1409,13 +1439,13 @@ export function createStudioServer(options = {}) {
       json(res, status, {
         error: {
           message:
-            error instanceof RequestError
+            (error instanceof RequestError||error instanceof FeatureError)
               ? error.message
               : status === 404
                 ? "文件不存在；前端请先运行 npm run build。"
                 : "本地服务处理失败。",
           code:
-            error instanceof RequestError
+            (error instanceof RequestError||error instanceof FeatureError)
               ? error.code
               : status === 404
                 ? "not_found"
@@ -1433,7 +1463,7 @@ export function createStudioServer(options = {}) {
   server.requestTimeout = 300_000;
   server.once('listening',()=>{void generatedLibrary.start().catch(()=>{});});
   const closeServer=server.close.bind(server);
-  server.close=callback=>{closeServer(async error=>{await generatedLibrary.close().catch(()=>{});callback?.(error);});return server;};
+  server.close=callback=>{clearInterval(cleanupTimer);closeServer(async error=>{await libraryCleanup.close();await generatedLibrary.close().catch(()=>{});callback?.(error);});return server;};
   server.headersTimeout = 15_000;
   server.once('close',()=>{for(const transport of transports.values())void transport.close().catch(()=>{});});
   return server;

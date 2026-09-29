@@ -399,9 +399,9 @@ export default function App() {
   } catch (e) {
     previewError = e.message;
   }
-  async function refreshHistory(){
+  async function refreshHistory(reset=false){
     historyLoad.current?.abort();const controller=new AbortController();historyLoad.current=controller;setHistoryLoadingMore(false);setHistoryPhase('loading');setHistoryError('');
-    try{const data=await startupJSON('/api/history',{signal:controller.signal,timeoutMs:8000});if(controller.signal.aborted)return;if(!Array.isArray(data.entries))throw Error('历史记录格式无效');setHistory(previous=>mergeHistory(previous,data.entries));setHistoryNextCursor(data.nextCursor||null);setHistoryPhase('ready');}
+    try{const data=await startupJSON('/api/history',{signal:controller.signal,timeoutMs:8000});if(controller.signal.aborted)return;if(!Array.isArray(data.entries))throw Error('历史记录格式无效');setHistory(previous=>mergeHistory(reset===true?[]:previous,data.entries));setHistoryNextCursor(data.nextCursor||null);setHistoryPhase('ready');}
     catch(e){if(!controller.signal.aborted){setHistoryPhase('error');setHistoryError(e.message);}}
   }
   async function loadOlderHistory(){
@@ -482,7 +482,7 @@ export default function App() {
                       : "POST",
                   body: payload,
                 }
-              : { payload },
+              : { payload, ...(options.preventDuplicate?{preventDuplicate:true}:{}) },
           ),
         },
       );
@@ -578,7 +578,7 @@ export default function App() {
         if(anlas?.pricingPolicy==='paid')throw Error('当前计数规则是付费 / 额度用尽，不能提交 Opus 逐张模式。');
         planOpusBatch(payload);
       }
-      await submit(payload,{opusBatch:splitBatch});
+      await submit(payload,{opusBatch:splitBatch,preventDuplicate:true});
     } catch (e) {
       setError(e.message);
     }
@@ -742,7 +742,7 @@ export default function App() {
       else setFeature({type:'library',seed:{kind:'preset',title:'',category:'其他',notes:`来源请求 ${selected.requestId||selected.id}`,text:snapshot.prompt,sourceUrl:'',cover:'',payload:{state:exportPreset(snapshot).state}}});
     }catch(e){setError(e.message);}
   }
-  const activeImage = viewPending ? null : selected?.images?.[index];
+  const activeImage = viewPending||selected?.images?.[index]?.deletedAt ? null : selected?.images?.[index];
   const currentQuote=quoteAnlas(preview,anlas?.calibrations||[],{policy:anlas?.pricingPolicy||'opus'});
   let totalQuote=currentQuote.amount;
   let batchReason='';
@@ -1193,7 +1193,7 @@ export default function App() {
               ))}
               {!viewPending && !editingPositions && selected?.images?.length > 1 && (
                 <div className="result-pages">
-                  {selected.images.map((im, i) => (
+                  {selected.images.map((im, i) => !im.deletedAt&&(
                     <button
                       className={i === index ? "selected" : ""}
                       key={im.url}
@@ -1249,9 +1249,9 @@ export default function App() {
                         }}
                         title={`${h.prompt || h.endpoint || h.id}`}
                       >
-                        {h.images?.[0] ? (
+                        {h.images?.some(image=>!image.deletedAt) ? (
                           <img
-                            src={h.images[0].url}
+                            src={h.images.find(image=>!image.deletedAt).url}
                             alt="历史图像"
                             loading="lazy"
                           />
@@ -1358,7 +1358,7 @@ export default function App() {
         {feature.type==='appearance'&&<AppearancePanel value={appearance} onChange={updateAppearance} error={appearanceError}/>}
         {['library','drafts'].includes(feature.type)&&<LibraryPanel key={feature.type} initialTab={feature.type==='drafts'?'drafts':'cards'} seed={feature.seed} editorState={editState} draftState={state} comparisonConfig={comparison.config} onApply={applyLibrary} onError={setError} onSaved={syncCardLabels} onChanged={()=>setLibraryRevision(v=>v+1)}/>}
         {feature.type==='agent'&&<AgentSetupPanel/>}
-        {feature.type==='generated-library'&&<GeneratedLibraryPanel onError={setError} onSelect={(entry,index)=>{setSelected(entry);setIndex(index);setViewPending(false);setShowComparison(false);setViewSource(false);setFeature(null);}} onRestore={async(entry,index,detail)=>{try{const response=await api(entry.images?.[index]?.requestUrl||entry.requestUrl);setState({...stateFromPayload(response),seed:detail?.seed??-1});comparison.disarm();setFeature(null);setPage('studio');setNotice('已回填历史参数，未提交生成。');}catch(e){setError(e.message);}}}/>}
+        {feature.type==='generated-library'&&<GeneratedLibraryPanel onChanged={()=>{setSelected(null);setIndex(0);void refreshHistory(true);}} onError={setError} onSelect={(entry,index)=>{setSelected(entry);setIndex(index);setViewPending(false);setShowComparison(false);setViewSource(false);setFeature(null);}} onRestore={async(entry,index,detail)=>{try{const response=await api(entry.images?.[index]?.requestUrl||entry.requestUrl);setState({...stateFromPayload(response),seed:detail?.seed??-1});comparison.disarm();setFeature(null);setPage('studio');setNotice('已回填历史参数，未提交生成。');}catch(e){setError(e.message);}}}/>}
 
         {feature.type==='anlas'&&<AnlasPanel payload={preview} payloads={(()=>{try{return comparison.config.enabled?planComparison(state,comparison.config).jobs.map(j=>j.payload):null;}catch{return null;}})()} onError={setError} onChanged={setAnlas} onReset={()=>setResetAnlas(true)}/>}
       </Suspense></FeatureDialog>}

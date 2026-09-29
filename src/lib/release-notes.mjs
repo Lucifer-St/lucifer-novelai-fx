@@ -1,5 +1,10 @@
 import {RELEASE_CONFIG} from '../../shared/release-config.mjs';
-export const RELEASE_NOTES={version:RELEASE_CONFIG.version,title:'更新说明',date:'2026-09-28',features:[
+export const RELEASE_NOTES={version:RELEASE_CONFIG.version,title:'更新说明',date:'2026-09-29',features:[
+ {title:'工作台阻止完全重复的生成',description:'实际种子、提示词、角色、参考图及参数与上一笔成功出图相同，会在本机拦截并提醒；换种子或修改参数即可继续。失败请求不覆盖上一笔成功记录，重启后仍保留保护。'},
+ {title:'尺寸范围明确显示',description:'普通宽高为 64–4096，按最近的 64 倍数校准；误输 10240 会修正为 4096。编辑中提交也使用校准后的值。'},
+ {title:'D 站搜索标签联想',description:'输入英文标签或本地中文释义即可联想，Enter / Tab 补全、Esc 关闭。保留其他标签与排除符号；选词不会自动搜索，也不经过生图网关。'},
+ {title:'图库分组与批量清理',description:'默认按日期（UTC）归类，可切换模型或手工标签。支持跨分页全选类别，删除前预览可删、受保护数量及文件体积；收藏与手动保存图片始终保护。'},
+ {title:'可选容量上限与回收站',description:'自动清理默认关闭，可设置最大图片数，空闲时按最旧优先清理内部缓存与自动 output。先进入本机回收站，7 天后清理，期间可恢复或手动清空；回收站仍占磁盘，清空后才释放空间。'},
  {title:'合并布局可独立收起负面',description:'主负面与每个角色负面都有独立折叠按钮，并记住各自状态。折叠只隐藏编辑区域，文字、卡片、撤销和生成参数都保留；经典正负面标签页仍照常使用。'},
  {title:'生成按钮不再跟着提示词跳动',description:'桌面左栏的提示词与装饰在内容区滚动，生成区固定在底部。名侦探两款皮肤与其他皮肤采用同一滚动结构和编辑框高度规则。'},
  {title:'自适应输入框更稳定',description:'调整高度时不再临时压缩正在编辑的输入框，减少滚动位置跳变；长文、短文、输入法和手动调整继续可用。'},

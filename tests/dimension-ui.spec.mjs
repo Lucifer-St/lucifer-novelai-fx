@@ -13,7 +13,7 @@ for(const skin of WORKBENCH_SKINS.map(s=>s.id))test(`dimension typing, swap and 
 });
 for(const model of ['nai-diffusion-5-full','nai-diffusion-4-5-full','nai-diffusion-4-5-curated'])test(`dimensions handle boundaries, empty input, presets and unchanged other numbers (${model})`,async({page})=>{
  const c=await setup(page,'classic',model),width=page.getByLabel('宽度',{exact:true}),height=page.getByLabel('高度',{exact:true});
- for(const [input,value] of [['1055','1024'],['1056','1088'],['0','64'],['-10','64'],['5000','4096'],['1023.5','1024']]){await width.fill(input);await width.press('Tab');await expect(width).toHaveValue(value);}
+ for(const [input,value] of [['1055','1024'],['1056','1088'],['0','64'],['-10','64'],['5000','4096'],['10240','4096'],['1023.5','1024']]){await width.fill(input);await width.press('Tab');await expect(width).toHaveValue(value);}
  await width.fill('');await expect(width).toHaveValue('');await width.press('Tab');await expect(width).toHaveValue('1024');
  await page.getByLabel('尺寸预设',{exact:true}).selectOption('832x1216');await expect(width).toHaveValue('832');await expect(height).toHaveValue('1216');
  await page.getByLabel('生成数量',{exact:true}).fill('3');await page.getByLabel('生成数量',{exact:true}).press('Tab');await expect(page.getByLabel('生成数量',{exact:true})).toHaveValue('3');expect(c.payloads).toEqual([]);expect(c.errors).toEqual([]);
@@ -24,4 +24,8 @@ test('mobile dimension entry preserves raw typing and restores a bounded aligned
 
 test('click Generate while editing sends snapped width and height',async({page})=>{
  const c=await setup(page),width=page.getByLabel('宽度',{exact:true}),height=page.getByLabel('高度',{exact:true});await width.fill('1000');await height.fill('1200');await expect(height).toHaveValue('1200');await page.locator('.generate').click();await expect.poll(()=>c.payloads.length).toBe(1);expect(c.payloads[0].novelai.body.parameters.width).toBe(1024);expect(c.payloads[0].novelai.body.parameters.height).toBe(1216);await expect(height).toHaveValue('1216');expect(c.errors).toEqual([]);
+});
+
+test('an accidental 10240 never reaches generation, including a focused shortcut',async({page})=>{
+ const c=await setup(page),width=page.getByLabel('宽度',{exact:true}),height=page.getByLabel('高度',{exact:true});await height.fill('64');await height.press('Tab');await width.fill('10240');await width.press('Control+Enter');await expect.poll(()=>c.payloads.length).toBe(1);expect(c.payloads[0].novelai.body.parameters.width).toBe(4096);await expect(width).toHaveValue('4096');expect(c.errors).toEqual([]);
 });

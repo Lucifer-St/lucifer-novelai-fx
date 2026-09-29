@@ -1,0 +1,30 @@
+import {test,expect} from '@playwright/test';import {mkdir,readFile} from 'node:fs/promises';import path from 'node:path';
+import {studioFixture,eventually} from './fixtures/studio.mjs';import {defaults,buildRequest} from '../src/lib/request.mjs';import pkg from '../package.json' with {type:'json'};
+const evidence='.local/feedback3-20260929/ui';
+async function start(page,skin='classic'){
+ let cleanup;const f=await studioFixture({after:fn=>cleanup=fn},{distDir:process.env.FX_TEST_DIST_DIR||path.resolve('.local/feedback3-20260929/dist')});
+ const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.addInitScript(({version,state,skin})=>{localStorage.setItem('lucifer-share-release-seen-v1',version);localStorage.setItem('lucifer-share-setup-seen-v1','true');localStorage.setItem('lucifer-share-auto-update-check-v1','off');localStorage.setItem('novelai-studio-v1',JSON.stringify({version:1,state}));localStorage.setItem('lucifer-fx-appearance-v1',JSON.stringify({version:1,workbenchSkin:skin,loadingSkin:'classic'}));},{version:pkg.version,state:{...defaults(),prompt:'fixture garden',seed:42},skin});
+ await page.goto(f.base);await expect(page.getByLabel('正面提示词',{exact:true})).toBeEditable();await mkdir(evidence,{recursive:true});return {...f,fixture:f,cleanup,errors};
+}
+test('actual server blocks duplicate workbench clicks and shortcuts without a second upstream request',async({page})=>{
+ const c=await start(page);try{const count=c.fixture.requests;await page.locator('.generate').click();await expect.poll(()=>c.fixture.requests).toBe(count+1);await expect(page.locator('.generate')).toBeEnabled();await eventually(()=>c.request('/api/status'),r=>!r.data.activeGeneration);
+ await page.locator('.generate').click();await expect(page.getByText(/本次种子、提示词和生成参数与上一笔成功出图完全相同/).first()).toBeVisible();expect(c.fixture.requests).toBe(count+1);
+ await page.getByLabel('随机种子 Seed',{exact:true}).fill('43');await page.getByLabel('正面提示词',{exact:true}).press('Control+Enter');await expect.poll(()=>c.fixture.requests).toBe(count+2);await expect(page.locator('.generate')).toBeEnabled();expect(c.errors).toEqual([]);await page.screenshot({path:evidence+'/duplicate.png'});
+ }finally{await c.cleanup();}
+});
+for(const mobile of [false,true])test(`Danbooru local completion accepts keyboard/touch without searching or damaging operators (${mobile})`,async({page})=>{
+ const c=await start(page,'exstia');try{if(mobile)await page.setViewportSize({width:390,height:844});const posts=[];await page.route('**/api/danbooru/posts?**',r=>{posts.push(new URL(r.request().url()).searchParams.get('q'));return r.fulfill({json:{posts:[],hasMore:false,page:1}});});await page.getByRole('button',{name:'D站图库',exact:true}).click();const input=page.getByLabel('Danbooru 搜索标签',{exact:true});await input.fill('rating:g -blue_');await expect(page.getByRole('listbox',{name:'Danbooru 候选标签'})).toBeVisible();await page.getByRole('option').filter({hasText:'blue_hair'}).first().click();await expect(input).toHaveValue('rating:g -blue_hair');expect(posts).toHaveLength(1);
+ await input.fill('landscape 蓝发');await expect(page.getByRole('option').filter({hasText:'blue_hair'})).toBeVisible();await input.press('Enter');await expect(input).toHaveValue('landscape blue_hair');expect(posts).toHaveLength(1);await input.press('Enter');await expect.poll(()=>posts.at(-1)).toBe('landscape blue_hair');
+ await input.fill('rating:g');await expect(input).toHaveAttribute('aria-expanded','false');await input.fill('blue_');await expect(input).toHaveAttribute('aria-expanded','true');await input.press('Escape');await expect(input).toHaveAttribute('aria-expanded','false');await expect(page.getByRole('dialog',{name:'D站图库',exact:true})).toBeVisible();
+ await input.click();await input.fill('blue_');await expect(input).toHaveAttribute('aria-expanded','true');await input.press('ArrowDown');await page.screenshot({path:evidence+`/completion-${mobile}.png`});expect(c.errors).toEqual([]);
+ }finally{await c.cleanup();}
+});
+for(const mobile of [false,true])test(`actual library groups across pages and previews, deletes, restores protected files (${mobile})`,async({page})=>{
+ const c=await start(page);try{const entries=[];for(let n=0;n<42;n++)entries.push((await c.request('/api/request',{payload:buildRequest({...defaults(),prompt:'fixture '+n,seed:100+n})})).data);
+ await eventually(()=>c.request('/api/generated-library/status'),r=>r.data.indexed===42);await c.request('/api/generated-library/annotation',{id:entries[0].id,index:0,favorite:true,tags:['fixture']},'PATCH');await c.request('/api/save-result',{id:entries[1].id,index:0});
+ if(mobile){await page.setViewportSize({width:390,height:844});await page.locator('.mobile-tabs').getByRole('button',{name:'画布',exact:true}).click();}await page.getByRole('button',{name:'搜索图库',exact:true}).click();await expect(page.locator('.generated-library-card')).toHaveCount(40);await expect(page.getByLabel('图库归类')).toHaveValue('date');await page.getByLabel('图库类别').selectOption(entries[0].createdAt.slice(0,10));await page.getByRole('button',{name:'全选本类别',exact:true}).click();await expect(page.getByText('42 张已选',{exact:true})).toBeVisible();
+ await page.getByRole('button',{name:'批量删除…',exact:true}).click();await expect(page.locator('.library-delete-dialog')).toContainText('可清理 40 张；保护 2 张');await page.screenshot({path:evidence+`/cleanup-${mobile}.png`});await page.getByRole('button',{name:'确认移入回收站'}).click();await expect(page.locator('.generated-library-card')).toHaveCount(2);
+ await page.getByText('图库容量与回收站',{exact:true}).click();await page.getByRole('button',{name:'恢复这批'}).click();await expect(page.locator('.generated-library-card')).toHaveCount(40);expect(await page.getByRole('dialog',{name:'生成图库',exact:true}).evaluate(el=>el.scrollWidth-el.clientWidth)).toBeLessThanOrEqual(1);await page.getByLabel('图库归类').selectOption('tag');await page.getByLabel('图库类别').selectOption('tag:fixture');await expect(page.locator('.generated-library-card')).toHaveCount(1);expect(c.errors).toEqual([]);
+ }finally{await c.cleanup();}
+});

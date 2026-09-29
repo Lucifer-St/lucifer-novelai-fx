@@ -90,7 +90,7 @@ export function createHistoryIndex({dataDir,historyDir=path.join(dataDir,'histor
   await init();
   if(!entry||!HISTORY_NAME.test(`${entry.id}.json`)||!Array.isArray(entry.images))throw Error('历史记录无效');
   const recipe=await readRecipe(entry),rows=[];
-  for(let i=0;i<entry.images.length;i++)if(entry.images[i]&&typeof entry.images[i]==='object')rows.push({...await present(entry,i,recipe),source_mtime:mtime});
+  for(let i=0;i<entry.images.length;i++)if(entry.images[i]&&!entry.images[i].deletedAt&&typeof entry.images[i]==='object')rows.push({...await present(entry,i,recipe),source_mtime:mtime});
   db.exec('BEGIN IMMEDIATE');
   try{
    const old=db.prepare('SELECT key FROM images WHERE result_id=?').all(entry.id).map(row=>row.key);
@@ -131,12 +131,26 @@ export function createHistoryIndex({dataDir,historyDir=path.join(dataDir,'histor
   if(input.from){if(!/^\d{4}-\d\d-\d\d$/.test(input.from))throw Error('起始日期无效');where.push('i.created_at>=@from');args.from=`${input.from}T00:00:00`;}
   if(input.to){if(!/^\d{4}-\d\d-\d\d$/.test(input.to))throw Error('截止日期无效');where.push('i.created_at<@to');args.to=`${input.to}T23:59:59.999Z`;}
   if(input.favorite==='1'||input.favorite===true){const keys=Object.entries(annotations.items||{}).filter(([,a])=>a.favorite).map(([key])=>key);if(!keys.length)return {items:[],nextCursor:null,total:0,index:status()};where.push(`i.key IN (${keys.map((_,i)=>`@favorite${i}`).join(',')})`);keys.forEach((key,i)=>args[`favorite${i}`]=key);}
+  if(input.groupValue){
+   if(input.groupBy==='date'){where.push('substr(i.created_at,1,10)=@groupValue');args.groupValue=string(input.groupValue,128);}
+   else if(input.groupBy==='model'){where.push('i.model=@groupValue');args.groupValue=input.groupValue==='未知模型'?'':string(input.groupValue,128);}
+   else if(input.groupBy==='tag'){const keys=Object.entries(annotations.items||{}).filter(([,a])=>(a.tags||[]).includes(String(input.groupValue).slice(4))).map(([key])=>key);const literals=keys.filter(key=>KEY.test(key)).map(key=>"'"+key+"'").join(',')||"''";if(input.groupValue==='untagged:'){const tagged=Object.entries(annotations.items||{}).filter(([,a])=>a.tags?.length).map(([key])=>key).filter(key=>KEY.test(key)).map(key=>"'"+key+"'").join(',')||"''";where.push('i.key NOT IN ('+tagged+')');}else where.push('i.key IN ('+literals+')');}
+  }
   if(input.cursor){let cursor;try{cursor=JSON.parse(Buffer.from(String(input.cursor),'base64url').toString('utf8'));}catch{throw Error('图库游标无效');}if(!Array.isArray(cursor)||cursor.length!==2||typeof cursor[0]!=='string'||typeof cursor[1]!=='string')throw Error('图库游标无效');where.push('(i.created_at<@cursorDate OR (i.created_at=@cursorDate AND i.key<@cursorKey))');args.cursorDate=cursor[0];args.cursorKey=cursor[1];}
   const clause=where.length?`WHERE ${where.join(' AND ')}`:'';
   const rows=db.prepare(`SELECT i.* FROM images i ${clause} ORDER BY i.created_at DESC,i.key DESC LIMIT @pageLimit`).all({...args,pageLimit:limit+1});
   const hasMore=rows.length>limit;const page=rows.slice(0,limit);const last=page.at(-1);
   return {items:page.map(row=>publicRow(row,annotations.items?.[row.key])),nextCursor:hasMore?Buffer.from(JSON.stringify([last.created_at,last.key])).toString('base64url'):null,index:status()};
  }
+
+ async function selection(input={}){
+  const rows=[];let cursor=null;
+  do{const page=await search({...input,cursor,limit:100});rows.push(...page.items.map(({key,result_id,image_index,created_at,model,tags,favorite,filename,url,hasFile})=>({key,result_id,image_index,created_at,model,tags,favorite,filename,url,hasFile})));cursor=page.nextCursor;}while(cursor);
+  return rows.filter(row=>!input.groupValue||groupValues(row,input.groupBy).includes(input.groupValue));
+ }
+ function groupValues(row,by){return by==='model'?[row.model||'未知模型']:by==='tag'?(row.tags.length?row.tags.map(tag=>'tag:'+tag):['untagged:']):[row.created_at.slice(0,10)];}
+ async function groups(input={}){const rows=await selection({...input,groupValue:''}),counts=new Map();for(const row of rows)for(const value of groupValues(row,input.groupBy))counts.set(value,(counts.get(value)||0)+1);return {groups:[...counts].map(([value,count])=>({value,count,label:input.groupBy==='tag'?(value==='untagged:'?'未标注':value.slice(4)):value})).sort((a,b)=>input.groupBy==='date'?b.value.localeCompare(a.value):a.value.localeCompare(b.value)),total:rows.length};}
+ async function settle(){stopped=true;paused=false;if(scanPromise)await scanPromise;while(activeWrites)await sleep();}
  async function get(resultId,index){await init();const key=imageKey(resultId,index);if(!KEY.test(key))throw Error('图库图片 ID 无效');const row=db.prepare('SELECT * FROM images WHERE key=?').get(key);if(!row)return null;
   let entry=null;try{entry=JSON.parse(await readFile(path.join(historyDir,`${resultId}.json`),'utf8'));if(entry.id!==resultId)entry=null;}catch{}
   return {...publicRow(row,annotations.items?.[key]),entry};
@@ -157,5 +171,5 @@ export function createHistoryIndex({dataDir,historyDir=path.join(dataDir,'histor
   try{db.exec('BEGIN IMMEDIATE');const remove=db.prepare('DELETE FROM image_text WHERE key=?'),add=db.prepare('INSERT INTO image_text(key,text) VALUES(?,?)'),read=db.prepare('SELECT prompt,final_prompt,filename FROM images WHERE key=?');for(const [key,value] of Object.entries(bundle.items)){const row=read.get(key);if(!row)continue;remove.run(key);add.run(key,[row.prompt,row.final_prompt,row.filename,value.tags.join(' ')].join(' '));}db.exec('COMMIT');}catch(error){db.exec('ROLLBACK');lastError=`导入标签的查询索引待修复：${error.message}`;}
   return {imported:Object.keys(bundle.items).length};
  }
- return {init,start,pause(){paused=true;},resume(){if(scanPromise)paused=false;else start();},stop(){stopped=true;paused=false;},status,indexEntry,search,get,annotate,rebuild,exportAnnotations,importAnnotations,async close(){closing=true;stopped=true;paused=false;if(initPromise)await initPromise.catch(()=>{});if(scanPromise)await scanPromise;await annotationTail.catch(()=>{});while(activeWrites)await sleep();db?.close();db=null;}};
+ return {init,start,pause(){paused=true;},resume(){if(scanPromise)paused=false;else start();},stop(){stopped=true;paused=false;},status,indexEntry,search,selection,groups,settle,get,annotate,rebuild,exportAnnotations,importAnnotations,async close(){closing=true;stopped=true;paused=false;if(initPromise)await initPromise.catch(()=>{});if(scanPromise)await scanPromise;await annotationTail.catch(()=>{});while(activeWrites)await sleep();db?.close();db=null;}};
 }

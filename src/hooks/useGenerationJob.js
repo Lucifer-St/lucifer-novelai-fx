@@ -22,7 +22,7 @@ export default function useGenerationJob({enabled,activeId,onUpdate,onError}){
  useEffect(()=>()=>cancelWatch(),[]);
  async function start(payload,meta,options={}){
   const id=crypto.randomUUID(),record={id,...meta};remember(record);
-  try{const r=await fetch('/api/generation-jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({clientRequestId:id,payload,...(options.opusBatch?{opusBatch:true}:{})}),signal:AbortSignal.timeout(12000)});const job=await r.json();if(!r.ok){if(r.status>=400&&r.status<500){if(stored()?.id===id)localStorage.removeItem(KEY);throw Object.assign(Error(job.error?.message||'任务未被接受'),{rejected:true});}throw Error(job.error?.message||'提交回执未确认');}callbacks.current.onUpdate(job,record);watch(id,record);}
+  try{const r=await fetch('/api/generation-jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({clientRequestId:id,payload,...(options.preventDuplicate?{preventDuplicate:true}:{}),...(options.opusBatch?{opusBatch:true}:{})}),signal:AbortSignal.timeout(12000)});const job=await r.json();if(!r.ok){if(r.status>=400&&r.status<500){if(stored()?.id===id)localStorage.removeItem(KEY);throw Object.assign(Error(job.error?.message||'任务未被接受'),{rejected:true});}throw Error(job.error?.message||'提交回执未确认');}callbacks.current.onUpdate(job,record);watch(id,record);}
   catch(e){if(e.rejected)throw e;setConnectionError('提交回执尚未确认，正在查询同一任务；不会重发。');watch(id,record);}
   return id;
  }

@@ -1,3 +1,4 @@
+import DanbooruSearch from './DanbooruSearch';
 import {copyText} from '../lib/platform.mjs';
 import {useEffect,useRef,useState} from 'react';
 import {Search,ExternalLink,Copy,Bookmark,ChevronLeft,ChevronRight,Image as ImageIcon,Star} from 'lucide-react';
@@ -67,7 +68,7 @@ export default function DanbooruPanel({onCollect,active=true,refreshRevision=0})
  return <div className={`danbooru-workspace${selected?' has-selection':''}`}>
   <div className="danbooru-heading"><div><p className="danbooru-eyebrow">DANBOORU / REFERENCE LIBRARY</p><h3>看图，挑选灵感与标签。</h3></div><a className="button" href={data?.sourceUrl||originalUrl(params,pageSize)} target="_blank" rel="noreferrer"><ExternalLink size={14}/>在原站打开</a></div>
   <form className="danbooru-filters" onSubmit={e=>{e.preventDefault();search();}}>
-   <label className="danbooru-search"><span>搜索标签</span><div><Search size={16}/><input aria-label="Danbooru 搜索标签" placeholder="例如 landscape、blue_hair；空格分隔标签" value={query} maxLength={240} onChange={e=>setQuery(e.target.value)}/><button className="primary" type="submit">搜索</button></div></label>
+   <DanbooruSearch value={query} onChange={setQuery} active={active}/>
    <label>排序<select aria-label="Danbooru 排序" value={params.sort} onChange={e=>search({sort:e.target.value})}><option value="latest">最新上传</option><option value="score">热门 · 评分最高</option><option value="favorites">收藏最多</option></select></label>
    <label>上传时间<select aria-label="Danbooru 上传时间" value={params.period} onChange={e=>search({period:e.target.value})}><option value="all">不限时间</option><option value="today">今天</option><option value="week">最近 7 天</option><option value="month">最近 30 天</option></select></label>
    <label>内容等级<select aria-label="Danbooru 内容等级" value={params.rating} onChange={e=>search({rating:e.target.value})}>{Object.entries(DANBOORU_RATINGS).map(([v,label])=><option value={v} key={v}>{label}</option>)}</select></label>
