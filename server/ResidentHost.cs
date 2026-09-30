@@ -10,38 +10,39 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Web.Script.Serialization;
 
-// Runs from the installation's data directory so program files remain replaceable.
-class ResidentHost : Form {
+// No main window: a message-loop context owns only a notification-area icon/menu.
+// The executable runs from the installation data cache so updates can replace app files.
+class ResidentHost : ApplicationContext {
  readonly string root, identity; readonly bool share; int port;
- readonly Label status=new Label(), detail=new Label(), update=new Label(), message=new Label();
- readonly Button open=new Button(), start=new Button(), cancel=new Button(), retry=new Button(), exit=new Button();
- readonly NotifyIcon tray=new NotifyIcon(); readonly System.Windows.Forms.Timer timer=new System.Windows.Forms.Timer();
- bool polling, acting, quitting, online; string updateStatus="idle";
- public ResidentHost(string directory,int serverPort,string id,bool isShare) {
+ readonly ToolStripMenuItem status=new ToolStripMenuItem("正在连接本地服务…"),detail=new ToolStripMenuItem(),update=new ToolStripMenuItem();
+ readonly ToolStripMenuItem open=new ToolStripMenuItem("打开工作台"),start=new ToolStripMenuItem("启动服务"),cancel=new ToolStripMenuItem("取消下载"),retry=new ToolStripMenuItem("重新下载"),exit=new ToolStripMenuItem("退出后台"),closeTray=new ToolStripMenuItem("仅退出托盘（后台继续运行）");
+ readonly NotifyIcon tray=new NotifyIcon();readonly ContextMenuStrip menu=new ContextMenuStrip();readonly Control dispatcher=new Control();readonly System.Windows.Forms.Timer timer=new System.Windows.Forms.Timer();
+ readonly Icon logo;bool polling,acting,quitting,online;string updateStatus="idle";
+ public ResidentHost(string directory,int serverPort,string id,bool isShare){
   root=directory;port=serverPort;identity=id;share=isShare;
-  Text="Lucifer NovelAI FX · "+(share?"分享版":"个人版")+"启动器";
-  Font=new Font("Microsoft YaHei UI",10);ClientSize=new Size(620,355);MinimumSize=new Size(636,394);
-  StartPosition=FormStartPosition.CenterScreen;Icon=SystemIcons.Application;BackColor=Color.FromArgb(245,248,253);
-  status.SetBounds(24,22,570,34);status.Font=new Font(Font.FontFamily,16,FontStyle.Bold);status.Text="正在连接本地服务…";
-  detail.SetBounds(24,65,570,48);update.SetBounds(24,116,570,48);message.SetBounds(24,230,570,62);message.ForeColor=Color.DarkRed;
-  var hint=new Label{Text="关闭网页不会退出后台。关闭此窗口会收至系统托盘。\n需要完全退出时，请点击“退出后台”。不会设置开机自启。",AutoSize=false};hint.SetBounds(24,297,580,48);
-  MakeButton(open,"打开工作台",24,175,112,async()=>{await RequireOwned();Process.Start(new ProcessStartInfo(BaseUrl){UseShellExecute=true});});
-  MakeButton(start,"启动服务",145,175,102,async()=>{await StartService();});
-  MakeButton(cancel,"取消下载",256,175,102,async()=>{await RequireOwned();await Request("/api/update/cancel",true,"update");});
-  MakeButton(retry,"重新下载",367,175,102,async()=>{await RequireOwned();await Request("/api/update/prepare",true,"update");});
-  MakeButton(exit,"退出后台",478,175,112,ExitService);
-  Controls.AddRange(new Control[]{status,detail,update,message,hint,open,start,cancel,retry,exit});
-  cancel.Visible=retry.Visible=share;open.Enabled=cancel.Enabled=retry.Enabled=start.Enabled=exit.Enabled=false;
-  tray.Icon=Icon;tray.Text="Lucifer FX · 正在连接";tray.Visible=true;
-  var menu=new ContextMenuStrip();menu.Items.Add("显示启动器",null,(s,e)=>ShowPanel());menu.Items.Add("打开工作台",null,(s,e)=>{ShowPanel();open.PerformClick();});menu.Items.Add("仅关闭启动器（服务继续运行）",null,(s,e)=>{quitting=true;Close();});menu.Items.Add("退出后台",null,(s,e)=>{ShowPanel();exit.PerformClick();});tray.ContextMenuStrip=menu;tray.DoubleClick+=(s,e)=>ShowPanel();
-  FormClosing+=(s,e)=>{if(!quitting){e.Cancel=true;Hide();tray.ShowBalloonTip(1800,"Lucifer FX 仍在后台","双击托盘图标打开启动器；使用“退出后台”完全退出。",ToolTipIcon.Info);}};
-  FormClosed+=(s,e)=>{timer.Stop();tray.Dispose();};timer.Interval=2000;timer.Tick+=async(s,e)=>await RefreshState();Shown+=async(s,e)=>{timer.Start();await RefreshState();};
+  // Use the same embedded multi-resolution Lucifer icon as the desktop launcher.
+  logo=Icon.ExtractAssociatedIcon(Application.ExecutablePath);if(logo==null)throw new InvalidOperationException("托盘图标缺失，请重新完整安装应用。");
+  var title=new ToolStripMenuItem("Lucifer NovelAI FX · "+(share?"分享版":"个人版")){Enabled=false,Image=logo.ToBitmap()};
+  menu.Font=new Font("Microsoft YaHei UI",9);status.Enabled=detail.Enabled=update.Enabled=false;
+  menu.Items.AddRange(new ToolStripItem[]{title,status,detail,update,new ToolStripSeparator(),open,start,cancel,retry,new ToolStripSeparator(),exit,closeTray});
+  cancel.Visible=retry.Visible=update.Visible=share;
+  open.Font=new Font(menu.Font,FontStyle.Bold);
+  Bind(open,OpenWorkbench);Bind(start,StartService);
+  Bind(cancel,async()=>{await RequireOwned();await Request("/api/update/cancel",true,"update");});
+  Bind(retry,async()=>{await RequireOwned();await Request("/api/update/prepare",true,"update");});
+  Bind(exit,ExitService);Bind(closeTray,()=>{ExitThread();return Task.FromResult(0);});
+  tray.Icon=logo;tray.Text="Lucifer FX · 正在连接";tray.ContextMenuStrip=menu;tray.Visible=true;
+  tray.DoubleClick+=async(s,e)=>await RunAction(OpenWorkbench);
+  menu.Opening+=async(s,e)=>await RefreshState();
+  var handle=dispatcher.Handle;timer.Interval=2000;timer.Tick+=async(s,e)=>await RefreshState();timer.Start();SetEnabled();RefreshAfterLaunch();
  }
+ void Bind(ToolStripMenuItem item,Func<Task> action){item.Click+=async(s,e)=>await RunAction(action);}
+ async Task RunAction(Func<Task> action){if(acting||quitting)return;acting=true;SetEnabled();try{await action();}catch(Exception error){if(!quitting)tray.ShowBalloonTip(5000,"Lucifer NovelAI FX",error.Message,ToolTipIcon.Warning);}finally{acting=false;}if(!quitting)await RefreshState();}
+ async Task OpenWorkbench(){await RequireOwned();Process.Start(new ProcessStartInfo(BaseUrl){UseShellExecute=true});}
+ void SetEnabled(){open.Enabled=online&&!acting;start.Enabled=!online&&!acting;cancel.Enabled=online&&!acting&&(updateStatus=="checking"||updateStatus=="downloading"||updateStatus=="verifying");retry.Enabled=online&&!acting&&(updateStatus=="failed"||updateStatus=="cancelled");exit.Enabled=online&&!acting&&updateStatus!="installing"&&updateStatus!="cancelling";closeTray.Enabled=!acting&&updateStatus!="installing";}
  string BaseUrl{get{return "http://127.0.0.1:"+port;}}
  static string TextOf(Dictionary<string,object> value,string key){object item;return value.TryGetValue(key,out item)?Convert.ToString(item):"";}
  static bool Flag(Dictionary<string,object> value,string key){return TextOf(value,key).Equals("True",StringComparison.OrdinalIgnoreCase);}
- void MakeButton(Button button,string text,int x,int y,int width,Func<Task> action){button.Text=text;button.SetBounds(x,y,width,40);button.Click+=async(s,e)=>{if(acting)return;acting=true;message.Text="";SetEnabled();try{await action();}catch(Exception error){message.Text=error.Message;}finally{acting=false;}if(!IsDisposed)await RefreshState();};}
- void SetEnabled(){open.Enabled=online&&!acting;start.Enabled=!online&&!acting;cancel.Enabled=online&&!acting&&(updateStatus=="checking"||updateStatus=="downloading"||updateStatus=="verifying");retry.Enabled=online&&!acting&&(updateStatus=="failed"||updateStatus=="cancelled");exit.Enabled=!acting&&updateStatus!="installing"&&updateStatus!="cancelling";}
  async Task<Dictionary<string,object>> Request(string route,bool post=false,string action=null){
   string url=BaseUrl+route;
   return await Task.Run(()=>{
@@ -53,20 +54,19 @@ class ResidentHost : Form {
  }
  async Task<Dictionary<string,object>> RequireOwned(){var data=await Request("/api/status");if(TextOf(data,"app")!="Lucifer NovelAI FX"||TextOf(data,share?"installId":"studioId")!=identity||Flag(data,"shareEdition")!=share)throw new InvalidOperationException("端口属于其他应用或安装目录，未执行操作。");return data;}
  async Task RefreshState(){
-  if(polling||IsDisposed||quitting)return;polling=true;
+  if(polling||quitting)return;polling=true;
   try{
    if(share){int saved;var marker=Path.Combine(root,"userdata","launcher.port");if(File.Exists(marker)&&Int32.TryParse(File.ReadAllText(marker).Trim(),out saved)&&saved>=1024&&saved<=65535)port=saved;}
-   var data=await RequireOwned();online=true;if(message.Text=="正在启动服务，请稍候…")message.Text="";bool busy=Flag(data,"desktopBusy")||Flag(data,"generationBusy");
-   status.Text=busy?"服务运行中 · 有任务进行中":"服务运行中 · 空闲";detail.Text="版本 "+TextOf(data,"version")+"    端口 "+port+"    PID "+TextOf(data,"processId");
+   var data=await RequireOwned();online=true;bool busy=Flag(data,"desktopBusy")||Flag(data,"generationBusy");
+   status.Text=busy?"服务运行中 · 有任务进行中":"服务运行中 · 空闲";detail.Text="v"+TextOf(data,"version")+"  ·  端口 "+port+"  ·  PID "+TextOf(data,"processId");
    if(share){var state=await Request("/api/update-state");updateStatus=TextOf(state,"status");
-    var names=new Dictionary<string,string>{{"idle","尚未开始下载"},{"checking","检查版本中"},{"downloading","正在下载"},{"verifying","校验安装包中"},{"cancelling","正在取消"},{"cancelled","下载已取消，可以重新下载"},{"failed","更新未完成，可以重新下载"},{"prepared","校验通过，请在网页点击安装并重启"},{"installing","正在安装，请勿退出"},{"succeeded","上次更新已完成"},{"rolled_back","已恢复旧版本"}};
-    update.Text="更新："+(names.ContainsKey(updateStatus)?names[updateStatus]:updateStatus);
-    if(updateStatus=="downloading"){double current,total;Double.TryParse(TextOf(state,"downloaded"),out current);Double.TryParse(TextOf(state,"total"),out total);update.Text+="  "+(current/1048576).ToString("0.0")+" / "+(total/1048576).ToString("0.0")+" MB";}
-    if(!String.IsNullOrEmpty(TextOf(state,"error")))update.Text+="\n"+TextOf(state,"error");
-   }else{updateStatus="idle";update.Text="个人版由本地版本维护；不会安装分享版更新包。";}
-   tray.Text="Lucifer FX · "+(busy?"任务进行中":"后台运行中");
-  }catch(Exception){online=false;status.Text="服务未连接";detail.Text="本机端口 "+port+" · 可能正在重启或已退出";update.Text="不会自动重新生成或重新下载。可稍后刷新，或点击“启动服务”。";tray.Text="Lucifer FX · 服务未连接";}
-  finally{polling=false;if(!IsDisposed)SetEnabled();}
+    var names=new Dictionary<string,string>{{"idle","尚未开始下载"},{"checking","检查版本中"},{"downloading","正在下载"},{"verifying","校验安装包中"},{"cancelling","正在取消"},{"cancelled","下载已取消"},{"failed","更新未完成，可重新下载"},{"prepared","校验通过，请在网页安装"},{"installing","正在安装，请勿退出"},{"succeeded","上次更新已完成"},{"rolled_back","已恢复旧版本"}};
+    update.Text="更新："+(names.ContainsKey(updateStatus)?names[updateStatus]:updateStatus);update.ToolTipText=TextOf(state,"error");
+    if(updateStatus=="downloading"){double current,total;Double.TryParse(TextOf(state,"downloaded"),out current);Double.TryParse(TextOf(state,"total"),out total);update.Text+=" "+(current/1048576).ToString("0.0")+" / "+(total/1048576).ToString("0.0")+" MB";}
+   }
+   tray.Text="Lucifer FX · "+(share?"分享版":"个人版")+" · "+(busy?"任务进行中":"后台运行中");
+  }catch(Exception){online=false;status.Text="服务未连接 · 可能正在重启";detail.Text="本机端口 "+port;update.Text="更新状态暂不可用";tray.Text="Lucifer FX · "+(share?"分享版":"个人版")+" · 服务未连接";}
+  finally{polling=false;if(!quitting)SetEnabled();}
  }
  async Task StartService(){
   // Never start over an occupied port; identity checks also protect against stale panels.
@@ -74,23 +74,25 @@ class ResidentHost : Form {
   ProcessStartInfo info;
   if(share){info=new ProcessStartInfo(Path.Combine(root,"启动 Lucifer FX.exe")){UseShellExecute=false};info.EnvironmentVariables["FX_SHARE_NO_OPEN"]="1";}
   else{info=new ProcessStartInfo("powershell.exe","-NoProfile -ExecutionPolicy Bypass -File \""+Path.Combine(root,"start.ps1")+"\" -NoOpen -NoDialog -Port "+port){UseShellExecute=false,CreateNoWindow=true,WindowStyle=ProcessWindowStyle.Hidden};}
-  info.WorkingDirectory=root;using(var process=Process.Start(info)){}message.Text="正在启动服务，请稍候…";
+  info.WorkingDirectory=root;using(var process=Process.Start(info)){}status.Text="正在启动服务…";
  }
  async Task ExitService(){
   // Disconnection is not proof the server exited. Only a successful shutdown response permits exit.
   var data=await RequireOwned();
   if(share){var state=await Request("/api/update-state");if(Flag(state,"canCancel"))await Request("/api/update/cancel",true,"update");}
-  await Request("/api/shutdown",true,"shutdown");quitting=true;Close();
+  await Request("/api/shutdown",true,"shutdown");ExitThread();
  }
- public void ShowPanel(){Show();WindowState=FormWindowState.Normal;Activate();}
+ public void RefreshAfterLaunch(){if(!quitting&&!dispatcher.IsDisposed)dispatcher.BeginInvoke((Action)(async()=>await RefreshState()));}
+ protected override void ExitThreadCore(){quitting=true;timer.Stop();tray.Visible=false;base.ExitThreadCore();}
+ protected override void Dispose(bool disposing){if(disposing){quitting=true;timer.Dispose();tray.Visible=false;tray.Dispose();menu.Dispose();dispatcher.Dispose();logo.Dispose();}base.Dispose(disposing);}
  [STAThread] static int Main(string[] args){
   int port;if(args.Length!=4||!Int32.TryParse(args[1],out port)||port<1024||port>65535||!System.Text.RegularExpressions.Regex.IsMatch(args[2],"^[A-Fa-f0-9]{24}$")||(args[3]!="share"&&args[3]!="personal"))return 2;
   try{bool created;using(var mutex=new Mutex(true,"Local\\LuciferFX-Resident-"+args[2],out created))using(var show=new EventWaitHandle(false,EventResetMode.AutoReset,"Local\\LuciferFX-Resident-Show-"+args[2])){
    if(!created){show.Set();return 0;}Application.EnableVisualStyles();Application.SetCompatibleTextRenderingDefault(false);
-   using(var form=new ResidentHost(Path.GetFullPath(args[0]),port,args[2],args[3]=="share")){
-    var waiter=ThreadPool.RegisterWaitForSingleObject(show,(s,t)=>{try{if(form.IsHandleCreated&&!form.IsDisposed)form.BeginInvoke((Action)form.ShowPanel);}catch(InvalidOperationException){}},null,-1,false);
-    try{Application.Run(form);}finally{waiter.Unregister(null);} }
-   mutex.ReleaseMutex();}return 0;
-  }catch(Exception error){MessageBox.Show(error.Message,"Lucifer FX 启动器",MessageBoxButtons.OK,MessageBoxIcon.Error);return 1;}
+   using(var context=new ResidentHost(Path.GetFullPath(args[0]),port,args[2],args[3]=="share")){
+    var waiter=ThreadPool.RegisterWaitForSingleObject(show,(s,t)=>{try{context.RefreshAfterLaunch();}catch(InvalidOperationException){}},null,-1,false);
+    try{Application.Run(context);}finally{waiter.Unregister(null);}
+   }mutex.ReleaseMutex();}return 0;
+  }catch(Exception error){MessageBox.Show(error.Message,"Lucifer FX 托盘",MessageBoxButtons.OK,MessageBoxIcon.Error);return 1;}
  }
 }
