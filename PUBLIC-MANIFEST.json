@@ -981,8 +981,8 @@
     },
     {
       "path": "server/app-updater.mjs",
-      "bytes": 14354,
-      "sha256": "cfe1f4517e392f9cfaa95291f5a66cb372568e4ba765a0a2b42be28c91346b4c"
+      "bytes": 14412,
+      "sha256": "4d0a0a2e246425678775274ae946667efb9044c0f227e947ab06bc333398ec09"
     },
     {
       "path": "server/artists.mjs",
@@ -1056,8 +1056,8 @@
     },
     {
       "path": "server/index.mjs",
-      "bytes": 76910,
-      "sha256": "296377984f89fe944eb8e5323ebe3e958b549ff1572434e2f82a5d2f0f68b584"
+      "bytes": 76941,
+      "sha256": "b92b6cc5c71ea6878e115d396c05aad479f10c6d092f55ecd774b6810814ce27"
     },
     {
       "path": "server/interrupted-usage.mjs",
@@ -1816,8 +1816,8 @@
     },
     {
       "path": "tests/app-updater.test.mjs",
-      "bytes": 17651,
-      "sha256": "cbf47edf22c5f52dc8c18b3ee46d96ddece2a8af4c0eaa3409ce4c2a9d8c90ba"
+      "bytes": 18614,
+      "sha256": "f7eec46b782bd811cc30cea3e5da73aaeb8d107fe638d1ba94a27c4f392a3d94"
     },
     {
       "path": "tests/atlas-resource.test.mjs",

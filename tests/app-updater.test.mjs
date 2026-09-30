@@ -11,6 +11,14 @@ import {createStudioServer} from '../server/index.mjs';
 const hash=b=>createHash('sha256').update(b).digest('hex');
 const encode=value=>Buffer.from(typeof value==='string'?value:JSON.stringify(value));
 const waitFor=async predicate=>{for(let i=0;i<300;i++){if(await predicate())return;await new Promise(r=>setTimeout(r,10));}throw Error('State transition timed out');};
+test('restarted service preserves the installing guard until the external helper finishes',async t=>{
+ const root=await temporary(t),dataDir=path.join(root,'userdata');await mkdir(dataDir,{recursive:true});const file=path.join(dataDir,'update-status.json');
+ await writeFile(file,JSON.stringify({status:'installing',targetVersion:'9.0.0'}));
+ const service=createAppUpdater({root,dataDir,currentVersion:'9.0.0',installId:'fixture',platform:'win32',execPath:path.join(root,'runtime/node.exe'),releaseServices:{}});
+ assert.equal((await service.info()).status,'installing');assert.equal(service.active,true);assert.equal((await service.info()).canCancel,false);
+ await assert.rejects(()=>service.cancel(),/不能取消/);await assert.rejects(()=>service.prepare(),/不能重新下载/);
+ await writeFile(file,JSON.stringify({status:'succeeded',targetVersion:'9.0.0'}));assert.equal((await service.info()).status,'succeeded');assert.equal(service.active,false);
+});
 test('downloads can be cancelled before headers or mid-body; stalled and total deadlines do not retry',async()=>{
  const keepAlive=setInterval(()=>{},1000);
  try{

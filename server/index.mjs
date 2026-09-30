@@ -1182,6 +1182,7 @@ export function createStudioServer(options = {}) {
         const installId=options.installId??process.env.FX_SHARE_INSTALL_ID;
         if(!installId||req.headers.origin!==`http://127.0.0.1:${port}`&&req.headers.origin!==`http://localhost:${port}`||req.headers['x-fx-action']!=='shutdown'||req.headers['x-fx-install-id']!==installId)throw new RequestError(403,'shutdown_forbidden','只能从当前安装的本地工作台退出服务。');
         await readJson(req,1024);
+        await updater.info();
         if(inflightMutations>1||updater.active||generationBusy||['queued','running','stopping'].includes(generationJobs.active?.status)||features.comparisons.active)throw new RequestError(409,'generation_busy','仍有请求、生成、下载更新或对照任务；请等待完成或先停止任务。');
         shuttingDown=true;
         json(res,200,{stopping:true,message:'本安装的服务正在退出。现在可关闭页面。'});
