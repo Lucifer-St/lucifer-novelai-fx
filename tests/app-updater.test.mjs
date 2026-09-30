@@ -15,6 +15,7 @@ test('restarted service preserves the installing guard until the external helper
  const root=await temporary(t),dataDir=path.join(root,'userdata');await mkdir(dataDir,{recursive:true});const file=path.join(dataDir,'update-status.json');
  await writeFile(file,JSON.stringify({status:'installing',targetVersion:'9.0.0'}));
  const service=createAppUpdater({root,dataDir,currentVersion:'9.0.0',installId:'fixture',platform:'win32',execPath:path.join(root,'runtime/node.exe'),releaseServices:{}});
+ await assert.rejects(()=>service.prepare(),/不能重新下载/);
  assert.equal((await service.info()).status,'installing');assert.equal(service.active,true);assert.equal((await service.info()).canCancel,false);
  await assert.rejects(()=>service.cancel(),/不能取消/);await assert.rejects(()=>service.prepare(),/不能重新下载/);
  await writeFile(file,JSON.stringify({status:'succeeded',targetVersion:'9.0.0'}));assert.equal((await service.info()).status,'succeeded');assert.equal(service.active,false);
