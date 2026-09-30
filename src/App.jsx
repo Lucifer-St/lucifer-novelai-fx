@@ -1,3 +1,5 @@
+import GenerationCostBadge from './components/GenerationCostBadge';
+import {quoteComparisonTotal} from './lib/generation-cost.mjs';
 import usePromptLayout from './hooks/usePromptLayout';
 import {openLocalFolder} from './lib/local-files.mjs';
 import {changeGenerationMode,restoreGenerationMode,cleanComparisonMode} from './lib/generation-mode.mjs';
@@ -750,12 +752,13 @@ export default function App() {
     if((preview?.novelai?.body?.parameters?.n_samples||1)<2)batchReason='选择 2–8 张后按逐张模式生成；单张保持原流程。';
     else try{const candidate=structuredClone(preview);if(candidate.novelai.body.parameters.seed===-1)candidate.novelai.body.parameters.seed=0;planOpusBatch(candidate);if(anlas?.pricingPolicy==='paid')throw Error('当前计数规则为付费 / 额度用尽。');totalQuote=0;}catch(e){batchReason=e.message;totalQuote=null;}
   }
-  if(comparison.config.enabled){try{const labels=comparison.config.mode==='AB'?['A','B']:['A','B','C'];const quotes=labels.map(v=>quoteAnlas(buildRequest(variantState(state,comparison.config,v)),anlas?.calibrations||[],{policy:anlas?.pricingPolicy||'opus'}));totalQuote=quotes.every(q=>q.known)?quotes.reduce((n,q)=>n+q.perImage,0)*comparison.config.rounds:null;}catch{totalQuote=null;}}
+  if(comparison.config.enabled)totalQuote=quoteComparisonTotal(state,comparison.config,anlas?.calibrations||[],anlas?.pricingPolicy||'opus');
   const outputDirectory =
     status?.outputDirectory || "userdata/output";
   const saveDirectory =
     status?.saveDirectory || "userdata/saved";
   const savedToOutput = activeImage?.savedToLibrary === true;
+  const generateLabel=busy ? `正在生成 · ${elapsed}s` : comparison.busy?'对照执行中…':connection.serverBusy?'等待服务端任务结束':connection.blocked?'暂时无法生成':comparison.config.enabled?`生成 ${comparison.config.mode} · ${comparison.config.rounds*(comparison.config.mode==='AB'?2:3)} 张`:'生成图像';
   return (
     <div
       className={`app${isExstiaSkin(appearance.workbenchSkin)?" exstia-workbench":""}${basicMode?" share-basic":""}${appearance.workbenchSkin!=="classic"?" themed-workbench":""}${draggingImage ? " is-file-dragging" : ""}`}
@@ -973,7 +976,7 @@ export default function App() {
               {basicMode&&<p className="share-basic-note">新手模式保留常用设置。<button onClick={switchBasic}>展开高级参数</button></p>}
               <ComparisonControls comparison={comparison} base={state}/>
               <OpusBatchControls enabled={opusBatch} onChange={changeOpusBatch} disabled={busy||comparison.config.enabled||comparison.busy} reason={comparison.config.enabled?'A/B/C 已按单张串行生成；此开关在普通多图时生效。':batchReason}/>
-              <SettingsPanel pricingPolicy={anlas?.pricingPolicy}
+              <SettingsPanel
                 suggestionMode={suggestionMode} onSuggestionMode={setSuggestionMode} onToggleSuggestions={enabled=>setSuggestionMode(enabled?lastSuggestionMode.current:"off")}
                 comparisonEnabled={comparison.config.enabled}
                 state={editState}
@@ -989,6 +992,9 @@ export default function App() {
                 <div className="prompt-dock-options"><Toggle label="自动添加质量标签" checked={editState.quality} onChange={v=>update('quality',v)}/>{tab==='prompt'&&<button className="text-button" onClick={addCharacter}><Plus size={13}/>添加角色</button>}</div>
                 <button
                   className="primary generate"
+                  aria-label={generateLabel}
+                  aria-describedby="generation-cost-estimate"
+                  title="生成图像（Ctrl + Enter）；右侧为本次预计消耗的 Anlas"
                   disabled={busy || comparison.busy || !!connection.blocked}
                   onClick={generate}
                 >
@@ -997,9 +1003,9 @@ export default function App() {
                   ) : (
                     <Sparkles size={20} />
                   )}
-                  <span>{busy ? `正在生成 · ${elapsed}s` : comparison.busy?'对照执行中…':connection.serverBusy?'等待服务端任务结束':connection.blocked?'暂时无法生成':comparison.config.enabled?`生成 ${comparison.config.mode} · ${comparison.config.rounds*(comparison.config.mode==='AB'?2:3)} 张`:'生成图像'}</span>
+                  <span className="generate-label">{generateLabel}</span>
                   <ThemeGenerateFrame skin={appearance.workbenchSkin}/><ExstiaGenerateBadge skin={appearance.workbenchSkin}/>
-                  <kbd>Ctrl ↵</kbd>
+                  <GenerationCostBadge amount={totalQuote} busy={busy||comparison.busy} comparison={comparison.config.enabled} policy={anlas?.pricingPolicy||'opus'}/>
                 </button>
                 <small>
                   {busy
@@ -1295,7 +1301,7 @@ export default function App() {
               {basicMode&&<p className="share-basic-note">新手模式保留常用设置。<button onClick={switchBasic}>展开高级参数</button></p>}
               <ComparisonControls comparison={comparison} base={state}/>
               <OpusBatchControls enabled={opusBatch} onChange={changeOpusBatch} disabled={busy||comparison.config.enabled||comparison.busy} reason={comparison.config.enabled?'A/B/C 已按单张串行生成；此开关在普通多图时生效。':batchReason}/>
-              <SettingsPanel pricingPolicy={anlas?.pricingPolicy}
+              <SettingsPanel
                 suggestionMode={suggestionMode} onSuggestionMode={setSuggestionMode} onToggleSuggestions={enabled=>setSuggestionMode(enabled?lastSuggestionMode.current:"off")}
                 comparisonEnabled={comparison.config.enabled}
                 state={editState}
