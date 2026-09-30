@@ -2,11 +2,13 @@ import {LOADING_SKINS,LOADING_ILLUSTRATED_COUNT,RANDOM_LOADING_SKIN,WORKBENCH_SK
 import {Shuffle} from 'lucide-react';
 import LoadingArtwork from './LoadingArtwork';
 import {WorkbenchSwatch} from './WorkbenchTheme';
+// Keep Classic first even when new themes are inserted at the registry front.
+const WORKBENCH_CHOICES=[...WORKBENCH_SKINS.filter(s=>s.id==='classic'),...WORKBENCH_SKINS.filter(s=>s.id!=='classic')];
 export default function AppearancePanel({value,onChange,error}){
  const selected=getLoadingSkin(value.loadingSkin);
  const random=value.loadingSkin==='random';
  return <div className="appearance-workspace">
-  <fieldset className="workbench-skin-fieldset"><legend>工作台皮肤</legend><p className="appearance-hint">换一套陪伴创作的装帧。加载画面可在下方独立选择。</p><div className="workbench-skin-grid">{WORKBENCH_SKINS.map(s=><label key={s.id} className={'workbench-skin-choice'+(value.workbenchSkin===s.id?' chosen':'')}>
+  <fieldset className="workbench-skin-fieldset"><legend>工作台皮肤</legend><p className="appearance-hint">换一套陪伴创作的装帧。加载画面可在下方独立选择。</p><div className="workbench-skin-grid">{WORKBENCH_CHOICES.map(s=><label key={s.id} className={'workbench-skin-choice'+(value.workbenchSkin===s.id?' chosen':'')}>
    <input type="radio" name="workbench-skin" value={s.id} checked={value.workbenchSkin===s.id} onChange={()=>onChange({workbenchSkin:s.id})} aria-label={s.name}/>
    <span className={'workbench-skin-thumb '+s.id} aria-hidden="true"><WorkbenchSwatch skin={s.id}/></span>
    <span className="workbench-skin-label"><strong>{s.name}</strong><small>{s.subtitle}</small></span>

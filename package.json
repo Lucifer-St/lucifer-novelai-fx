@@ -1,6 +1,6 @@
 {
   "name": "lucifer-novelai-fx-share",
-  "version": "1.11.2",
+  "version": "1.11.3",
   "private": true,
   "engines": {
     "node": ">=22.19.0"

@@ -1005,7 +1005,7 @@ export default function App() {
                   )}
                   <span className="generate-label">{generateLabel}</span>
                   <ThemeGenerateFrame skin={appearance.workbenchSkin}/><ExstiaGenerateBadge skin={appearance.workbenchSkin}/>
-                  <GenerationCostBadge amount={totalQuote} busy={busy||comparison.busy} comparison={comparison.config.enabled} policy={anlas?.pricingPolicy||'opus'}/>
+                  <GenerationCostBadge skin={appearance.workbenchSkin} amount={totalQuote} busy={busy||comparison.busy} comparison={comparison.config.enabled} policy={anlas?.pricingPolicy||'opus'}/>
                 </button>
                 <small>
                   {busy

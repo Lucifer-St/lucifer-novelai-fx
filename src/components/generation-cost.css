@@ -1,4 +1,16 @@
-.app .studio .left-panel .generate-dock .generate{gap:9px;padding-right:12px}
+/* Geometry matches the existing estimate badge; only theme paint is selected here. */
+.app{--generate-fill:linear-gradient(110deg,#2873ce,#266fc5);--generate-ink:#fff;--cost-fill:#eaf3ff;--cost-ink:#234f83;--cost-edge:#bbd2ed;--cost-icon:#2e6aae}
+.app[data-workbench-skin=book-contract]{--generate-fill:linear-gradient(110deg,#665084,#604780);--generate-ink:#fffdf9;--cost-fill:#f6eefc;--cost-ink:#634779;--cost-edge:#daccdf;--cost-icon:#7c6293}
+.app[data-workbench-skin=symphonic]{--generate-fill:linear-gradient(110deg,#187887,#0d6c7b);--generate-ink:#fff;--cost-fill:#e9f8f4;--cost-ink:#265d68;--cost-edge:#a2d5cd;--cost-icon:#a95074}
+.app[data-workbench-skin=elixir]{--generate-fill:linear-gradient(110deg,#913950,#7e334a);--generate-ink:#fff5eb;--cost-fill:#f8eddd;--cost-ink:#784234;--cost-edge:#c6a57e;--cost-icon:#8a6745}
+.app[data-workbench-skin=lemmtear]{--generate-fill:linear-gradient(110deg,#62cbc9,#55bcbf);--generate-ink:#102b3b;--cost-fill:#173e49;--cost-ink:#9be9df;--cost-edge:#477985;--cost-icon:#efa1ad}
+.app[data-workbench-skin=exstia]{--generate-fill:linear-gradient(110deg,#59769e,#55739b);--generate-ink:#fff;--cost-fill:#edf4fa;--cost-ink:#36557b;--cost-edge:#a1b5cf;--cost-icon:#4d789c}
+.app[data-workbench-skin=exstia-chevalier]{--generate-fill:linear-gradient(110deg,#956575,#8b5b70);--generate-ink:#fff;--cost-fill:#fff3ed;--cost-ink:#874657;--cost-edge:#d1a3a9;--cost-icon:#ab5168}
+.app[data-workbench-skin=exstia-magica]{--generate-fill:linear-gradient(110deg,#dec8a8,#cdb185);--generate-ink:#34253f;--cost-fill:#4c3a57;--cost-ink:#f3ddb8;--cost-edge:#8c7089;--cost-icon:#edbbd6}
+.app[data-workbench-skin=precure-scrapbook]{--generate-fill:linear-gradient(110deg,#8060c2,#7052ae);--generate-ink:#fff;--cost-fill:#e9f4fa;--cost-ink:#4a477b;--cost-edge:#adcee0;--cost-icon:#6e56a9}
+.app[data-workbench-skin=precure-days]{--generate-fill:linear-gradient(105deg,#92677f,#8b6078);--generate-ink:#fff;--cost-fill:#fbf2e7;--cost-ink:#825b66;--cost-edge:#d7b79e;--cost-icon:#a77c50}
+.app[data-workbench-skin=teresa]{--generate-fill:linear-gradient(110deg,#934c63,#7d3d57);--generate-ink:#fff8ef;--cost-fill:#fbefe5;--cost-ink:#794255;--cost-edge:#d0aa88;--cost-icon:#a1703d}
+.app .studio .left-panel .generate-dock .generate{gap:9px;padding-right:12px;background:var(--generate-fill);color:var(--generate-ink)}
 .app .studio .left-panel .generate-dock .generate>.generate-label{flex:1 1 auto;min-width:0;width:auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;position:relative;z-index:1}
-.app .studio .left-panel .generate-dock .generate>.generation-cost-badge{display:inline-flex;position:relative;z-index:2;flex:0 0 auto;align-items:center;justify-content:center;gap:5px;min-width:43px;padding:5px 8px;border:1px solid #fff2;border-radius:5px;background:#181a2b;color:#fff3ad;font-size:13px;font-weight:700;line-height:1.2;letter-spacing:normal;white-space:nowrap;box-sizing:border-box}
-.generation-cost-badge>span{font-variant-numeric:tabular-nums}.generation-cost-badge>svg{flex:none}
+.app .studio .left-panel .generate-dock .generate>.generation-cost-badge{display:inline-flex;position:relative;z-index:2;flex:0 0 auto;align-items:center;justify-content:center;gap:5px;min-width:43px;padding:5px 8px;border:1px solid var(--cost-edge);border-radius:5px;background:var(--cost-fill);color:var(--cost-ink);font-size:13px;font-weight:700;line-height:1.2;letter-spacing:normal;white-space:nowrap;box-sizing:border-box}
+.generation-cost-badge>span{font-variant-numeric:tabular-nums}.generation-cost-badge>svg{flex:none;color:var(--cost-icon)}

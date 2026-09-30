@@ -1,7 +1,7 @@
 import {test,expect} from '@playwright/test';import {mkdir} from 'node:fs/promises';import path from 'node:path';
 import {defaults} from '../src/lib/request.mjs';import {WORKBENCH_SKINS,APPEARANCE_KEY} from '../src/lib/loading-skins.mjs';import pkg from '../package.json' with {type:'json'};
 import {studioFixture} from './fixtures/studio.mjs';
-const evidence='.local/generate-cost-20260929/ui';
+const evidence=process.env.FX_COST_EVIDENCE_DIR||'.local/generate-cost-20260929/ui';
 async function setup(page,{skin='classic',policy='opus',state={},comparison={}}={}){
  let cleanup;const f=await studioFixture({after:fn=>cleanup=fn},{distDir:process.env.FX_TEST_DIST_DIR||path.resolve('.local/generate-cost-20260929/dist')});await f.request('/api/anlas',{action:'pricingPolicy',value:policy});
  const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.addInitScript(({skin,key,version,state,comparison})=>{localStorage.setItem('lucifer-share-auto-update-check-v1','off');localStorage.setItem('lucifer-share-release-seen-v1',version);localStorage.setItem('lucifer-share-setup-seen-v1','true');localStorage.setItem('novelai-studio-v1',JSON.stringify({version:1,state}));localStorage.setItem('lucifer-comparisons-v1',JSON.stringify(comparison));localStorage.setItem(key,JSON.stringify({version:1,workbenchSkin:skin,loadingSkin:'classic',characterDecorations:true}));},{skin,key:APPEARANCE_KEY,version:pkg.version,state:{...defaults(),prompt:'fixture garden',seed:42,width:1024,height:1024,steps:28,...state},comparison});
