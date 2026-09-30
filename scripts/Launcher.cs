@@ -82,5 +82,15 @@ class Launcher {
   return "本安装目录仍有旧版服务运行，不能把新版启动器连接到旧版页面。磁盘版本："+version+"。请先在旧版页面等待生成结束。若为 1.4.0，按升级说明核对任务管理器中的 node.exe：记录的 PID "+recorded+"，可执行文件路径应为 "+Path.Combine(root,"runtime","node.exe")+"。仅在 PID 和路径都一致且任务已结束时停止该进程；不一致时不要结束。然后重新运行启动器。";
  }
  static bool Ready(int port,string identity,string version,out bool owned){owned=false;try{var request=(HttpWebRequest)WebRequest.Create("http://127.0.0.1:"+port+"/api/status");request.Proxy=null;request.Timeout=350;using(var response=request.GetResponse())using(var reader=new StreamReader(response.GetResponseStream())){string data=reader.ReadToEnd();owned=data.Contains("\"shareEdition\":true")&&data.Contains("\"installId\":\""+identity+"\"");return owned&&data.Contains("\"version\":\""+version+"\"");}}catch{return false;}}
- static void Open(int port){if(Environment.GetEnvironmentVariable("FX_SHARE_NO_OPEN")!="1")Process.Start(new ProcessStartInfo("http://127.0.0.1:"+port){UseShellExecute=true});}
+ static void Open(int port){
+  if(Environment.GetEnvironmentVariable("FX_DISABLE_RESIDENT")!="1")try{
+   string root=AppDomain.CurrentDomain.BaseDirectory,source=Path.Combine(root,"app","dist","native","ResidentHost.exe");
+   byte[] bytes=File.ReadAllBytes(source);string hash,identity;
+   using(var sha=SHA256.Create()){hash=BitConverter.ToString(sha.ComputeHash(bytes)).Replace("-","").ToLowerInvariant();identity=BitConverter.ToString(sha.ComputeHash(Encoding.UTF8.GetBytes(Path.GetFullPath(root).TrimEnd('\\').ToUpperInvariant()))).Replace("-","").Substring(0,24);}
+   string folder=Path.Combine(root,"userdata","desktop-host"),target=Path.Combine(folder,hash+".exe");Directory.CreateDirectory(folder);
+   if(!File.Exists(target)){string temporary=Path.Combine(folder,Guid.NewGuid().ToString()+".tmp");try{File.WriteAllBytes(temporary,bytes);try{File.Move(temporary,target);}catch(IOException){if(!File.Exists(target))throw;}}finally{if(File.Exists(temporary))File.Delete(temporary);}}
+   using(var sha=SHA256.Create())if(BitConverter.ToString(sha.ComputeHash(File.ReadAllBytes(target))).Replace("-","").ToLowerInvariant()!=hash)throw new Exception("启动器缓存校验失败。");
+   Process.Start(new ProcessStartInfo(target,"\""+root.TrimEnd('\\')+"\" "+port+" "+identity+" share"){UseShellExecute=false,WorkingDirectory=folder});
+  }catch(Exception error){MessageBox.Show("常驻启动器未能打开："+error.Message,"Lucifer FX");}
+  if(Environment.GetEnvironmentVariable("FX_SHARE_NO_OPEN")!="1")Process.Start(new ProcessStartInfo("http://127.0.0.1:"+port){UseShellExecute=true});}
 }

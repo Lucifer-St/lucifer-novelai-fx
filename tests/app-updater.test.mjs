@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import os from 'node:os';
-import {mkdtemp,mkdir,writeFile,readFile,rm,cp,symlink,unlink,realpath} from 'node:fs/promises';
+import {mkdtemp,mkdir,writeFile,readFile,readdir,rm,cp,symlink,unlink,realpath} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {zipSync} from 'fflate';
 import {createAppUpdater,validateUpdateArchive,downloadReleaseAsset,safeUpdatePath,assertUpdateStorage} from '../server/app-updater.mjs';
@@ -10,6 +10,47 @@ import {applyUpdate,recoverUpdate} from '../scripts/apply-update.mjs';
 import {createStudioServer} from '../server/index.mjs';
 const hash=b=>createHash('sha256').update(b).digest('hex');
 const encode=value=>Buffer.from(typeof value==='string'?value:JSON.stringify(value));
+const waitFor=async predicate=>{for(let i=0;i<300;i++){if(await predicate())return;await new Promise(r=>setTimeout(r,10));}throw Error('State transition timed out');};
+test('downloads can be cancelled before headers or mid-body; stalled and total deadlines do not retry',async()=>{
+ const keepAlive=setInterval(()=>{},1000);
+ try{
+  for(const midBody of [false,true]){
+   const controller=new AbortController();let calls=0,cancelled=false;
+   const result=downloadReleaseAsset('https://github.com/a/b',{signal:controller.signal,fetchImpl:async()=>{calls++;return midBody?new Response(new ReadableStream({start(c){c.enqueue(new Uint8Array([1]));},cancel(){cancelled=true;}})):new Promise(()=>{});}});
+   await new Promise(r=>setTimeout(r,15));controller.abort(new DOMException('cancelled','AbortError'));
+   await assert.rejects(result,{name:'AbortError'});assert.equal(calls,1);if(midBody)assert.equal(cancelled,true);
+  }
+  await assert.rejects(downloadReleaseAsset('https://github.com/a/b',{stallTimeoutMs:20,fetchImpl:()=>new Promise(()=>{})}),{code:'update_stalled'});
+  let interval;
+  await assert.rejects(downloadReleaseAsset('https://github.com/a/b',{stallTimeoutMs:100,totalTimeoutMs:70,fetchImpl:async()=>new Response(new ReadableStream({start(c){interval=setInterval(()=>c.enqueue(new Uint8Array([1])),10);},cancel(){clearInterval(interval);}}))}),{code:'update_timeout'});
+ }finally{clearInterval(keepAlive);}
+});
+test('cancelled prepare cleans only its staging; late metadata cannot override a fresh retry',async t=>{
+ const root=await temporary(t),dataDir=path.join(root,'userdata'),fixture=archive();
+ await filesTo(root,{'runtime/node.exe':'runtime','app/scripts/apply-update.mjs':'helper','启动 Lucifer FX.exe':'launcher','userdata/keep.json':'user data','userdata/updates/older-backup/keep':'recovery'});
+ const release={status:'update_available',latestVersion:fixture.version,download:{name:'Lucifer-NovelAI-FX-Share-9.0.0-Windows-x64.zip',url:'https://github.com/a/b/releases/download/v9/a.zip',sha256:fixture.sha256,bytes:fixture.bytes.length}};
+ let checks=0,late,downloads=0,hold=true;
+ const service=createAppUpdater({root,dataDir,currentVersion:'1.0.0',installId:'fixture',platform:'win32',execPath:path.join(root,'runtime/node.exe'),releaseServices:{checkUpdates:()=>++checks===1?new Promise(r=>{late=r;}):release},fetchImpl:async()=>{downloads++;return hold?new Response(new ReadableStream({start(c){c.enqueue(new Uint8Array([1]));}})):new Response(fixture.bytes);}});
+ await service.prepare();await waitFor(()=>!!late);assert.equal((await service.cancel()).status,'cancelled');assert.equal(service.active,false);
+ await service.prepare();await waitFor(async()=>(await service.info()).downloaded===1);
+ assert.equal((await service.cancel()).status,'cancelled');assert.deepEqual(await readdir(path.join(dataDir,'updates')),['older-backup']);
+ hold=false;await service.prepare();await waitFor(async()=>(await service.info()).status==='prepared');late(release);await new Promise(r=>setTimeout(r,30));
+ assert.equal((await service.info()).status,'prepared');assert.equal((await service.info()).canCancel,false);assert.equal(downloads,2);assert.equal(checks,3);
+ assert.equal((await service.cancel()).status,'prepared');assert.equal(await readFile(path.join(dataDir,'keep.json'),'utf8'),'user data');assert.equal(await readFile(path.join(dataDir,'updates/older-backup/keep'),'utf8'),'recovery');
+ assert.equal(JSON.parse(await readFile(path.join(dataDir,'update-status.json'))).status,'prepared');
+});
+test('cancel API requires installation identity and origin, releases the shutdown lock',async t=>{
+ const root=await temporary(t),dataDir=path.join(root,'userdata');
+ await filesTo(root,{'runtime/node.exe':'runtime'});
+ const server=createStudioServer({root,dataDir,installId:'fixture',residentHost:false,releaseRepository:'fixture/release',updaterOptions:{platform:'win32',execPath:path.join(root,'runtime/node.exe'),releaseServices:{checkUpdates:()=>new Promise(()=>{})}}});
+ await new Promise(r=>server.listen(0,'127.0.0.1',r));t.after(()=>new Promise(r=>server.close(r)));const base='http://127.0.0.1:'+server.address().port;
+ const post=(route,extra={})=>fetch(base+route,{method:'POST',headers:{Origin:base,'Content-Type':'application/json','X-FX-Action':'update','X-FX-Install-Id':'fixture',...extra},body:'{}'});
+ assert.equal((await post('/api/update/prepare')).status,202);
+ for(const extra of [{Origin:'https://evil.test'},{'X-FX-Install-Id':'wrong'},{'X-FX-Action':'wrong'}])assert.equal((await post('/api/update/cancel',extra)).status,403);
+ assert.equal((await post('/api/shutdown',{'X-FX-Action':'shutdown'})).status,409);
+ const cancelled=await post('/api/update/cancel');assert.equal(cancelled.status,200);assert.equal((await cancelled.json()).status,'cancelled');
+ assert.equal((await post('/api/shutdown',{'X-FX-Action':'shutdown'})).status,200);
+});
 function archive(version='9.0.0',extra={}){
  const files=Object.fromEntries(Object.entries({'app/server/index.mjs':'new server','app/dist/index.html':'new html','app/scripts/apply-update.mjs':'new helper','runtime/node.exe':'new runtime','启动 Lucifer FX.exe':'new launcher',...extra}).map(([k,v])=>[k,encode(v)]));
  const manifest={product:'Lucifer NovelAI FX Share',version,files:Object.entries(files).map(([name,b])=>({path:name,bytes:b.length,sha256:hash(b)}))};

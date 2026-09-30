@@ -3,14 +3,14 @@
 ## 下载
 
 - 最新版本页面：<https://github.com/Lucifer-St/lucifer-novelai-fx/releases/latest>
-- `v1.11.3` Windows x64：<https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.11.3/Lucifer-NovelAI-FX-Share-1.11.3-Windows-x64.zip>
-- `v1.11.3` SHA-256：<https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.11.3/SHA256SUMS-1.11.3.txt>
+- `v1.12.0` Windows x64：<https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.12.0/Lucifer-NovelAI-FX-Share-1.12.0-Windows-x64.zip>
+- `v1.12.0` SHA-256：<https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.12.0/SHA256SUMS-1.12.0.txt>
 
 只从本仓库的 GitHub Release 下载。需要直接运行时请选择 Windows ZIP。源码公开后的 main 包含应用代码，需要按开发说明安装依赖并构建；旧版本 tag 的 Source code 存档仍保留当时的文档与截图。
 
 ## 第一次启动
 
-1. 下载 ZIP，并核对 `SHA256SUMS-1.11.3.txt` 中对应文件的 SHA-256。
+1. 下载 ZIP，并核对 `SHA256SUMS-1.12.0.txt` 中对应文件的 SHA-256。
 2. 完整解压到普通可写目录。不要直接在 ZIP 预览中运行，也不要解压进已有旧版本目录。
 3. 双击 `启动 Lucifer FX.exe`。应用自带 Node.js 运行环境，不要求另装 Node、Python、Agent 或 ComfyUI。
 4. 在设置中选择连接类型：
@@ -20,6 +20,12 @@
 6. 输入简单 Prompt，选择普通尺寸与较低步数，阅读费用提示后再主动点击生成。
 
 Windows 可能显示未知发布者提醒。请先确认文件来自本仓库 Release，并核对 SHA-256，再决定是否运行。
+
+## 常驻启动器与下载取消
+
+启动后会出现控制窗口和系统托盘图标，显示当前服务状态、版本、端口、PID 和更新进度。关闭浏览器不会停止后台；关闭控制窗口会收至托盘，双击托盘图标或再次运行启动器可唤回。点击“退出后台”会先取消可取消的下载，并请求服务安全退出；生成或其他任务未完成时会拒绝退出。安装阶段不能取消或退出。托盘菜单另有“仅关闭启动器（服务继续运行）”。不设置开机自启。
+
+更新中心和启动器均提供“取消下载”；取消后可以手动重新下载。连续 30 秒没有收到数据或下载超过 10 分钟会停止，避免无限等待。不会自动重试，不改动当前安装和用户数据；取消只清理本次更新的暂存目录。
 
 ## 提示词布局
 

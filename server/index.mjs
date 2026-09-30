@@ -7,6 +7,7 @@ import {MODEL_IDS,modelSpec,isV45,validateModelPayload} from '../src/lib/model-p
 import {initializeCuratedLibrary} from './library.mjs';
 import {createReleaseServices,createCachedReleaseCheck} from './release-services.mjs';
 import {createDesktopFiles} from './desktop-files.mjs';
+import {startResidentHost} from './resident-host.mjs';
 import {createAppUpdater,assertUpdateStorage} from './app-updater.mjs';
 import {RELEASE_CONFIG} from '../shared/release-config.mjs';
 import {atlasDocumentSource,atlasOriginal,atlasResource} from './atlas.mjs';
@@ -1194,11 +1195,12 @@ export function createStudioServer(options = {}) {
         json(res,200,await checkRelease(body.automatic===true));
       }else if(url.pathname==='/api/update-state'&&req.method==='GET'){
         json(res,200,await updater.info());
-      }else if(['/api/update/prepare','/api/update/install'].includes(url.pathname)&&req.method==='POST'){
+      }else if(['/api/update/prepare','/api/update/cancel','/api/update/install'].includes(url.pathname)&&req.method==='POST'){
         const installId=options.installId??process.env.FX_SHARE_INSTALL_ID;
         if(!installId||![`http://127.0.0.1:${port}`,`http://localhost:${port}`].includes(req.headers.origin)||req.headers['x-fx-action']!=='update'||req.headers['x-fx-install-id']!==installId)throw new RequestError(403,'update_forbidden','只能从当前安装的本地工作台更新。');
         await readJson(req,1024);
         if(url.pathname.endsWith('/prepare'))json(res,202,await updater.prepare());
+        else if(url.pathname.endsWith('/cancel'))json(res,200,await updater.cancel());
         else{
           if(inflightMutations>1||generationBusy||['queued','running','stopping'].includes(generationJobs.active?.status)||features.comparisons.active)throw new RequestError(409,'generation_busy','请等待生成、对照和其他操作完成后再安装。');
           assertUpdateStorage(runtimeRoot,[outputDir,saveDir,...storageRoots]);
@@ -1212,6 +1214,8 @@ export function createStudioServer(options = {}) {
           app: 'Lucifer NovelAI FX',
           version: RELEASE_CONFIG.version+'-share',
           installId: options.installId??process.env.FX_SHARE_INSTALL_ID??null,
+          processId:process.pid,
+          desktopBusy:generationBusy||!!features.comparisons.active||inflightMutations>0,
           generationBusy,
           activeComparison: features.comparisons.active,
           generationJobs:true,
@@ -1461,7 +1465,7 @@ export function createStudioServer(options = {}) {
     } finally {if(mutation)inflightMutations--;}
   });
   server.requestTimeout = 300_000;
-  server.once('listening',()=>{void generatedLibrary.start().catch(()=>{});});
+  server.once('listening',()=>{void generatedLibrary.start().catch(()=>{});if(options.residentHost!==false)void startResidentHost({root:runtimeRoot,port:server.address().port,installId:options.installId??process.env.FX_SHARE_INSTALL_ID}).catch(()=>{console.warn('Resident launcher unavailable; the local web service remains available.');});});
   const closeServer=server.close.bind(server);
   server.close=callback=>{clearInterval(cleanupTimer);closeServer(async error=>{await libraryCleanup.close();await generatedLibrary.close().catch(()=>{});callback?.(error);});return server;};
   server.headersTimeout = 15_000;

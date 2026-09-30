@@ -1,5 +1,5 @@
 import path from 'node:path';
-import {readFile,writeFile,mkdir,lstat,copyFile,rename,unlink} from 'node:fs/promises';
+import {readFile,writeFile,mkdir,lstat,copyFile,rename,unlink,rm} from 'node:fs/promises';
 import {createHash,randomUUID} from 'node:crypto';
 import {spawn} from 'node:child_process';
 import {unzipSync} from 'fflate';
@@ -8,6 +8,10 @@ import {compareVersions} from './release-services.mjs';
 const MAX_ARCHIVE=256*1024*1024,MAX_EXPANDED=512*1024*1024;
 const ALLOWED=/^(?:app\/(?:server\/index\.mjs|scripts\/(?:fx-mcp|fx|apply-update)\.mjs|dist\/.+|public\/curated\/library\.json)|runtime\/(?:node\.exe|LICENSE)|启动 Lucifer FX\.exe|恢复更新\.cmd|使用说明\.md|THIRD-PARTY-LICENSES\.txt|manifest\.json|fx\.cmd|docs\/(?:ART-NOTICE|PUBLIC-RIGHTS|RELEASE-CHECKLIST)\.md)$/;
 export const UPDATE_TOP_LEVEL=['app','runtime','启动 Lucifer FX.exe','使用说明.md','THIRD-PARTY-LICENSES.txt','fx.cmd','docs','manifest.json'];
+function abortable(promise,signal){
+ if(signal.aborted)return Promise.reject(signal.reason);
+ return new Promise((resolve,reject)=>{const abort=()=>reject(signal.reason);signal.addEventListener('abort',abort,{once:true});Promise.resolve(promise).then(resolve,reject).finally(()=>signal.removeEventListener('abort',abort));});
+}
 export function assertUpdateStorage(root,directories=[]){
  for(const directory of directories.filter(Boolean))for(const name of UPDATE_TOP_LEVEL){
   const target=path.resolve(root,name).toLowerCase(),storage=path.resolve(directory).toLowerCase();
@@ -44,11 +48,16 @@ export function validateUpdateArchive(bytes,{version,sha256}){
  return {files,manifest};
 }
 // Follow only GitHub's public release-asset redirect; never send credentials.
-export async function downloadReleaseAsset(url,{fetchImpl=fetch,signal,onProgress,expectedBytes}={}){
+export async function downloadReleaseAsset(url,{fetchImpl=fetch,signal,onProgress,expectedBytes,stallTimeoutMs=30000,totalTimeoutMs=600000}={}){
+ const controller=new AbortController();let stall,total,reader;
+ const abort=()=>controller.abort(signal.reason);if(signal?.aborted)abort();else signal?.addEventListener('abort',abort,{once:true});
+ const reset=()=>{clearTimeout(stall);stall=setTimeout(()=>controller.abort(Object.assign(Error('更新下载连续 30 秒没有进展，已停止；可以手动重试。'),{code:'update_stalled'})),stallTimeoutMs);stall.unref?.();};
+ total=setTimeout(()=>controller.abort(Object.assign(Error('更新下载超过总时限，已停止；可以手动重试。'),{code:'update_timeout'})),totalTimeoutMs);total.unref?.();reset();
+ try{
  let current=new URL(url);
  if(current.protocol!=='https:'||current.hostname!=='github.com'||current.port||current.username||current.password||current.hash||current.search)fail('更新下载地址无效。');
  for(let hop=0;hop<4;hop++){
-  const response=await fetchImpl(current.href,{redirect:'manual',signal,credentials:'omit',headers:{Accept:'application/octet-stream','User-Agent':'Lucifer-NovelAI-FX-Updater'}});
+  const response=await abortable(fetchImpl(current.href,{redirect:'manual',signal:controller.signal,credentials:'omit',headers:{Accept:'application/octet-stream','User-Agent':'Lucifer-NovelAI-FX-Updater'}}),controller.signal);reset();
   if([301,302,303,307,308].includes(response.status)){
    const next=new URL(response.headers.get('location'),current);await response.body?.cancel();
    if(next.protocol!=='https:'||next.port||next.username||next.password||!['release-assets.githubusercontent.com','objects.githubusercontent.com'].includes(next.hostname))fail('更新下载重定向不在 GitHub 发行域名内。');
@@ -56,12 +65,14 @@ export async function downloadReleaseAsset(url,{fetchImpl=fetch,signal,onProgres
   }
   if(!response.ok)fail(`安装包下载失败（HTTP ${response.status}），当前版本未改变。`);
   if(Number(response.headers.get('content-length'))>MAX_ARCHIVE)fail('更新包超过大小上限。');
-  const parts=[];let size=0;
-  for await(const chunk of response.body){size+=chunk.length;if(size>MAX_ARCHIVE)fail('更新包超过大小上限。');parts.push(Buffer.from(chunk));onProgress?.(size);}
+  const parts=[];let size=0;reader=response.body.getReader();
+  for(;;){const {done,value:chunk}=await abortable(reader.read(),controller.signal);if(done)break;reset();size+=chunk.length;if(size>MAX_ARCHIVE)fail('更新包超过大小上限。');parts.push(Buffer.from(chunk));onProgress?.(size);}
+  reader.releaseLock();reader=null;controller.signal.throwIfAborted();
   if(expectedBytes&&size!==expectedBytes)fail('安装包下载不完整，当前版本未改变。');
   return Buffer.concat(parts);
  }
  fail('更新下载重定向次数过多。');
+ }finally{clearTimeout(stall);clearTimeout(total);signal?.removeEventListener('abort',abort);if(reader){void reader.cancel().catch(()=>{});}}
 }
 export async function assertNoLinks(root,relative=''){
  const resolved=path.resolve(root,relative),base=path.resolve(root);
@@ -72,45 +83,56 @@ export async function assertNoLinks(root,relative=''){
  }
  return resolved;
 }
-export function createAppUpdater({root,dataDir,currentVersion,installId,releaseServices,fetchImpl=fetch,platform=process.platform,execPath=process.execPath,spawnImpl=spawn}={}){
- let state={status:'idle'},transaction=null,preparing=null;
+export function createAppUpdater({root,dataDir,currentVersion,installId,releaseServices,fetchImpl=fetch,platform=process.platform,execPath=process.execPath,spawnImpl=spawn,downloadStallTimeoutMs=30000}={}){
+ let state={status:'idle'},transaction=null,preparing=null,persistTail=Promise.resolve();
  const statePath=path.join(dataDir,'update-status.json');
  const portable=platform==='win32'&&Boolean(installId)&&path.resolve(execPath).toLowerCase()===path.resolve(root,'runtime/node.exe').toLowerCase();
- async function persist(next){state={...state,...next,updatedAt:new Date().toISOString()};await mkdir(dataDir,{recursive:true});await atomicJSON(statePath,state);}
+ function persist(next){state={...state,...next,updatedAt:new Date().toISOString()};const snapshot={...state};persistTail=persistTail.catch(()=>{}).then(async()=>{await mkdir(dataDir,{recursive:true});await atomicJSON(statePath,snapshot);});return persistTail;}
  async function info(){
-  if(!preparing&&state.status==='idle')try{const saved=JSON.parse(await readFile(statePath,'utf8'));if(['succeeded','rolled_back','failed'].includes(saved.status))state=saved;}catch{}
-  return {...state,supported:portable,currentVersion};
+  if(!preparing&&state.status==='idle')try{const saved=JSON.parse(await readFile(statePath,'utf8'));if(['succeeded','rolled_back','failed','cancelled'].includes(saved.status))state=saved;else if(['checking','downloading','verifying','cancelling','prepared'].includes(saved.status))state={status:'failed',error:'上次更新准备未完成或服务已重启，可以重新下载；当前程序未改变。'};}catch{}
+  return {...state,status:preparing&&state.status==='prepared'?'verifying':state.status,canCancel:!!preparing&&!preparing.controller.signal.aborted,supported:portable,currentVersion};
  }
+ async function cleanAttempt(folder){if(!folder)return;const full=path.resolve(folder),updates=path.resolve(dataDir,'updates');if(path.dirname(full)!==updates||!/^[-a-f0-9]{36}$/.test(path.basename(full)))fail('暂存清理路径无效。');await assertNoLinks(dataDir,path.relative(dataDir,full));await rm(full,{recursive:true,force:true});}
  async function prepare(){
   if(!portable)fail('应用内安装仅适用于完整解压的 Windows 分享版；开发目录不会被覆盖。');
+  if(state.status==='installing')fail('安装进行中，不能重新下载。');
   if(preparing||state.status==='prepared')return info();
   state={status:'checking'};
-  preparing=(async()=>{
+  const attempt={controller:new AbortController(),folder:null,promise:null};preparing=attempt;const signal=attempt.controller.signal;
+  attempt.promise=Promise.resolve().then(async()=>{
    try{
+    await persist({status:'checking'});signal.throwIfAborted();
     await assertNoLinks(root);await assertNoLinks(dataDir);
-    const release=await releaseServices.checkUpdates();
+    const release=await abortable(releaseServices.checkUpdates(),signal);signal.throwIfAborted();
     if(release.status!=='update_available'||!release.download?.sha256)fail('尚无带 SHA-256 校验的更新包，请先检查更新。');
     if(compareVersions(release.latestVersion,currentVersion)<=0)fail('不会安装相同或更旧的版本。');
     const expectedName=`Lucifer-NovelAI-FX-Share-${release.latestVersion}-Windows-x64.zip`;
     if(release.download.name!==expectedName)fail('更新包名称与目标版本不匹配。');
-    transaction=path.join(dataDir,'updates',randomUUID());await mkdir(transaction,{recursive:true});
+    transaction=path.join(dataDir,'updates',randomUUID());attempt.folder=transaction;await mkdir(transaction,{recursive:true});signal.throwIfAborted();
     await persist({status:'downloading',targetVersion:release.latestVersion,downloaded:0,total:release.download.bytes,error:null});
-    const bytes=await downloadReleaseAsset(release.download.url,{fetchImpl,signal:AbortSignal.timeout(600000),expectedBytes:release.download.bytes,onProgress:size=>{state.downloaded=size;}});
+    const bytes=await downloadReleaseAsset(release.download.url,{fetchImpl,signal,stallTimeoutMs:downloadStallTimeoutMs,expectedBytes:release.download.bytes,onProgress:size=>{if(!signal.aborted)state.downloaded=size;}});signal.throwIfAborted();
     await persist({status:'verifying'});
+    signal.throwIfAborted();
     const {files}=validateUpdateArchive(bytes,{version:release.latestVersion,sha256:release.download.sha256});
     const stage=path.join(transaction,'new');await mkdir(stage,{recursive:true});
-    for(const [name,content] of Object.entries(files)){const file=path.join(stage,name);await mkdir(path.dirname(file),{recursive:true});await writeFile(file,content,{flag:'wx'});}
+    for(const [name,content] of Object.entries(files)){signal.throwIfAborted();const file=path.join(stage,name);await mkdir(path.dirname(file),{recursive:true});await writeFile(file,content,{flag:'wx'});}
     await copyFile(execPath,path.join(transaction,'runner.exe'));
     await copyFile(path.join(root,'app/scripts/apply-update.mjs'),path.join(transaction,'apply-update.mjs'));
     await copyFile(path.join(root,'启动 Lucifer FX.exe'),path.join(transaction,'UpdateHost.exe'));
-    await persist({status:'prepared',sha256:release.download.sha256,manifestSHA256:digest(files['manifest.json'])});
-   }catch(e){transaction=null;await persist({status:'failed',error:e.code==='ENOSPC'?'磁盘空间不足，未安装更新。':e.message}).catch(()=>{});}
-   finally{preparing=null;}
-  })();
+    signal.throwIfAborted();await persist({status:'prepared',sha256:release.download.sha256,manifestSHA256:digest(files['manifest.json'])});signal.throwIfAborted();
+   }catch(e){transaction=null;let cleanupPending=false;await cleanAttempt(attempt.folder).catch(()=>{cleanupPending=true;});await persist({status:signal.aborted?'cancelled':'failed',downloaded:0,cleanupPending,error:signal.aborted?(cleanupPending?'已取消下载；暂存文件未能全部清理，当前程序未改变。':null):e.code==='ENOSPC'?'磁盘空间不足，未安装更新。':e.message}).catch(()=>{});}
+   finally{if(preparing===attempt)preparing=null;}
+  });
   return info();
  }
+ async function cancel(){
+  if(state.status==='installing')fail('安装已开始，不能取消；请等待完成或恢复。');
+  const attempt=preparing;if(!attempt)return info();
+  const save=persist({status:'cancelling',error:null});attempt.controller.abort(new DOMException('已取消更新下载','AbortError'));
+  await Promise.allSettled([save,attempt.promise]);return info();
+ }
  async function install({port,pid=process.pid}){
-  if(!portable||state.status!=='prepared'||!transaction)fail('请先下载并校验更新包。');
+  if(!portable||preparing||state.status!=='prepared'||!transaction)fail('请先下载并校验更新包。');
   const plan={root:path.resolve(root),transaction,dataDir:path.resolve(dataDir),statePath,pid,port,installId,currentVersion,targetVersion:state.targetVersion,manifestSHA256:state.manifestSHA256,hostToken:randomUUID()};
   await assertNoLinks(root);for(const name of UPDATE_TOP_LEVEL)await assertNoLinks(root,name);
   const planPath=path.join(transaction,'plan.json');await writeFile(planPath,JSON.stringify(plan));
@@ -131,5 +153,5 @@ export function createAppUpdater({root,dataDir,currentVersion,installId,releaseS
   }catch(e){child?.kill();await unlink(path.join(dataDir,'update.lock')).catch(()=>{});await persist({status:'prepared',error:'无法启动更新程序，请重试。'}).catch(()=>{});throw e;}
   return info();
  }
- return {info,prepare,install,get active(){return Boolean(preparing)||state.status==='installing';}};
+ return {info,prepare,cancel,install,get active(){return Boolean(preparing)||state.status==='installing';}};
 }
