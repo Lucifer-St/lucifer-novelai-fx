@@ -1,5 +1,6 @@
 import {RELEASE_CONFIG} from '../../shared/release-config.mjs';
 export const RELEASE_NOTES={version:RELEASE_CONFIG.version,title:'更新说明',date:'2026-09-30',features:[
+ {title:'启动状态及时刷新',description:'从常驻窗口重新启动服务成功后，会清除“正在启动”提示，显示实际服务状态。'},
  {title:'常驻启动器与托盘',description:'启动后显示服务状态、版本、端口和 PID。关闭网页不会退出后台，关闭启动器窗口会收至托盘；重复启动会唤回同一窗口。需要完全退出时点击“退出后台”，仍有生成等任务时会拒绝退出。'},
  {title:'更新下载可取消和重试',description:'网页更新中心和常驻启动器均可取消下载，清理本次暂存后可手动重新下载。连续 30 秒无数据或超过总时限会停止并提示；不会自动重试。安装已开始时不能取消。'},
  {title:'生成按钮随皮肤适配',description:'费用徽标采用各皮肤对应的配色与图标，和已有角色装饰、框饰保持一致；数字含义、按钮大小、快捷键与生成流程不变。'},

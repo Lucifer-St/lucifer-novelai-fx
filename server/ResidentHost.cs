@@ -56,7 +56,7 @@ class ResidentHost : Form {
   if(polling||IsDisposed||quitting)return;polling=true;
   try{
    if(share){int saved;var marker=Path.Combine(root,"userdata","launcher.port");if(File.Exists(marker)&&Int32.TryParse(File.ReadAllText(marker).Trim(),out saved)&&saved>=1024&&saved<=65535)port=saved;}
-   var data=await RequireOwned();online=true;bool busy=Flag(data,"desktopBusy")||Flag(data,"generationBusy");
+   var data=await RequireOwned();online=true;if(message.Text=="正在启动服务，请稍候…")message.Text="";bool busy=Flag(data,"desktopBusy")||Flag(data,"generationBusy");
    status.Text=busy?"服务运行中 · 有任务进行中":"服务运行中 · 空闲";detail.Text="版本 "+TextOf(data,"version")+"    端口 "+port+"    PID "+TextOf(data,"processId");
    if(share){var state=await Request("/api/update-state");updateStatus=TextOf(state,"status");
     var names=new Dictionary<string,string>{{"idle","尚未开始下载"},{"checking","检查版本中"},{"downloading","正在下载"},{"verifying","校验安装包中"},{"cancelling","正在取消"},{"cancelled","下载已取消，可以重新下载"},{"failed","更新未完成，可以重新下载"},{"prepared","校验通过，请在网页点击安装并重启"},{"installing","正在安装，请勿退出"},{"succeeded","上次更新已完成"},{"rolled_back","已恢复旧版本"}};

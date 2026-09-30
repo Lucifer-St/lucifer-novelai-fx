@@ -1,5 +1,5 @@
 {
-  "version": "1.12.0",
+  "version": "1.12.1",
   "gitHistory": false,
   "license": "MIT",
   "artworkLicense": "See docs/SOURCE-LICENSE.md",
@@ -572,7 +572,7 @@
     {
       "path": "docs/EDITION-DIFFERENCES.md",
       "bytes": 1372,
-      "sha256": "9e6dbe2336a4277c603692423e318e19bd93312c57c9956e9574f500a9f32ce7"
+      "sha256": "23ede1cd4bd15ae43d51864984e6b952e701d5a13fdd3ff21853d09463df3515"
     },
     {
       "path": "docs/SOURCE-LICENSE.md",
@@ -582,12 +582,12 @@
     {
       "path": "docs/WINDOWS-QUICKSTART.md",
       "bytes": 10268,
-      "sha256": "8e1a01d1c4fff23f2ee35e9a73c9ff4d19359bd09ad8799f854c6fc89bdf291b"
+      "sha256": "f4f46d5224636655c94334e0e5307af718c2e3372561156089f9468d4c9a1e16"
     },
     {
       "path": "docs/WINDOWS.md",
       "bytes": 11013,
-      "sha256": "7b9d6fb0afb385342ff90c023c221f0d7b909aa03778ace6bf509a9a1f14efab"
+      "sha256": "637cf522d5388ba3912c70f68bd37da1bbdf89e9f0250a83b845531ca56808e0"
     },
     {
       "path": "index.html",
@@ -602,12 +602,12 @@
     {
       "path": "package-lock.json",
       "bytes": 105025,
-      "sha256": "2d6b255b88bb816329f8f9dd51ed9cf4bf5aae85f49ace5266bae26a49229ea3"
+      "sha256": "2243ca16926e1d621ba815d4f0e263fe6f81ecae3f07213a817025b102595535"
     },
     {
       "path": "package.json",
       "bytes": 1249,
-      "sha256": "89cc78cd5ef45139baf0b06480f2c59316d44d3f52d1b484324234db24a6f82e"
+      "sha256": "9bb3ea35ecc625417f9f0418cd510537f6d45253d1950709aad2b204452e3028"
     },
     {
       "path": "playwright.config.mjs",
@@ -876,8 +876,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 33325,
-      "sha256": "54cde64e2a22e2464ad47142cb695d40c910d1730edbd414eba76bf53d3be805"
+      "bytes": 33615,
+      "sha256": "bc6d06f827430c313e44ab6c6c30ec2a292471fd00cbd1c170c59322efb75601"
     },
     {
       "path": "scripts/apply-update.mjs",
@@ -1106,8 +1106,8 @@
     },
     {
       "path": "server/ResidentHost.cs",
-      "bytes": 11010,
-      "sha256": "efcac321d5242e2c84cedfbddb11a86b2433a52e7c0cd8fa0b41f2c394b0b64b"
+      "bytes": 11079,
+      "sha256": "9107bc7f1d4187060ff789837f369da776efe7fb6674a24d5370aa494c5f396c"
     },
     {
       "path": "shared/anlas-pricing.json",
@@ -1122,7 +1122,7 @@
     {
       "path": "shared/release-config.mjs",
       "bytes": 356,
-      "sha256": "b8aef8a19d495097e30df3a09072a066a3e4577bd298afb9bd6e3d53de6972a9"
+      "sha256": "3d83484f078a71084aab703ed642cdffb37bf5b9a832a1273b2ac7b24bc0d5ac"
     },
     {
       "path": "shared/schema.json",
@@ -1686,8 +1686,8 @@
     },
     {
       "path": "src/lib/release-notes.mjs",
-      "bytes": 11513,
-      "sha256": "38dd9560bcdd468b2435ccba78772897ed2900473977d2f625186bbd91b74ac0"
+      "bytes": 11674,
+      "sha256": "8b2a97f185ac141d2370b5d9ff2236e74bd55aff4a6c7807ee66e589b671f626"
     },
     {
       "path": "src/lib/request.mjs",
