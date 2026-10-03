@@ -1,5 +1,6 @@
 import {RELEASE_CONFIG} from '../../shared/release-config.mjs';
-export const RELEASE_NOTES={version:RELEASE_CONFIG.version,title:'更新说明',date:'2026-09-30',features:[
+import {isAndroid} from './platform.mjs';
+const WINDOWS_NOTES={version:RELEASE_CONFIG.version,title:'更新说明',date:'2026-09-30',features:[
  {title:'纯系统托盘，不再弹启动窗口',description:'右键 Lucifer 图标可查看状态、打开工作台、启动服务、取消或重试下载及安全退出；双击直接打开工作台。托盘和常驻程序使用桌面同款 Lucifer logo。Windows 可能将图标收在隐藏图标区。'},
  {title:'从旧常驻窗口切换',description:'从 1.12.0 / 1.12.1 升级后，待任务和安装结束，在旧窗口点“退出后台”再重新启动一次，即切换为纯托盘。'},
  {title:'更新下载可取消和重试',description:'网页更新中心和托盘菜单均可取消下载，清理本次暂存后可手动重新下载。连续 30 秒无数据或超过总时限会停止并提示；不会自动重试。安装已开始时不能取消。'},
@@ -52,3 +53,11 @@ export const RELEASE_NOTES={version:RELEASE_CONFIG.version,title:'更新说明',
 ]};
 export const RELEASE_SEEN_KEY='lucifer-share-release-seen-v1';
 export function needsReleaseNotes(storage){try{return storage.getItem(RELEASE_SEEN_KEY)!==RELEASE_NOTES.version;}catch{return true;}}
+
+export const RELEASE_NOTES=isAndroid()?{version:'1.13.0',title:'Android 更新说明',date:'2026-10-03',features:[
+ {title:'Android 恢复更新',description:'沿用原应用身份与存储，对齐分享版 1.12.2 的主题、提示词编辑器、尺寸校准、生成费用徽标与图库。'},
+ {title:'V4.5 与参考图',description:'支持 V5 Full、V4.5 Full / Curated，精准参考与 Vibe 分开；编码需要主动点击，不自动重试。费用未知时明确显示。'},
+ {title:'图库与历史',description:'搜索、收藏、手工标签、日期/模型分组、跨页选择、两图对比与导出。回收站保留七天；收藏、手动保存及系统目录中的外部文件始终保护。'},
+ {title:'保留手机原生操作',description:'文件导出、相册保存和系统分享继续由系统确认。APK 覆盖安装保留应用数据；没有 Windows 托盘或后台 ZIP 安装。'},
+ {title:'自动输出可以关闭',description:'关闭后仍保留内部历史缓存，预览、历史和手动保存可用。内部缓存与回收站仍占手机存储。'}
+]}:WINDOWS_NOTES;

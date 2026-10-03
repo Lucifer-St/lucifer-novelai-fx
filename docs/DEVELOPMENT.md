@@ -1,6 +1,6 @@
 # 从源码运行与打包
 
-本仓库公开分享版完整应用代码，当前 Windows 版本为 1.11.3；不包含个人版集成、凭据、用户图片或旧开发历史。代码采用 MIT，美术及第三方依赖条款另列于 [许可边界](SOURCE-LICENSE.md)。
+本仓库公开分享版完整应用代码，当前 Windows 版本为 1.12.2，Android 为 1.13.0；不包含个人版集成、凭据、用户图片或旧开发历史。代码采用 MIT，美术及第三方依赖条款另列于 [许可边界](SOURCE-LICENSE.md)。
 
 需要 Node.js 22.19+ 与 npm，使用提交的 lockfile：
 
@@ -17,4 +17,4 @@ UI 测试：先执行 npm run build 和 npx playwright install chromium，再运
 
 Windows 打包：npm run package:windows。需要 Windows .NET Framework C# 编译器和网络连接；脚本下载固定版本 Node 官方 runtime 并核验官方 SHA-256，再从当前源码独立构建前后端、启动器和目录选择器。ZIP 输出至 release/，不要提交用户数据或产物。npm run prepare:public 导出带 SHA-256 清单的源码副本，不含 Git 历史；npm run audit:release 检查导出源码及最近打包产物。
 
-源码导出包含 Android 1.1.1 冻结原生实现，未同步当前 Windows 前端或重新签名；说明见 [Android 源码](ANDROID-SOURCE.md)。GitHub 和 GitLab 的源码树同步，但历史提交不同；正式 Windows 下载与应用更新继续使用 GitHub Releases。
+Android 1.13.0 使用共用前端与升级后的 Java 服务；构建、签名和原生测试说明见 [Android 源码](ANDROID-SOURCE.md)。Windows 和 Android 使用独立版本与发布资产；正式下载与应用更新使用 GitHub Releases。

@@ -1,8 +1,12 @@
 # Lucifer NovelAI FX
 
-**面向 NovelAI Diffusion V5 Full 与 V4.5 Full / Curated 的 Windows 中文创作工作台。** 这是个人维护的非官方前端，与 NovelAI 官方没有隶属关系。它把长 Prompt、角色、参数、图片配方、对照实验与本地资料组织在同一个界面中；只有你明确点击生成，才会向自己配置的 NovelAI 官方接口或兼容网关提交生图请求。
+**面向 NovelAI Diffusion V5 Full 与 V4.5 Full / Curated 的 Windows / Android 中文创作工作台。** 这是个人维护的非官方前端，与 NovelAI 官方没有隶属关系。它把长 Prompt、角色、参数、图片配方、对照实验与本地资料组织在同一个界面中；只有你明确点击生成，才会向自己配置的 NovelAI 官方接口或兼容网关提交生图请求。
 
 [下载最新版](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/latest) · [直接下载 v1.12.2 Windows x64](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.12.2/Lucifer-NovelAI-FX-Share-1.12.2-Windows-x64.zip) · [核对 SHA-256](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.12.2/SHA256SUMS-1.12.2.txt) · [报告 Bug](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=bug_report.yml) · [提出改进](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=feature_request.yml)
+
+**Android 恢复更新：** [下载 Android 1.13.0 APK](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/android-v1.13.0/Lucifer-NovelAI-FX-Share-1.13.0-Android.apk) · [校验值](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/android-v1.13.0/SHA256SUMS-Android-1.13.0.txt) · [安装与平台说明](docs/ANDROID-SOURCE.md)。沿用原签名，可直接覆盖 1.1.1；不要先卸载。Windows 当前稳定下载仍为 1.12.2，两个平台分别发布。
+
+Android 本次对齐 Windows 1.12.2 的编辑器、11 套主题、V4.5 / V5、参考图、历史分页和生成图库，并补齐原生存储、备份、费用与重复提交保护。已验证 Android 15 模拟器，未作实体手机、Android 10 或真实付费接口验收。图库清理保护系统目录中的外部导出；超大图库性能仍需实机评估。详见 [Android 更新记录](docs/ANDROID-UPGRADE.md)。
 
 <p align="center">
   <a href="./assets/readme/v2/hero.webp"><img src="./assets/readme/v2/hero.webp" width="100%" alt="Sugar、Lily、Claire 与 Noire 在创作工房共同整理画面、构图和配方"></a>
@@ -315,7 +319,7 @@ Windows 版可通过应用内更新升级到本版。Android 仍冻结在 1.1.1�
 - **更新与反馈**：手动检查 GitHub 版本；反馈先在本机预览，再由用户自行提交，不自动上传。
 - **初始素材**：仅预置 Claire、Noire、Rena 三张提示词卡，不预置完整预设；升级时保留用户自建及无法明确识别的内容。
 
-以上为 Windows 更新记录；Android 仍封存在 v1.1.1，Wildcards 本轮未改动。真实生成和兼容网关的计费以对应服务为准。
+以上为 Windows 历史更新记录；Android 已在独立的 1.13.0 更新中恢复维护，见页面顶部。Wildcards 本轮未改动。真实生成和兼容网关的计费以对应服务为准。
 
 <p align="center">
   <img src="./assets/readme/v2/sugar-pointer.png" width="360" alt="Sugar">
@@ -356,7 +360,7 @@ Agent 使用同一份本机设置，但配置不包含 API key。普通桌面使
 
 公开版覆盖 V5 Full 与 V4.5 Full / Curated 工作流；Precise Reference 与 Vibe Transfer 仅用于 V4.5。个人版的 Grok / ComfyUI 集成不随公开版提供。
 
-本轮只发布 Windows x64；Android 版仍封存在 `v1.1.1`，不随 `v1.12.2` 发布。
+Windows x64 使用 `v1.12.2`；Android 使用独立的 `android-v1.13.0` 发布与 APK 下载，历史版本保留。
 
 ## 反馈、安全与公开范围
 

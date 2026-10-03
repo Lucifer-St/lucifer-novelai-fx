@@ -8,11 +8,11 @@ const root=process.cwd(),version=JSON.parse(await readFile('package.json','utf8'
 const destination=path.join(root,'release',`public-source-${version}-${new Date().toISOString().replace(/[:.]/g,'-')}`);
 // Explicit application-source export. Never copy Git history or local records.
 const directories=['src','server','public','tests','scripts','shared','assets/readme','.github'];
-const files=['README.md','LICENSE','SECURITY.md','.gitignore','package.json','package-lock.json','index.html','vite.config.js','playwright.config.mjs','playwright.themes.config.mjs','capacitor.config.json','docs/WINDOWS.md','docs/WINDOWS-QUICKSTART.md','docs/ART-NOTICE.md','docs/EDITION-DIFFERENCES.md','docs/DEVELOPMENT.md','docs/AGENT_API.md','docs/SOURCE-LICENSE.md','docs/ANDROID-SOURCE.md'];
+const files=['README.md','LICENSE','SECURITY.md','.gitignore','package.json','package-lock.json','index.html','vite.config.js','playwright.config.mjs','playwright.themes.config.mjs','capacitor.config.json','docs/WINDOWS.md','docs/WINDOWS-QUICKSTART.md','docs/ART-NOTICE.md','docs/EDITION-DIFFERENCES.md','docs/DEVELOPMENT.md','docs/AGENT_API.md','docs/SOURCE-LICENSE.md','docs/ANDROID-SOURCE.md','docs/ANDROID-UPGRADE.md'];
 await mkdir(destination,{recursive:true});
 for(const dir of directories)await cp(path.join(root,dir),path.join(destination,dir),{recursive:true,errorOnExist:true,force:false,filter:async source=>{if((await lstat(source)).isSymbolicLink())throw Error('Symlink in source');return true;}});
 for(const file of files){await mkdir(path.dirname(path.join(destination,file)),{recursive:true});await cp(path.join(root,file),path.join(destination,file),{errorOnExist:true,force:false});}
-// Frozen native source; omit generated web bundles, signing and machine configuration.
+// Native source; omit generated web bundles, signing and machine configuration.
 async function native(dir){for(const item of await readdir(path.join(root,dir),{withFileTypes:true})){
  const rel=dir+'/'+item.name;if(item.isSymbolicLink())throw Error('Symlink in Android source');
  if(['build','.gradle','.idea'].includes(item.name)||['local.properties','google-services.json'].includes(item.name)||rel.startsWith('android/app/src/main/assets/public')||/\.(?:apk|jks|keystore|idsig|log)$/.test(rel))continue;

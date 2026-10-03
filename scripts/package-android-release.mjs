@@ -1,0 +1,25 @@
+import {mkdir,readFile,writeFile,stat} from 'node:fs/promises';
+import path from 'node:path';
+import {execFile} from 'node:child_process';
+import {promisify} from 'node:util';
+import {createHash} from 'node:crypto';
+const exec=promisify(execFile),root=process.cwd(),sdk=process.env.ANDROID_HOME,jdk=process.env.JAVA_HOME;
+if(!sdk||!jdk)throw Error('Set ANDROID_HOME and JAVA_HOME to installed build tools.');
+const gradle=await readFile('android/app/build.gradle','utf8'),version=/versionName\s+"([0-9.]+)"/.exec(gradle)?.[1];
+if(!version)throw Error('Missing Android versionName');
+const signing=path.resolve(process.env.FX_ANDROID_SIGNING_DIR||'.local/signing');
+const key=path.join(signing,'lucifer-fx-release.jks'),password=path.join(signing,'password.txt');
+// Never silently create or replace an update signing identity. Secrets are read by apksigner only.
+await stat(key);await stat(password);
+await mkdir('release',{recursive:true});await mkdir('.local',{recursive:true});
+const suffix=process.platform==='win32'?'.exe':'',buildTools=path.join(sdk,'build-tools',process.env.FX_ANDROID_BUILD_TOOLS||'36.0.0');
+const unsigned=path.join(root,'android/app/build/outputs/apk/release/app-release-unsigned.apk'),aligned=path.join(root,'.local/app-release-aligned.apk');
+const apk=path.join(root,'release',`Lucifer-NovelAI-FX-Share-${version}-Android.apk`),java=path.join(jdk,'bin','java'+suffix),signer=path.join(buildTools,'lib/apksigner.jar');
+await exec(path.join(buildTools,'zipalign'+suffix),['-f','-p','4',unsigned,aligned],{windowsHide:true});
+await exec(java,['-jar',signer,'sign','--ks',key,'--ks-key-alias','lucifer-fx','--ks-pass','file:'+password,'--out',apk,aligned],{windowsHide:true});
+const {stdout}=await exec(java,['-jar',signer,'verify','--verbose','--print-certs',apk],{windowsHide:true});
+await writeFile('.local/apk-signature.txt',stdout);
+const bytes=await readFile(apk),receipt={version,apk,bytes:bytes.length,sha256:createHash('sha256').update(bytes).digest('hex'),signed:true};
+await writeFile('.local/android-package.json',JSON.stringify(receipt,null,2));
+await writeFile(path.join(root,'release',`SHA256SUMS-Android-${version}.txt`),`${receipt.sha256}  ${path.basename(apk)}\n`);
+console.log(JSON.stringify(receipt));

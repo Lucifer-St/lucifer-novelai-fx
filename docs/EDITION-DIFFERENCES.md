@@ -12,6 +12,6 @@
 | 本地工具 | CLI / MCP、原生文件夹选择器、目录快捷打开、备份与图片隐私导出 |
 | 更新 | 可关闭的自动版本检查；明确点击后下载、校验、安装和重启 |
 | 助手扩展 | 折叠 LLM 预留入口；不含个人版 Grok / ComfyUI 集成 |
-| Android | 原生源码冻结在 1.1.1 / versionCode 3，与当前 Windows 前端接口不兼容；不能直接拼装为可用的新 Android 应用 |
+| Android | 1.13.0 / versionCode 4 使用共用前端与原生 Java 服务；有系统相册/分享/目录授权，无 Windows 托盘、ZIP 安装或 stdio Agent。图库按需扫描，外部导出受清理保护，详情见 ANDROID-SOURCE.md |
 
 两个版本分别保存配置与用户数据。共享功能逐模块维护，不能整目录覆盖或把个人版凭据、历史、素材库带入分享版。Android 的接口差异和构建限制见 ANDROID-SOURCE.md。
