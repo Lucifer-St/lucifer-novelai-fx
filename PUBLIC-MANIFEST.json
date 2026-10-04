@@ -1,5 +1,6 @@
 {
   "version": "1.13.0",
+  "androidVersion": "1.13.0",
   "gitHistory": false,
   "license": "MIT",
   "artworkLicense": "See docs/SOURCE-LICENSE.md",
@@ -2251,8 +2252,8 @@
     },
     {
       "path": "src/components/image-viewport.css",
-      "bytes": 3633,
-      "sha256": "646c3a57233dc6aa6e8a801ee4229ad2b5957c63d86153771a30e4181ebe839b"
+      "bytes": 3788,
+      "sha256": "b0f4a732e6939c367767a94044c7b31f0b84211a3fb53898537dce58e1773cbf"
     },
     {
       "path": "src/components/ImageViewport.jsx",
@@ -2266,14 +2267,13 @@
     },
     {
       "path": "tests/image-viewer-ui.spec.mjs",
-      "bytes": 6849,
-      "sha256": "c5ff3ab9f4d8e6ad2eab0c12fae61130dc75b198b4ca4e83b957401ebd1be9d8"
+      "bytes": 7291,
+      "sha256": "1e0a5015f819e9cee165fcdcac2f7b773a3cdc258cd8b6ccfeee28fae5cccb30"
     },
     {
       "path": "tests/image-viewport.test.mjs",
       "bytes": 900,
       "sha256": "fc796d74d64e7d935ba925da18052b36ee34ce7cdd536200f7e732db5d6e28d4"
     }
-  ],
-  "androidVersion": "1.13.0"
+  ]
 }
