@@ -33,6 +33,6 @@ test('backup preview gates preferences-only restore and history loads older reco
  await page.getByRole('button',{name:'执行所选恢复'}).click();await expect(page.getByText(/实际新增 0/)).toBeVisible();await expect(page.getByText('当前备份：fixture-backup.json')).toBeVisible();
  expect(await page.evaluate(()=>localStorage.getItem('lucifer-history-collapsed-v1'))).toBe('false');
  await page.getByRole('dialog').getByRole('button',{name:'关闭功能面板'}).click();
- await page.getByRole('button',{name:'加载更早记录'}).click();await expect(page.locator('.history-item')).toHaveCount(205);
+ await page.getByRole('tab',{name:'历史',exact:true}).click();await page.getByRole('button',{name:'加载更早记录'}).click();await expect(page.locator('.history-item')).toHaveCount(205);
  expect(writes).toEqual(['/api/backup/preview','/api/backup']);expect(errors).toEqual([]);
 });

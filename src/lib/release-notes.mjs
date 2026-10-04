@@ -1,6 +1,11 @@
 import {RELEASE_CONFIG} from '../../shared/release-config.mjs';
 import {isAndroid} from './platform.mjs';
-const WINDOWS_NOTES={version:RELEASE_CONFIG.version,title:'更新说明',date:'2026-09-30',features:[
+const WINDOWS_NOTES={version:RELEASE_CONFIG.version,title:'更新说明',date:'2026-10-04',features:[
+ {title:'专注看图',description:'点击图片预览右上角「专注看图」，暂时隐藏左右栏与顶栏，让图片占据更多空间；点击「退出专注」或按 Esc 恢复。提示词、侧栏宽度和历史浏览位置继续保留。'},
+ {title:'原始尺寸与自由缩放',description:'预览工具栏提供适应画布、1:1 和加减缩放，显示真实像素比例；在图片上滚轮缩放、拖动平移，双击切换适应与原始尺寸。切换图片自动适应画布，不影响生成尺寸或原文件。'},
+ {title:'历史记录移至右侧',description:'在右侧「参数 / 历史」切换，历史改为纵向两列浏览，不再占用图片下方高度。刷新、搜索、加载更早记录和返回最新图片继续可用。'},
+ {title:'耗时移到预览标题栏',description:'生成耗时显示在「图像预览」旁，不再单独占据下方一行；原有保存、下载和图像操作按钮保持可用。'},
+
  {title:'纯系统托盘，不再弹启动窗口',description:'右键 Lucifer 图标可查看状态、打开工作台、启动服务、取消或重试下载及安全退出；双击直接打开工作台。托盘和常驻程序使用桌面同款 Lucifer logo。Windows 可能将图标收在隐藏图标区。'},
  {title:'从旧常驻窗口切换',description:'从 1.12.0 / 1.12.1 升级后，待任务和安装结束，在旧窗口点“退出后台”再重新启动一次，即切换为纯托盘。'},
  {title:'更新下载可取消和重试',description:'网页更新中心和托盘菜单均可取消下载，清理本次暂存后可手动重新下载。连续 30 秒无数据或超过总时限会停止并提示；不会自动重试。安装已开始时不能取消。'},
@@ -49,7 +54,7 @@ const WINDOWS_NOTES={version:RELEASE_CONFIG.version,title:'更新说明',date:'2
  {title:'参考图草稿跨重启保留',description:'参考图草稿可在重启后接续；Vibe 的编码费用会明确显示。请求不明确时继续查询原任务，不自动重试。'},
  {title:'法典图鉴社区包修复',description:'修复法典图鉴中 NovelAI V5／V4.5 社区精选图包无法打开、反复刷新仍加载失败的问题。'},
  {title:'逐张生成可立即停止接收',description:'停止后续图片与立即停止接收分开操作。已经完成的图片保留；立即停止不能保证上游取消或免于计费，也不会自动重试。'},
- {title:'Windows 发布',description:'本次发布为 Windows x64。Android 继续冻结在 1.1.1，不包含本版更新。'},
+ {title:'Windows 发布',description:'本次发布为 Windows x64。Android 使用独立发布，本次 Windows 查看器改动不包含在现有 APK 中。'},
 ]};
 export const RELEASE_SEEN_KEY='lucifer-share-release-seen-v1';
 export function needsReleaseNotes(storage){try{return storage.getItem(RELEASE_SEEN_KEY)!==RELEASE_NOTES.version;}catch{return true;}}

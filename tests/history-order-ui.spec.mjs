@@ -17,26 +17,26 @@ async function setup(page){
   if(p==='/api/generation-jobs'&&req.method()==='POST'){const body=req.postDataJSON();latest++;job={id:body.clientRequestId,status:'success',createdAt:new Date().toISOString(),result:entry(latest)};return send({...job,status:'running',phase:'waiting_result',timeoutMs:600000});}
   if(p.startsWith('/api/generation-jobs/'))return send(job);
   return r.fulfill({status:418,json:{error:{message:'Unexpected '+p}}});
- });await page.goto('/');await expect(page.locator('.history-item')).toHaveCount(200);return{writes,errors,get historyCalls(){return historyCalls;}};
+ });await page.goto('/');await page.getByRole('tab',{name:'历史',exact:true}).click();await expect(page.locator('.history-item')).toHaveCount(200);return{writes,errors,get historyCalls(){return historyCalls;}};
 }
 test('the 201st and later results stay leftmost after a 200-record refresh, with follow-latest scrolling',async({page})=>{
- const ctx=await setup(page),strip=page.locator('.history-strip');await strip.evaluate(el=>el.scrollLeft=650);await expect.poll(()=>strip.evaluate(el=>el.scrollLeft)).toBeGreaterThan(0);
+ const ctx=await setup(page),strip=page.locator('.history-strip');await strip.evaluate(el=>el.scrollTop=650);await expect.poll(()=>strip.evaluate(el=>el.scrollTop)).toBeGreaterThan(0);
  await page.locator('.generate').click();await expect.poll(()=>ctx.historyCalls).toBeGreaterThan(1);await expect(page.locator('.history-item')).toHaveCount(201);
- await expect(page.locator('.history-item').first()).toHaveAttribute('title','History 201');await expect(page.locator('.history-item.selected')).toHaveAttribute('title','History 201');await expect.poll(()=>strip.evaluate(el=>el.scrollLeft)).toBe(0);
+ await expect(page.locator('.history-item').first()).toHaveAttribute('title','History 201');await expect(page.locator('.history-item.selected')).toHaveAttribute('title','History 201');await expect.poll(()=>strip.evaluate(el=>el.scrollTop)).toBe(0);
  await page.locator('.generate').click();await expect(page.locator('.history-item')).toHaveCount(202);await expect(page.locator('.history-item').first()).toHaveAttribute('title','History 202');
  const before=ctx.historyCalls;await page.getByRole('button',{name:'刷新历史记录',exact:true}).click();await expect.poll(()=>ctx.historyCalls).toBeGreaterThan(before);await expect(page.locator('.history-item').first()).toHaveAttribute('title','History 202');await expect(page.locator('.history-item')).toHaveCount(202);
  await mkdir('.local/history-qa',{recursive:true});await page.screenshot({path:'.local/history-qa/newest-first.png'});expect(ctx.writes).toEqual(['/api/generation-jobs','/api/generation-jobs']);expect(ctx.errors).toEqual([]);
 });
 test('refreshing an over-limit collection never steals an older selected image',async({page})=>{
  const ctx=await setup(page);await page.locator('.generate').click();await expect(page.locator('.history-item')).toHaveCount(201);
- await page.locator('.history-item[title="History 190"]').click();await expect(page.locator('.history-item.selected')).toHaveAttribute('title','History 190');const scroll=await page.locator('.history-strip').evaluate(el=>el.scrollLeft);const before=ctx.historyCalls;
- await page.getByRole('button',{name:'刷新历史记录',exact:true}).click();await expect.poll(()=>ctx.historyCalls).toBeGreaterThan(before);await expect(page.locator('.history-item.selected')).toHaveAttribute('title','History 190');await expect(page.locator('.history-item').first()).toHaveAttribute('title','History 201');expect(await page.locator('.history-strip').evaluate(el=>el.scrollLeft)).toBe(scroll);expect(ctx.errors).toEqual([]);
+ await page.locator('.history-item[title="History 190"]').click();await expect(page.locator('.history-item.selected')).toHaveAttribute('title','History 190');const scroll=await page.locator('.history-strip').evaluate(el=>el.scrollTop);const before=ctx.historyCalls;
+ await page.getByRole('button',{name:'刷新历史记录',exact:true}).click();await expect.poll(()=>ctx.historyCalls).toBeGreaterThan(before);await expect(page.locator('.history-item.selected')).toHaveAttribute('title','History 190');await expect(page.locator('.history-item').first()).toHaveAttribute('title','History 201');expect(await page.locator('.history-strip').evaluate(el=>el.scrollTop)).toBe(scroll);expect(ctx.errors).toEqual([]);
 });
-test('history collapse preserves selection and scroll, persists across reload, and makes no write',async({page})=>{
- const ctx=await setup(page),strip=page.locator('.history-strip');await page.locator('.history-item[title="History 190"]').click();const scroll=await strip.evaluate(el=>el.scrollLeft);
- await page.getByRole('button',{name:'收起历史记录',exact:true}).click();await expect(strip).toBeHidden();await expect(page.locator('.history-item')).toHaveCount(200);
- await page.getByRole('button',{name:'展开历史记录',exact:true}).click();await expect(page.locator('.history-item.selected')).toHaveAttribute('title','History 190');expect(await strip.evaluate(el=>el.scrollLeft)).toBe(scroll);
- await page.getByRole('button',{name:'收起历史记录',exact:true}).click();await page.reload();await expect(strip).toBeHidden();expect(ctx.writes).toEqual([]);expect(ctx.errors).toEqual([]);
+test('history tab switch preserves selection and scroll, persists across reload, and makes no write',async({page})=>{
+ const ctx=await setup(page),strip=page.locator('.history-strip');await page.locator('.history-item[title="History 190"]').click();const scroll=await strip.evaluate(el=>el.scrollTop);
+ await page.getByRole('tab',{name:'参数',exact:true}).click();await expect(strip).toBeHidden();await expect(page.locator('.history-item')).toHaveCount(200);
+ await page.getByRole('tab',{name:'历史',exact:true}).click();await expect(page.locator('.history-item.selected')).toHaveAttribute('title','History 190');expect(await strip.evaluate(el=>el.scrollTop)).toBe(scroll);
+ await page.getByRole('tab',{name:'参数',exact:true}).click();await page.reload();await expect(strip).toBeHidden();expect(ctx.writes).toEqual([]);expect(ctx.errors).toEqual([]);
 });
 test('older history can be loaded after refresh and remains selected on a later refresh',async({page})=>{
  const ctx=await setup(page);const older=Array.from({length:5},(_,i)=>entry(-i));

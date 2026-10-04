@@ -1,3 +1,5 @@
+import ImageViewport, {ImageViewControls} from './components/ImageViewport';
+import HistorySidebar from './components/HistorySidebar';
 import GenerationCostBadge from './components/GenerationCostBadge';
 import {quoteComparisonTotal} from './lib/generation-cost.mjs';
 import usePromptLayout from './hooks/usePromptLayout';
@@ -162,7 +164,6 @@ export default function App() {
     [history, setHistory] = useState([]),
     [historyNextCursor,setHistoryNextCursor] = useState(null),
     [historyLoadingMore,setHistoryLoadingMore] = useState(false),
-    [historyCollapsed,setHistoryCollapsed] = useState(()=>{try{return localStorage.getItem('lucifer-history-collapsed-v1')==='true';}catch{return false;}}),
     [selected, setSelected] = useState(null),
     [index, setIndex] = useState(0),
     [busy, setBusy] = useState(false),
@@ -179,7 +180,8 @@ export default function App() {
         : "",
     ),
     [jsonOpen, setJsonOpen] = useState(false),
-    [zoom, setZoom] = useState(1),
+    [viewScale,setViewScale] = useState(null),
+    [viewerFocused,setViewerFocused] = useState(false),
     [elapsed, setElapsed] = useState(0),
     [toolImage, setToolImage] = useState(""),
     [streamEvents, setStreamEvents] = useState(0),
@@ -202,7 +204,11 @@ export default function App() {
   const [shareSettings,setShareSettings]=useState(null),[basicMode,setBasicMode]=useState(true);
   const [releaseOpen,setReleaseOpen]=useState(()=>needsReleaseNotes(localStorage));
   function closeReleaseNotes(){try{localStorage.setItem(RELEASE_SEEN_KEY,RELEASE_NOTES.version);}catch{}setReleaseOpen(false);}
+  const [inspectorTab,setInspectorTab]=useState(()=>{try{return localStorage.getItem('lucifer-inspector-tab-v1')==='history'?'history':'settings';}catch{return 'settings';}});
+  useEffect(()=>{try{localStorage.setItem('lucifer-inspector-tab-v1',inspectorTab);}catch{}},[inspectorTab]);
+  const [historyCollapsed,setHistoryCollapsed] = useState(()=>{try{return localStorage.getItem('lucifer-history-collapsed-v1')==='true';}catch{return false;}});
   const androidLayout=isAndroid();
+  function toggleHistory(){const next=!historyCollapsed;setHistoryCollapsed(next);try{localStorage.setItem('lucifer-history-collapsed-v1',String(next));}catch{}}
   const [releaseCenterOpen,setReleaseCenterOpen]=useState(false);
   const appUpdate=useAppUpdate();
   const [resetAnlas,setResetAnlas]=useState(false);
@@ -218,7 +224,10 @@ export default function App() {
   const historyLoad=useRef(null),historyStripRef=useRef(null),wasServerBusy=useRef(false);
   const {appearance,updateAppearance,appearanceError}=useAppearance();
   const narrowWorkbench=useNarrowWorkbench();
-  const panelLayout=usePanelLayout({hidden:settingsHidden,narrow:narrowWorkbench,page});
+  const imageViewer=useRef(null);
+  const panelLayout=usePanelLayout({hidden:settingsHidden,narrow:narrowWorkbench,page,paused:viewerFocused});
+  useEffect(()=>{if(page!=='studio')setViewerFocused(false);},[page]);
+  useEffect(()=>{if(!viewerFocused)return;const escape=event=>{if(event.key==='Escape'&&!event.defaultPrevented&&!document.querySelector('[role="dialog"],dialog[open],.modal-overlay')){setViewerFocused(false);event.preventDefault();}};document.addEventListener('keydown',escape);return()=>document.removeEventListener('keydown',escape);},[viewerFocused]);
   const promptLayout=usePromptLayout();
   const lastLoadingSkin=useRef('');
   const pendingAppearance=appearance.loadingSkin==='random'?{...appearance,loadingSkin:pending?.loadingSkin||'claire-noire'}:appearance;
@@ -254,7 +263,7 @@ export default function App() {
   useEffect(()=>{let cancelled=false;let id;try{id=localStorage.getItem('lucifer-last-opus-batch-v1');}catch{}if(/^[a-f0-9-]{36}$/.test(id||''))api('/api/generation-jobs/'+id).then(job=>{let remembered;try{remembered=localStorage.getItem('lucifer-last-opus-batch-v1');}catch{}if(!cancelled&&job.batch&&remembered===id)setBatchJob(current=>current||job);}).catch(()=>{});return()=>{cancelled=true;};},[]);
   function dismissBatchResults(){if(!batchJob||['queued','running','stopping'].includes(batchJob.status))return;setBatchJob(null);try{if(localStorage.getItem('lucifer-last-opus-batch-v1')===batchJob.id)localStorage.removeItem('lucifer-last-opus-batch-v1');}catch{}}
   function changeOpusBatch(value){setOpusBatch(value);try{localStorage.setItem('lucifer-opus-batch-enabled-v1',String(value));}catch{}}
-  function selectBatchResult(result){followResults.current=false;setEditingPositions(false);setViewPending(false);setViewSource(false);setShowComparison(false);setSelected(result);setIndex(0);setZoom(1);}
+  function selectBatchResult(result){followResults.current=false;setEditingPositions(false);setViewPending(false);setViewSource(false);setShowComparison(false);setSelected(result);setIndex(0);imageViewer.current?.fit();}
   const lastSuggestionMode=useRef('local');
   useEffect(()=>{try{localStorage.setItem(TAG_MODE_KEY,suggestionMode);localStorage.setItem(TAG_SOURCE_KEY,'local');}catch{}},[suggestionMode]);
   function setSuggestionMode(mode){setSuggestionModeState(mode==='off'?'off':'local');}
@@ -282,7 +291,7 @@ export default function App() {
     history.set(value,structuredClone(nextCards));while(history.size>40)history.delete(history.keys().next().value);cardHistory.current.set(historyKey,history);
     return writePromptTarget(s,key,value,nextCards);
   });
-  function acceptResult(result){if(followResults.current){setSelected(result);setIndex(0);setZoom(1);setViewPending(false);setViewSource(false);}setHistory(h=>mergeHistory(h,[result]));api('/api/anlas').then(setAnlas).catch(()=>{});}
+  function acceptResult(result){if(followResults.current){setSelected(result);setIndex(0);imageViewer.current?.fit();setViewPending(false);setViewSource(false);}setHistory(h=>mergeHistory(h,[result]));api('/api/anlas').then(setAnlas).catch(()=>{});}
   const toggleSettings = () =>
     setSettingsHidden((value) => {
       try {
@@ -414,8 +423,7 @@ export default function App() {
     finally{if(!controller.signal.aborted)setHistoryLoadingMore(false);}
   }
   useEffect(()=>{refreshHistory();return()=>historyLoad.current?.abort();},[]);
-  useEffect(()=>{if(!historyCollapsed&&followResults.current)historyStripRef.current?.scrollTo({left:0});},[history[0]?.id,viewPending,historyCollapsed]);
-  function toggleHistory(){const next=!historyCollapsed;setHistoryCollapsed(next);try{localStorage.setItem('lucifer-history-collapsed-v1',String(next));}catch{}}
+  useEffect(()=>{if(followResults.current)historyStripRef.current?.scrollTo({top:0});},[history[0]?.id,viewPending]);
   useEffect(()=>{if(wasServerBusy.current&&!connection.serverBusy)refreshHistory();wasServerBusy.current=connection.serverBusy;},[connection.serverBusy]);
   const lastSavedMode=useRef(state.mode);
   useEffect(() => {
@@ -761,7 +769,7 @@ export default function App() {
   const generateLabel=busy ? `正在生成 · ${elapsed}s` : comparison.busy?'对照执行中…':connection.serverBusy?'等待服务端任务结束':connection.blocked?'暂时无法生成':comparison.config.enabled?`生成 ${comparison.config.mode} · ${comparison.config.rounds*(comparison.config.mode==='AB'?2:3)} 张`:'生成图像';
   return (
     <div
-      className={`app${isExstiaSkin(appearance.workbenchSkin)?" exstia-workbench":""}${basicMode?" share-basic":""}${appearance.workbenchSkin!=="classic"?" themed-workbench":""}${draggingImage ? " is-file-dragging" : ""}`}
+      className={`app${viewerFocused?" viewer-focused":""}${isExstiaSkin(appearance.workbenchSkin)?" exstia-workbench":""}${basicMode?" share-basic":""}${appearance.workbenchSkin!=="classic"?" themed-workbench":""}${draggingImage ? " is-file-dragging" : ""}`}
       data-workbench-skin={appearance.workbenchSkin}
       data-platform={androidLayout?'android':'desktop'}
       data-character-ui={appearance.characterDecorations&&CHARACTER_UI_SKINS.includes(appearance.workbenchSkin)?'on':'off'}
@@ -933,7 +941,7 @@ export default function App() {
             {[
               ["prompt", androidLayout?"创作 · 提示词与参数":"提示词"],
               ["canvas", "画布"],
-              ...(!androidLayout?[["settings", "参数"]]:[]),
+              ...(!androidLayout?[["settings", inspectorTab==='history'?"历史":"参数"]]:[]),
             ].map(([v, n]) => (
               <button
                 className={mobile === v ? "selected" : ""}
@@ -1019,33 +1027,19 @@ export default function App() {
             <section className="canvas-column">
               <ThemeCanvasFraming skin={appearance.workbenchSkin}/>
               <div className={`canvas-toolbar${state.mode!=="generate"?" image-mode-toolbar":""}`}>
-                <span>
+                <span className="canvas-heading">
                   <ImageIcon size={15} />{" "}
                   {editingPositions ? "角色定位" : state.mode === "infill"
                     ? "蒙版画布"
                     : state.mode === "img2img"
                       ? "图生图"
                       : "图像预览"}
+                  {selected && !viewPending && !editingPositions && !(comparison.record&&showComparison) && !(state.mode!=="generate"&&viewSource) && selected.durationMs>0 && <small className="generation-duration">{selected.engine==='comfyui'?'后处理':'生成'} {(selected.durationMs/1000).toFixed(1)}s</small>}
                 </span>
                 <div>
                   {state.mode!=="generate"&&<><button onClick={()=>exitImageMode()} aria-label={state.mode==='infill'?'退出局部重绘，返回文生图':'退出图生图，返回文生图'}>退出{state.mode==='infill'?'局部重绘':'图生图'}</button><button onClick={()=>{setViewPending(false);setShowComparison(false);setViewSource(viewPending?true:!viewSource);followResults.current=false;}}>{viewSource&&!viewPending?'查看结果':'编辑输入图'}</button></>}
                   {comparison.record&&<button onClick={()=>setShowComparison(v=>!v)}>{showComparison?'查看单图':'查看对照'}</button>}
-                  <button
-                    title="缩小"
-                    onClick={() => setZoom((z) => Math.max(0.25, z - 0.25))}
-                  >
-                    <ZoomOut size={15} />
-                  </button>
-                  <span>{Math.round(zoom * 100)}%</span>
-                  <button
-                    title="放大"
-                    onClick={() => setZoom((z) => Math.min(4, z + 0.25))}
-                  >
-                    <ZoomIn size={15} />
-                  </button>
-                  <button title="适合画布" onClick={() => setZoom(1)}>
-                    <Maximize2 size={15} />
-                  </button>
+                  <ImageViewControls viewer={imageViewer} scale={viewScale} enabled={Boolean(activeImage&&!editingPositions&&!(comparison.record&&showComparison)&&!(state.mode!=="generate"&&viewSource))} focused={viewerFocused} onFocus={()=>{setMobile('canvas');setViewerFocused(value=>!value);}}/>
                 </div>
               </div>
               {editingPositions?<div className="canvas position-mode"><CharacterPositionCanvas grid={isV45(editState.model)} key={comparison.config.enabled?comparison.variant:"A"} width={editState.width} height={editState.height} characters={editState.characters} selectedId={positionCharacter} onSelect={setPositionCharacter} onMove={moveCharacter} onFinish={()=>setEditingPositions(false)}/></div>:comparison.record&&showComparison?<ComparisonBoard comparison={comparison} onSelect={r=>{followResults.current=false;setViewPending(false);setSelected(r);setIndex(0);setShowComparison(false);}} onSave={saveResult}/>:<div
@@ -1099,13 +1093,7 @@ export default function App() {
                     )}
                   </div>
                 ) : activeImage ? (
-                  <div className="image-stage">
-                    <img
-                      style={{ transform: `scale(${zoom})` }}
-                      src={activeImage.url}
-                      alt={`生成结果 ${index + 1}`}
-                    />
-                  </div>
+                  <ImageViewport key={`${selected.id}:${index}:${activeImage.url}`} ref={imageViewer} src={activeImage.url} alt={`生成结果 ${index+1}`} onScaleChange={setViewScale}/>
                 ) : (
                   <div className="empty-canvas">
                     <div className="empty-corners">
@@ -1185,11 +1173,7 @@ export default function App() {
                       原始响应
                     </a>
                   )}
-                  <small>
-                    {selected.durationMs
-                      ? `${(selected.durationMs / 1000).toFixed(1)}s`
-                      : ""}
-                  </small>
+
                 </div>
               )}
               {selected?.warnings?.map((w, i) => (
@@ -1222,6 +1206,8 @@ export default function App() {
                 </details>
               )}
               <OpusBatchResults job={batchJob} onSelect={selectBatchResult} onStop={remoteJob.stop} onDismiss={dismissBatchResults} selectedId={selected?.id}/>
+              {/* The separately released native Android app retains its horizontal history. */}
+              {androidLayout&&<>
               <div className={`history-panel${historyCollapsed?' is-collapsed':''}`}>
                 <div className="section-label" data-character-role="history">
                   <span>
@@ -1237,7 +1223,7 @@ export default function App() {
                   <button type="button" title={historyCollapsed?"展开历史记录":"收起历史记录"} aria-label={historyCollapsed?"展开历史记录":"收起历史记录"} aria-expanded={!historyCollapsed} aria-controls="history-strip" onClick={toggleHistory}>{historyCollapsed?<ChevronUp size={16}/>:<ChevronDown size={16}/>}</button></div>
                 </div>
                 <div className="history-strip" id="history-strip" ref={historyStripRef} hidden={historyCollapsed}>
-                  {pending && <button className={`history-item pending-history${viewPending?" selected":""}`} aria-label={pending.status==="failed"?"查看未完成任务":"查看正在生成的新图"} onClick={()=>{setEditingPositions(false);followResults.current=true;setViewPending(true);setShowComparison(false);setZoom(1);}}><LoadingArtwork skinId={pendingAppearance.loadingSkin} elapsed={elapsed} failed={pending.status==='failed'} compact motion={appearance.motion}/></button>}
+                  {pending && <button className={`history-item pending-history${viewPending?" selected":""}`} aria-label={pending.status==="failed"?"查看未完成任务":"查看正在生成的新图"} onClick={()=>{setEditingPositions(false);followResults.current=true;setViewPending(true);setShowComparison(false);imageViewer.current?.fit();}}><LoadingArtwork skinId={pendingAppearance.loadingSkin} elapsed={elapsed} failed={pending.status==='failed'} compact motion={appearance.motion}/></button>}
                   {history.length ? (
                     history.map((h) => (
                       <button
@@ -1251,7 +1237,7 @@ export default function App() {
                           followResults.current=false;setViewPending(false);setShowComparison(false);setViewSource(false);setEditingPositions(false);
                           setSelected(h);
                           setIndex(0);
-                          setZoom(1);
+                          imageViewer.current?.fit();
                         }}
                         title={`${h.prompt || h.endpoint || h.id}`}
                       >
@@ -1283,20 +1269,21 @@ export default function App() {
                 {!historyCollapsed&&historyNextCursor&&<button type="button" className="text-button" disabled={historyLoadingMore||historyPhase==='loading'} onClick={loadOlderHistory}>{historyLoadingMore?'正在读取更早记录…':'加载更早记录'}</button>}
                 {!historyCollapsed&&historyError&&history.length>0&&<small role="alert">{historyError}</small>}
               </div>
+              </>}
             </section>
-            <aside className={`right-panel inspector-switcher${settingsHidden?" collapsed-inspector":""}`}>
-              {!narrowWorkbench&&!settingsHidden&&isPrecureSkin(appearance.workbenchSkin)&&<ThemeInspectorArt skin={appearance.workbenchSkin}/>} 
+            <aside className={`right-panel inspector-switcher${inspectorTab==='history'?' inspector-history':''}${settingsHidden?" collapsed-inspector":""}`}>
+              {!narrowWorkbench&&!settingsHidden&&inspectorTab!=='history'&&isPrecureSkin(appearance.workbenchSkin)&&<ThemeInspectorArt skin={appearance.workbenchSkin}/>}
               <div className="inspector-heading">
-                {!narrowWorkbench&&!settingsHidden&&isExstiaSkin(appearance.workbenchSkin)&&<ExstiaInspectorArt skin={appearance.workbenchSkin}/>}
-                {!settingsHidden&&<strong><SlidersHorizontal size={14}/> 生成参数</strong>}
+                {!narrowWorkbench&&!settingsHidden&&inspectorTab!=='history'&&isExstiaSkin(appearance.workbenchSkin)&&<ExstiaInspectorArt skin={appearance.workbenchSkin}/>}
+                {!settingsHidden&&<div className="inspector-view-tabs" role="tablist" aria-label="右侧工作区"><button role="tab" aria-selected={inspectorTab==='settings'} onClick={()=>setInspectorTab('settings')}><SlidersHorizontal size={14}/>参数</button><button role="tab" aria-selected={inspectorTab==='history'} aria-controls="inspector-history" onClick={()=>setInspectorTab('history')}><History size={14}/>历史</button></div>}
                 <button title={settingsHidden?"展开参数面板":"收起参数面板"} aria-label={settingsHidden?"展开参数面板":"收起参数面板"} aria-expanded={!settingsHidden} onClick={toggleSettings}>
                   {settingsHidden?<PanelRightOpen size={16}/>:<PanelRightClose size={16} />}
                 </button>
               </div>
               {settingsHidden&&!narrowWorkbench&&<ThemeInspectorArt skin={appearance.workbenchSkin} compact/>}
-              {settingsHidden&&<span className="collapsed-inspector-label">生成设置</span>}
-              {!androidLayout&&<>              <div className="inspector-settings-content" hidden={!androidLayout&&settingsHidden}>
-              {!narrowWorkbench&&!settingsHidden&&!isPrecureSkin(appearance.workbenchSkin)&&!isExstiaSkin(appearance.workbenchSkin)&&<ThemeInspectorArt skin={appearance.workbenchSkin}/>}
+              {settingsHidden&&<span className="collapsed-inspector-label">{inspectorTab==='history'?'历史记录':'生成设置'}</span>}
+              {!androidLayout&&<>              <div className="inspector-settings-content" hidden={!androidLayout&&(settingsHidden||inspectorTab!=='settings')}>
+              {!narrowWorkbench&&!settingsHidden&&inspectorTab!=='history'&&!isPrecureSkin(appearance.workbenchSkin)&&!isExstiaSkin(appearance.workbenchSkin)&&<ThemeInspectorArt skin={appearance.workbenchSkin}/>}
               {(androidLayout||!settingsHidden)&&<>
               {basicMode&&<p className="share-basic-note">新手模式保留常用设置。<button onClick={switchBasic}>展开高级参数</button></p>}
               <ComparisonControls comparison={comparison} base={state}/>
@@ -1312,7 +1299,13 @@ export default function App() {
               </>}
               <LLMExtension/>
               </div></>}
-              {!settingsHidden&&<ThemeDockDecoration skin={appearance.workbenchSkin} side="right"/>}
+              {!androidLayout&&<div id="inspector-history" className="inspector-history-content" hidden={settingsHidden||inspectorTab!=='history'} role="tabpanel" aria-label="历史侧边栏">
+                <HistorySidebar history={history} phase={historyPhase} error={historyError} nextCursor={historyNextCursor} loadingMore={historyLoadingMore} scrollRef={historyStripRef} selectedId={selected?.id} pending={pending} viewPending={viewPending} elapsed={elapsed} appearance={appearance} pendingAppearance={pendingAppearance} onRefresh={refreshHistory} onOlder={loadOlderHistory} onSearch={()=>setFeature({type:'generated-library'})}
+                  onPending={()=>{setEditingPositions(false);followResults.current=true;setViewPending(true);setShowComparison(false);imageViewer.current?.fit();if(narrowWorkbench)setMobile('canvas');}}
+                  onSelect={h=>{followResults.current=false;setViewPending(false);setShowComparison(false);setViewSource(false);setEditingPositions(false);setSelected(h);setIndex(Math.max(0,h.images?.findIndex(image=>!image.deletedAt)||0));imageViewer.current?.fit();if(narrowWorkbench)setMobile('canvas');}}/>
+              </div>
+              }
+              {!settingsHidden&&inspectorTab!=='history'&&<ThemeDockDecoration skin={appearance.workbenchSkin} side="right"/>}
             </aside>
           </main>
       </div>
