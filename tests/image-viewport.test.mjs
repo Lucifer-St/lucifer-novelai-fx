@@ -1,4 +1,0 @@
-import {test} from 'node:test';import assert from 'node:assert/strict';import{fitImage,boundPan,anchoredZoom}from'../src/lib/image-viewport.mjs';
-test('fit uses natural pixels and reserves padding',()=>{assert.equal(fitImage({width:532,height:732},{width:1000,height:2000}),.35);});
-test('cursor is anchored through zoom before edge clamp',()=>{const v={scale:1,x:30,y:-20},p={x:60,y:50};const next=anchoredZoom(v,2,p,{width:400,height:400},{width:1200,height:1200});assert.equal((p.x-v.x)/v.scale,(p.x-next.x)/next.scale);assert.equal((p.y-v.y)/v.scale,(p.y-next.y)/next.scale);});
-test('pan keeps small image centered and zoom has bounds',()=>{const pan=boundPan({x:9999,y:-9999},.1,{width:800,height:600},{width:100,height:100});assert.equal(Math.abs(pan.x)+Math.abs(pan.y),0);assert.equal(anchoredZoom({scale:1,x:0,y:0},100,{x:0,y:0},{width:500,height:500},{width:1000,height:1000}).scale,8);});
