@@ -1,5 +1,5 @@
 {
-  "version": "1.13.1",
+  "version": "1.14.0",
   "androidVersion": "1.13.0",
   "gitHistory": false,
   "license": "MIT",
@@ -603,12 +603,12 @@
     {
       "path": "package-lock.json",
       "bytes": 105025,
-      "sha256": "b930d11f0ee8848e8d08ae0b34dbb21d8adb437fb5c062994d958f06425d474d"
+      "sha256": "99320b920cd1a6d38b33fae0ba1208c3093e625aaf4ca7733a2ce9477a26cbdb"
     },
     {
       "path": "package.json",
       "bytes": 1249,
-      "sha256": "936da81072d3f7c4c1d57e843e1dc079ac833a87f6d24300c1704d526d3082c1"
+      "sha256": "d6f1f6f3fdb66655d8da9b05bb21d21309725507a2832e35ef170702db274d48"
     },
     {
       "path": "playwright.config.mjs",
@@ -877,8 +877,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 36521,
-      "sha256": "dd0a22696d88c033f04a49322acc96e9ad9ff88ad071fbd35df91d39f348a723"
+      "bytes": 37225,
+      "sha256": "8fd5ca873a454db4bcb5d154c2a01650c5e5389bc8147be10c68ea4e98f19355"
     },
     {
       "path": "scripts/apply-update.mjs",
@@ -1123,7 +1123,7 @@
     {
       "path": "shared/release-config.mjs",
       "bytes": 356,
-      "sha256": "460135af0c525d39e971904f62f9bcd73444a900bd3e7b1de96d71b735e3a80c"
+      "sha256": "4019ff715439262c1241ff66af4eecbccefba634b98c6f70e342092b451ee602"
     },
     {
       "path": "shared/schema.json",
@@ -1132,8 +1132,8 @@
     },
     {
       "path": "src/App.jsx",
-      "bytes": 87610,
-      "sha256": "fc40a63f206cc320439585bf82dd6b9552ae8c37251845fbedb1043d77284722"
+      "bytes": 89382,
+      "sha256": "2d660ee2c52c18592925e98fb3d813da0f4b6fcb1814671ff15580ccf688c707"
     },
     {
       "path": "src/appearance.css",
@@ -1497,8 +1497,8 @@
     },
     {
       "path": "src/hooks/usePanelLayout.js",
-      "bytes": 4694,
-      "sha256": "794b9a1d6a9bbbcac22b06d3d7f75087edc8b2eaba87d12295493d37ecf071a1"
+      "bytes": 4722,
+      "sha256": "d7474c45234da7b599ac10c37580c05cc274dd3e2a22b6165a026d13689f324a"
     },
     {
       "path": "src/hooks/usePromptLayout.js",
@@ -1687,8 +1687,8 @@
     },
     {
       "path": "src/lib/release-notes.mjs",
-      "bytes": 13544,
-      "sha256": "813648b5348add888d76f1c18656a8122342d520b05e929d245c24fd1faa0b44"
+      "bytes": 14065,
+      "sha256": "bfc1726cd16dcaf594db7d6b11f8137fec6149ed77921393b97ecedbe176b85b"
     },
     {
       "path": "src/lib/request.mjs",
@@ -2252,8 +2252,33 @@
     },
     {
       "path": "tests/native-image-ui.spec.mjs",
-      "bytes": 3242,
-      "sha256": "7b957436a95f45b151c726c706932ce173af05ca82111d35aabc15b0698c9c8a"
+      "bytes": 3226,
+      "sha256": "2148e8d4feb2a686a9e2e06435814af4cc92fc27ebb4fb122c86bb61b6014759"
+    },
+    {
+      "path": "src/components/image-viewport.css",
+      "bytes": 4195,
+      "sha256": "938488c61290d7fffd996d57d0b4c3c022cb1776d597c193b9233d727fdec0fb"
+    },
+    {
+      "path": "src/components/ImageViewport.jsx",
+      "bytes": 6808,
+      "sha256": "e81f9709d8b0e26ac1b3cd94edbca9a9ab5c72bc79ba456dd174e50fa6799c21"
+    },
+    {
+      "path": "src/lib/image-viewport.mjs",
+      "bytes": 976,
+      "sha256": "bfe93b79b30ade79dfe5c66e03fb57e528a28e3832c3b0b63b25bb85e09870bf"
+    },
+    {
+      "path": "tests/image-viewer-ui.spec.mjs",
+      "bytes": 11127,
+      "sha256": "6a0535f59e14ee71b361e28bf2875b9dc407ed3adcd811ef86c71802d58f6949"
+    },
+    {
+      "path": "tests/image-viewport.test.mjs",
+      "bytes": 900,
+      "sha256": "fc796d74d64e7d935ba925da18052b36ee34ce7cdd536200f7e732db5d6e28d4"
     }
   ]
 }

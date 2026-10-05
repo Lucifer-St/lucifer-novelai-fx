@@ -1,3 +1,4 @@
+import ImageViewport, {ImageViewControls} from './components/ImageViewport';
 import HistorySidebar from './components/HistorySidebar';
 import GenerationCostBadge from './components/GenerationCostBadge';
 import {quoteComparisonTotal} from './lib/generation-cost.mjs';
@@ -179,7 +180,9 @@ export default function App() {
         : "",
     ),
     [jsonOpen, setJsonOpen] = useState(false),
-    [zoom, setZoom] = useState(1),
+    [viewScale,setViewScale] = useState(null),
+    [imageInteraction,setImageInteraction] = useState('pointer'),
+    [viewerFocused,setViewerFocused] = useState(false),
     [elapsed, setElapsed] = useState(0),
     [toolImage, setToolImage] = useState(""),
     [streamEvents, setStreamEvents] = useState(0),
@@ -222,7 +225,11 @@ export default function App() {
   const historyLoad=useRef(null),historyStripRef=useRef(null),wasServerBusy=useRef(false);
   const {appearance,updateAppearance,appearanceError}=useAppearance();
   const narrowWorkbench=useNarrowWorkbench();
-  const panelLayout=usePanelLayout({hidden:settingsHidden,narrow:narrowWorkbench,page});
+  const imageViewer=useRef(null),internalImageDrag=useRef(null);
+  const IMAGE_DRAG_TYPE='application/x-lucifer-result-image';
+  const panelLayout=usePanelLayout({hidden:settingsHidden,narrow:narrowWorkbench,page,paused:viewerFocused});
+  useEffect(()=>{if(page!=='studio')setViewerFocused(false);},[page]);
+  useEffect(()=>{if(!viewerFocused)return;const escape=event=>{if(event.key==='Escape'&&!event.defaultPrevented&&!document.querySelector('[role="dialog"],dialog[open],.modal-overlay')){setViewerFocused(false);event.preventDefault();}};document.addEventListener('keydown',escape);return()=>document.removeEventListener('keydown',escape);},[viewerFocused]);
   const promptLayout=usePromptLayout();
   const lastLoadingSkin=useRef('');
   const pendingAppearance=appearance.loadingSkin==='random'?{...appearance,loadingSkin:pending?.loadingSkin||'claire-noire'}:appearance;
@@ -258,7 +265,7 @@ export default function App() {
   useEffect(()=>{let cancelled=false;let id;try{id=localStorage.getItem('lucifer-last-opus-batch-v1');}catch{}if(/^[a-f0-9-]{36}$/.test(id||''))api('/api/generation-jobs/'+id).then(job=>{let remembered;try{remembered=localStorage.getItem('lucifer-last-opus-batch-v1');}catch{}if(!cancelled&&job.batch&&remembered===id)setBatchJob(current=>current||job);}).catch(()=>{});return()=>{cancelled=true;};},[]);
   function dismissBatchResults(){if(!batchJob||['queued','running','stopping'].includes(batchJob.status))return;setBatchJob(null);try{if(localStorage.getItem('lucifer-last-opus-batch-v1')===batchJob.id)localStorage.removeItem('lucifer-last-opus-batch-v1');}catch{}}
   function changeOpusBatch(value){setOpusBatch(value);try{localStorage.setItem('lucifer-opus-batch-enabled-v1',String(value));}catch{}}
-  function selectBatchResult(result){followResults.current=false;setEditingPositions(false);setViewPending(false);setViewSource(false);setShowComparison(false);setSelected(result);setIndex(0);setZoom(1);}
+  function selectBatchResult(result){followResults.current=false;setEditingPositions(false);setViewPending(false);setViewSource(false);setShowComparison(false);setSelected(result);setIndex(0);imageViewer.current?.fit();}
   const lastSuggestionMode=useRef('local');
   useEffect(()=>{try{localStorage.setItem(TAG_MODE_KEY,suggestionMode);localStorage.setItem(TAG_SOURCE_KEY,'local');}catch{}},[suggestionMode]);
   function setSuggestionMode(mode){setSuggestionModeState(mode==='off'?'off':'local');}
@@ -286,7 +293,7 @@ export default function App() {
     history.set(value,structuredClone(nextCards));while(history.size>40)history.delete(history.keys().next().value);cardHistory.current.set(historyKey,history);
     return writePromptTarget(s,key,value,nextCards);
   });
-  function acceptResult(result){if(followResults.current){setSelected(result);setIndex(0);setZoom(1);setViewPending(false);setViewSource(false);}setHistory(h=>mergeHistory(h,[result]));api('/api/anlas').then(setAnlas).catch(()=>{});}
+  function acceptResult(result){if(followResults.current){setSelected(result);setIndex(0);imageViewer.current?.fit();setViewPending(false);setViewSource(false);}setHistory(h=>mergeHistory(h,[result]));api('/api/anlas').then(setAnlas).catch(()=>{});}
   const toggleSettings = () =>
     setSettingsHidden((value) => {
       try {
@@ -294,6 +301,15 @@ export default function App() {
       } catch {}
       return !value;
     });
+  function startResultImageDrag(event){
+    if(!activeImage)return;const token=crypto.randomUUID();internalImageDrag.current={token,url:activeImage.url,name:activeImage.name||'generated.png'};
+    event.dataTransfer.setData(IMAGE_DRAG_TYPE,token);event.dataTransfer.effectAllowed='copy';
+  }
+  function endResultImageDrag(){internalImageDrag.current=null;dragDepth.current=0;setDraggingImage(false);}
+  function isImageDrop(transfer){return Array.from(transfer.types).includes('Files')||(internalImageDrag.current&&Array.from(transfer.types).includes(IMAGE_DRAG_TYPE));}
+  async function inspectDraggedResult(source){
+    try{const response=await fetch(source.url);if(!response.ok)throw Error('读取原图失败');const blob=await response.blob();await inspectImage(new File([blob],source.name,{type:blob.type||'image/png'}));}catch(error){setError(error.message);}
+  }
   async function inspectImage(file) {
     if (!file) return;
     const request = ++imageImportRequest.current;
@@ -764,7 +780,7 @@ export default function App() {
   const generateLabel=busy ? `正在生成 · ${elapsed}s` : comparison.busy?'对照执行中…':connection.serverBusy?'等待服务端任务结束':connection.blocked?'暂时无法生成':comparison.config.enabled?`生成 ${comparison.config.mode} · ${comparison.config.rounds*(comparison.config.mode==='AB'?2:3)} 张`:'生成图像';
   return (
     <div
-      className={`app${isExstiaSkin(appearance.workbenchSkin)?" exstia-workbench":""}${basicMode?" share-basic":""}${appearance.workbenchSkin!=="classic"?" themed-workbench":""}${draggingImage ? " is-file-dragging" : ""}`}
+      className={`app${viewerFocused?" viewer-focused":""}${isExstiaSkin(appearance.workbenchSkin)?" exstia-workbench":""}${basicMode?" share-basic":""}${appearance.workbenchSkin!=="classic"?" themed-workbench":""}${draggingImage ? " is-file-dragging" : ""}`}
       data-workbench-skin={appearance.workbenchSkin}
       data-platform={androidLayout?'android':'desktop'}
       data-character-ui={appearance.characterDecorations&&CHARACTER_UI_SKINS.includes(appearance.workbenchSkin)?'on':'off'}
@@ -772,7 +788,7 @@ export default function App() {
       onBlurCapture={rememberSelection}
       onDragEnter={(event) => {
         if(event.target.closest?.('.image-input,[data-local-image-drop]')){dragDepth.current=0;setDraggingImage(false);return;}
-        if (Array.from(event.dataTransfer.types).includes("Files")) {
+        if (isImageDrop(event.dataTransfer)) {
           event.preventDefault();
           dragDepth.current++;
           setDraggingImage(true);
@@ -780,7 +796,7 @@ export default function App() {
       }}
       onDragOver={(event) => {
         if(event.target.closest?.('.image-input,[data-local-image-drop]')){setDraggingImage(false);return;}
-        if (Array.from(event.dataTransfer.types).includes("Files")) {
+        if (isImageDrop(event.dataTransfer)) {
           event.preventDefault();
           event.dataTransfer.dropEffect = "copy";
         }
@@ -792,11 +808,13 @@ export default function App() {
       }}
       onDropCapture={(event) => {
         if(event.target.closest?.('.image-input,[data-local-image-drop]')){dragDepth.current=0;setDraggingImage(false);return;}
-        if (!Array.from(event.dataTransfer.types).includes("Files")) return;
+        if (!isImageDrop(event.dataTransfer)) return;
         event.preventDefault();
         event.stopPropagation();
         dragDepth.current = 0;
         setDraggingImage(false);
+        const source=internalImageDrag.current;
+        if(source&&event.dataTransfer.getData(IMAGE_DRAG_TYPE)===source.token){internalImageDrag.current=null;void inspectDraggedResult(source);return;}
         const files = Array.from(event.dataTransfer.files);
         if (files.length !== 1) {
           setError("每次请拖入一张图片。");
@@ -1022,33 +1040,19 @@ export default function App() {
             <section className="canvas-column">
               <ThemeCanvasFraming skin={appearance.workbenchSkin}/>
               <div className={`canvas-toolbar${state.mode!=="generate"?" image-mode-toolbar":""}`}>
-                <span>
+                <span className="canvas-heading">
                   <ImageIcon size={15} />{" "}
                   {editingPositions ? "角色定位" : state.mode === "infill"
                     ? "蒙版画布"
                     : state.mode === "img2img"
                       ? "图生图"
                       : "图像预览"}
+                  {selected && !viewPending && !editingPositions && !(comparison.record&&showComparison) && !(state.mode!=="generate"&&viewSource) && selected.durationMs>0 && <small className="generation-duration">生成 {(selected.durationMs/1000).toFixed(1)}s</small>}
                 </span>
                 <div>
                   {state.mode!=="generate"&&<><button onClick={()=>exitImageMode()} aria-label={state.mode==='infill'?'退出局部重绘，返回文生图':'退出图生图，返回文生图'}>退出{state.mode==='infill'?'局部重绘':'图生图'}</button><button onClick={()=>{setViewPending(false);setShowComparison(false);setViewSource(viewPending?true:!viewSource);followResults.current=false;}}>{viewSource&&!viewPending?'查看结果':'编辑输入图'}</button></>}
                   {comparison.record&&<button onClick={()=>setShowComparison(v=>!v)}>{showComparison?'查看单图':'查看对照'}</button>}
-                  <button
-                    title="缩小"
-                    onClick={() => setZoom((z) => Math.max(0.25, z - 0.25))}
-                  >
-                    <ZoomOut size={15} />
-                  </button>
-                  <span>{Math.round(zoom * 100)}%</span>
-                  <button
-                    title="放大"
-                    onClick={() => setZoom((z) => Math.min(4, z + 0.25))}
-                  >
-                    <ZoomIn size={15} />
-                  </button>
-                  <button title="适合画布" onClick={() => setZoom(1)}>
-                    <Maximize2 size={15} />
-                  </button>
+                  <ImageViewControls interaction={imageInteraction} onInteraction={setImageInteraction} viewer={imageViewer} scale={viewScale} enabled={Boolean(activeImage&&!editingPositions&&!(comparison.record&&showComparison)&&!(state.mode!=="generate"&&viewSource))} focused={viewerFocused} onFocus={()=>{setMobile('canvas');setViewerFocused(value=>!value);}}/>
                 </div>
               </div>
               {editingPositions?<div className="canvas position-mode"><CharacterPositionCanvas grid={isV45(editState.model)} key={comparison.config.enabled?comparison.variant:"A"} width={editState.width} height={editState.height} characters={editState.characters} selectedId={positionCharacter} onSelect={setPositionCharacter} onMove={moveCharacter} onFinish={()=>setEditingPositions(false)}/></div>:comparison.record&&showComparison?<ComparisonBoard comparison={comparison} onSelect={r=>{followResults.current=false;setViewPending(false);setSelected(r);setIndex(0);setShowComparison(false);}} onSave={saveResult}/>:<div
@@ -1102,7 +1106,7 @@ export default function App() {
                     )}
                   </div>
                 ) : activeImage ? (
-                  <div className="image-stage"><img style={{transform:`scale(${zoom})`}} src={activeImage.url} alt={`生成结果 ${index+1}`}/></div>
+                  <ImageViewport interaction={imageInteraction} onImageDragStart={startResultImageDrag} onImageDragEnd={endResultImageDrag} key={`${selected.id}:${index}:${activeImage.url}`} ref={imageViewer} src={activeImage.url} alt={`生成结果 ${index+1}`} onScaleChange={setViewScale}/>
                 ) : (
                   <div className="empty-canvas">
                     <div className="empty-corners">
@@ -1167,23 +1171,18 @@ export default function App() {
                         局部重绘
                       </button>
                       <button onClick={() => useImage("enhance")}>增强</button>
-                      <button onClick={() => useImage("tools")}>
-                        图像工具
-                      </button>
                     </>
                   ) : null}
                   {selected.requestUrl && (
                     <><button onClick={() => restore(selected)}>
                       <RotateCcw size={14} /> 复用参数
-                    </button><button onClick={()=>resultAction('preset')}>存为完整预设</button><button onClick={()=>resultAction('B')}>创建 B</button></>
+                    </button><button onClick={()=>resultAction('preset')}>存为完整预设</button></>
                   )}
                   {selected.rawUrl && (
                     <a href={selected.rawUrl} download>
                       原始响应
                     </a>
                   )}
-
-                  <small>{selected.durationMs?`${(selected.durationMs/1000).toFixed(1)}s`:""}</small>
                 </div>
               )}
               {selected?.warnings?.map((w, i) => (
@@ -1233,7 +1232,7 @@ export default function App() {
                   <button type="button" title={historyCollapsed?"展开历史记录":"收起历史记录"} aria-label={historyCollapsed?"展开历史记录":"收起历史记录"} aria-expanded={!historyCollapsed} aria-controls="history-strip" onClick={toggleHistory}>{historyCollapsed?<ChevronUp size={16}/>:<ChevronDown size={16}/>}</button></div>
                 </div>
                 <div className="history-strip" id="history-strip" ref={historyStripRef} hidden={historyCollapsed}>
-                  {pending && <button className={`history-item pending-history${viewPending?" selected":""}`} aria-label={pending.status==="failed"?"查看未完成任务":"查看正在生成的新图"} onClick={()=>{setEditingPositions(false);followResults.current=true;setViewPending(true);setShowComparison(false);setZoom(1);}}><LoadingArtwork skinId={pendingAppearance.loadingSkin} elapsed={elapsed} failed={pending.status==='failed'} compact motion={appearance.motion}/></button>}
+                  {pending && <button className={`history-item pending-history${viewPending?" selected":""}`} aria-label={pending.status==="failed"?"查看未完成任务":"查看正在生成的新图"} onClick={()=>{setEditingPositions(false);followResults.current=true;setViewPending(true);setShowComparison(false);imageViewer.current?.fit();}}><LoadingArtwork skinId={pendingAppearance.loadingSkin} elapsed={elapsed} failed={pending.status==='failed'} compact motion={appearance.motion}/></button>}
                   {history.length ? (
                     history.map((h) => (
                       <button
@@ -1247,7 +1246,7 @@ export default function App() {
                           followResults.current=false;setViewPending(false);setShowComparison(false);setViewSource(false);setEditingPositions(false);
                           setSelected(h);
                           setIndex(0);
-                          setZoom(1);
+                          imageViewer.current?.fit();
                         }}
                         title={`${h.prompt || h.endpoint || h.id}`}
                       >
@@ -1311,8 +1310,8 @@ export default function App() {
               </div></>}
               {!androidLayout&&<div id="inspector-history" className="inspector-history-content" hidden={settingsHidden||inspectorTab!=='history'} role="tabpanel" aria-label="历史侧边栏">
                 <HistorySidebar history={history} phase={historyPhase} error={historyError} nextCursor={historyNextCursor} loadingMore={historyLoadingMore} scrollRef={historyStripRef} selectedId={selected?.id} pending={pending} viewPending={viewPending} elapsed={elapsed} appearance={appearance} pendingAppearance={pendingAppearance} onRefresh={refreshHistory} onOlder={loadOlderHistory} onSearch={()=>setFeature({type:'generated-library'})}
-                  onPending={()=>{setEditingPositions(false);followResults.current=true;setViewPending(true);setShowComparison(false);setZoom(1);if(narrowWorkbench)setMobile('canvas');}}
-                  onSelect={h=>{followResults.current=false;setViewPending(false);setShowComparison(false);setViewSource(false);setEditingPositions(false);setSelected(h);setIndex(Math.max(0,h.images?.findIndex(image=>!image.deletedAt)||0));setZoom(1);if(narrowWorkbench)setMobile('canvas');}}/>
+                  onPending={()=>{setEditingPositions(false);followResults.current=true;setViewPending(true);setShowComparison(false);imageViewer.current?.fit();if(narrowWorkbench)setMobile('canvas');}}
+                  onSelect={h=>{followResults.current=false;setViewPending(false);setShowComparison(false);setViewSource(false);setEditingPositions(false);setSelected(h);setIndex(Math.max(0,h.images?.findIndex(image=>!image.deletedAt)||0));imageViewer.current?.fit();if(narrowWorkbench)setMobile('canvas');}}/>
               </div>
               }
               {!settingsHidden&&inspectorTab!=='history'&&<ThemeDockDecoration skin={appearance.workbenchSkin} side="right"/>}
