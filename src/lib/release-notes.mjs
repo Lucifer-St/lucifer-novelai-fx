@@ -1,6 +1,9 @@
 import {RELEASE_CONFIG} from '../../shared/release-config.mjs';
 import {isAndroid} from './platform.mjs';
-const WINDOWS_NOTES={version:RELEASE_CONFIG.version,title:'更新说明',date:'2026-10-04',features:[
+const WINDOWS_NOTES={version:RELEASE_CONFIG.version,title:'更新说明',date:'2026-10-11',features:[
+ {title:'提示词角落一键清空',description:'主提示词和每个角色的正、负面框都加入垃圾桶图标，放在原有底部工具行右侧，避开文字、滚动条与拖拽柄。只清空当前框，空内容和输入法组词期间禁用。'},
+ {title:'清空也能撤销',description:'清空后可用 Ctrl / ⌘ + Z 恢复文字与关联卡片；其他提示词、角色开关和生成参数保持原状。普通标签与合并折叠布局均支持。'},
+ {title:'卡片封面滚轮缩放',description:'插入图片后，在封面裁剪画面上滚动鼠标滚轮即可缩放，以鼠标位置为中心，范围 100%–400%。原有拖动、缩放滑杆、方向键和居中重置继续可用；取消不改原封面，确认只保存裁剪副本。'},
  {title:'鼠标与拖动分开选择',description:'默认鼠标模式保留浏览器图片右键菜单、复制、在新标签页打开及原生拖放。需要平移和滚轮缩放时，在预览工具栏主动选择「拖动」；切回「鼠标」恢复原生操作。'},
  {title:'拖入原图读取参数',description:'可把预览图拖入提示词区域，读取原图保存的提示词与参数，再按所选项导入；不会自动提交生成。图片上的手势提示文字已移除。'},
  {title:'专注看图与原始尺寸',description:'支持适应画布、1:1 和缩放按钮。专注看图采用低强调入口，点击退出或按 Esc 恢复原布局，保留编辑与历史位置；生成耗时放在预览标题旁。'},
@@ -54,7 +57,7 @@ const WINDOWS_NOTES={version:RELEASE_CONFIG.version,title:'更新说明',date:'2
  {title:'参考图草稿跨重启保留',description:'参考图草稿可在重启后接续；Vibe 的编码费用会明确显示。请求不明确时继续查询原任务，不自动重试。'},
  {title:'法典图鉴社区包修复',description:'修复法典图鉴中 NovelAI V5／V4.5 社区精选图包无法打开、反复刷新仍加载失败的问题。'},
  {title:'逐张生成可立即停止接收',description:'停止后续图片与立即停止接收分开操作。已经完成的图片保留；立即停止不能保证上游取消或免于计费，也不会自动重试。'},
- {title:'Windows 发布',description:'本次发布为 Windows x64。Android 使用独立发布，本次 Windows 查看器改动不包含在现有 APK 中。'},
+ {title:'Windows 发布',description:'本次发布为 Windows x64。Android 使用独立发布，本次 Windows 提示词清空和封面滚轮改动不包含在现有 APK 中。'},
 ]};
 export const RELEASE_SEEN_KEY='lucifer-share-release-seen-v1';
 export function needsReleaseNotes(storage){try{return storage.getItem(RELEASE_SEEN_KEY)!==RELEASE_NOTES.version;}catch{return true;}}

@@ -11,6 +11,12 @@ export function panCrop(width,height,crop,dx,dy,viewport){
  const scale=viewport/crop.side;
  return cropSquare(width,height,crop.zoom,crop.centerX-dx/scale/width,crop.centerY-dy/scale/height);
 }
+export function zoomCrop(width,height,crop,zoom,anchorX=.5,anchorY=.5){
+ const x=Math.max(0,Math.min(1,anchorX)),y=Math.max(0,Math.min(1,anchorY));
+ const next=cropSquare(width,height,zoom,crop.centerX,crop.centerY);
+ // Keep the source point under the cursor stable, except at the image edges.
+ return cropSquare(width,height,next.zoom,(crop.x+x*crop.side+(.5-x)*next.side)/width,(crop.y+y*crop.side+(.5-y)*next.side)/height);
+}
 export function renderCover(image,crop,size=COVER_SIZE){
  const canvas=document.createElement('canvas');canvas.width=size;canvas.height=size;
  const context=canvas.getContext('2d');context.imageSmoothingEnabled=true;context.imageSmoothingQuality='high';

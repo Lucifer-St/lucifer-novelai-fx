@@ -2,7 +2,7 @@ import {useEffect,useRef,useState} from 'react';
 import {Crop,Move,RotateCcw,X} from 'lucide-react';
 import ImageInput from './ImageInput';
 import {loadImage} from '../lib/image.mjs';
-import {cropSquare,panCrop,renderCover} from '../lib/cover-crop.mjs';
+import {cropSquare,panCrop,zoomCrop,renderCover} from '../lib/cover-crop.mjs';
 
 export default function CoverImageInput({value,onChange,label='卡片封面'}){
  const [pending,setPending]=useState(null),original=useRef(null),lastCrop=useRef(value);
@@ -19,12 +19,23 @@ function CoverCropDialog({source,onCancel,onApply}){
  useEffect(()=>{const previous=document.activeElement;dialog.current.showModal();return()=>{dialog.current?.close();previous?.focus?.({preventScroll:true});};},[]);
  useEffect(()=>{let active=true;loadImage(source).then(im=>{if(active){setImage(im);setCrop(cropSquare(im.naturalWidth,im.naturalHeight));}}).catch(e=>{if(active)setError(e.message);});return()=>{active=false;};},[source]);
  useEffect(()=>{if(!viewport.current)return;const observer=new ResizeObserver(([entry])=>setEdge(entry.contentRect.width));observer.observe(viewport.current);return()=>observer.disconnect();},[]);
+ useEffect(()=>{
+  const area=viewport.current;if(!area||!image)return;
+  const wheel=event=>{
+   if(event.ctrlKey||event.metaKey||!event.deltaY)return;
+   event.preventDefault();event.stopPropagation();
+   const rect=area.getBoundingClientRect(),delta=event.deltaY*(event.deltaMode===1?16:event.deltaMode===2?rect.height:1);
+   const factor=Math.exp(-Math.max(-240,Math.min(240,delta))*.0015);
+   setCrop(c=>c?zoomCrop(image.naturalWidth,image.naturalHeight,c,c.zoom*factor,(event.clientX-rect.left)/rect.width,(event.clientY-rect.top)/rect.height):c);
+  };
+  area.addEventListener('wheel',wheel,{passive:false});return()=>area.removeEventListener('wheel',wheel);
+ },[image]);
  const changeZoom=value=>image&&setCrop(c=>cropSquare(image.naturalWidth,image.naturalHeight,value,c.centerX,c.centerY));
  const move=(dx,dy)=>image&&setCrop(c=>panCrop(image.naturalWidth,image.naturalHeight,c,dx,dy,edge));
  function finish(event){if(drag.current?.id!==event.pointerId)return;drag.current=null;setDragging(false);if(event.currentTarget.hasPointerCapture(event.pointerId))event.currentTarget.releasePointerCapture(event.pointerId);}
  const scale=crop?edge/crop.side:1;
  return <dialog ref={dialog} className="cover-crop-dialog" aria-label="裁剪卡片封面" onCancel={e=>{e.preventDefault();e.stopPropagation();onCancel();}}>
-  <header><div><strong>为卡片选一幅画面</strong><p>拖动图片调整位置，缩放选择你想保留的部分。</p></div><button aria-label="取消封面裁剪" onClick={onCancel}><X size={18}/></button></header>
+  <header><div><strong>为卡片选一幅画面</strong><p>拖动调整位置，在图片上滚动鼠标滚轮缩放。</p></div><button aria-label="取消封面裁剪" onClick={onCancel}><X size={18}/></button></header>
   <div ref={viewport} className={`cover-crop-viewport${dragging?' dragging':''}`} role="group" aria-label="封面裁剪选区" tabIndex={0}
    onPointerDown={e=>{if(!image||drag.current)return;e.preventDefault();e.currentTarget.focus({preventScroll:true});e.currentTarget.setPointerCapture(e.pointerId);drag.current={id:e.pointerId,x:e.clientX,y:e.clientY};setDragging(true);}}
    onPointerMove={e=>{if(drag.current?.id!==e.pointerId)return;move(e.clientX-drag.current.x,e.clientY-drag.current.y);drag.current={...drag.current,x:e.clientX,y:e.clientY};}}

@@ -48,6 +48,35 @@
 .prompt-weight-guide {
   cursor: help;
 }
+.prompt-editor-footer:has(.prompt-clear) {
+  position: relative;
+  padding-right: 46px;
+}
+.prompt-editor-footer > .prompt-clear {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  min-height: 0;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  background: transparent;
+  color: inherit;
+  opacity: .65;
+}
+.prompt-editor-footer > .prompt-clear:hover:not(:disabled),
+.prompt-editor-footer > .prompt-clear:focus-visible {
+  opacity: 1;
+  color: #b34c57;
+  background: #c5546014;
+  border-color: currentColor;
+}
+.prompt-editor-footer > .prompt-clear:disabled { opacity: .25; }
 @media (forced-colors: active) {
   .prompt-weight-mirror {
     display: none;

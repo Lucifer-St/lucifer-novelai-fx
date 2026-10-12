@@ -2,9 +2,9 @@
 
 **面向 NovelAI Diffusion V5 Full 与 V4.5 Full / Curated 的 Windows / Android 中文创作工作台。** 这是个人维护的非官方前端，与 NovelAI 官方没有隶属关系。它把长 Prompt、角色、参数、图片配方、对照实验与本地资料组织在同一个界面中；只有你明确点击生成，才会向自己配置的 NovelAI 官方接口或兼容网关提交生图请求。
 
-[下载最新版](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/latest) · [直接下载 v1.14.0 Windows x64](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.14.0/Lucifer-NovelAI-FX-Share-1.14.0-Windows-x64.zip) · [核对 SHA-256](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.14.0/SHA256SUMS-1.14.0.txt) · [报告 Bug](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=bug_report.yml) · [提出改进](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=feature_request.yml)
+[下载最新版](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/latest) · [直接下载 v1.15.0 Windows x64](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.15.0/Lucifer-NovelAI-FX-Share-1.15.0-Windows-x64.zip) · [核对 SHA-256](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/v1.15.0/SHA256SUMS-1.15.0.txt) · [报告 Bug](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=bug_report.yml) · [提出改进](https://github.com/Lucifer-St/lucifer-novelai-fx/issues/new?template=feature_request.yml)
 
-**Android 恢复更新：** [下载 Android 1.13.0 APK](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/android-v1.13.0/Lucifer-NovelAI-FX-Share-1.13.0-Android.apk) · [校验值](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/android-v1.13.0/SHA256SUMS-Android-1.13.0.txt) · [安装与平台说明](docs/ANDROID-SOURCE.md)。沿用原签名，可直接覆盖 1.1.1；不要先卸载。Windows 当前稳定下载为 1.14.0，两个平台分别发布。
+**Android 恢复更新：** [下载 Android 1.13.0 APK](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/android-v1.13.0/Lucifer-NovelAI-FX-Share-1.13.0-Android.apk) · [校验值](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/download/android-v1.13.0/SHA256SUMS-Android-1.13.0.txt) · [安装与平台说明](docs/ANDROID-SOURCE.md)。沿用原签名，可直接覆盖 1.1.1；不要先卸载。Windows 当前稳定下载为 1.15.0，两个平台分别发布。
 
 Android 本次对齐 Windows 1.12.2 的编辑器、11 套主题、V4.5 / V5、参考图、历史分页和生成图库，并补齐原生存储、备份、费用与重复提交保护。已验证 Android 15 模拟器，未作实体手机、Android 10 或真实付费接口验收。图库清理保护系统目录中的外部导出；超大图库性能仍需实机评估。详见 [Android 更新记录](docs/ANDROID-UPGRADE.md)。
 
@@ -161,6 +161,12 @@ D 站（Danbooru）图库可以按标签、评分、排序和上传时间浏览�
 图为 9 张等待插画中的 3 张示例。
 
 ## 更新说明
+
+### [v1.15.0](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/tag/v1.15.0) · 2026-10-11
+
+- **提示词一键清空**：主提示词和角色正、负面框的底部右侧新增垃圾桶图标，不遮挡文字、滚动条或拖拽柄。仅清空当前框；空内容及输入法组词期间禁用，可用 Ctrl / ⌘ + Z 恢复文字和关联卡片。
+- **卡片封面滚轮缩放**：插入图片后可在裁剪区滚动鼠标滚轮，以鼠标位置为中心在 100%–400% 范围缩放。保留拖动、滑杆、方向键与重置；取消保留原封面，确认仅保存裁剪副本。
+- 两项功能已经个人版实际试用确认，现同步到 Windows 分享版。本次不替换独立 Android APK。
 
 ### [v1.14.0](https://github.com/Lucifer-St/lucifer-novelai-fx/releases/tag/v1.14.0) · 2026-10-04
 
@@ -379,13 +385,13 @@ Agent 使用同一份本机设置，但配置不包含 API key。普通桌面使
 
 ## Windows 安装与升级
 
-支持 Windows 10/11 x64。下载 ZIP 后用同一 Release 中的 `SHA256SUMS-1.14.0.txt` 核对哈希，完整解压到普通可写目录，再双击 `启动 Lucifer FX.exe`。不要直接在 ZIP 预览中运行。首次进入后填写自己的连接，先做只读检查，再从单张、普通尺寸和较低步数开始。想使用完整的角色、对照与高级参数控制时，点击“展开完整功能”。完整步骤、文件位置与回退方法见 [Windows 安装、升级与隐私说明](./docs/WINDOWS.md)。
+支持 Windows 10/11 x64。下载 ZIP 后用同一 Release 中的 `SHA256SUMS-1.15.0.txt` 核对哈希，完整解压到普通可写目录，再双击 `启动 Lucifer FX.exe`。不要直接在 ZIP 预览中运行。首次进入后填写自己的连接，先做只读检查，再从单张、普通尺寸和较低步数开始。想使用完整的角色、对照与高级参数控制时，点击“展开完整功能”。完整步骤、文件位置与回退方法见 [Windows 安装、升级与隐私说明](./docs/WINDOWS.md)。
 
 从 1.6.0 起，可在“更新 / 反馈”完成下载、校验、安装与重启；生成期间不会安装。启动后的版本检查可关闭，下载和安装都需要主动点击。1.5.1 及更早版本先按 [升级步骤](./docs/WINDOWS.md#升级与回退) 退出服务、备份并手动升级；始终保留原位 `userdata`。
 
 公开版覆盖 V5 Full 与 V4.5 Full / Curated 工作流；Precise Reference 与 Vibe Transfer 仅用于 V4.5。个人版的 Grok / ComfyUI 集成不随公开版提供。
 
-Windows x64 使用 `v1.14.0`；Android 使用独立的 `android-v1.13.0` 发布与 APK 下载，历史版本保留。
+Windows x64 使用 `v1.15.0`；Android 使用独立的 `android-v1.13.0` 发布与 APK 下载，历史版本保留。
 
 ## 反馈、安全与公开范围
 

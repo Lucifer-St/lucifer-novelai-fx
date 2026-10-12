@@ -12,6 +12,17 @@ import "../prompt-layout.css";
 export default function PromptPanel({ state: s, update, tab, setTab,cardSelection,savingCard,onSaveCard,onRemoveCard,onCardLibrary,onEditCard,onPickCard,libraryRevision,onReplacePromptRange,suggestionMode,onPosition,appearanceKey="classic", active=true, layout={mode:"classic",characters:{}}, onToggleMain, onToggleCharacter, onToggleField }) {
   const [promptMode, setPromptMode] = useState("positive");
   const [characterModes,setCharacterModes]=useState({});
+  const [composingField,setComposingField]=useState(null);
+  function clearPrompt(field){
+    const input=document.getElementById(promptElementId(field));
+    if(!input||input.disabled||input.readOnly||!input.value||composingField===field)return;
+    const before=input.value;
+    onReplacePromptRange?.(field,{before,start:0,end:before.length,inserted:''});
+    input.focus({preventScroll:true});input.setSelectionRange(0,before.length);
+    // Keep this as one native edit, including the existing card-range undo path.
+    if(!document.execCommand('insertText',false,'')){input.setRangeText('',0,before.length,'start');update(field,'','deleteContentBackward');}
+  }
+  const fieldActions=(field,label,text)=><><small>{text.length} 字符</small><button type="button" className="prompt-clear" aria-label={`清空${label}`} title={`清空${label}（Ctrl/⌘+Z 可撤销）`} disabled={!text||composingField===field} onMouseDown={e=>e.preventDefault()} onClick={()=>clearPrompt(field)}><Trash2 size={14}/></button></>;
   const merged=layout.mode==='merged',mainOpen=!merged||!layout.mainCollapsed;
   const negativePreset=splitNegativePreset(s.negative,s.model).preset;
   const cardStrip = (owner, field, key, label) => <PromptCardStrip key={field} cards={validCards(owner[key+'Cards'],owner[key])} field={field} label={label} selection={cardSelection} saving={savingCard} onSave={onSaveCard} onRemove={onRemoveCard} onLibrary={onCardLibrary} onEdit={onEditCard} onPick={onPickCard} libraryRevision={libraryRevision} active={active&&(!merged?tab==='characters':!layout.characters?.[owner.id])&&!(merged&&layout.fields?.[field])&&(merged||(characterModes[owner.id]||'prompt')===key)}/>;
@@ -97,6 +108,7 @@ export default function PromptPanel({ state: s, update, tab, setTab,cardSelectio
               <WeightedPromptInput
                 autoResize resizeKey={appearanceKey+':'+layout.mode} active={active&&mainOpen&&(merged||tab==='prompt'&&promptMode==='positive')}
                 id="positive"
+                onCompositionStart={()=>setComposingField('prompt')} onCompositionEnd={()=>setComposingField(null)}
                 onReplaceRange={edit=>onReplacePromptRange?.('prompt',edit)}
                 suggestionMode={active&&mainOpen&&(merged||tab==='prompt')?suggestionMode:'off'}
                 suggestionTarget="main-tag-suggestions"
@@ -119,7 +131,7 @@ export default function PromptPanel({ state: s, update, tab, setTab,cardSelectio
                 >
                   0.7::弱化:: · 1.2::强调::
                 </small>
-                <small>{s.prompt.length} 字符</small>
+                {fieldActions('prompt','正面提示词',s.prompt)}
               </div>
             </div>
             <div
@@ -133,6 +145,7 @@ export default function PromptPanel({ state: s, update, tab, setTab,cardSelectio
               <WeightedPromptInput
                 autoResize resizeKey={appearanceKey+':'+layout.mode} active={active&&mainOpen&&!(merged&&layout.fields?.negative)&&(merged||tab==='prompt'&&promptMode==='negative')}
                 id="negative"
+                onCompositionStart={()=>setComposingField('negative')} onCompositionEnd={()=>setComposingField(null)}
                 onReplaceRange={edit=>onReplacePromptRange?.('negative',edit)}
                 suggestionMode={active&&mainOpen&&!(merged&&layout.fields?.negative)&&(merged||tab==='prompt')?suggestionMode:'off'}
                 suggestionTarget="main-tag-suggestions"
@@ -148,14 +161,8 @@ export default function PromptPanel({ state: s, update, tab, setTab,cardSelectio
               <div className="prompt-editor-footer">
                 <div className="prompt-presets official-preset-controls">
                   <label className="official-preset-control">官方负面预设<select aria-label="官方负面预设" value={negativePreset} onChange={e=>update('negative',applyNegativePreset(s.negative,s.model,e.target.value))} title="替换完整的官方预设前缀，保留后面的自写词；已改写的预设按自写词保留。"><option value="none">None · 仅自写</option>{Object.keys(negativePresets(s.model)).map(id=><option key={id} value={id}>{{heavy:'Heavy · 强',light:'Light · 轻',human:'Human Focus · 人物',furry:'Furry Focus · 兽人'}[id]}</option>)}</select></label>
-                  <button
-                    className="text-button"
-                    onClick={() => update("negative", "")}
-                  >
-                    清空
-                  </button>
                 </div>
-                <small>{s.negative.length} 字符</small>
+                {fieldActions('negative','负面提示词',s.negative)}
               </div>
             </div>
           </div>
@@ -203,8 +210,8 @@ export default function PromptPanel({ state: s, update, tab, setTab,cardSelectio
                 </div>
                 {['prompt','negative'].map(mode=><div key={mode} id={`role-${c.id}-${mode}-panel`} className={merged&&layout.fields?.[characterField(c.id,mode)]?"prompt-field-folded":""} role="tabpanel" aria-labelledby={`role-${c.id}-${mode}-tab`} hidden={!merged&&(characterModes[c.id]||'prompt')!==mode}>
                   <h4 className="merged-prompt-label" hidden={!merged}>{mode==='prompt'?'正面 Prompt':<button type="button" aria-label={`角色 ${i+1} 负面折叠`} aria-expanded={!layout.fields?.[characterField(c.id,mode)]} aria-controls={promptElementId(characterField(c.id,mode))} onClick={()=>onToggleField?.(characterField(c.id,mode))}>{layout.fields?.[characterField(c.id,mode)]?<ChevronRight size={14}/>:<ChevronDown size={14}/>}负面 Undesired Content</button>}</h4>
-                  <WeightedPromptInput autoResize active={active&&(!merged?tab==='characters':!layout.characters?.[c.id]&&!layout.fields?.[characterField(c.id,mode)])&&(merged||(characterModes[c.id]||'prompt')===mode)} id={promptElementId(characterField(c.id,mode))} onReplaceRange={edit=>onReplacePromptRange?.(characterField(c.id,mode),edit)} suggestionMode={active&&(!merged?tab==='characters':!layout.characters?.[c.id]&&!layout.fields?.[characterField(c.id,mode)])?suggestionMode:'off'} suggestionTarget={`role-${c.id}-suggestions`} data-prompt-field={characterField(c.id,mode)} aria-label={`角色 ${i+1} ${mode==='prompt'?'正面':'负面'}提示词`} rows={3} placeholder={mode==='prompt'?'描述这个角色的外观、服装与动作…':'描述这个角色需要避免出现的内容…'} value={c[mode]} onChange={e=>update(characterField(c.id,mode),e.target.value,e.nativeEvent?.inputType)}/>
-                  <div className="prompt-editor-footer"><small>随内容伸缩 · 也可拖动调整</small><small>{c[mode].length} 字符</small></div>
+                  <WeightedPromptInput autoResize active={active&&(!merged?tab==='characters':!layout.characters?.[c.id]&&!layout.fields?.[characterField(c.id,mode)])&&(merged||(characterModes[c.id]||'prompt')===mode)} id={promptElementId(characterField(c.id,mode))} onCompositionStart={()=>setComposingField(characterField(c.id,mode))} onCompositionEnd={()=>setComposingField(null)} onReplaceRange={edit=>onReplacePromptRange?.(characterField(c.id,mode),edit)} suggestionMode={active&&(!merged?tab==='characters':!layout.characters?.[c.id]&&!layout.fields?.[characterField(c.id,mode)])?suggestionMode:'off'} suggestionTarget={`role-${c.id}-suggestions`} data-prompt-field={characterField(c.id,mode)} aria-label={`角色 ${i+1} ${mode==='prompt'?'正面':'负面'}提示词`} rows={3} placeholder={mode==='prompt'?'描述这个角色的外观、服装与动作…':'描述这个角色需要避免出现的内容…'} value={c[mode]} onChange={e=>update(characterField(c.id,mode),e.target.value,e.nativeEvent?.inputType)}/>
+                  <div className="prompt-editor-footer"><small>随内容伸缩 · 也可拖动调整</small>{fieldActions(characterField(c.id,mode),`角色 ${i+1} ${mode==='prompt'?'正面':'负面'}提示词`,c[mode])}</div>
                 </div>)}
               </div>
               <TagSuggestionSlot id={`role-${c.id}-suggestions`} mode={suggestionMode} compact/>

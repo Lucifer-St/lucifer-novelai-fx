@@ -1,5 +1,5 @@
 {
-  "version": "1.14.0",
+  "version": "1.15.0",
   "androidVersion": "1.13.0",
   "gitHistory": false,
   "license": "MIT",
@@ -603,12 +603,12 @@
     {
       "path": "package-lock.json",
       "bytes": 105025,
-      "sha256": "99320b920cd1a6d38b33fae0ba1208c3093e625aaf4ca7733a2ce9477a26cbdb"
+      "sha256": "9bb3e1f979f947088f3335e28c6d78d9c5f22ad6f7bd89cee37d6b6a4840d2a0"
     },
     {
       "path": "package.json",
       "bytes": 1249,
-      "sha256": "d6f1f6f3fdb66655d8da9b05bb21d21309725507a2832e35ef170702db274d48"
+      "sha256": "fbd7ca61718d03aaa9ef68f297a39a198d7dc1782cfd710dc92d4b681bdae515"
     },
     {
       "path": "playwright.config.mjs",
@@ -617,8 +617,8 @@
     },
     {
       "path": "playwright.themes.config.mjs",
-      "bytes": 646,
-      "sha256": "ae1e448066dc19a1a0e4293f6df47732a6d4fbc24a85482a882d7263173cebd4"
+      "bytes": 698,
+      "sha256": "6d5eb0a333ef3ed55b7c7dd5152277d26f72caea10697ebf1d09f5794a4a7e60"
     },
     {
       "path": "public/assets/character-ui/lily.png",
@@ -877,8 +877,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 37225,
-      "sha256": "8fd5ca873a454db4bcb5d154c2a01650c5e5389bc8147be10c68ea4e98f19355"
+      "bytes": 37948,
+      "sha256": "635c58c4e15a4be0da4658a95ee871f414e17724ac153ef4c7b15b3f96d00805"
     },
     {
       "path": "scripts/apply-update.mjs",
@@ -1122,8 +1122,8 @@
     },
     {
       "path": "shared/release-config.mjs",
-      "bytes": 356,
-      "sha256": "4019ff715439262c1241ff66af4eecbccefba634b98c6f70e342092b451ee602"
+      "bytes": 357,
+      "sha256": "bd8b472fafd4fda51694564c657bb0979c9aa28c8d0673013b5f603bb155b545"
     },
     {
       "path": "shared/schema.json",
@@ -1207,8 +1207,8 @@
     },
     {
       "path": "src/components/CoverImageInput.jsx",
-      "bytes": 4932,
-      "sha256": "0bc2dcfc065f33fb27cfc054fd33c12af03ca43e29205c89567881c22277967e"
+      "bytes": 5616,
+      "sha256": "9a125551a2083bf99c9a404e5e24f3b5e5fc621caf38356bc59eac5237dbac01"
     },
     {
       "path": "src/components/DanbooruImageViewer.jsx",
@@ -1367,8 +1367,8 @@
     },
     {
       "path": "src/components/PromptPanel.jsx",
-      "bytes": 17290,
-      "sha256": "b20ba4dd0876d509e2bcd2781b117d891b75f342b60b4ee5e24d9c2941b7602e"
+      "bytes": 18561,
+      "sha256": "d5a24f27057adfa2c79de21400ae04940f19ad8ef0380e107a2ac04811afc0b2"
     },
     {
       "path": "src/components/reference-panel.css",
@@ -1557,8 +1557,8 @@
     },
     {
       "path": "src/lib/cover-crop.mjs",
-      "bytes": 1101,
-      "sha256": "6961a8781198124099ba93e5936bd4ccfcb6493d4e7651884913eb31eea084e0"
+      "bytes": 1531,
+      "sha256": "5da98f90a2b17bf1bd331b32e97e04f5c81b3099c7dcc4ad86c619474e11289e"
     },
     {
       "path": "src/lib/danbooru-completion.mjs",
@@ -1687,8 +1687,8 @@
     },
     {
       "path": "src/lib/release-notes.mjs",
-      "bytes": 14065,
-      "sha256": "bfc1726cd16dcaf594db7d6b11f8137fec6149ed77921393b97ecedbe176b85b"
+      "bytes": 14861,
+      "sha256": "c05af933558a43d5730ae87660f7686f018c53c98da15975960dba065b9ec762"
     },
     {
       "path": "src/lib/request.mjs",
@@ -1797,8 +1797,8 @@
     },
     {
       "path": "src/weight-editor.css",
-      "bytes": 1158,
-      "sha256": "cdb419fa063cad5846c7a88b9d8b6c950b65d1ebe8c353c26d8ca9f9028db145"
+      "bytes": 1855,
+      "sha256": "4445772599f4d9a5ca51e67f2ac1f7f2ddf5cd0a676c175cacc5114da82327f4"
     },
     {
       "path": "src/workbench-themes.css",
@@ -1842,8 +1842,8 @@
     },
     {
       "path": "tests/cover-crop.test.mjs",
-      "bytes": 1279,
-      "sha256": "22471673b98ec191c1cdf963327a5c5b99b14a6fb32b4dd979fc975729539824"
+      "bytes": 1881,
+      "sha256": "8a98e9ebb43e6ca3b115d4b755cbc00f3459262b0d1eb91ceeca04849f778fed"
     },
     {
       "path": "tests/danbooru-completion.test.mjs",
@@ -2279,6 +2279,16 @@
       "path": "tests/image-viewport.test.mjs",
       "bytes": 900,
       "sha256": "fc796d74d64e7d935ba925da18052b36ee34ce7cdd536200f7e732db5d6e28d4"
+    },
+    {
+      "path": "tests/card-shelf-ui.spec.mjs",
+      "bytes": 14369,
+      "sha256": "367c937201437b75662767c8a1dd4792e7370c459261b95bf167bbcc82867037"
+    },
+    {
+      "path": "tests/prompt-clear-ui.spec.mjs",
+      "bytes": 5337,
+      "sha256": "5ddc69184f36b6f55d264f48936341140bdfa74051371839254f30b2d9012e35"
     }
   ]
 }
