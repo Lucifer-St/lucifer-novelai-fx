@@ -12,7 +12,7 @@ const PNG = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR
 const ENCODED = Buffer.from('fixture-vibe-binary');
 const vault = { seal: async key => Buffer.from(key).toString('base64'), open: async sealed => Buffer.from(sealed, 'base64').toString() };
 
-async function fixture(t) {
+async function fixture(t, {connectionFailures=[]}={}) {
   const dir = await mkdtemp(path.join(os.tmpdir(), 'fx-model-server-'));
   const dataDir = path.join(dir, 'data'), distDir = path.join(dir, 'dist'), keyPath = path.join(dir, 'fixture.key');
   await mkdir(distDir);
@@ -24,6 +24,8 @@ async function fixture(t) {
     fetchImpl: async (url, init) => {
       const body = init.body ? JSON.parse(init.body) : null;
       calls.push({ url: String(url), method: init.method, body });
+      const failure=connectionFailures[calls.length-1];
+      if(failure)throw new TypeError('fixture connection failure',{cause:{code:failure}});
       if (body?.novelai?.endpoint === '/ai/encode-vibe') return new Response(ENCODED, { headers: { 'Content-Type': 'application/octet-stream' } });
       return Response.json({ data: [{ b64_json: PNG.toString('base64') }] });
     },
@@ -43,6 +45,65 @@ async function fixture(t) {
 }
 
 function payload(model) { return buildRequest({ ...defaults(model), prompt: 'portrait', seed: 42 }); }
+
+test('a workbench connect timeout resumes the same job and saves exactly one result', async t => {
+  const f = await fixture(t, {connectionFailures:['UND_ERR_CONNECT_TIMEOUT']});
+  const submission = {clientRequestId:randomUUID(), payload:payload('nai-diffusion-5-full'), reconnectBeforeSend:true};
+  const route = '/api/generation-jobs/' + submission.clientRequestId;
+  assert.equal((await f.send('/api/generation-jobs','POST',submission)).status,202);
+  await until(async () => (await f.send(route)).data.phase==='reconnecting');
+  const repeated = await f.send('/api/generation-jobs','POST',submission);
+  assert.equal(repeated.data.id,submission.clientRequestId);
+  const job = await until(async () => {
+    const {data} = await f.send(route);
+    return data.status==='success'&&data;
+  });
+  assert.equal(job.reconnectAttempt,1);
+  assert.equal(f.calls.length,2);
+  assert.deepEqual(f.calls[1],f.calls[0]);
+  assert.deepEqual((await f.send('/api/history')).data.entries.map(entry=>entry.id),[job.result.id]);
+});
+
+for (const [name, failures, reconnectBeforeSend, attempts, billingUnknown] of [
+  ['an ambiguous reset', ['ECONNRESET'], true, 1, true],
+  ['a legacy submission', ['UND_ERR_CONNECT_TIMEOUT'], false, 1, false],
+  ['a second connect timeout', ['UND_ERR_CONNECT_TIMEOUT','UND_ERR_CONNECT_TIMEOUT'], true, 2, false],
+]) {
+  test(name+' ends the job without another dispatch', async t => {
+    const f = await fixture(t, {connectionFailures:failures});
+    const id = randomUUID();
+    assert.equal((await f.send('/api/generation-jobs','POST',{
+      clientRequestId:id,payload:payload('nai-diffusion-5-full'),reconnectBeforeSend,
+    })).status,202);
+    const job = await until(async () => {
+      const {data} = await f.send('/api/generation-jobs/'+id);
+      return data.status==='error'&&data;
+    });
+    assert.equal(f.calls.length,attempts);
+    assert.equal(job.error.billingUnknown,billingUnknown);
+    if(attempts===2)assert.match(job.error.message,/自动重连后仍未建立连接/);
+  });
+}
+
+test('stopping an Opus batch during reconnect cancels its unsent child and the rest', async t => {
+  const f = await fixture(t, {connectionFailures:['UND_ERR_CONNECT_TIMEOUT']});
+  assert.equal((await f.send('/api/anlas','POST',{action:'pricingPolicy',value:'opus'})).status,200);
+  const request=payload('nai-diffusion-5-full');
+  request.n=2;
+  request.novelai.body.parameters.n_samples=2;
+  const id=randomUUID(),route='/api/generation-jobs/'+id;
+  assert.equal((await f.send('/api/generation-jobs','POST',{
+    clientRequestId:id,payload:request,opusBatch:true,reconnectBeforeSend:true,
+  })).status,202);
+  await until(async () => (await f.send(route)).data.phase==='reconnecting');
+  assert.equal((await f.send(route+'/stop','POST',{})).status,200);
+  const job=await until(async () => {
+    const {data}=await f.send(route);
+    return data.status==='stopped'&&data;
+  });
+  assert.deepEqual(job.batch.items.map(item=>item.status),['not_submitted','not_submitted']);
+  assert.equal(f.calls.length,1);
+});
 async function until(check) { for (let i = 0; i < 150; i++) { const value = await check(); if (value) return value; await new Promise(resolve => setTimeout(resolve, 10)); } throw Error('Fixture state did not settle'); }
 
 test('V5 reference payloads are blocked before upstream on job, request and native routes', async t => {

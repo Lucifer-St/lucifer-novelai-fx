@@ -1,7 +1,26 @@
 import {Agent,fetch as undiciFetch} from 'undici';
+import {setTimeout as delay} from 'node:timers/promises';
 
 export const GENERATION_TIMEOUT_MS=600_000;
 export const GATEWAY_CONNECT_TIMEOUT_MS=30_000;
+
+export async function fetchWithConnectionRetry(fetchImpl, url, options, {canReconnect, onReconnect}) {
+ try {
+  return await fetchImpl(url, options);
+ } catch (error) {
+  const code = error.cause?.code || error.code;
+  // A connect timeout occurs before HTTP dispatch. A reset can occur after it.
+  if (code !== 'UND_ERR_CONNECT_TIMEOUT' || options.signal.aborted || !canReconnect?.()) throw error;
+  onReconnect();
+  try {
+   await delay(1000, undefined, {signal: options.signal});
+  } catch {
+   throw error;
+  }
+  if (options.signal.aborted || !canReconnect()) throw error;
+  return fetchImpl(url, options);
+ }
+}
 export const GATEWAY_AGENT_OPTIONS=Object.freeze({
   // Keep this gateway on HTTP/1.1; do not negotiate a different multiplexed path
   // or inherit the global Node fetch dispatcher's HTTP/2 replay behavior.

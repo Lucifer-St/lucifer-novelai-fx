@@ -599,7 +599,7 @@ export default function App() {
         if(anlas?.pricingPolicy==='paid')throw Error('当前计数规则是付费 / 额度用尽，不能提交 Opus 逐张模式。');
         planOpusBatch(payload);
       }
-      await submit(payload,{opusBatch:splitBatch,preventDuplicate:true});
+      await submit(payload,{opusBatch:splitBatch,preventDuplicate:true,reconnectBeforeSend:true});
     } catch (e) {
       setError(e.message);
     }

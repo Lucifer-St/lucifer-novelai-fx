@@ -1,5 +1,5 @@
 {
-  "version": "1.15.0",
+  "version": "1.15.1",
   "androidVersion": "1.13.0",
   "gitHistory": false,
   "license": "MIT",
@@ -603,12 +603,12 @@
     {
       "path": "package-lock.json",
       "bytes": 105025,
-      "sha256": "9bb3e1f979f947088f3335e28c6d78d9c5f22ad6f7bd89cee37d6b6a4840d2a0"
+      "sha256": "dd73e96621060e8e260d4de1de7890baf7b731d49986a70bf1dd15fe5e7a49cd"
     },
     {
       "path": "package.json",
       "bytes": 1249,
-      "sha256": "fbd7ca61718d03aaa9ef68f297a39a198d7dc1782cfd710dc92d4b681bdae515"
+      "sha256": "038b6768f3edb8c9649537f9371c3d5754f7796b9b9f192993b50cdc48b3a4ff"
     },
     {
       "path": "playwright.config.mjs",
@@ -877,8 +877,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 37948,
-      "sha256": "635c58c4e15a4be0da4658a95ee871f414e17724ac153ef4c7b15b3f96d00805"
+      "bytes": 38387,
+      "sha256": "bffd7e093ca64de1239abc0eb28466f8f30036a91bb009a51a33fba01722b344"
     },
     {
       "path": "scripts/apply-update.mjs",
@@ -1032,8 +1032,8 @@
     },
     {
       "path": "server/gateway-transport.mjs",
-      "bytes": 1086,
-      "sha256": "dfb74aa2c46987fcac1d63b014e085092ece8685a6cb94ea35271796ccc4fe73"
+      "bytes": 1761,
+      "sha256": "ddbd7b6df53b5c7ecf1714613924fa9ed00c617df2d33e3fa3f44eee1ac294e9"
     },
     {
       "path": "server/generation-duplicate.mjs",
@@ -1042,8 +1042,8 @@
     },
     {
       "path": "server/generation-jobs.mjs",
-      "bytes": 8397,
-      "sha256": "a44b49f441f240266830a2a28533afff8f773b90c81456091453f907bfdfa5b1"
+      "bytes": 8912,
+      "sha256": "185c24f6963ae9e6026a3393c820e33d260d3e743f192f4f4d5f4946d7b5c501"
     },
     {
       "path": "server/history-index.mjs",
@@ -1057,8 +1057,8 @@
     },
     {
       "path": "server/index.mjs",
-      "bytes": 76941,
-      "sha256": "b92b6cc5c71ea6878e115d396c05aad479f10c6d092f55ecd774b6810814ce27"
+      "bytes": 77513,
+      "sha256": "502027988ecdf216bff7cca809326b3fc3bf091374c1eb1f28c6a376849e8b44"
     },
     {
       "path": "server/interrupted-usage.mjs",
@@ -1123,7 +1123,7 @@
     {
       "path": "shared/release-config.mjs",
       "bytes": 357,
-      "sha256": "bd8b472fafd4fda51694564c657bb0979c9aa28c8d0673013b5f603bb155b545"
+      "sha256": "951ba3854bc130ea8928f088c69c4c678a7ddc5d43e8ceef5c3ad47c048307d6"
     },
     {
       "path": "shared/schema.json",
@@ -1132,8 +1132,8 @@
     },
     {
       "path": "src/App.jsx",
-      "bytes": 89382,
-      "sha256": "2d660ee2c52c18592925e98fb3d813da0f4b6fcb1814671ff15580ccf688c707"
+      "bytes": 89406,
+      "sha256": "ef610f3ca4f502e324437c0d5a9e782dbb0075ed97a4ceeac1162f5dafb82aba"
     },
     {
       "path": "src/appearance.css",
@@ -1272,8 +1272,8 @@
     },
     {
       "path": "src/components/GenerationProgress.jsx",
-      "bytes": 1289,
-      "sha256": "e702feb22f3f843a63881eb430611dd0fb8fa84278e179969ec40d421d916a3d"
+      "bytes": 1377,
+      "sha256": "afbeefe22759995aa3b07e966e4d7ed44f3b9bb2878f80ceb2fc5280102f4752"
     },
     {
       "path": "src/components/GlossaryPanel.jsx",
@@ -1492,8 +1492,8 @@
     },
     {
       "path": "src/hooks/useGenerationJob.js",
-      "bytes": 3633,
-      "sha256": "f2127c70a7c2487b813746f0a088fa2377d9b9fdb530b3cbc6835e29341b45df"
+      "bytes": 3727,
+      "sha256": "b4a9ba00019cd85fa0bbcf49ca8def56db0d49e156365f77e5a4a7b9eca7c17f"
     },
     {
       "path": "src/hooks/usePanelLayout.js",
@@ -1687,8 +1687,8 @@
     },
     {
       "path": "src/lib/release-notes.mjs",
-      "bytes": 14861,
-      "sha256": "c05af933558a43d5730ae87660f7686f018c53c98da15975960dba065b9ec762"
+      "bytes": 15388,
+      "sha256": "f26c489b6ad95f15b79dcd7bfe93876f330a9c72747d4ab918c7dcd8adfa26ae"
     },
     {
       "path": "src/lib/request.mjs",
@@ -2007,8 +2007,8 @@
     },
     {
       "path": "tests/model-server.test.mjs",
-      "bytes": 6915,
-      "sha256": "6d59a0af6f16af944db1f5bfecc979873dff1792aedf3be5e097290e86cb2f56"
+      "bytes": 10125,
+      "sha256": "dea91ac6a89f00fb1e81e3fc7246dbfbdb207568110f4fcf9f82648ec378be3a"
     },
     {
       "path": "tests/model-switch-ui.spec.mjs",

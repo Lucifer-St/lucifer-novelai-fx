@@ -26,7 +26,7 @@ import { unzipSync } from "fflate";
 import {createFeatures} from './features.mjs';
 import {createLocalStore,FeatureError} from './local-store.mjs';
 import {createGenerationJobs} from './generation-jobs.mjs';
-import {createGatewayTransport,GENERATION_TIMEOUT_MS,GATEWAY_CONNECT_TIMEOUT_MS} from './gateway-transport.mjs';
+import {createGatewayTransport,fetchWithConnectionRetry,GENERATION_TIMEOUT_MS,GATEWAY_CONNECT_TIMEOUT_MS} from './gateway-transport.mjs';
 import {
   nativeRecipe,
   recipeForImage,
@@ -326,7 +326,11 @@ export function createStudioServer(options = {}) {
     })});
   const generationJobs=createGenerationJobs({directory:path.join(dataDir,'generation-jobs'),timeoutMs:options.generationJobTimeoutMs||timeoutMs,isBusy:()=>storageChanging||generationBusy||!!features.comparisons.active,
     authorizeBatch:async()=>{if((await features.anlas.get()).pricingPolicy==='paid')throw new RequestError(400,'opus_unavailable','当前计数规则是付费 / 额度用尽，不能提交 Opus 逐张模式。');},
-    run:(payload,job)=>generationLease(()=>callGateway('/v1/images/generations',{body:payload,metadata:job.batch?{batch:job.batch}:undefined,signal:job.signal,onProgress:job.onProgress,onEvent:job.onEvent,preventDuplicate:job.preventDuplicate,requestTimeoutMs:job.timeoutMs}))});
+    run:(payload,job)=>generationLease(()=>callGateway('/v1/images/generations',{
+      body:payload,metadata:job.batch?{batch:job.batch}:undefined,signal:job.signal,
+      onProgress:job.onProgress,onEvent:job.onEvent,preventDuplicate:job.preventDuplicate,
+      requestTimeoutMs:job.timeoutMs,canReconnect:job.canReconnect,
+    }))});
   const libraryCleanup=createLibraryCleanup({dataDir,historyStore,index:generatedLibrary,paths:async()=>{await refreshStorage();return {resultDir,outputDir,storageRoots};},lease:async(run,automatic)=>{
     if(storageChanging||generationBusy||generationJobs.active||features.comparisons.active||inflightMutations>(automatic?0:1))throw new RequestError(409,'generation_busy','生成或其他操作期间不能清理图库，请等待任务结束。');
     storageChanging=true;try{await generatedLibrary.settle();return await run();}finally{storageChanging=false;}
@@ -653,6 +657,7 @@ export function createStudioServer(options = {}) {
       onEvent,
       metadata = {},
       preventDuplicate = false,
+      canReconnect,
     } = {},
   ) {
     // The current aggregator charges suggest-tags through its image wrapper.
@@ -732,7 +737,7 @@ export function createStudioServer(options = {}) {
         );
       controller.signal.throwIfAborted();contacted = true;
       report({phase:'connecting',submittedAt:new Date().toISOString()});
-      const response = await gatewayFetch(target, {
+      const response = await fetchWithConnectionRetry(gatewayFetch, target, {
         method,
         headers: {
           Authorization: `Bearer ${key}`,
@@ -742,6 +747,9 @@ export function createStudioServer(options = {}) {
         body: mapped.body !== undefined ? JSON.stringify(mapped.body) : undefined,
         redirect: "manual",
         signal: controller.signal,
+      }, {
+        canReconnect,
+        onReconnect:()=>report({phase:'reconnecting',reconnectAttempt:1}),
       });
       entry.requestId = response.headers.get("x-request-id")
         ? redact(response.headers.get("x-request-id"), key)
@@ -1007,7 +1015,15 @@ export function createStudioServer(options = {}) {
               { billingUnknown: contacted&&chargeable },
             );
       error.message = redact(error.message, key);
-      if(connectFailed){error.code='gateway_connect_timeout';error.status=504;error.billingUnknown=false;error.message=chargeable?`未能在 ${GATEWAY_CONNECT_TIMEOUT_MS/1000} 秒内建立连接；本次请求未发出，没有自动重试。`:'连接未建立；本次只读查询未完成。';}
+      if(connectFailed){
+        error.code=signal?.aborted?'request_cancelled':'gateway_connect_timeout';
+        error.status=504;
+        error.billingUnknown=false;
+        if(!chargeable)error.message='连接未建立；本次只读查询未完成。';
+        else if(signal?.aborted)error.message='已停止连接，本次生图请求未发出。';
+        else if(transport.reconnectAttempt)error.message='自动重连后仍未建立连接，本次生图请求未发出。';
+        else error.message=`未能在 ${GATEWAY_CONNECT_TIMEOUT_MS/1000} 秒内建立连接；本次请求未发出，没有自动重试。`;
+      }
       if(!chargeable)error.billingUnknown=false;
       error.requestId ||= entry.requestId;
       error.aggregationRequestId ||= entry.aggregationRequestId;
