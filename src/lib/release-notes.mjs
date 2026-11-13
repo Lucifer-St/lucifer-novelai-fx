@@ -1,7 +1,7 @@
 import {RELEASE_CONFIG} from '../../shared/release-config.mjs';
 import {isAndroid} from './platform.mjs';
-const WINDOWS_NOTES={version:RELEASE_CONFIG.version,title:'更新说明',date:'2026-11-11',features:[
- {title:'跑图自动重连',description:'首次连接超时且确认生成请求尚未发出时，工作台会自动重连一次，用原任务的提示词、参数和种子继续。画布会显示「正在自动重连网关」，无需再点生成。'},
+const WINDOWS_NOTES={version:RELEASE_CONFIG.version,title:'更新说明',date:'2026-11-13',features:[
+ {title:'跑图支持连续重连',description:'确认生成请求尚未发出时，工作台在原任务时限内自动重连，间隔逐步拉长。画布会显示重连次数，连上后用原参数继续，无需再点生成。默认时限为 10 分钟，可以主动停止。'},
  {title:'断线后接回原任务',description:'网页与本地服务短暂断开后会接回原任务进度。若请求可能已经被上游接收，任务会停下并保留错误提示，以免重复出图和扣费。逐张生成在等待重连时也可以停止。'},
  {title:'提示词角落一键清空',description:'主提示词和每个角色的正、负面框都加入垃圾桶图标，放在原有底部工具行右侧，避开文字、滚动条与拖拽柄。只清空当前框，空内容和输入法组词期间禁用。'},
  {title:'清空也能撤销',description:'清空后可用 Ctrl / ⌘ + Z 恢复文字与关联卡片；其他提示词、角色开关和生成参数保持原状。普通标签与合并折叠布局均支持。'},

@@ -749,7 +749,7 @@ export function createStudioServer(options = {}) {
         signal: controller.signal,
       }, {
         canReconnect,
-        onReconnect:()=>report({phase:'reconnecting',reconnectAttempt:1}),
+        onReconnect:reconnectAttempt=>report({phase:'reconnecting',reconnectAttempt}),
       });
       entry.requestId = response.headers.get("x-request-id")
         ? redact(response.headers.get("x-request-id"), key)
@@ -1021,7 +1021,8 @@ export function createStudioServer(options = {}) {
         error.billingUnknown=false;
         if(!chargeable)error.message='连接未建立；本次只读查询未完成。';
         else if(signal?.aborted)error.message='已停止连接，本次生图请求未发出。';
-        else if(transport.reconnectAttempt)error.message='自动重连后仍未建立连接，本次生图请求未发出。';
+        else if(timedOut&&transport.reconnectAttempt)error.message='已到任务等待时限，仍未建立连接，本次生图请求未发出。';
+        else if(transport.reconnectAttempt)error.message='连接未建立，重连已停止，本次生图请求未发出。';
         else error.message=`未能在 ${GATEWAY_CONNECT_TIMEOUT_MS/1000} 秒内建立连接；本次请求未发出，没有自动重试。`;
       }
       if(!chargeable)error.billingUnknown=false;

@@ -4,7 +4,7 @@ export default function GenerationProgress({job,error,onStop}){
  return <div className="generation-progress-detail" aria-label="生成请求状态">
   <strong>{job.status==='failed'?'最后阶段：':''}{phases[job.phase]||'正在处理请求'}</strong>
   <span>{job.requestId?`网关请求 ${job.requestId} · `:''}{job.receivedBytes>0?`已收到 ${(job.receivedBytes/1024).toFixed(1)} KB`:'尚未收到完整图片'}</span>
-  <small>{error||(job.status==='failed'?'本次任务已结束，不会自动重新提交。':job.phase==='reconnecting'?'上一次连接未建立，正在继续同一笔任务。':`刷新页面后可接回原任务，最多等待 ${Math.round((job.timeoutMs||600000)/60000)} 分钟。`)}</small>
+  <small>{error||(job.status==='failed'?'本次任务已结束，不会自动重新提交。':job.phase==='reconnecting'?`第 ${job.reconnectAttempt||1} 次重连，连上后继续原任务。`:`刷新页面后可接回原任务，最多等待 ${Math.round((job.timeoutMs||600000)/60000)} 分钟。`)}</small>
   {job.status==='running'&&!job.batch&&<button type="button" onClick={onStop} aria-label="停止接收（上游状态可能未知）" title="只停止本地接收，上游可能继续生成或计费。不会自动重试。">停止接收</button>}
  </div>;
 }

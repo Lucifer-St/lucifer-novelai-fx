@@ -5,20 +5,25 @@ export const GENERATION_TIMEOUT_MS=600_000;
 export const GATEWAY_CONNECT_TIMEOUT_MS=30_000;
 
 export async function fetchWithConnectionRetry(fetchImpl, url, options, {canReconnect, onReconnect}) {
- try {
-  return await fetchImpl(url, options);
- } catch (error) {
-  const code = error.cause?.code || error.code;
-  // A connect timeout occurs before HTTP dispatch. A reset can occur after it.
-  if (code !== 'UND_ERR_CONNECT_TIMEOUT' || options.signal.aborted || !canReconnect?.()) throw error;
-  onReconnect();
+ let reconnectAttempt = 0;
+ let pauseMs = 1000;
+ while (true) {
   try {
-   await delay(1000, undefined, {signal: options.signal});
-  } catch {
-   throw error;
+   return await fetchImpl(url, options);
+  } catch (error) {
+   const code = error.cause?.code || error.code;
+   // Each connect timeout establishes that this attempt sent no HTTP request.
+   if (code !== 'UND_ERR_CONNECT_TIMEOUT' || options.signal.aborted || !canReconnect?.()) throw error;
+   onReconnect(++reconnectAttempt);
+   try {
+    await delay(pauseMs, undefined, {signal: options.signal});
+   } catch {
+    // During the wait the last attempt is still known to be unsent.
+    throw error;
+   }
+   if (options.signal.aborted || !canReconnect()) throw error;
+   pauseMs = Math.min(pauseMs * 2, 8000);
   }
-  if (options.signal.aborted || !canReconnect()) throw error;
-  return fetchImpl(url, options);
  }
 }
 export const GATEWAY_AGENT_OPTIONS=Object.freeze({
