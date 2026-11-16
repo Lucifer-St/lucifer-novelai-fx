@@ -26,7 +26,7 @@ import { unzipSync } from "fflate";
 import {createFeatures} from './features.mjs';
 import {createLocalStore,FeatureError} from './local-store.mjs';
 import {createGenerationJobs} from './generation-jobs.mjs';
-import {createGatewayTransport,fetchWithConnectionRetry,GENERATION_TIMEOUT_MS,GATEWAY_CONNECT_TIMEOUT_MS} from './gateway-transport.mjs';
+import {createGatewayTransport,fetchWithConnectionRetry,isRetryablePreSendFailure,GENERATION_TIMEOUT_MS,GATEWAY_CONNECT_TIMEOUT_MS} from './gateway-transport.mjs';
 import {
   nativeRecipe,
   recipeForImage,
@@ -329,7 +329,7 @@ export function createStudioServer(options = {}) {
     run:(payload,job)=>generationLease(()=>callGateway('/v1/images/generations',{
       body:payload,metadata:job.batch?{batch:job.batch}:undefined,signal:job.signal,
       onProgress:job.onProgress,onEvent:job.onEvent,preventDuplicate:job.preventDuplicate,
-      requestTimeoutMs:job.timeoutMs,canReconnect:job.canReconnect,
+      requestTimeoutMs:job.timeoutMs,canReconnect:job.canReconnect,retryBeforeSend:job.retryBeforeSend,
     }))});
   const libraryCleanup=createLibraryCleanup({dataDir,historyStore,index:generatedLibrary,paths:async()=>{await refreshStorage();return {resultDir,outputDir,storageRoots};},lease:async(run,automatic)=>{
     if(storageChanging||generationBusy||generationJobs.active||features.comparisons.active||inflightMutations>(automatic?0:1))throw new RequestError(409,'generation_busy','生成或其他操作期间不能清理图库，请等待任务结束。');
@@ -658,6 +658,7 @@ export function createStudioServer(options = {}) {
       metadata = {},
       preventDuplicate = false,
       canReconnect,
+      retryBeforeSend,
     } = {},
   ) {
     // The current aggregator charges suggest-tags through its image wrapper.
@@ -749,6 +750,7 @@ export function createStudioServer(options = {}) {
         signal: controller.signal,
       }, {
         canReconnect,
+        retryBeforeSend,
         onReconnect:reconnectAttempt=>report({phase:'reconnecting',reconnectAttempt}),
       });
       entry.requestId = response.headers.get("x-request-id")
@@ -989,6 +991,7 @@ export function createStudioServer(options = {}) {
     } catch (cause) {
       const networkCode=cause?.cause?.code||cause?.code;
       const connectFailed=!entry.upstreamStatus&&networkCode==='UND_ERR_CONNECT_TIMEOUT';
+      const unsentFailure=!entry.upstreamStatus&&isRetryablePreSendFailure(cause);
       const error =
         cause instanceof RequestError
           ? cause
@@ -1025,11 +1028,19 @@ export function createStudioServer(options = {}) {
         else if(transport.reconnectAttempt)error.message='连接未建立，重连已停止，本次生图请求未发出。';
         else error.message=`未能在 ${GATEWAY_CONNECT_TIMEOUT_MS/1000} 秒内建立连接；本次请求未发出，没有自动重试。`;
       }
+      if(unsentFailure){
+        error.billingUnknown=false;
+        const failure = networkCode.includes('CERT')||networkCode.startsWith('UNABLE_TO_')
+          ? 'TLS 证书校验未通过' : '连接未建立';
+        error.message=chargeable?`${failure}，本次生图请求未发出。`:`${failure}，本次只读查询未完成。`;
+        if(chargeable&&signal?.aborted)error.message='已停止重试，本次生图请求未发出。';
+        else if(chargeable&&timedOut)error.message='已到任务等待时限，本次生图请求未发出。';
+      }
       if(!chargeable)error.billingUnknown=false;
       error.requestId ||= entry.requestId;
       error.aggregationRequestId ||= entry.aggregationRequestId;
       error.upstreamStatus ??= entry.upstreamStatus;
-      error.diagnostics={...transport,elapsedMs:Date.now()-started,...(typeof networkCode==='string'&&/^[A-Z0-9_]{1,50}$/.test(networkCode)?{networkCode}:{}),...(connectFailed?{requestSent:false,connectTimeoutMs:GATEWAY_CONNECT_TIMEOUT_MS}:{}),abortedByClient,cancelled:!!signal?.aborted,timedOut};
+      error.diagnostics={...transport,elapsedMs:Date.now()-started,...(typeof networkCode==='string'&&/^[A-Z0-9_]{1,50}$/.test(networkCode)?{networkCode}:{}),...((connectFailed||unsentFailure)?{requestSent:false}:{}),...(connectFailed?{connectTimeoutMs:GATEWAY_CONNECT_TIMEOUT_MS}:{}),abortedByClient,cancelled:!!signal?.aborted,timedOut};
       entry.diagnostics=error.diagnostics;
       const detail = {
         message: error.message,
@@ -1237,6 +1248,7 @@ export function createStudioServer(options = {}) {
           generationBusy,
           activeComparison: features.comparisons.active,
           generationJobs:true,
+          retryBeforeSend:true,
           gatewayTransport:!options.fetchImpl?{protocol:'http/1.1',requestDeadlineMs:timeoutMs,connectTimeoutMs:GATEWAY_CONNECT_TIMEOUT_MS,headersTimeoutMs:0,bodyTimeoutMs:0,automaticRetry:false}:{protocol:'injected'},
           opusBatch:true,
           remoteTagsEnabled:false,

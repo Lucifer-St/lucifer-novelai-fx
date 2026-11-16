@@ -201,6 +201,7 @@ export default function App() {
     [undoApply,setUndoApply] = useState(null),
     [showComparison,setShowComparison] = useState(true);
   const [opusBatch,setOpusBatch]=useState(()=>{try{return localStorage.getItem('lucifer-opus-batch-enabled-v1')==='true';}catch{return false;}});
+  const [retryUnsent,setRetryUnsent]=useState(()=>{try{return localStorage.getItem('lucifer-retry-unsent-v1')==='true';}catch{return false;}});
   const [batchJob,setBatchJob]=useState(null),batchDelivered=useRef(new Set());
   const [shareSettings,setShareSettings]=useState(null),[basicMode,setBasicMode]=useState(true);
   const [releaseOpen,setReleaseOpen]=useState(()=>needsReleaseNotes(localStorage));
@@ -265,6 +266,10 @@ export default function App() {
   useEffect(()=>{let cancelled=false;let id;try{id=localStorage.getItem('lucifer-last-opus-batch-v1');}catch{}if(/^[a-f0-9-]{36}$/.test(id||''))api('/api/generation-jobs/'+id).then(job=>{let remembered;try{remembered=localStorage.getItem('lucifer-last-opus-batch-v1');}catch{}if(!cancelled&&job.batch&&remembered===id)setBatchJob(current=>current||job);}).catch(()=>{});return()=>{cancelled=true;};},[]);
   function dismissBatchResults(){if(!batchJob||['queued','running','stopping'].includes(batchJob.status))return;setBatchJob(null);try{if(localStorage.getItem('lucifer-last-opus-batch-v1')===batchJob.id)localStorage.removeItem('lucifer-last-opus-batch-v1');}catch{}}
   function changeOpusBatch(value){setOpusBatch(value);try{localStorage.setItem('lucifer-opus-batch-enabled-v1',String(value));}catch{}}
+  function changeRetryUnsent(value){
+    setRetryUnsent(value);
+    try{localStorage.setItem('lucifer-retry-unsent-v1',String(value));}catch{}
+  }
   function selectBatchResult(result){followResults.current=false;setEditingPositions(false);setViewPending(false);setViewSource(false);setShowComparison(false);setSelected(result);setIndex(0);imageViewer.current?.fit();}
   const lastSuggestionMode=useRef('local');
   useEffect(()=>{try{localStorage.setItem(TAG_MODE_KEY,suggestionMode);localStorage.setItem(TAG_SOURCE_KEY,'local');}catch{}},[suggestionMode]);
@@ -599,7 +604,8 @@ export default function App() {
         if(anlas?.pricingPolicy==='paid')throw Error('当前计数规则是付费 / 额度用尽，不能提交 Opus 逐张模式。');
         planOpusBatch(payload);
       }
-      await submit(payload,{opusBatch:splitBatch,preventDuplicate:true,reconnectBeforeSend:true});
+      await submit(payload,{opusBatch:splitBatch,preventDuplicate:true,reconnectBeforeSend:true,
+        retryBeforeSend:!androidLayout&&status?.retryBeforeSend&&retryUnsent});
     } catch (e) {
       setError(e.message);
     }
@@ -1028,9 +1034,12 @@ export default function App() {
                   <ThemeGenerateFrame skin={appearance.workbenchSkin}/><ExstiaGenerateBadge skin={appearance.workbenchSkin}/>
                   <GenerationCostBadge skin={appearance.workbenchSkin} amount={totalQuote} busy={busy||comparison.busy} comparison={comparison.config.enabled} policy={anlas?.pricingPolicy||'opus'}/>
                 </button>
+                {!androidLayout&&status?.retryBeforeSend&&!comparison.config.enabled&&
+                  <Toggle label="失败后自动重试" checked={retryUnsent} onChange={changeRetryUnsent}
+                    disabled={busy||comparison.busy} help="仅在确认请求未发送时重试。"/>}
                 <small>
                   {busy
-                    ? "请求已提交，请等待；不会自动重试。"
+                    ? "任务进行中，进度见画布。"
                     : connection.blocked || (connection.modelPhase==='error'?'网关连接尚未确认；生成只会在你点击后提交一次。':'') || (comparison.config.enabled?`${comparison.config.mode} × ${comparison.config.rounds} 轮 · 每方案 1 张 · 串行生成`:`${state.n} 张 · ${state.width} × ${state.height} · 费用以上游实际结算为准`)}
                 </small>
               </div>
