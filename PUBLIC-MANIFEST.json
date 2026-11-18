@@ -1,5 +1,5 @@
 {
-  "version": "1.15.3",
+  "version": "1.15.4",
   "androidVersion": "1.13.0",
   "gitHistory": false,
   "license": "MIT",
@@ -603,12 +603,12 @@
     {
       "path": "package-lock.json",
       "bytes": 105025,
-      "sha256": "87f64a661ac33ff7a704bdf541f34e0ea7abd228fc1d5c718054dfd27b58d059"
+      "sha256": "8425f73ffe9370e7fc8326d5d125c5d97be3b7486b14a5aabe3a5f829a02890e"
     },
     {
       "path": "package.json",
       "bytes": 1249,
-      "sha256": "01678748fba6b3219b7ec91873f4b279df51cdac950ad3ee78b806ad5a17c055"
+      "sha256": "e77b4f1acb078955587bbbf3a0a53d9b285d4b327cbcf2e6056a276dae0d4940"
     },
     {
       "path": "playwright.config.mjs",
@@ -877,8 +877,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 39347,
-      "sha256": "d632aa869621ec692d31b32a27e4090068ec25d8060eebc13faaf9d3f7cff35c"
+      "bytes": 39630,
+      "sha256": "ba790384c0e9f1326c6ff0062150f140b4d892b863e6b7e9057e49a59ae3ed5f"
     },
     {
       "path": "scripts/apply-update.mjs",
@@ -1123,7 +1123,7 @@
     {
       "path": "shared/release-config.mjs",
       "bytes": 357,
-      "sha256": "0feae291f8213fbf4436db2ee0e87772dfd40e504245c9f51699932eecb7eb0d"
+      "sha256": "4b9641d89b369e2ab460610b89f9474b0966748f98ea47c9edfa8bf131824e48"
     },
     {
       "path": "shared/schema.json",
@@ -1132,8 +1132,8 @@
     },
     {
       "path": "src/App.jsx",
-      "bytes": 90056,
-      "sha256": "d1ff1914d160023e4ef7e6605d0593c2dd2c7f2e67dadc8b319aa73f1ed129fb"
+      "bytes": 90377,
+      "sha256": "4649394f3a3ec10af728ca8498b69391bee9bcef86016382cf705cf75d80d25a"
     },
     {
       "path": "src/appearance.css",
@@ -1687,8 +1687,8 @@
     },
     {
       "path": "src/lib/release-notes.mjs",
-      "bytes": 15684,
-      "sha256": "7cbb81911c22996b05e55faad8938dca27384327b79feca32758dcc2a4c9842d"
+      "bytes": 15654,
+      "sha256": "afa67813829b7777a7133b4902c48640299f964bdd83c47e7c694f8322afad19"
     },
     {
       "path": "src/lib/request.mjs",
@@ -1747,8 +1747,8 @@
     },
     {
       "path": "src/position-layout.css",
-      "bytes": 6134,
-      "sha256": "62011becc18e1fdd01a3553bca8ed497c9cbed9152fd26b0022c8540c8176984"
+      "bytes": 6362,
+      "sha256": "4f5c8d8dbd3dd80debd6f4fb576d6fa035981f27a56fd8b962ca4252133ae2fc"
     },
     {
       "path": "src/prompt-layout.css",

@@ -1016,7 +1016,17 @@ export default function App() {
               </div>
               </div>
               <div className="generate-dock">
-                <div className="prompt-dock-options"><Toggle label="自动添加质量标签" checked={editState.quality} onChange={v=>update('quality',v)}/>{tab==='prompt'&&<button className="text-button" onClick={addCharacter}><Plus size={13}/>添加角色</button>}</div>
+                <div className="prompt-dock-options">
+                  {!androidLayout&&status?.retryBeforeSend&&!comparison.config.enabled&&(
+                    <label className="toggle retry-before-send" title="仅在确认请求未发送时重试。">
+                      <input type="checkbox" checked={retryUnsent} disabled={busy||comparison.busy}
+                        aria-description="仅在确认请求未发送时重试。" onChange={event=>changeRetryUnsent(event.target.checked)}/>
+                      <span>失败后自动重试</span>
+                    </label>
+                  )}
+                  <Toggle label="自动添加质量标签" checked={editState.quality} onChange={v=>update('quality',v)}/>
+                  {tab==='prompt'&&<button className="text-button" onClick={addCharacter}><Plus size={13}/>添加角色</button>}
+                </div>
                 <button
                   className="primary generate"
                   aria-label={generateLabel}
@@ -1034,9 +1044,6 @@ export default function App() {
                   <ThemeGenerateFrame skin={appearance.workbenchSkin}/><ExstiaGenerateBadge skin={appearance.workbenchSkin}/>
                   <GenerationCostBadge skin={appearance.workbenchSkin} amount={totalQuote} busy={busy||comparison.busy} comparison={comparison.config.enabled} policy={anlas?.pricingPolicy||'opus'}/>
                 </button>
-                {!androidLayout&&status?.retryBeforeSend&&!comparison.config.enabled&&
-                  <Toggle label="失败后自动重试" checked={retryUnsent} onChange={changeRetryUnsent}
-                    disabled={busy||comparison.busy} help="仅在确认请求未发送时重试。"/>}
                 <small>
                   {busy
                     ? "任务进行中，进度见画布。"
