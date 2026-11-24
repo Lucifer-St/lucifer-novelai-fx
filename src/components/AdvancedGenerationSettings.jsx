@@ -1,15 +1,16 @@
+import {isMediumEffort,MEDIUM_LOCKED_PARAMETERS,requestModel} from '../lib/model-policy.mjs';
 import {Select, Slider, Toggle, JsonField} from './Fields';
 import AdvancedFields from './AdvancedFields';
 export default function AdvancedGenerationSettings({state:s,update,onJSON}) {
  return <div className="generation-advanced">
       <details>
         <summary>高级采样与输出</summary>
-        <Slider
+        {!isMediumEffort(s)&&<Slider
           label="PGR · Prompt Guidance Rescale"
           tooltip="重新缩放提示词引导，缓解高 Guidance 带来的过度饱和与生硬边缘。"
           value={s.cfg_rescale}
           onChange={(v) => update("cfg_rescale", v)}
-        />
+        />}
         <Toggle
           label="原生流式生成"
           checked={s.stream}
@@ -39,7 +40,8 @@ export default function AdvancedGenerationSettings({state:s,update,onJSON}) {
           当前模型。
         </p>
         <AdvancedFields
-          model={s.model}
+          model={requestModel(s)}
+          locked={isMediumEffort(s)?MEDIUM_LOCKED_PARAMETERS:undefined}
           values={s.overrides}
           onChange={(v) => update("overrides", v)}
         />

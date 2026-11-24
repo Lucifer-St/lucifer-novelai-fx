@@ -3,7 +3,7 @@ import {useState} from 'react';
 import {changeGenerationMode} from '../lib/generation-mode.mjs';
 import { ArrowLeftRight, Dices } from "lucide-react";
 import { NumberField, Select, Slider, Toggle } from "./Fields";
-import {isV45,modelSpec} from '../lib/model-policy.mjs';
+import {isV45,modelSpec,isMediumEffort,requestModel} from '../lib/model-policy.mjs';
 import ReferencePanel from './ReferencePanel';
 
 const sizes = [
@@ -26,6 +26,8 @@ const samplers = [
 
 export default function SettingsPanel({ state: s, update, setState, onJSON, comparisonEnabled=false,suggestionMode='off',onSuggestionMode,onToggleSuggestions }) {
   const [settingsTab,setSettingsTab]=useState("parameters");
+  const medium=isMediumEffort(s);
+  const effectiveModel=requestModel(s);
   const referenceTab=isV45(s.model)&&settingsTab==="reference";
   const setSize = (width, height) => setState((v) => ({ ...v, width, height }));
   let extension = {};
@@ -63,7 +65,7 @@ export default function SettingsPanel({ state: s, update, setState, onJSON, comp
       </div>
       {s.mode === "infill" && (
         <small className="compatibility-note">
-          使用 {modelSpec(s.model).name} Inpainting。白色区域重新生成，其余保留。
+          使用 {modelSpec(effectiveModel).name} Inpainting。白色区域重新生成，其余保留。
         </small>
       )}
       {isV45(s.model)&&<div className="segment" role="group" aria-label="V4.5 设置栏目"><button type="button" aria-pressed={!referenceTab} className={!referenceTab?"selected":""} onClick={()=>setSettingsTab("parameters")}>参数</button><button type="button" aria-pressed={referenceTab} className={referenceTab?"selected":""} onClick={()=>setSettingsTab("reference")}>参考图</button></div>}
@@ -127,14 +129,14 @@ export default function SettingsPanel({ state: s, update, setState, onJSON, comp
         />:<p className="hint">对照模式每个方案生成 1 张；总量由对照轮数决定。</p>}
       </section>
       <div className="advanced-creation-fields"><section>
-        <Slider
+        {!medium&&<Slider
           label="采样步数 Steps"
           value={s.steps}
           min={1}
           max={150}
           step={1}
           onChange={(v) => update("steps", v)}
-        />
+        />}
         <Slider
           label="引导强度 Guidance"
           value={s.scale}
@@ -143,13 +145,13 @@ export default function SettingsPanel({ state: s, update, setState, onJSON, comp
           step={0.1}
           onChange={(v) => update("scale", v)}
         />
-        <Slider label="PGR · Prompt Guidance Rescale" value={s.cfg_rescale} min={0} max={1} step={0.01} onChange={v=>update("cfg_rescale",v)} tooltip="重新缩放提示词引导，缓解高 Guidance 带来的过度饱和与生硬边缘。"/>
-        <Select
+        {!medium&&<Slider label="PGR · Prompt Guidance Rescale" value={s.cfg_rescale} min={0} max={1} step={0.01} onChange={v=>update("cfg_rescale",v)} tooltip="重新缩放提示词引导，缓解高 Guidance 带来的过度饱和与生硬边缘。"/>}
+        {!medium&&<Select
           label="采样器 Sampler"
           value={s.sampler}
           options={samplers}
           onChange={(v) => update("sampler", v)}
-        />
+        />}
         {isV45(s.model)?<Select label="噪声调度" value={s.noise_schedule} options={['native','karras','exponential','polyexponential']} onChange={v=>update('noise_schedule',v)}/>:<div className="fixed-schedule">
           <span>噪声调度</span>
           <code>Karras</code>
@@ -187,13 +189,13 @@ export default function SettingsPanel({ state: s, update, setState, onJSON, comp
           />
         </section>
       )}
-      {!isV45(s.model)&&<Toggle
+      {!isV45(effectiveModel)&&<Toggle
         label="Transparent BG · 透明背景"
         checked={!!transparent}
         onChange={setTransparent}
         help="提交时添加 transparent background，保留编辑区原文；手写的透明背景标签不会自动移除。"
       />}
-      {!isV45(s.model)&&<details className="v5-text-settings"><summary>画面文字 · V5</summary><label htmlFor="v5-image-text">需要画在图中的文字</label><textarea id="v5-image-text" value={s.imageText||''} onChange={e=>update('imageText',e.target.value)} placeholder="原文会加入最终 Text: 区块"/><Toggle label="提取引号内文字" checked={s.autoText} onChange={v=>update('autoText',v)} help="生成前整理成 Text:，不改写编辑区原文；手写 Text: 时以手写内容为准。"/></details>}
+      {!isV45(effectiveModel)&&<details className="v5-text-settings"><summary>画面文字 · V5</summary><label htmlFor="v5-image-text">需要画在图中的文字</label><textarea id="v5-image-text" value={s.imageText||''} onChange={e=>update('imageText',e.target.value)} placeholder="原文会加入最终 Text: 区块"/><Toggle label="提取引号内文字" checked={s.autoText} onChange={v=>update('autoText',v)} help="生成前整理成 Text:，不改写编辑区原文；手写 Text: 时以手写内容为准。"/></details>}
       </div>
 <section className="suggestion-settings">
         <Toggle label="开启关联词建议" checked={suggestionMode!=='off'} onChange={onToggleSuggestions} help="候选显示在 Prompt 下方，不遮挡正文。"/>

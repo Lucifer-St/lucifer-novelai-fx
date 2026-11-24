@@ -11,7 +11,7 @@ import {
   parseObject,
   buildRequest,
 } from "./request.mjs";
-import { modelSpec, switchModel } from "./model-policy.mjs";
+import { modelSpec, switchModel, CURATED_V5, MEDIUM_V5, isMediumWireModel, MEDIUM_LOCKED_PARAMETERS } from "./model-policy.mjs";
 import {splitQualityPrompt,splitNegativePreset,officialPresetHint} from './official-presets.mjs';
 
 // Format references: https://github.com/NovelAI/novelai-image-metadata/blob/main/nai_meta.py
@@ -344,6 +344,7 @@ function sourceModelSpec(value) {
   try { return modelSpec(value); } catch { /* Human-readable PNG metadata follows. */ }
   const label = value.toLowerCase();
   if (/v4[.]5/.test(label) && /(?:full|curated)/.test(label)) return modelSpec(`nai-diffusion-4-5-${/curated/.test(label) ? 'curated' : 'full'}`);
+  if (/\bv5\b/.test(label) && /curated/.test(label)) return modelSpec(CURATED_V5);
   if (/\bv5\b/.test(label) && /full/.test(label)) return modelSpec(MODEL_ID);
   return null;
 }
@@ -375,6 +376,7 @@ export function normalizeImageMetadata(rawInput, info = {}) {
   const src = native?.parameters || comment;
   const sourceModel = native?.model || src.model_name || src.model || "";
   const sourceSpec = sourceModelSpec(sourceModel);
+  const medium = isMediumWireModel(sourceModel) || (sourceSpec?.id===MODEL_ID && /\bmedium\b/i.test(sourceModel));
   if (
     typeof sourceModel === "string" &&
     sourceModel &&
@@ -456,7 +458,7 @@ export function normalizeImageMetadata(rawInput, info = {}) {
         novelai: {
           endpoint: "/ai/generate-image",
           body: {
-             model: sourceSpec?.id || MODEL_ID,
+             model: medium ? MEDIUM_V5 : sourceSpec?.id || MODEL_ID,
             input: prompt ?? "",
             action: "generate",
             parameters,
@@ -664,12 +666,14 @@ export function applyMetadata(current, metadata, options = {}) {
     };
   }
   if (selected.settings) {
+    next.effort = incoming.effort;
     next.quarantinedParameters = {
       ...current.quarantinedParameters,
       ...quarantineEntries(metadata.excludedParameters || {}, "图片元数据"),
     };
     for (const [key, value] of Object.entries(p)) {
       if (parameterGroup(key) !== "settings") continue;
+      if (incoming.effort==='medium' && MEDIUM_LOCKED_PARAMETERS.has(key)) continue;
       delete overrides[key];
       delete extra[key];
       if (CONTROL_MAP[key]) next[CONTROL_MAP[key]] = value;

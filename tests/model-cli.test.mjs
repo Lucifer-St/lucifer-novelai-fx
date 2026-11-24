@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { runCLI } from '../scripts/fx.mjs';
 import { createMcpHandler } from '../scripts/fx-mcp.mjs';
 
-const models = ['nai-diffusion-5-full', 'nai-diffusion-4-5-full', 'nai-diffusion-4-5-curated'];
+const models = ['nai-diffusion-5-full', 'nai-diffusion-5-curated', 'nai-diffusion-4-5-full', 'nai-diffusion-4-5-curated'];
 
 test('CLI defaults, schema and plan are model-aware and offline', async () => {
   let calls = 0;
@@ -19,13 +19,13 @@ test('CLI defaults, schema and plan are model-aware and offline', async () => {
     assert.equal(plan.payload.novelai.body.parameters.params_version, 4);
     const noQuality = (await runCLI(['plan', '--model', model, '--prompt', 'portrait', '--no-quality'], options)).data.payload.novelai.body.parameters;
     assert.equal(noQuality.qualityToggle, false);
-    assert.equal(noQuality.tag_hint_qt, model === 'nai-diffusion-5-full' ? 0 : undefined);
+    assert.equal(noQuality.tag_hint_qt, model.startsWith('nai-diffusion-5-') ? 0 : undefined);
   }
   assert.equal(calls, 0);
-  await assert.rejects(runCLI(['plan', '--model', 'nai-diffusion-5-curated', '--prompt', 'room'], options), /模型必须/);
+  await assert.rejects(runCLI(['plan', '--model', 'nai-diffusion-3', '--prompt', 'room'], options), /模型必须/);
 });
 
-test('MCP offline planning supports the same three models and rejects unsupported ones', async () => {
+test('MCP offline planning supports the same four models and rejects unsupported ones', async () => {
   const handle = createMcpHandler({ fetchImpl: () => { throw Error('network not allowed'); } });
   await handle({ jsonrpc: '2.0', id: 1, method: 'initialize', params: {} });
   for (const model of models) {
@@ -34,6 +34,11 @@ test('MCP offline planning supports the same three models and rejects unsupporte
     const plan = JSON.parse(reply.result.content[0].text);
     assert.equal(plan.payload.model, model);
   }
-  const rejected = await handle({ jsonrpc: '2.0', id: 3, method: 'tools/call', params: { name: 'fx_plan', arguments: { state: { model: 'nai-diffusion-5-curated', prompt: 'room' } } } });
+  const medium = await handle({jsonrpc:'2.0',id:4,method:'tools/call',params:{
+    name:'fx_plan',arguments:{state:{model:models[0],effort:'medium',prompt:'a quiet room',seed:42}},
+  }});
+  assert.equal(medium.result.isError,false);
+  assert.equal(JSON.parse(medium.result.content[0].text).payload.novelai.body.model,'nai-diffusion-5-full-medium');
+  const rejected = await handle({ jsonrpc: '2.0', id: 3, method: 'tools/call', params: { name: 'fx_plan', arguments: { state: { model: 'nai-diffusion-3', prompt: 'room' } } } });
   assert.equal(rejected.result.isError, true);
 });

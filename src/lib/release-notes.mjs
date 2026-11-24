@@ -1,6 +1,8 @@
 import {RELEASE_CONFIG} from '../../shared/release-config.mjs';
 import {isAndroid} from './platform.mjs';
-const WINDOWS_NOTES={version:RELEASE_CONFIG.version,title:'更新说明',date:'2026-11-18',features:[
+const WINDOWS_NOTES={version:RELEASE_CONFIG.version,title:'更新说明',date:'2026-11-23',features:[
+ {title:'新增 V5 Curated 模型',description:'在图像模型菜单选择 V5 Curated。默认仍是 V5 Full。使用 V5 Curated 时，局部重绘会采用 V4.5 Curated。'},
+ {title:'V5 Full 新增 Effort',description:'在模型菜单下切换 Medium 或 High，默认 High。Medium 固定 14 步、Euler Ancestral 和 Heavy 负面预设，仍可调整引导强度。切回 High 会恢复原有设置与负面词。'},
  {title:'重试开关移到质量标签左侧',description:'「失败后自动重试」现在与「自动添加质量标签」同排，位于生成按钮上方。原有开关偏好继续生效，仅对确认未发送的请求重试。'},
  {title:'跑图支持连续重连',description:'确认生成请求尚未发出时，工作台在原任务时限内自动重连，间隔逐步拉长。画布会显示重连次数，连上后用原参数继续，无需再点生成。默认时限为 10 分钟，可以主动停止。'},
  {title:'断线后接回原任务',description:'网页与本地服务短暂断开后会接回原任务进度。若请求可能已经被上游接收，任务会停下并保留错误提示，以免重复出图和扣费。逐张生成在等待重连时也可以停止。'},

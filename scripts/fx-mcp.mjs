@@ -13,7 +13,7 @@ const text={type:'string'},uuid={type:'string',pattern:'^[a-fA-F0-9-]{36}$'};
 const tool=(name,description,inputSchema,readOnlyHint=true)=>({name,description,inputSchema,annotations:{readOnlyHint,destructiveHint:name==='fx_job_stop',idempotentHint:readOnlyHint,openWorldHint:name==='fx_generate'}});
 export const MCP_TOOLS=[
  tool('fx_status','读取正在运行的本机 Lucifer FX 状态，不访问网关。',object()),
- tool('fx_defaults','读取 V5 Full 或 V4.5 编辑参数模板。',object({model:text})),
+ tool('fx_defaults','读取 V5 或 V4.5 编辑参数模板。',object({model:text})),
  tool('fx_schema','读取受支持参数 schema。',object()),
  tool('fx_plan','离线验证参数，冻结 seed 和任务 ID。不会生图。',object({state:{type:'object'},opusBatch:{type:'boolean'}},['state'])),
  tool('fx_generate','仅在用户明确要求生图时，提交 fx_plan 返回的冻结计划一次。可能计费，不自动重试；回执不明确时先按原 ID 查询。',object({plan:{type:'object'}},['plan']),false),
@@ -32,7 +32,7 @@ function checkId(id,history=false){if(!(history?/^\d+-[a-f0-9-]+$/:UUID).test(id
 function validatePlan(plan){
  if(plan?.format!=='lucifer-fx-plan'||plan.version!==1||typeof plan.opusBatch!=='boolean')throw Error('需要 fx_plan 返回的冻结计划。');
  checkId(plan.clientRequestId);const body=plan.payload?.novelai?.body;
-  if(!MODEL_IDS.includes(plan.payload?.model)||!body||!['generate','img2img','infill'].includes(body.action))throw Error('只支持 V5 Full 或 V4.5 生图计划。');
+  if(!MODEL_IDS.includes(plan.payload?.model)||!body||!['generate','img2img','infill'].includes(body.action))throw Error('只支持 V5 或 V4.5 生图计划。');
   validateModelPayload(plan.payload);
  if(Object.keys(body.parameters||{}).some(k=>NEVER_SEND_PARAMETERS.has(k)))throw Error('计划含禁止转发的测试参数。');
  if(!Number.isInteger(body.parameters?.seed)||body.parameters.seed<0)throw Error('计划需要已冻结的非负 seed，请重新调用 fx_plan。');

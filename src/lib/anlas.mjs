@@ -1,5 +1,7 @@
 import provenance from '../../shared/anlas-pricing.json' with {type:'json'};
+import {CURATED_V5,DEFAULT_MODEL,isMediumWireModel} from './model-policy.mjs';
 export {provenance as pricingProvenance};
+export const usesV5Opus = model=>model===DEFAULT_MODEL||model===CURATED_V5||model===DEFAULT_MODEL+'-inpainting'||isMediumWireModel(model);
 export function priceKey(payload){
  const body=payload?.novelai?.body||{},p=body.parameters||payload?.novelai?.parameters||{};
  const endpoint=payload?.novelai?.endpoint||'/ai/generate-image';
@@ -9,7 +11,7 @@ export function opusEligibility(payload){
  const body=payload?.novelai?.body||{},p=body.parameters||{};
  const model=body.model||payload?.model,endpoint=payload?.novelai?.endpoint,count=Number(p.n_samples??payload?.n??1);
  const v45=/^nai-diffusion-4-5-(?:full|curated)(?:-inpainting)?$/.test(model||'');
- const supported=(v45||['nai-diffusion-5-full','nai-diffusion-5-full-inpainting'].includes(model))
+ const supported=(v45||usesV5Opus(model))
    &&['/ai/generate-image','/ai/generate-image-stream'].includes(endpoint)
    &&['generate','img2img','infill'].includes(body.action||'generate')
    &&!p.upscale&&!p.sm&&!p.sm_dyn&&!p.characterRef&&!p.reference_image
@@ -43,7 +45,13 @@ export function quoteAnlas(payload,calibrations=[],{policy='opus'}={}){
  if(found){paidPerImage=found.amount;source='manual_calibration';}
  else if(eligibility.supported&&[p.width,p.height,p.steps].every(v=>Number.isFinite(v)&&v>0)&&Number.isInteger(count)&&count>=1&&count<=8){
   const strength=p.mask?Number(p.inpaintImg2ImgStrength??1):body.action==='img2img'||p.image?Number(p.strength):1;
-  if(Number.isFinite(strength)&&strength>=0&&strength<=1){const pixels=p.width*p.height,base=Math.ceil(2.951823174884865e-6*pixels+5.753298233447344e-7*pixels*p.steps);paidPerImage=Math.max(Math.ceil(base*1.5*strength),2);source='official_v5_paid_estimate';}
+  if(Number.isFinite(strength)&&strength>=0&&strength<=1){
+   const pixels=p.width*p.height, medium=isMediumWireModel(model);
+   const base=2.951823174884865e-6*pixels+5.753298233447344e-7*pixels*(medium?23:p.steps);
+   // Current NovelAI client prices Medium at the 23-step base divided by 1.75 before rounding.
+   paidPerImage=Math.max(Math.ceil((medium?base/1.75:Math.ceil(base))*1.5*strength),2);
+   source=medium?'official_v5_medium_estimate':'official_v5_paid_estimate';
+  }
  }
  if(paidPerImage===undefined)return {known:false,amount:null,perImage:null,source:'unverified',label:'暂无法估算',reason:'此操作尚未核对；可以手动记录官网单张价格。'};
  // Official GI subtracts one eligible sample; a two-image batch still pays for one.

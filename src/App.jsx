@@ -5,7 +5,7 @@ import {quoteComparisonTotal} from './lib/generation-cost.mjs';
 import usePromptLayout from './hooks/usePromptLayout';
 import {openLocalFolder} from './lib/local-files.mjs';
 import {changeGenerationMode,restoreGenerationMode,cleanComparisonMode} from './lib/generation-mode.mjs';
-import {modelSpec,switchModel,isV45} from './lib/model-policy.mjs';
+import {modelSpec,switchModel,isV45,requestModel,snapCharacterCoordinate} from './lib/model-policy.mjs';
 import ModelChooser from './components/ModelChooser';
 import useReferenceDrafts from './hooks/useReferenceDrafts';
 import useAppUpdate from './hooks/useAppUpdate';
@@ -275,8 +275,8 @@ export default function App() {
   useEffect(()=>{try{localStorage.setItem(TAG_MODE_KEY,suggestionMode);localStorage.setItem(TAG_SOURCE_KEY,'local');}catch{}},[suggestionMode]);
   function setSuggestionMode(mode){setSuggestionModeState(mode==='off'?'off':'local');}
   function positionCharacterOnCanvas(id){update('coords',true);setPositionCharacter(id);setEditingPositions(true);setMobile('canvas');}
-  function moveCharacter(id,point){comparison.setEffective(s=>{const pos=isV45(s.model)?Object.fromEntries(Object.entries(point).map(([key,value])=>[key,Math.max(.1,Math.min(.9,Math.round((value-.1)/.2)*.2+.1))])):point;return {...s,characters:s.characters.map(c=>c.id===id?{...c,...pos}:c)};});}
-  function addCharacter(){const max=modelSpec(editState.model).webCapabilities.maxCharacters;if(editState.characters.length>=max){setError(`当前模型最多支持 ${max} 个角色。`);return;}update('characters',[...editState.characters,{id:crypto.randomUUID(),prompt:'',negative:'',x:.5,y:.5,enabled:true}]);setTab('characters');setMobile('prompt');}
+  function moveCharacter(id,point){comparison.setEffective(s=>{const pos=isV45(requestModel(s))?Object.fromEntries(Object.entries(point).map(([key,value])=>[key,snapCharacterCoordinate(value)])):point;return {...s,characters:s.characters.map(c=>c.id===id?{...c,...pos}:c)};});}
+  function addCharacter(){const max=modelSpec(requestModel(editState)).webCapabilities.maxCharacters;if(editState.characters.length>=max){setError(`当前模型最多支持 ${max} 个角色。`);return;}update('characters',[...editState.characters,{id:crypto.randomUUID(),prompt:'',negative:'',x:.5,y:.5,enabled:true}]);setTab('characters');setMobile('prompt');}
   function changeModel(id){comparison.disarm();setState(s=>switchModel(s,id));setEditingPositions(false);setNotice('已切换到 '+modelSpec(id).name+'；参考图设置按模型独立保留，未提交生成。');}
   useReferenceDrafts(state,setState,setError);
   useEffect(()=>{if(!editState.coords)setEditingPositions(false);},[editState.coords]);
@@ -982,7 +982,8 @@ export default function App() {
             <aside className="left-panel">
               <div className="left-panel-content">
               {!narrowWorkbench&&<ThemePromptHeader skin={appearance.workbenchSkin}/>}
-              <ModelChooser value={state.model} onChange={changeModel}/>
+              <ModelChooser value={state.model} onChange={changeModel} effort={editState.effort} mode={state.mode}
+                onEffort={effort=>update('effort',effort)}/>
               <div className="left-scroll">
                 <PromptPanel
                   active={page==='studio'} layout={promptLayout.preferences} onToggleMain={promptLayout.toggleMain} onToggleCharacter={promptLayout.toggleCharacter} onToggleField={promptLayout.toggleField}
@@ -1071,7 +1072,7 @@ export default function App() {
                   <ImageViewControls interaction={imageInteraction} onInteraction={setImageInteraction} viewer={imageViewer} scale={viewScale} enabled={Boolean(activeImage&&!editingPositions&&!(comparison.record&&showComparison)&&!(state.mode!=="generate"&&viewSource))} focused={viewerFocused} onFocus={()=>{setMobile('canvas');setViewerFocused(value=>!value);}}/>
                 </div>
               </div>
-              {editingPositions?<div className="canvas position-mode"><CharacterPositionCanvas grid={isV45(editState.model)} key={comparison.config.enabled?comparison.variant:"A"} width={editState.width} height={editState.height} characters={editState.characters} selectedId={positionCharacter} onSelect={setPositionCharacter} onMove={moveCharacter} onFinish={()=>setEditingPositions(false)}/></div>:comparison.record&&showComparison?<ComparisonBoard comparison={comparison} onSelect={r=>{followResults.current=false;setViewPending(false);setSelected(r);setIndex(0);setShowComparison(false);}} onSave={saveResult}/>:<div
+              {editingPositions?<div className="canvas position-mode"><CharacterPositionCanvas grid={isV45(requestModel(editState))} key={comparison.config.enabled?comparison.variant:"A"} width={editState.width} height={editState.height} characters={editState.characters} selectedId={positionCharacter} onSelect={setPositionCharacter} onMove={moveCharacter} onFinish={()=>setEditingPositions(false)}/></div>:comparison.record&&showComparison?<ComparisonBoard comparison={comparison} onSelect={r=>{followResults.current=false;setViewPending(false);setSelected(r);setIndex(0);setShowComparison(false);}} onSave={saveResult}/>:<div
                 className={`canvas ${state.mode !== "generate" ? "source-mode" : ""}`}
               >
                 {viewPending && pending ? <PendingImage job={pending} elapsed={elapsed} streamEvents={streamEvents} streamImage={streamImage} appearance={pendingAppearance} connectionError={remoteJob.connectionError} onStop={remoteJob.stop}/> : state.mode !== "generate" && viewSource ? (

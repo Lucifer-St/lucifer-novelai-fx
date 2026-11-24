@@ -1,6 +1,6 @@
 import {buildRequest,validateRequest,newSeed} from './request.mjs';
 import {opusEligibility} from './anlas.mjs';
-export const COMPARISON_FIELDS=['prompt','negative','promptCards','negativeCards','characters','coords','quality','qualityPreset','steps','scale','sampler','cfg_rescale','strength','noise','overrides','extraJSON'];
+export const COMPARISON_FIELDS=['prompt','negative','promptCards','negativeCards','characters','coords','quality','qualityPreset','steps','scale','sampler','cfg_rescale','strength','noise','overrides','extraJSON','effort'];
 export function comparisonDefaults(saved={}){return {version:1,enabled:false,noAnlas:!!saved.noAnlas,mode:saved.mode==='AB'?'AB':'ABC',rounds:1,locked:saved.locked!==false,overrides:{B:saved.overrides?.B||{},C:saved.overrides?.C||{}}};}
 export function variantState(base,config,variant='A'){
  if(variant==='A')return base;const changes=config.overrides?.[variant]||{};

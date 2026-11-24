@@ -1,10 +1,10 @@
-import {opusEligibility} from './anlas.mjs';
+import {opusEligibility,usesV5Opus} from './anlas.mjs';
 import {schema,validateRequest} from './request.mjs';
 
 // This is a parameter gate, not an upstream billing guarantee.
 export function planOpusBatch(payload){
  const body=payload?.novelai?.body,p=body?.parameters,count=p?.n_samples;
- if(body?.model!=='nai-diffusion-5-full'||body.action!=='generate'||!['/ai/generate-image','/ai/generate-image-stream'].includes(payload?.novelai?.endpoint))throw Error('逐张模式目前只支持 V5 Full 普通文生图。');
+ if(!usesV5Opus(body?.model)||body.action!=='generate'||!['/ai/generate-image','/ai/generate-image-stream'].includes(payload?.novelai?.endpoint))throw Error('逐张模式目前只支持 V5 普通文生图。');
  if(!Number.isInteger(count)||count<2||count>8)throw Error('多图逐张模式需要 2–8 张图片。');
  if(Object.keys(body).some(k=>!['model','action','input','parameters'].includes(k)))throw Error('逐张模式不接受未核验的原生请求扩展。');
  if(Object.keys(payload.novelai).some(k=>!['body','endpoint','response'].includes(k)))throw Error('逐张模式不接受额外网关覆盖参数。');

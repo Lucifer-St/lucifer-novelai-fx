@@ -1,8 +1,8 @@
-import {quoteAnlas,opusEligibility} from './anlas.mjs';
+import {quoteAnlas,opusEligibility,usesV5Opus} from './anlas.mjs';
 export const OPUS_ESTIMATE_VERSION='official-faq-1730-reference-v1';
 export function opusEstimate(payload,policy){
  const model=payload?.novelai?.body?.model||payload?.model;
- if(!['nai-diffusion-5-full','nai-diffusion-5-full-inpainting'].includes(model))return {percent:null,source:OPUS_ESTIMATE_VERSION,reason:'V4.5 不消耗 V5 Opus 用量额度'};
+ if(!usesV5Opus(model))return {percent:null,source:OPUS_ESTIMATE_VERSION,reason:'此模型不纳入 V5 Opus 用量估算'};
  const q=quoteAnlas(payload,[],{policy}),eligible=opusEligibility(payload);
  if(policy!=='opus'||!eligible.qualifies)return {percent:null,source:OPUS_ESTIMATE_VERSION,reason:'无法确认此请求消耗 Opus 免费额度'};
  return {percent:(q.paidPerImage/26)*(100/1730),source:OPUS_ESTIMATE_VERSION,reason:'按官方约 1730 张标准图片满额度参考折算；非实际扣量'};

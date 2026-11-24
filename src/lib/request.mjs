@@ -1,7 +1,7 @@
 import schema from "../../shared/schema.json" with { type: "json" };
-import {DEFAULT_MODEL,modelSpec,isV45,isReferenceParameter,validateModelPayload} from './model-policy.mjs';
+import {DEFAULT_MODEL,MODEL_IDS,modelSpec,isV45,isReferenceParameter,validateModelPayload,requestModel,isMediumEffort,isMediumWireModel,MEDIUM_STEPS,MEDIUM_SAMPLER,MEDIUM_UC,MEDIUM_LOCKED_PARAMETERS,parameterSupported,snapCharacterCoordinate} from './model-policy.mjs';
 import {compilePrompt} from './prompt-text.mjs';
-import {qualitySuffix,splitQualityPrompt,splitNegativePreset,officialPresetHint} from './official-presets.mjs';
+import {changeNegativeModel,qualitySuffix,splitQualityPrompt,splitNegativePreset,officialPresetHint} from './official-presets.mjs';
 import {
   PARAMETER_POLICY_VERSION,
   partitionParameters,
@@ -27,6 +27,7 @@ export function defaults(model = MODEL_ID) {
     p = spec.defaultParameters;
   return {
     model: spec.id,
+    effort: isMediumWireModel(model)?'medium':'high',
     mode: "generate",
     prompt: "",
     promptCards: [],
@@ -123,15 +124,31 @@ function condition(base, state, negative = false) {
     },
   };
 }
+function snapCaptionCenters(condition) {
+  const caption = condition?.caption;
+  if (!Array.isArray(caption?.char_captions)) return condition;
+  return {...condition,caption:{...caption,char_captions:caption.char_captions.map(character=>{
+    if(!Array.isArray(character.centers))return character;
+    return {...character,centers:character.centers.map(center=>({
+      ...center,x:snapCharacterCoordinate(center.x),y:snapCharacterCoordinate(center.y),
+    }))};
+  })}};
+}
 export function buildRequest(state, { resolveSeed = false } = {}) {
-  const s = state,
-    spec = modelSpec(s.model);
+  const model = requestModel(state), spec = modelSpec(model);
+  const fallback = modelSpec(state.model).v5 && !spec.v5;
+  const s = fallback ? {...state,
+    negative: changeNegativeModel(state.negative,state.model,spec.id),
+  } : state;
+  const medium = isMediumEffort(s);
   if (typeof s.prompt !== "string") throw new Error("正面提示词必须是文本。");
   const explicit = {
     ...partitionParameters(s.overrides || {}).accepted,
     ...explicitParameters(parseObject(s.extraJSON || "{}", "扩展参数")),
   };
   rejectIncomplete(explicit);
+  if(medium)for(const key of MEDIUM_LOCKED_PARAMETERS)delete explicit[key];
+  if(fallback)for(const key of Object.keys(explicit))if(!parameterSupported(spec.id,key))delete explicit[key];
   if(isV45(s.model)){
     const referenceKeys=Object.keys(explicit).filter(isReferenceParameter);
     if(referenceKeys.length&&(!s.referenceMode||s.referenceMode==='off'))throw Error('参考图已关闭，请先选择参考图模式或移除专家 JSON 中的参考图参数。');
@@ -188,15 +205,25 @@ export function buildRequest(state, { resolveSeed = false } = {}) {
   }
   // Scalar overrides are applied before captions and quality tags are derived.
   Object.assign(p, explicit);
+  if(fallback||medium)p.params_version=spec.defaultParameters.params_version;
+  if(medium)Object.assign(p,{
+    steps:MEDIUM_STEPS,sampler:MEDIUM_SAMPLER,noise_schedule:'karras',cfg_rescale:0,
+    ucPreset:0,negative_prompt:MEDIUM_UC,
+  });
   const suffix=p.qualityToggle?qualitySuffix(spec.id,s.qualityPreset):'';
   const prompt = spec.v5?compilePrompt(s.prompt,{qualitySuffix:suffix,transparent:p.tag_hint_transparent_background,imageText:s.imageText||'',autoText:s.autoText}):s.prompt+(suffix&&!s.prompt.endsWith(suffix)?suffix:'');
   if (!has(explicit, "v4_prompt")) p.v4_prompt = condition(prompt, s);
   if (!has(explicit, "v4_negative_prompt"))
-    p.v4_negative_prompt = condition(p.negative_prompt, s, true);
+    p.v4_negative_prompt = condition(p.negative_prompt, medium?{...s,
+      characters:s.characters.map(c=>({...c,negative:''})),
+    }:s, true);
+  if(fallback){
+    p.v4_prompt=snapCaptionCenters(p.v4_prompt);
+    p.v4_negative_prompt=snapCaptionCenters(p.v4_negative_prompt);
+  }
   if (spec.v5&&!has(explicit, "tag_hint_qt")) p.tag_hint_qt = p.qualityToggle ? officialPresetHint(s.qualityPreset==='light'?'light':'standard') : 0;
   if (spec.v5&&!has(explicit, "tag_hint_uc_preset")) p.tag_hint_uc_preset = officialPresetHint(splitNegativePreset(p.negative_prompt,spec.id).preset);
   if (p.seed === -1 && resolveSeed) p.seed = newSeed();
-  const model = s.mode === "infill" ? spec.inpaintingModel : spec.id;
   const body = {
     ...s.nativeBodyExtras,
     model,
@@ -213,7 +240,7 @@ export function buildRequest(state, { resolveSeed = false } = {}) {
     p.stream = p.stream || "sse";
   }
   if (p.image_format === "webp") native.response = "raw";
-  return validateModelPayload({ model: spec.id, response_format: s.output, novelai: native });
+  return validateModelPayload({ model: s.model, response_format: s.output, novelai: native });
 }
 function validateType(value, definition, path) {
   if (!definition) return;
@@ -440,7 +467,8 @@ export function stateFromPayload(payload) {
     throw new Error("此请求不是可恢复的生图配方；可在 API 工作台中打开。");
   const p = b.parameters,
     sourceSpec = modelSpec(b.model || payload.model),
-    s = defaults(sourceSpec.id);
+    s = defaults(b.model || payload.model);
+  const editorModel = payload.model && MODEL_IDS.includes(payload.model) ? payload.model : sourceSpec.id;
   const chars = p.v4_prompt?.caption?.char_captions || [],
     negChars = p.v4_negative_prompt?.caption?.char_captions || [];
   let prompt = p.v4_prompt?.caption?.base_caption ?? b.input ?? "";
@@ -452,7 +480,7 @@ export function stateFromPayload(payload) {
   if(sourceSpec.v5&&overrides.tag_hint_uc_preset===officialPresetHint(splitNegativePreset(p.v4_negative_prompt?.caption?.base_caption??p.negative_prompt,sourceSpec.id).preset))delete overrides.tag_hint_uc_preset;
   return recoverParameterState({
     ...s,
-    model: sourceSpec.id,
+    model: editorModel,
     mode: b.action || "generate",
     prompt,
     negative:

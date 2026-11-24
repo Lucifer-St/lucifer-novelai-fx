@@ -52,7 +52,7 @@ function number(value,name,{min,max,integer=false}={}){
 }
 function uuid(value){if(!UUID.test(value||''))usage('需要本地任务／库条目的 UUID，不是网关的六位请求编号。');return value.toLowerCase();}
 function historyId(value){if(!HISTORY_ID.test(value||''))usage('需要历史记录 ID，例如 1790000000000-ab123456。');return value;}
-function selectedModel(value){if(!MODEL_IDS.includes(value||MODEL_ID))usage('模型必须为 V5 Full、V4.5 Full 或 V4.5 Curated。');return modelSpec(value||MODEL_ID);}
+function selectedModel(value){if(!MODEL_IDS.includes(value||MODEL_ID))usage('模型必须为 V5 或 V4.5 的 Full / Curated。');return modelSpec(value||MODEL_ID);}
 async function inputText(file,stdin){
  if(file==='-'){const chunks=[];let bytes=0;for await(const part of stdin){const chunk=Buffer.from(part);bytes+=chunk.length;if(bytes>MAX_JSON)usage('输入超过 32 MiB。');chunks.push(chunk);}return Buffer.concat(chunks).toString('utf8').replace(/^\uFEFF/,'');}
  if((await stat(file)).size>MAX_JSON)usage('输入文件超过 32 MiB。');return (await readFile(file,'utf8')).replace(/^\uFEFF/,'');
@@ -67,7 +67,7 @@ async function makePlan(v,stdin){
   if(generationFlags.some(k=>v[k]!==undefined))usage('--plan 不能与参数覆盖选项同时使用；请先创建新计划。');
   const plan=await inputJSON(v.plan,stdin);if(plan.format!=='lucifer-fx-plan'||plan.version!==1)usage('不是 FX CLI 计划文件。');plan.clientRequestId=uuid(plan.clientRequestId);
   if(typeof plan.opusBatch!=='boolean')usage('计划的 opusBatch 必须为布尔值。');
-  const body=plan.payload?.novelai?.body;if(!MODEL_IDS.includes(plan.payload?.model)||!body||!['generate','img2img','infill'].includes(body.action))usage('计划必须是受支持的 V5 Full 或 V4.5 生图请求。');
+  const body=plan.payload?.novelai?.body;if(!MODEL_IDS.includes(plan.payload?.model)||!body||!['generate','img2img','infill'].includes(body.action))usage('计划必须是受支持的 V5 或 V4.5 生图请求。');
   validateModelPayload(plan.payload);
   if(Object.keys(body.parameters||{}).some(k=>NEVER_SEND_PARAMETERS.has(k)))usage('计划包含禁止转发的旧测试参数，请重新准备计划。');
   validateRequest(stateFromPayload(plan.payload),plan.payload);if(plan.opusBatch)planOpusBatch(plan.payload);return plan;
@@ -85,7 +85,7 @@ async function makePlan(v,stdin){
  for(const [provided,key] of [[v.prompt!==undefined||!!v['prompt-file'],'v4_prompt'],[v.negative!==undefined||!!v['negative-file'],'v4_negative_prompt']])if(provided&&(extra[key]||state.overrides?.[key]))usage(`状态含完整 ${key} 覆盖，请在状态文件中修改该字段，避免覆盖其中的角色信息。`);
  for(const name of ['width','height','steps','scale','seed','count'])if(v[name]!==undefined){const n=number(v[name],name);state[name==='count'?'n':name]=n;extra[name==='count'?'n_samples':name]=n;}
  if(v.negative!==undefined||v['negative-file'])extra.negative_prompt=state.negative;
- if(v.sampler){state.sampler=v.sampler;extra.sampler=v.sampler;}if(v['no-quality']){state.quality=false;extra.qualityToggle=false;if(spec.id===MODEL_ID)extra.tag_hint_qt=0;}if(v['transparent-bg'])extra.tag_hint_transparent_background=true;
+ if(v.sampler){state.sampler=v.sampler;extra.sampler=v.sampler;}if(v['no-quality']){state.quality=false;extra.qualityToggle=false;if(spec.v5)extra.tag_hint_qt=0;}if(v['transparent-bg'])extra.tag_hint_transparent_background=true;
  state.extraJSON=JSON.stringify(extra);
  const payload=buildRequest(state,{resolveSeed:true});validateRequest(state,payload);
  const opusBatch=!!v['opus-batch'],requests=opusBatch?planOpusBatch(payload).length:1;

@@ -1,3 +1,4 @@
+import {MODEL_IDS} from '../lib/model-policy.mjs';
 import {useCallback,useEffect,useRef,useState} from 'react';
 
 export async function startupJSON(url,{signal,timeoutMs=8000}={}){
@@ -28,7 +29,7 @@ export default function useStudioConnection(){
   setGatewayError('');
   active.current.models?.abort();const controller=new AbortController();active.current.models=controller;
   setModelPhase('loading');setModelError('');setModelHTTP(null);
-  try{const data=await startupJSON('/api/models',{signal:controller.signal,timeoutMs:12000});if(controller.signal.aborted)return;if(!Array.isArray(data.data))throw Error('模型列表格式无效');setModels(data.data.filter(m=>m.id==='nai-diffusion-5-full'));setModelPhase('ready');}
+  try{const data=await startupJSON('/api/models',{signal:controller.signal,timeoutMs:12000});if(controller.signal.aborted)return;if(!Array.isArray(data.data))throw Error('模型列表格式无效');setModels(data.data.filter(m=>MODEL_IDS.includes(m.id)));setModelPhase('ready');}
   catch(e){if(!controller.signal.aborted){setModelPhase('error');setModelError(e.message);setModelHTTP(e.status||null);}}
  },[]);
  useEffect(()=>{checkLocal();checkModels();return()=>{active.current.local?.abort();active.current.models?.abort();};},[checkLocal,checkModels]);

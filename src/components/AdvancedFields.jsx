@@ -8,7 +8,7 @@ const resolve = (s) =>
     : s.allOf
       ? { ...resolve(s.allOf[0]), ...s }
       : s;
-export default function AdvancedFields({ values, onChange, model }) {
+export default function AdvancedFields({ values, onChange, model, locked }) {
   const [search, setSearch] = useState("");
   const set = (k, v) => onChange({ ...values, [k]: v });
   const remove = (k) => {
@@ -29,7 +29,7 @@ export default function AdvancedFields({ values, onChange, model }) {
         onChange={(e) => setSearch(e.target.value)}
       />
       {Object.entries(schema.imageParameters)
-        .filter(([key])=>!model||parameterSupported(model,key))
+        .filter(([key])=>!locked?.has(key)&&(!model||parameterSupported(model,key)))
         .filter(([k]) => k.toLowerCase().includes(search.toLowerCase()))
         .map(([key, raw]) => {
           const s = resolve(raw),

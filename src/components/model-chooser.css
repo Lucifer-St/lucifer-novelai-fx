@@ -6,3 +6,34 @@
 .app .model-chooser-control select:focus-visible{outline:2px solid var(--fx-accent,#548bcb);outline-offset:2px}
 .model-chooser-control>svg{position:absolute;right:11px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--fx-muted,#74869b)}
 @media(max-width:900px){.app .left-panel .model-chooser{padding:10px 15px 8px}}
+.app .left-panel .model-effort{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;padding:0 18px 10px;margin:0;font-size:11px;color:var(--fx-muted,#74869b)}
+.model-effort-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--fx-line, #dce5ef);
+  border-radius: 8px;
+  background: var(--fx-tint, #eff5fd);
+}
+.model-effort-toggle > span { padding: 0 8px; }
+.app .model-effort-toggle > button {
+  min-height: 30px;
+  padding: 0 10px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--fx-muted, #5a6e86);
+  font: inherit;
+  font-weight: 600;
+  box-shadow: none;
+}
+.app .model-effort-toggle > button[aria-pressed="true"] {
+  background: var(--fx-field, #fff);
+  border-color: var(--fx-line, #cfdef0);
+  color: var(--fx-text, #29435e);
+}
+.app .model-effort-toggle > button:focus-visible {
+  outline: 2px solid var(--fx-accent, #548bcb);
+  outline-offset: 2px;
+}

@@ -25,7 +25,7 @@ const quality={
  'nai-diffusion-4-5-full':{standard:', location, very aesthetic, masterpiece, no text'},
  'nai-diffusion-4-5-curated':{standard:', location, masterpiece, no text, -0.8::feet::, rating:general'},
 };
-const id=model=>model.replace(/-inpainting$/,'');
+const id=model=>model.replace(/-inpainting$/,'').replace(/^nai-diffusion-5-(?:curated|full-medium)$/,'nai-diffusion-5-full');
 // Official public client 787d312-production, module 15512 (2026-09-25).
 // The wire hint enum differs from legacy ucPreset array indexes.
 export const officialPresetHint=preset=>({none:0,standard:1,heavy:2,light:3,human:4,furry:5})[preset];
