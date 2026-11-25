@@ -1127,8 +1127,8 @@
     },
     {
       "path": "shared/schema.json",
-      "bytes": 67561,
-      "sha256": "7bdd32392f5e784d244d6dd6e62646fe8668438a7a0d5cbaa05c44f0ca8176ec"
+      "bytes": 65156,
+      "sha256": "34ccd33a1e38ccb78f913d27c083dd64ad771831249af38484e7ee75b052a3a5"
     },
     {
       "path": "src/App.jsx",
