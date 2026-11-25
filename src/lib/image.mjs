@@ -103,9 +103,34 @@ function drawingSurface(width, height) {
   return { canvas, context };
 }
 
+// V5 uses 64-pixel buckets. The entries are min/max heights in units of 64 for widths 4–16.
+const preciseBuckets = [
+  [52,64],[43,51],[37,42],[33,36],[29,32],[26,28],[24,25],
+  [22,23],[20,21],[19,19],[18,18],[17,17],[16,16],
+].flatMap(([min,max],i)=>Array.from({length:max-min+1},(_,j)=>[(i+4)*64,(max-j)*64]));
+const precisePortraitAndLandscape = [
+  ...preciseBuckets, ...preciseBuckets.slice(0,-1).reverse().map(([w,h])=>[h,w]),
+];
+export function v5PreciseReferenceCrop(width,height) {
+  const ratio=Math.log(width/height);
+  const [targetWidth,targetHeight]=precisePortraitAndLandscape.reduce((nearest,bucket)=>
+    Math.abs(Math.log(bucket[0]/bucket[1])-ratio)<Math.abs(Math.log(nearest[0]/nearest[1])-ratio)?bucket:nearest);
+  const scale=Math.max(targetWidth/width,targetHeight/height);
+  const resizeWidth=Math.max(Math.round(width*scale),targetWidth);
+  const resizeHeight=Math.max(Math.round(height*scale),targetHeight);
+  return {width:targetWidth,height:targetHeight,resizeWidth,resizeHeight,
+    x:-Math.floor((resizeWidth-targetWidth)/2),y:-Math.floor((resizeHeight-targetHeight)/2)};
+}
+
 /** Prepare an API-only copy; the caller retains the original uploaded data URL. */
-export async function preparePreciseReference(dataURL) {
+export async function preparePreciseReference(dataURL,{v5=false}={}) {
   const source = await loadImage(dataURL);
+  if(v5){
+    const crop=v5PreciseReferenceCrop(source.naturalWidth,source.naturalHeight);
+    const {canvas,context}=drawingSurface(crop.width,crop.height);
+    context.drawImage(source,crop.x,crop.y,crop.resizeWidth,crop.resizeHeight);
+    return {dataURL:canvas.toDataURL("image/png"),width:crop.width,height:crop.height};
+  }
   const ratio = source.naturalWidth / source.naturalHeight;
   const [width, height] =
     ratio < 0.9 ? [1024, 1536] : ratio > 1.1 ? [1536, 1024] : [1472, 1472];

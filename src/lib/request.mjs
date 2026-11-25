@@ -1,5 +1,5 @@
 import schema from "../../shared/schema.json" with { type: "json" };
-import {DEFAULT_MODEL,MODEL_IDS,modelSpec,isV45,isReferenceParameter,validateModelPayload,requestModel,isMediumEffort,isMediumWireModel,MEDIUM_STEPS,MEDIUM_SAMPLER,MEDIUM_UC,MEDIUM_LOCKED_PARAMETERS,parameterSupported,snapCharacterCoordinate} from './model-policy.mjs';
+import {DEFAULT_MODEL,MODEL_IDS,modelSpec,isV45,isReferenceParameter,isPreciseParameter,supportsPreciseReference,preciseDescription,restorePreciseDescription,validateModelPayload,requestModel,isMediumEffort,isMediumWireModel,MEDIUM_STEPS,MEDIUM_SAMPLER,MEDIUM_UC,MEDIUM_LOCKED_PARAMETERS,parameterSupported,snapCharacterCoordinate} from './model-policy.mjs';
 import {compilePrompt} from './prompt-text.mjs';
 import {changeNegativeModel,qualitySuffix,splitQualityPrompt,splitNegativePreset,officialPresetHint} from './official-presets.mjs';
 import {
@@ -148,12 +148,12 @@ export function buildRequest(state, { resolveSeed = false } = {}) {
   };
   rejectIncomplete(explicit);
   if(medium)for(const key of MEDIUM_LOCKED_PARAMETERS)delete explicit[key];
+  const preciseAllowed=supportsPreciseReference(s.model,s.mode), useV5=modelSpec(s.model).v5;
+  if(!preciseAllowed)for(const key of Object.keys(explicit).filter(isPreciseParameter))delete explicit[key];
   if(fallback)for(const key of Object.keys(explicit))if(!parameterSupported(spec.id,key))delete explicit[key];
-  if(isV45(s.model)){
-    const referenceKeys=Object.keys(explicit).filter(isReferenceParameter);
-    if(referenceKeys.length&&(!s.referenceMode||s.referenceMode==='off'))throw Error('参考图已关闭，请先选择参考图模式或移除专家 JSON 中的参考图参数。');
-    if(referenceKeys.some(key=>s.referenceMode==='precise'?!key.startsWith('director_reference_'):key.startsWith('director_reference_')))throw Error('专家 JSON 中的参考图参数与当前参考图模式不一致。');
-  }
+  const referenceKeys=Object.keys(explicit).filter(key=>isReferenceParameter(key)&&parameterSupported(s.model,key));
+  if(referenceKeys.length&&(!s.referenceMode||s.referenceMode==='off'))throw Error('参考图已关闭，请先选择参考图模式或移除专家 JSON 中的参考图参数。');
+  if(referenceKeys.some(key=>s.referenceMode==='precise'?!isPreciseParameter(key):isPreciseParameter(key)))throw Error('专家 JSON 中的参考图参数与当前参考图模式不一致。');
   const p = {
     ...spec.defaultParameters,
     params_version: spec.defaultParameters.params_version,
@@ -182,17 +182,16 @@ export function buildRequest(state, { resolveSeed = false } = {}) {
       noise: Number(s.noise),
     };
   }
-  if(isV45(s.model)){
-    if(s.referenceMode==='precise'){
+    if(preciseAllowed&&s.referenceMode==='precise'){
       const refs=(s.precise||[]).filter(ref=>ref.enabled!==false&&ref.image);
       if(refs.length){
         p.director_reference_images=refs.map(ref=>b64(ref.image));
-        p.director_reference_descriptions=refs.map(ref=>({caption:{base_caption:ref.type||'character',char_captions:[]},legacy_uc:false}));
+        p.director_reference_descriptions=refs.map(ref=>({caption:{base_caption:preciseDescription(ref,useV5),char_captions:[]},legacy_uc:false}));
         p.director_reference_information_extracted=refs.map(()=>1);
         p.director_reference_strength_values=refs.map(ref=>Number(ref.strength??1));
-        p.director_reference_secondary_strength_values=refs.map(ref=>1-Number(ref.fidelity??1));
+        p.director_reference_secondary_strength_values=refs.map(ref=>useV5?0:1-Number(ref.fidelity??1));
       }
-    }else if(s.referenceMode==='vibe'){
+    }else if(!useV5&&s.referenceMode==='vibe'){
       const refs=(s.vibes||[]).filter(ref=>ref.enabled!==false&&(ref.image||ref.encoding));
       if(refs.some(ref=>!ref.encoding||ref.encodedModel!==spec.id||ref.encodedInformation!==Number(ref.information??1)))throw Error('Vibe 图片尚未编码，或模型／信息量已改变；请在参考图栏明确点击编码。');
       if(refs.length){
@@ -202,7 +201,6 @@ export function buildRequest(state, { resolveSeed = false } = {}) {
         p.normalize_reference_strength_multiple=!!s.normalize;
       }
     }
-  }
   // Scalar overrides are applied before captions and quality tags are derived.
   Object.assign(p, explicit);
   if(fallback||medium)p.params_version=spec.defaultParameters.params_version;
@@ -471,6 +469,12 @@ export function stateFromPayload(payload) {
   const editorModel = payload.model && MODEL_IDS.includes(payload.model) ? payload.model : sourceSpec.id;
   const chars = p.v4_prompt?.caption?.char_captions || [],
     negChars = p.v4_negative_prompt?.caption?.char_captions || [];
+  const preciseImages=Array.isArray(p.director_reference_images)?p.director_reference_images:[];
+  const canRestorePrecise=supportsPreciseReference(editorModel,b.action)&&(!sourceSpec.v5||
+    (!p.reference_image_multiple?.length&&!p.reference_image&&
+      p.director_reference_descriptions?.length===preciseImages.length&&
+      p.director_reference_strength_values?.length===preciseImages.length));
+  const referenceImages=canRestorePrecise?preciseImages:[];
   let prompt = p.v4_prompt?.caption?.base_caption ?? b.input ?? "";
   const qualityMatch=p.qualityToggle?splitQualityPrompt(prompt,sourceSpec.id):{preset:null,prompt};
   prompt=qualityMatch.prompt;
@@ -519,8 +523,13 @@ export function stateFromPayload(payload) {
       negativeCaption: negChars[i] || {},
     })),
     source: imageURL(p.image),
-    referenceMode:sourceSpec.v5?'off':p.director_reference_images?.length?'precise':p.reference_image_multiple?.length?'vibe':'off',
-    precise:sourceSpec.v5?[]:(p.director_reference_images||[]).map((image,i)=>({id:crypto.randomUUID(),image:imageURL(image),type:p.director_reference_descriptions?.[i]?.caption?.base_caption||'character',strength:p.director_reference_strength_values?.[i]??1,fidelity:1-(p.director_reference_secondary_strength_values?.[i]??0)})),
+    referenceMode:referenceImages.length?'precise':!sourceSpec.v5&&p.reference_image_multiple?.length?'vibe':'off',
+    precise:referenceImages.map((image,i)=>({
+      id:crypto.randomUUID(),image:imageURL(image),
+      ...restorePreciseDescription(p.director_reference_descriptions?.[i]?.caption?.base_caption,sourceSpec.v5),
+      strength:p.director_reference_strength_values?.[i]??1,
+      ...(sourceSpec.v5?{}:{fidelity:1-(p.director_reference_secondary_strength_values?.[i]??0)}),
+    })),
     vibes:sourceSpec.v5?[]:(p.reference_image_multiple||[]).map((encoding,i)=>({id:crypto.randomUUID(),encoding,encodedModel:sourceSpec.id,encodedInformation:p.reference_information_extracted_multiple?.[i]??1,information:p.reference_information_extracted_multiple?.[i]??1,strength:p.reference_strength_multiple?.[i]??.6})),
     normalize:p.normalize_reference_strength_multiple??true,
     mask: imageURL(p.mask),

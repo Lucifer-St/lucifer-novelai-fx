@@ -1,5 +1,5 @@
 {
-  "version": "1.16.0",
+  "version": "1.17.0",
   "androidVersion": "1.13.0",
   "gitHistory": false,
   "license": "MIT",
@@ -29,6 +29,21 @@
       "path": ".gitignore",
       "bytes": 417,
       "sha256": "d7aa615475b8f405252d1eddb32b6a965faf84e8c01a07a7016be7ae4f1c990a"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 1067,
+      "sha256": "a5825eab64eb0f987a5cdf4c4bf588598d39e3cebeb4e453b921eb1c74f96375"
+    },
+    {
+      "path": "README.md",
+      "bytes": 40560,
+      "sha256": "6ae1dfa59d49cc00de12757984325410f34ddd08e83c4f2c791dfd5c2d35fc96"
+    },
+    {
+      "path": "SECURITY.md",
+      "bytes": 780,
+      "sha256": "998c68954fdfe6c022959c918ab8a7725d4cb7ebf74d7266f82bd63a00a79e22"
     },
     {
       "path": "android/.gitignore",
@@ -91,6 +106,11 @@
       "sha256": "dec74da3d2626ddbadc1364cea2d49a8c4ab6faa3f5f4dd756f97aeb5c9160ac"
     },
     {
+      "path": "android/app/src/main/java/app/luciferfx/share/FxCompat.java",
+      "bytes": 14054,
+      "sha256": "1ce77dcce79367413626d55279b2dc02554a78af637f3e94a8955b99211c8c05"
+    },
+    {
       "path": "android/app/src/main/java/app/luciferfx/share/FxGallery.java",
       "bytes": 4580,
       "sha256": "1fe49408330e796e3fb10e00b36844bee712d8957dfd77ed23ae5735d533d3ae"
@@ -109,6 +129,16 @@
       "path": "android/app/src/main/java/app/luciferfx/share/FxHttp.java",
       "bytes": 3907,
       "sha256": "c1e1135887c7c063cb5a57f693afaa6841d5692717492ab52a5289943118712e"
+    },
+    {
+      "path": "android/app/src/main/java/app/luciferfx/share/FxLibrary.java",
+      "bytes": 20120,
+      "sha256": "3004c26d071c9c2035dc2a6c3374b3f5e86814377df6d31bb1b04717079bc6e0"
+    },
+    {
+      "path": "android/app/src/main/java/app/luciferfx/share/FxModelPolicy.java",
+      "bytes": 3059,
+      "sha256": "bf99d7e2409bd47c43df34c6ae11505a2dac31d62de34c93df69fc4170bbee21"
     },
     {
       "path": "android/app/src/main/java/app/luciferfx/share/FxPlatformPlugin.java",
@@ -134,16 +164,6 @@
       "path": "android/app/src/main/java/app/luciferfx/share/MainActivity.java",
       "bytes": 5104,
       "sha256": "1aa5a4e4c6c18f536dfd606bfa0a37b3010e838c3819f6d2d61daf25351baaf5"
-    },
-    {
-      "path": "android/app/src/main/res/drawable/ic_launcher_background.xml",
-      "bytes": 5606,
-      "sha256": "718ba51adf166bb55c3e9936bb8199a0148457f7f0191aaa2f37a94f3159d6ec"
-    },
-    {
-      "path": "android/app/src/main/res/drawable/splash.png",
-      "bytes": 4003,
-      "sha256": "5980ba5317151a42c5d88563c9e9a278d3a1e606a71b3d1bf4a42813a5279b3c"
     },
     {
       "path": "android/app/src/main/res/drawable-land-hdpi/splash.png",
@@ -204,6 +224,16 @@
       "path": "android/app/src/main/res/drawable-v24/ic_launcher_foreground.xml",
       "bytes": 1880,
       "sha256": "a8514094f754b099d3e55ce1d6e0b2de79db418b2eeacb0fc2a6bb0bfadef221"
+    },
+    {
+      "path": "android/app/src/main/res/drawable/ic_launcher_background.xml",
+      "bytes": 5606,
+      "sha256": "718ba51adf166bb55c3e9936bb8199a0148457f7f0191aaa2f37a94f3159d6ec"
+    },
+    {
+      "path": "android/app/src/main/res/drawable/splash.png",
+      "bytes": 4003,
+      "sha256": "5980ba5317151a42c5d88563c9e9a278d3a1e606a71b3d1bf4a42813a5279b3c"
     },
     {
       "path": "android/app/src/main/res/layout/activity_main.xml",
@@ -366,6 +396,11 @@
       "sha256": "b488e162f552d6efb8286793c7871bbc1061c9bf5ca3a6a495fdeb8988a541c7"
     },
     {
+      "path": "android/gradle.properties",
+      "bytes": 1036,
+      "sha256": "643eea4f9581e6f623c25a8455a05cc55faec856aa39a19e5cc350b113f3cf6e"
+    },
+    {
       "path": "android/gradle/wrapper/gradle-wrapper.jar",
       "bytes": 43764,
       "sha256": "7d3a4ac4de1c32b59bc6a4eb8ecb8e612ccd0cf1ae1e99f66902da64df296172"
@@ -374,11 +409,6 @@
       "path": "android/gradle/wrapper/gradle-wrapper.properties",
       "bytes": 253,
       "sha256": "9a479a85aa879bb55284fc16d0de5b81a745c3854f4e2d88c42e7debaf007435"
-    },
-    {
-      "path": "android/gradle.properties",
-      "bytes": 1036,
-      "sha256": "643eea4f9581e6f623c25a8455a05cc55faec856aa39a19e5cc350b113f3cf6e"
     },
     {
       "path": "android/gradlew",
@@ -561,6 +591,11 @@
       "sha256": "6a5503fbe3fcbe68336e7091f9dfec4349f202cf3ea5825fcc99b96c4b3fefc3"
     },
     {
+      "path": "docs/ANDROID-UPGRADE.md",
+      "bytes": 2229,
+      "sha256": "e228c8ce4ff7977c018b0ed9d499cc533769bf1d00fa1fb59ac8bc4cedabfd2c"
+    },
+    {
       "path": "docs/ART-NOTICE.md",
       "bytes": 1345,
       "sha256": "7a2929f4c3cab22824bd9e3eafadf0e721f587c39a7c268596a6faa03a0c4ebb"
@@ -583,7 +618,7 @@
     {
       "path": "docs/WINDOWS-QUICKSTART.md",
       "bytes": 10620,
-      "sha256": "6cc0ffb9defbf79c3cdbea818ecd4f9f832c3bb9a8630512bb0fe593f5dc7d96"
+      "sha256": "0221b65e8e692035ae589bd39e999a593c2f9b15af1ad3d610617d8f87129611"
     },
     {
       "path": "docs/WINDOWS.md",
@@ -596,19 +631,14 @@
       "sha256": "d9c77f3fce56a022fcaf6b24c1a404b132112d8cd63871d13d94af9feadb7a04"
     },
     {
-      "path": "LICENSE",
-      "bytes": 1067,
-      "sha256": "a5825eab64eb0f987a5cdf4c4bf588598d39e3cebeb4e453b921eb1c74f96375"
-    },
-    {
       "path": "package-lock.json",
-      "bytes": 105025,
-      "sha256": "53dec9175743044bc6e0f9fdf1cfeba3535ba098059a9504a057d8d7a2ab121b"
+      "bytes": 108149,
+      "sha256": "41e0dcd57c1155b0da099d619803bd5d7ed83a090c34cac4b2d0da6f515844ca"
     },
     {
       "path": "package.json",
-      "bytes": 1249,
-      "sha256": "4d92d57bdbe6ed42dadb5c4ae55cb8e499a9714082f8020d4bfbfa3770cb33d0"
+      "bytes": 1295,
+      "sha256": "411afb62c2d1c1adb38aa038e434ae90e38f1a86481e6b396e69d706a93e681c"
     },
     {
       "path": "playwright.config.mjs",
@@ -619,6 +649,11 @@
       "path": "playwright.themes.config.mjs",
       "bytes": 698,
       "sha256": "6d5eb0a333ef3ed55b7c7dd5152277d26f72caea10697ebf1d09f5794a4a7e60"
+    },
+    {
+      "path": "public/THIRD-PARTY-NOTICES.md",
+      "bytes": 1577,
+      "sha256": "dd574ce93bf094890cbc0dd4688efd4e101e497154fb19c407358627874e3164"
     },
     {
       "path": "public/assets/character-ui/lily.png",
@@ -716,6 +751,16 @@
       "sha256": "d9be39b91e58f90504e7e1604a55b96bc7327fb2e0fb0864ac7783eb613645be"
     },
     {
+      "path": "public/assets/themes/exstia/NOTICE.md",
+      "bytes": 1041,
+      "sha256": "d44c55c5748790a90e1a95cbe0f0458b1712b49508de5ffe7023b2f9884fda13"
+    },
+    {
+      "path": "public/assets/themes/exstia/OFL.txt",
+      "bytes": 4350,
+      "sha256": "5e0da210fb04058a8c0087985d2d456b931c2579811a49655721d3cf0c36b6d6"
+    },
+    {
       "path": "public/assets/themes/exstia/azarin-normal.png",
       "bytes": 453981,
       "sha256": "d63ce4b2f2f9478fd3e3425252d2f648b562c1db7a7cbd5cd9691a40b580f87b"
@@ -734,16 +779,6 @@
       "path": "public/assets/themes/exstia/marina-2026-transform.webp",
       "bytes": 215952,
       "sha256": "f25ca7bb4f91ed362257f859442325a4906ceb3057425c891781f8741eb6a67f"
-    },
-    {
-      "path": "public/assets/themes/exstia/NOTICE.md",
-      "bytes": 1041,
-      "sha256": "d44c55c5748790a90e1a95cbe0f0458b1712b49508de5ffe7023b2f9884fda13"
-    },
-    {
-      "path": "public/assets/themes/exstia/OFL.txt",
-      "bytes": 4350,
-      "sha256": "5e0da210fb04058a8c0087985d2d456b931c2579811a49655721d3cf0c36b6d6"
     },
     {
       "path": "public/assets/themes/exstia/quote-mincho.woff2",
@@ -766,6 +801,11 @@
       "sha256": "206c1ef1b209446c77e13b8a59b96002a941f16724cfa3871801bda7d1d12139"
     },
     {
+      "path": "public/assets/themes/precure/SOURCES.md",
+      "bytes": 714,
+      "sha256": "9c883055cf21d93f050246fd6a6f13630727cb8caba68d78ca651eb6d7114908"
+    },
+    {
       "path": "public/assets/themes/precure/days-atlas.png",
       "bytes": 2098654,
       "sha256": "f97e411b2cfcad1eb69ef68cdf5ca9bbd0894779863731310f2f3cf53d89e9ce"
@@ -779,11 +819,6 @@
       "path": "public/assets/themes/precure/scrapbook-atlas.png",
       "bytes": 1888088,
       "sha256": "f6a05965b88612d197550f6f7acb52e3640adcc35c01bb735f1f3105eac0a19a"
-    },
-    {
-      "path": "public/assets/themes/precure/SOURCES.md",
-      "bytes": 714,
-      "sha256": "9c883055cf21d93f050246fd6a6f13630727cb8caba68d78ca651eb6d7114908"
     },
     {
       "path": "public/assets/themes/symphonic/lily.png",
@@ -856,14 +891,14 @@
       "sha256": "c9b7e223adfb42b4153d0737e9d7ee3c7c52d065f867225826cfa3c2e3fd9790"
     },
     {
-      "path": "public/tag-data/danbooru.json",
-      "bytes": 4353898,
-      "sha256": "5a220a93c3eb1f808c6539b8f7ee1f8e6eae2ddda6dee4602d124799e87c036f"
-    },
-    {
       "path": "public/tag-data/LICENSE.txt",
       "bytes": 1068,
       "sha256": "c1532c29734187eddd3948321379fa95ba79191bc3cb41d2787d7dff6e5913b5"
+    },
+    {
+      "path": "public/tag-data/danbooru.json",
+      "bytes": 4353898,
+      "sha256": "5a220a93c3eb1f808c6539b8f7ee1f8e6eae2ddda6dee4602d124799e87c036f"
     },
     {
       "path": "public/tag-data/source.json",
@@ -871,14 +906,9 @@
       "sha256": "128f045c5aaf2673767e099497fa9e7a1d58837e33186ea96cc90c0d31c38fd1"
     },
     {
-      "path": "public/THIRD-PARTY-NOTICES.md",
-      "bytes": 1577,
-      "sha256": "dd574ce93bf094890cbc0dd4688efd4e101e497154fb19c407358627874e3164"
-    },
-    {
-      "path": "README.md",
-      "bytes": 40054,
-      "sha256": "f128861759072d2cba62678cf6667ff08cde27522dfdd58edb337dd3126b3a88"
+      "path": "scripts/Launcher.cs",
+      "bytes": 9001,
+      "sha256": "0561d1290c104cc1f79b82622b68ac7b11e6b1841d16f7fa39f55db91e944994"
     },
     {
       "path": "scripts/apply-update.mjs",
@@ -889,6 +919,11 @@
       "path": "scripts/assert-release.mjs",
       "bytes": 636,
       "sha256": "cd0107506fc3b5732e2181158455abc2146933654a8ad46e45faf8b26daa4233"
+    },
+    {
+      "path": "scripts/audit-android.mjs",
+      "bytes": 2311,
+      "sha256": "42e8818c769ddfe480135a612908946b4accfa6ca77f7306723ea099cab68c17"
     },
     {
       "path": "scripts/audit-public-candidate.mjs",
@@ -921,14 +956,14 @@
       "sha256": "9197ce7e05fb9e157695d6576dddf6bdee538111f399fc92f5e8ad4241d53527"
     },
     {
-      "path": "scripts/Launcher.cs",
-      "bytes": 9001,
-      "sha256": "0561d1290c104cc1f79b82622b68ac7b11e6b1841d16f7fa39f55db91e944994"
-    },
-    {
       "path": "scripts/make-glossary.mjs",
       "bytes": 7111,
       "sha256": "17c24d4c0cace7e51d7e4116b5fc5cd822d3b2ca87f67588ea2771ff80b88ae1"
+    },
+    {
+      "path": "scripts/package-android-release.mjs",
+      "bytes": 2247,
+      "sha256": "d7b27803e990ec18d023c3fc9b677c08d8b298b97659283b98e631922ab727e4"
     },
     {
       "path": "scripts/package-android.mjs",
@@ -966,9 +1001,19 @@
       "sha256": "b1b9a7d82a7f24eb44c2ae52fa851ea6c7c9a3bf4be6354096ae73c748307d76"
     },
     {
-      "path": "SECURITY.md",
-      "bytes": 780,
-      "sha256": "998c68954fdfe6c022959c918ab8a7725d4cb7ebf74d7266f82bd63a00a79e22"
+      "path": "scripts/sync-android.mjs",
+      "bytes": 662,
+      "sha256": "659be37ac2e7e962e54993856a3104a5acee3aff1d68026ba911bd97a3cbfccf"
+    },
+    {
+      "path": "server/DesktopBridge.cs",
+      "bytes": 5431,
+      "sha256": "0f9057f79218f7d7d8c006ad40b40c003cd531a636c6cbd642937610c2d824d7"
+    },
+    {
+      "path": "server/ResidentHost.cs",
+      "bytes": 10805,
+      "sha256": "ba3f8f292c9cd8469686841e0e21c4c451eaf9b63b2cc19636d9d28e2bba17f2"
     },
     {
       "path": "server/agent-setup.mjs",
@@ -1019,11 +1064,6 @@
       "path": "server/desktop-files.mjs",
       "bytes": 3500,
       "sha256": "a4563659b829768fef522f003aedf996872238fbbad541b83fe774c838644bea"
-    },
-    {
-      "path": "server/DesktopBridge.cs",
-      "bytes": 5431,
-      "sha256": "0f9057f79218f7d7d8c006ad40b40c003cd531a636c6cbd642937610c2d824d7"
     },
     {
       "path": "server/features.mjs",
@@ -1106,11 +1146,6 @@
       "sha256": "5fc58ecbc8ee6f9606449bdb4f9176c52712b48414428ef5bd3d6763292ff2b2"
     },
     {
-      "path": "server/ResidentHost.cs",
-      "bytes": 10805,
-      "sha256": "ba3f8f292c9cd8469686841e0e21c4c451eaf9b63b2cc19636d9d28e2bba17f2"
-    },
-    {
       "path": "shared/anlas-pricing.json",
       "bytes": 3998,
       "sha256": "ff3e480d586307babe1f2b4075ff0b68743db0768df9679fb344537a474f6062"
@@ -1123,7 +1158,7 @@
     {
       "path": "shared/release-config.mjs",
       "bytes": 357,
-      "sha256": "60b87472027b2cb97146957deabffe0a35298f927d2fcb933c899372998697ca"
+      "sha256": "80c64d938a64a603c2faf232e24e28d7ee6253f5f5e82b2cda97065962fa3219"
     },
     {
       "path": "shared/schema.json",
@@ -1162,8 +1197,8 @@
     },
     {
       "path": "src/components/AdvancedGenerationSettings.jsx",
-      "bytes": 3255,
-      "sha256": "b20dd324763c15c21a3c990303eb8bfc55bf9e8d43303aac6ce144cac417d3c1"
+      "bytes": 3238,
+      "sha256": "c33ed818de529a85c19ec69f67b22274f88da4c969543a85e4b4dee7f51cc5bc"
     },
     {
       "path": "src/components/AgentSetupPanel.jsx",
@@ -1231,11 +1266,6 @@
       "sha256": "27995352cf9e8baac8faec529de8d6fe448efadc8404f8a4b70bff3cb6251e6d"
     },
     {
-      "path": "src/components/exstia-theme.css",
-      "bytes": 21395,
-      "sha256": "6d58e9ef21311304c063f0cc4933b216bc5a2d39669e836d51b27d2b8a43ed61"
-    },
-    {
       "path": "src/components/ExstiaTheme.jsx",
       "bytes": 4808,
       "sha256": "b6acb73d7f6e6092292fab0fa8c5a7b20b948be36e544325c443bb259adf4be0"
@@ -1251,19 +1281,9 @@
       "sha256": "6cbe3dabea93b7a769532fc2e13753cd2707f664e9e6e40f7ac7c27564f5f64d"
     },
     {
-      "path": "src/components/generated-library.css",
-      "bytes": 4866,
-      "sha256": "3ff2a6a8cd4b76865d12b9c9ff61b6ec3b2f6575cfdf9a1277a5dcd09e0fec27"
-    },
-    {
       "path": "src/components/GeneratedLibraryPanel.jsx",
       "bytes": 15755,
       "sha256": "1a7b224d04f1c3bbc33b2794f047ed2e767f0a9dbb23fa8b1acad13ab6195634"
-    },
-    {
-      "path": "src/components/generation-cost.css",
-      "bytes": 3077,
-      "sha256": "98922d407d22ed5ea10c66684445a0f437851b46e253a3c51adfa86f57805959"
     },
     {
       "path": "src/components/GenerationCostBadge.jsx",
@@ -1281,6 +1301,11 @@
       "sha256": "cf5c5bd4f8e75cd348aca0387270592f29b6452269d943fa5123362556877d6c"
     },
     {
+      "path": "src/components/HistorySidebar.jsx",
+      "bytes": 2975,
+      "sha256": "c1d22d18df06328955cc659cf939702dcccd75d1d145f54712dc68b64e68e9ab"
+    },
+    {
       "path": "src/components/ImageImportDialog.jsx",
       "bytes": 9936,
       "sha256": "1355f5a597ef715b6f984449ba5d6588893c81a74dcf024bd3c294791cb3a2fd"
@@ -1289,6 +1314,16 @@
       "path": "src/components/ImageInput.jsx",
       "bytes": 5644,
       "sha256": "6aa23b597e5319e24e16dbeed5d4d129a41bd48099ed9f90dd5603c5dc133121"
+    },
+    {
+      "path": "src/components/ImageViewport.jsx",
+      "bytes": 6808,
+      "sha256": "e81f9709d8b0e26ac1b3cd94edbca9a9ab5c72bc79ba456dd174e50fa6799c21"
+    },
+    {
+      "path": "src/components/LLMExtension.jsx",
+      "bytes": 416,
+      "sha256": "6ee4a14e0829f5eb7166b22e7bb05ff1de0390e9b82a2373017d9091445ee21e"
     },
     {
       "path": "src/components/LibraryCleanupControls.jsx",
@@ -1301,11 +1336,6 @@
       "sha256": "1699ba9ccdd601d55d5187ddc44f9d5fc67d0eeb99b6e047205a2fde89a38235"
     },
     {
-      "path": "src/components/LLMExtension.jsx",
-      "bytes": 416,
-      "sha256": "6ee4a14e0829f5eb7166b22e7bb05ff1de0390e9b82a2373017d9091445ee21e"
-    },
-    {
       "path": "src/components/LoadingArtwork.jsx",
       "bytes": 2293,
       "sha256": "72705429b6afd642e00c32cf4f7b6ac7898e1bc41984f1368e6ea3c22408b913"
@@ -1314,11 +1344,6 @@
       "path": "src/components/MaskEditor.jsx",
       "bytes": 12223,
       "sha256": "b400bf1d651349c6caa97ebb50038e870d9b38bbbe69b75b9b5a927d20fef22a"
-    },
-    {
-      "path": "src/components/model-chooser.css",
-      "bytes": 2119,
-      "sha256": "ac7cc4d1c4794bd810369ab7a067d5d4ee07cfd7356c7c30b83a70545b33a100"
     },
     {
       "path": "src/components/ModelChooser.jsx",
@@ -1336,19 +1361,9 @@
       "sha256": "d8cff3a1cab3ad96b44b66c3d8052cc94ec03bd7580181421255c8d2633cc272"
     },
     {
-      "path": "src/components/output-save-setting.css",
-      "bytes": 393,
-      "sha256": "7352909487f35d062c8a1628428885744cb9c1db4dd2302120f9062297eef845"
-    },
-    {
       "path": "src/components/PendingImage.jsx",
       "bytes": 885,
       "sha256": "b42eb0d063c835c9d9375bc42c50f6c82416cfeed35fdd075b35183dee2bb7d8"
-    },
-    {
-      "path": "src/components/precure-theme.css",
-      "bytes": 15613,
-      "sha256": "34365e939fae74984e4dfc447a9b1ebc87535fddface4e3a69a8dc4f3aa1febb"
     },
     {
       "path": "src/components/PrecureTheme.jsx",
@@ -1369,11 +1384,6 @@
       "path": "src/components/PromptPanel.jsx",
       "bytes": 18890,
       "sha256": "7046b2c05daad2e7c923130e60103ecd36df5dc5c233084070233c4578b50e9c"
-    },
-    {
-      "path": "src/components/reference-panel.css",
-      "bytes": 551,
-      "sha256": "07e49d1b0c7c3df556b7a505a76f634388869a94eb3eb0e3f4b4d40efb5c5d1e"
     },
     {
       "path": "src/components/ReferencePanel.jsx",
@@ -1397,8 +1407,8 @@
     },
     {
       "path": "src/components/SettingsPanel.jsx",
-      "bytes": 8802,
-      "sha256": "5b31b5ce3eda520281988458dfb2620184a9af1fe376f126399bb9ff2d51edee"
+      "bytes": 8948,
+      "sha256": "ceac390dbd21564987407287913fa6f430519c5cd15dc645d6088442b50f41cb"
     },
     {
       "path": "src/components/ShareSettings.jsx",
@@ -1406,19 +1416,14 @@
       "sha256": "4f708647750dc37a90f4433a04ac99b0bbe1f734b6c2b7716fe3937e3216478a"
     },
     {
-      "path": "src/components/TagSuggestions.jsx",
-      "bytes": 2598,
-      "sha256": "3b4eaf251aa82441008f819276f04f8395bb483b0d388b799da9245acb66d0d6"
-    },
-    {
       "path": "src/components/TagSuggestionSlot.jsx",
       "bytes": 411,
       "sha256": "a23d137676414891d6fdc4544ca275822aa8948a178c5a9005a935132e6909ba"
     },
     {
-      "path": "src/components/teresa-theme.css",
-      "bytes": 5580,
-      "sha256": "74fa33f2c6d3be6def9ae454148434476b67d3e67c81733a54c2e0068f339c7e"
+      "path": "src/components/TagSuggestions.jsx",
+      "bytes": 2598,
+      "sha256": "3b4eaf251aa82441008f819276f04f8395bb483b0d388b799da9245acb66d0d6"
     },
     {
       "path": "src/components/TeresaTheme.jsx",
@@ -1436,6 +1441,11 @@
       "sha256": "9cba9b2cafe7c5b54d26232d0016a968898a8f3a077134ce251dd431e5c324c3"
     },
     {
+      "path": "src/components/V5PreciseReference.jsx",
+      "bytes": 4579,
+      "sha256": "dc4e73605e850692945dae1a784ad6a4e54c06560bf45c4a07c1860a13f66636"
+    },
+    {
       "path": "src/components/WeightedPromptInput.jsx",
       "bytes": 8236,
       "sha256": "5d3a1a0fdc00d9175a33e657833b486d50db18bb6122163b17e04963e1c224c2"
@@ -1444,6 +1454,61 @@
       "path": "src/components/WorkbenchTheme.jsx",
       "bytes": 4572,
       "sha256": "e8d6f6355d6bfe07d39cf7cbd5f3c0fd81fbf99d367575449e7f633abe451e88"
+    },
+    {
+      "path": "src/components/exstia-theme.css",
+      "bytes": 21395,
+      "sha256": "6d58e9ef21311304c063f0cc4933b216bc5a2d39669e836d51b27d2b8a43ed61"
+    },
+    {
+      "path": "src/components/generated-library.css",
+      "bytes": 4866,
+      "sha256": "3ff2a6a8cd4b76865d12b9c9ff61b6ec3b2f6575cfdf9a1277a5dcd09e0fec27"
+    },
+    {
+      "path": "src/components/generation-cost.css",
+      "bytes": 3077,
+      "sha256": "98922d407d22ed5ea10c66684445a0f437851b46e253a3c51adfa86f57805959"
+    },
+    {
+      "path": "src/components/history-sidebar.css",
+      "bytes": 2861,
+      "sha256": "900cda126327a13dfc5e761abf7b92fcff3627598f089d256819f03c1911c096"
+    },
+    {
+      "path": "src/components/image-viewport.css",
+      "bytes": 4195,
+      "sha256": "938488c61290d7fffd996d57d0b4c3c022cb1776d597c193b9233d727fdec0fb"
+    },
+    {
+      "path": "src/components/model-chooser.css",
+      "bytes": 2119,
+      "sha256": "ac7cc4d1c4794bd810369ab7a067d5d4ee07cfd7356c7c30b83a70545b33a100"
+    },
+    {
+      "path": "src/components/output-save-setting.css",
+      "bytes": 393,
+      "sha256": "7352909487f35d062c8a1628428885744cb9c1db4dd2302120f9062297eef845"
+    },
+    {
+      "path": "src/components/precure-theme.css",
+      "bytes": 15613,
+      "sha256": "34365e939fae74984e4dfc447a9b1ebc87535fddface4e3a69a8dc4f3aa1febb"
+    },
+    {
+      "path": "src/components/reference-panel.css",
+      "bytes": 551,
+      "sha256": "07e49d1b0c7c3df556b7a505a76f634388869a94eb3eb0e3f4b4d40efb5c5d1e"
+    },
+    {
+      "path": "src/components/teresa-theme.css",
+      "bytes": 5580,
+      "sha256": "74fa33f2c6d3be6def9ae454148434476b67d3e67c81733a54c2e0068f339c7e"
+    },
+    {
+      "path": "src/components/v5-precise.css",
+      "bytes": 1664,
+      "sha256": "2deab24c9eaacc0793c7f635da539e3dfebcac16a0bf0a8709454dbbc2ade5c7"
     },
     {
       "path": "src/connection.css",
@@ -1471,14 +1536,14 @@
       "sha256": "1547cf65dac482025f96202b0b624792c8bbdc2829535925a346764a496db213"
     },
     {
-      "path": "src/hooks/useAppearance.js",
-      "bytes": 824,
-      "sha256": "79d1f57180f44e58cc3ff0a9ff19eedb8769394e7e4b06701d5b5f659a6eab9d"
-    },
-    {
       "path": "src/hooks/useAppUpdate.js",
       "bytes": 2215,
       "sha256": "2300231bbc4d7f7da0d797a597c04e58cf12240f3c1f4f703ac8fc9408216f43"
+    },
+    {
+      "path": "src/hooks/useAppearance.js",
+      "bytes": 824,
+      "sha256": "79d1f57180f44e58cc3ff0a9ff19eedb8769394e7e4b06701d5b5f659a6eab9d"
     },
     {
       "path": "src/hooks/useComparisons.js",
@@ -1527,8 +1592,8 @@
     },
     {
       "path": "src/lib/anlas.mjs",
-      "bytes": 6667,
-      "sha256": "3fb3786cf2a6befea060cfe9a000ba85b62c9ee9573e3dbcdb7999788681ae07"
+      "bytes": 6676,
+      "sha256": "b60e11b1003a81d6ea1efd26f7efe5ed33f740473927bfa8186593feb655880a"
     },
     {
       "path": "src/lib/api.mjs",
@@ -1596,9 +1661,14 @@
       "sha256": "a640d4057e62019569c0e0bd9bbb892f6b731e4bbf72c9a6d4833bc5669e605f"
     },
     {
+      "path": "src/lib/image-viewport.mjs",
+      "bytes": 976,
+      "sha256": "bfe93b79b30ade79dfe5c66e03fb57e528a28e3832c3b0b63b25bb85e09870bf"
+    },
+    {
       "path": "src/lib/image.mjs",
-      "bytes": 5260,
-      "sha256": "138a35da562a51dec7ee138c93f00558562157f43628337ec22163de8f090bad"
+      "bytes": 6712,
+      "sha256": "872312fc24c02edc6221326a927b6354f6de414205ab0fafd1b46d16239e3a5e"
     },
     {
       "path": "src/lib/import-options.mjs",
@@ -1622,8 +1692,8 @@
     },
     {
       "path": "src/lib/model-policy.mjs",
-      "bytes": 6073,
-      "sha256": "c605b491eeaea0c7eb5b99f2398b3a4906f0e37f5c03e94c6a812038c7b9c200"
+      "bytes": 8122,
+      "sha256": "cad53c35e5ee298351803b3a4bb6406629c50d840c2835e4fc12d64f5dd0a625"
     },
     {
       "path": "src/lib/official-presets.mjs",
@@ -1687,13 +1757,13 @@
     },
     {
       "path": "src/lib/release-notes.mjs",
-      "bytes": 16076,
-      "sha256": "971b0f0c6588c8ddc55785495b3df2473ed56172e52ce8cc104d231cb248aaf4"
+      "bytes": 16606,
+      "sha256": "778d8686b6cbf58a0e24abbbdcc09fc60a8b0f80d36111fed98ac0f36e37ae6e"
     },
     {
       "path": "src/lib/request.mjs",
-      "bytes": 20647,
-      "sha256": "77ed7009b2e7fbb68123295517007601154a301c00e294b2bdec5a0f68aaf966"
+      "bytes": 21430,
+      "sha256": "31ded560a255c6a54610877554b4b9b9d962e1a138ec3a4bf42ad47ca612b544"
     },
     {
       "path": "src/lib/share-image.mjs",
@@ -1811,6 +1881,11 @@
       "sha256": "efd704b5815db433c1495cb4b4c15a5ebeb46622a3dd7f74a7e97cb55ea691f1"
     },
     {
+      "path": "tests/android-native.mjs",
+      "bytes": 15651,
+      "sha256": "8d6a858f7f7aa2f644f494d613fbc4505d4a7fd2ee4dba9f969399ee81a9887b"
+    },
+    {
       "path": "tests/app-update-ui.spec.mjs",
       "bytes": 3848,
       "sha256": "6dbecd628122ac003dd9e914827da8dfbe17bdc82ea23f6723b9b0c96bfaff67"
@@ -1829,6 +1904,11 @@
       "path": "tests/atlas-storage.test.mjs",
       "bytes": 3180,
       "sha256": "9cd7bfa024c7f1241fcdf9aff1bded072b9fd27a355b6a4fdb91194b591cf614"
+    },
+    {
+      "path": "tests/card-shelf-ui.spec.mjs",
+      "bytes": 14369,
+      "sha256": "367c937201437b75662767c8a1dd4792e7370c459261b95bf167bbcc82867037"
     },
     {
       "path": "tests/cards.test.mjs",
@@ -1956,6 +2036,16 @@
       "sha256": "d2b006b739ac277d25dea4211173cf052af5f672fe1753ac628ee3a7112f9a4e"
     },
     {
+      "path": "tests/image-viewer-ui.spec.mjs",
+      "bytes": 11127,
+      "sha256": "6a0535f59e14ee71b361e28bf2875b9dc407ed3adcd811ef86c71802d58f6949"
+    },
+    {
+      "path": "tests/image-viewport.test.mjs",
+      "bytes": 900,
+      "sha256": "fc796d74d64e7d935ba925da18052b36ee34ce7cdd536200f7e732db5d6e28d4"
+    },
+    {
       "path": "tests/interrupted-usage.test.mjs",
       "bytes": 1420,
       "sha256": "f1d0f55b10de29adbbab4afe0425d2b952c98d739cb35f8a91246e75ca67a4a6"
@@ -2002,8 +2092,8 @@
     },
     {
       "path": "tests/model-policy.test.mjs",
-      "bytes": 8532,
-      "sha256": "98af0c6a72586b034abafa83ea54b20b8d4a7fd475a2bbbac2acf6703f0ea4bc"
+      "bytes": 8488,
+      "sha256": "afec5a598bdba2aa32d1563a7aeb819d28dcbc085bdef984140497682b7fd66e"
     },
     {
       "path": "tests/model-server.test.mjs",
@@ -2014,6 +2104,11 @@
       "path": "tests/model-switch-ui.spec.mjs",
       "bytes": 6444,
       "sha256": "c4a1f7e89ff4186e4112bcb455d2244501a024bba75f3c82fa94a8a2e045ad73"
+    },
+    {
+      "path": "tests/native-image-ui.spec.mjs",
+      "bytes": 3226,
+      "sha256": "2148e8d4feb2a686a9e2e06435814af4cc92fc27ebb4fb122c86bb61b6014759"
     },
     {
       "path": "tests/official-presets.test.mjs",
@@ -2054,6 +2149,11 @@
       "path": "tests/precure-themes-ui.spec.mjs",
       "bytes": 6898,
       "sha256": "58261fa0dcc0e6e65f09b9b7a9b54f104ec5bfa5be7bc17a1895f2f2fe16d8ff"
+    },
+    {
+      "path": "tests/prompt-clear-ui.spec.mjs",
+      "bytes": 5337,
+      "sha256": "5ddc69184f36b6f55d264f48936341140bdfa74051371839254f30b2d9012e35"
     },
     {
       "path": "tests/prompt-feedback-ui.spec.mjs",
@@ -2191,6 +2291,11 @@
       "sha256": "2d8de60879a02403ff458da109ea436640643091e561759e2f29a54f62d50884"
     },
     {
+      "path": "tests/v5-precise.test.mjs",
+      "bytes": 3749,
+      "sha256": "0980689546fa46dbc9d3cdbef6d0e65bbc64ffc9b9eb1d47eecceb78244705b4"
+    },
+    {
       "path": "tests/workbench-update.test.mjs",
       "bytes": 5168,
       "sha256": "e6d8938d7c3bfb10e1a4d0520b4f02f08cfec4e99f9684a91d47de1dd3ef9778"
@@ -2199,96 +2304,6 @@
       "path": "vite.config.js",
       "bytes": 212,
       "sha256": "ed64fd559ec5be2d2c9c38f371fdfbc520d97421026e338e01abee4944ec906a"
-    },
-    {
-      "path": "android/app/src/main/java/app/luciferfx/share/FxCompat.java",
-      "bytes": 14054,
-      "sha256": "1ce77dcce79367413626d55279b2dc02554a78af637f3e94a8955b99211c8c05"
-    },
-    {
-      "path": "android/app/src/main/java/app/luciferfx/share/FxLibrary.java",
-      "bytes": 20120,
-      "sha256": "3004c26d071c9c2035dc2a6c3374b3f5e86814377df6d31bb1b04717079bc6e0"
-    },
-    {
-      "path": "android/app/src/main/java/app/luciferfx/share/FxModelPolicy.java",
-      "bytes": 3059,
-      "sha256": "bf99d7e2409bd47c43df34c6ae11505a2dac31d62de34c93df69fc4170bbee21"
-    },
-    {
-      "path": "docs/ANDROID-UPGRADE.md",
-      "bytes": 2229,
-      "sha256": "e228c8ce4ff7977c018b0ed9d499cc533769bf1d00fa1fb59ac8bc4cedabfd2c"
-    },
-    {
-      "path": "scripts/audit-android.mjs",
-      "bytes": 2311,
-      "sha256": "42e8818c769ddfe480135a612908946b4accfa6ca77f7306723ea099cab68c17"
-    },
-    {
-      "path": "scripts/package-android-release.mjs",
-      "bytes": 2247,
-      "sha256": "d7b27803e990ec18d023c3fc9b677c08d8b298b97659283b98e631922ab727e4"
-    },
-    {
-      "path": "scripts/sync-android.mjs",
-      "bytes": 662,
-      "sha256": "659be37ac2e7e962e54993856a3104a5acee3aff1d68026ba911bd97a3cbfccf"
-    },
-    {
-      "path": "tests/android-native.mjs",
-      "bytes": 15651,
-      "sha256": "8d6a858f7f7aa2f644f494d613fbc4505d4a7fd2ee4dba9f969399ee81a9887b"
-    },
-    {
-      "path": "src/components/history-sidebar.css",
-      "bytes": 2861,
-      "sha256": "900cda126327a13dfc5e761abf7b92fcff3627598f089d256819f03c1911c096"
-    },
-    {
-      "path": "src/components/HistorySidebar.jsx",
-      "bytes": 2975,
-      "sha256": "c1d22d18df06328955cc659cf939702dcccd75d1d145f54712dc68b64e68e9ab"
-    },
-    {
-      "path": "tests/native-image-ui.spec.mjs",
-      "bytes": 3226,
-      "sha256": "2148e8d4feb2a686a9e2e06435814af4cc92fc27ebb4fb122c86bb61b6014759"
-    },
-    {
-      "path": "src/components/image-viewport.css",
-      "bytes": 4195,
-      "sha256": "938488c61290d7fffd996d57d0b4c3c022cb1776d597c193b9233d727fdec0fb"
-    },
-    {
-      "path": "src/components/ImageViewport.jsx",
-      "bytes": 6808,
-      "sha256": "e81f9709d8b0e26ac1b3cd94edbca9a9ab5c72bc79ba456dd174e50fa6799c21"
-    },
-    {
-      "path": "src/lib/image-viewport.mjs",
-      "bytes": 976,
-      "sha256": "bfe93b79b30ade79dfe5c66e03fb57e528a28e3832c3b0b63b25bb85e09870bf"
-    },
-    {
-      "path": "tests/image-viewer-ui.spec.mjs",
-      "bytes": 11127,
-      "sha256": "6a0535f59e14ee71b361e28bf2875b9dc407ed3adcd811ef86c71802d58f6949"
-    },
-    {
-      "path": "tests/image-viewport.test.mjs",
-      "bytes": 900,
-      "sha256": "fc796d74d64e7d935ba925da18052b36ee34ce7cdd536200f7e732db5d6e28d4"
-    },
-    {
-      "path": "tests/card-shelf-ui.spec.mjs",
-      "bytes": 14369,
-      "sha256": "367c937201437b75662767c8a1dd4792e7370c459261b95bf167bbcc82867037"
-    },
-    {
-      "path": "tests/prompt-clear-ui.spec.mjs",
-      "bytes": 5337,
-      "sha256": "5ddc69184f36b6f55d264f48936341140bdfa74051371839254f30b2d9012e35"
     }
   ]
 }

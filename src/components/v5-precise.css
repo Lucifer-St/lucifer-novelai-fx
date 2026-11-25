@@ -1,0 +1,51 @@
+.v5-precise {
+  color: var(--fx-text, #29435e);
+  background: var(--fx-field, #fff);
+  border: 1px solid var(--fx-line, #d9e5f2);
+  border-radius: 11px;
+  margin: 16px 0;
+}
+.v5-precise > summary {
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) 16px;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  list-style: none;
+}
+.v5-precise > summary::-webkit-details-marker { display: none; }
+.v5-precise summary strong { font-size: 13px; }
+.v5-precise small { display: block; color: var(--fx-muted, #627792); }
+.v5-precise[open] .v5-precise-chevron { transform: rotate(180deg); }
+.v5-precise-icon {
+  display: grid;
+  place-items: center;
+  height: 34px;
+  background: var(--fx-tint, #edf4ff);
+  border-radius: 8px;
+  color: var(--fx-accent, #2777cf);
+}
+.v5-precise-body {
+  padding: 10px;
+  border-top: 1px solid var(--fx-line, #d9e5f2);
+}
+.v5-precise-body .image-input-heading { margin-top: 8px; }
+.v5-precise-body .image-upload-zone { min-height: 84px; }
+.v5-precise-card {
+  border: 1px solid var(--fx-line, #d9e5f2);
+  border-radius: 9px;
+  padding: 9px;
+  margin-top: 9px;
+}
+.v5-precise-card > header {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto 28px;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 9px;
+}
+.v5-precise-card > header img { width: 44px; height: 44px; border-radius: 6px; object-fit: cover; }
+.v5-precise-card > header small { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.v5-precise-card > header button { display: grid; place-items: center; padding: 4px; min-height: 28px; }
+.v5-precise-fee { margin: 10px 0; color: var(--fx-muted, #627792); font-size: 11px; }

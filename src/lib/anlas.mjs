@@ -15,7 +15,7 @@ export function opusEligibility(payload){
    &&['/ai/generate-image','/ai/generate-image-stream'].includes(endpoint)
    &&['generate','img2img','infill'].includes(body.action||'generate')
    &&!p.upscale&&!p.sm&&!p.sm_dyn&&!p.characterRef&&!p.reference_image
-   &&(v45||(!p.reference_image_multiple?.length&&!p.director_reference_images?.length));
+   &&(v45||!p.reference_image_multiple?.length);
  let reason='';
  if(!supported)reason='此操作或附加参数尚不属于已核对的免费条件';
  else if(![p.width,p.height,p.steps].every(v=>Number.isFinite(v)&&v>0)||!Number.isInteger(count)||count<1||count>8)reason='尺寸、步数或张数无效';
@@ -23,7 +23,7 @@ export function opusEligibility(payload){
   else if(p.steps>28)reason='步数超过 28';
   else if(v45&&(body.action||'generate')!=='generate')reason='V4.5 免费基础生图不包含图生图或局部重绘';
   else if(v45&&(p.image||p.mask))reason='使用了底图或遮罩';
-  else if(v45&&p.director_reference_images?.length)reason='精准参考不符合当前官方客户端的 Opus 免费基础生图条件';
+  else if(p.director_reference_images?.length)reason='使用精准参考时不适用 Opus 免费生图';
   else if(v45&&count!==1)reason='V4.5 免费条件要求单次一张';
  const qualifies=!reason;
  return {supported,qualifies,eligible:qualifies&&count===1,count,reason:reason||(count!==1?'单次请求超过一张':'符合 Opus 免费参数条件')};
@@ -41,6 +41,7 @@ export function quoteAnlas(payload,calibrations=[],{policy='opus'}={}){
   if(found)return {known:true,amount:found.amount*count,perImage:found.amount,baseAmount:null,extraPerImage,referenceExtra,vibeExtra,paidPerImage:found.amount,paidFallback:found.amount*count,freeImages:0,chargedImages:count,source:'manual_calibration',policy,conditional:false,label:'手动标定预估',calibratedAt:found.updatedAt,reason:'手动单张标定视为包含参考附加费；请按官网同参数报价核对。'};
   return {known:false,amount:null,perImage:null,baseAmount:null,extraPerImage,referenceExtra,vibeExtra,paidPerImage:null,paidFallback:null,freeImages:0,chargedImages:count,source:'unverified_v45_base',policy,conditional:false,label:'V4.5 基础费用未知',reason:'精准参考和多 Vibe 附加费已知；基础生成费用未获官方当前公式核对，不能合计。'};
  }
+ const referenceExtra=(p.director_reference_images?.length||0)*5;
  const found=calibrations.find(c=>c.key===priceKey(payload));let paidPerImage,source;
  if(found){paidPerImage=found.amount;source='manual_calibration';}
  else if(eligibility.supported&&[p.width,p.height,p.steps].every(v=>Number.isFinite(v)&&v>0)&&Number.isInteger(count)&&count>=1&&count<=8){
@@ -49,7 +50,7 @@ export function quoteAnlas(payload,calibrations=[],{policy='opus'}={}){
    const pixels=p.width*p.height, medium=isMediumWireModel(model);
    const base=2.951823174884865e-6*pixels+5.753298233447344e-7*pixels*(medium?23:p.steps);
    // Current NovelAI client prices Medium at the 23-step base divided by 1.75 before rounding.
-   paidPerImage=Math.max(Math.ceil((medium?base/1.75:Math.ceil(base))*1.5*strength),2);
+   paidPerImage=Math.max(Math.ceil((medium?base/1.75:Math.ceil(base))*1.5*strength),2)+referenceExtra;
    source=medium?'official_v5_medium_estimate':'official_v5_paid_estimate';
   }
  }

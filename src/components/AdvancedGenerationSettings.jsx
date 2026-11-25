@@ -24,7 +24,7 @@ export default function AdvancedGenerationSettings({state:s,update,onJSON}) {
           onChange={(v) => update("output", v)}
         />
         <p className="hint">
-          参数按当前模型显示；V4.5 的参考图请在专用栏目设置。V5 不发送参考图参数。
+          参数按当前模型显示。精准参考和 Vibe Transfer 请在专用栏目设置。
         </p>
       </details>
       <details>

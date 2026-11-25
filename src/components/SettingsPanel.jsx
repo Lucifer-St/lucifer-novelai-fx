@@ -5,6 +5,7 @@ import { ArrowLeftRight, Dices } from "lucide-react";
 import { NumberField, Select, Slider, Toggle } from "./Fields";
 import {isV45,modelSpec,isMediumEffort,requestModel} from '../lib/model-policy.mjs';
 import ReferencePanel from './ReferencePanel';
+import V5PreciseReference from './V5PreciseReference';
 
 const sizes = [
   [832, 1216, "标准 · 竖图"],
@@ -70,6 +71,7 @@ export default function SettingsPanel({ state: s, update, setState, onJSON, comp
       )}
       {isV45(s.model)&&<div className="segment" role="group" aria-label="V4.5 设置栏目"><button type="button" aria-pressed={!referenceTab} className={!referenceTab?"selected":""} onClick={()=>setSettingsTab("parameters")}>参数</button><button type="button" aria-pressed={referenceTab} className={referenceTab?"selected":""} onClick={()=>setSettingsTab("reference")}>参考图</button></div>}
       {referenceTab&&<ReferencePanel state={s} setState={setState}/>}
+      {!isV45(s.model)&&<V5PreciseReference key={s.model} state={s} setState={setState}/>}
       <div hidden={referenceTab}>
       <section>
         <div className="section-label">

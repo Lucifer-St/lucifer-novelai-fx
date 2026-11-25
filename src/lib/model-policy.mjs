@@ -30,9 +30,26 @@ export function snapCharacterCoordinate(value){
  return Number.isFinite(value)?characterGrid[Math.min(4,Math.max(0,Math.floor(value*5)))]:value;
 }
 export const isV45=id=>modelSpec(id).id.startsWith('nai-diffusion-4-5-');
+export const supportsPreciseReference=(model,mode)=>isV45(model)||mode!=='infill';
+export const isPreciseParameter=key=>key.startsWith('director_reference_');
 export const isReferenceParameter=key=>/^(?:reference_|director_reference_|normalize_reference_strength)/.test(key)||key==='characterRef';
 export function parameterSupported(model,key){
- return isV45(model)?!['tag_hint_transparent_background','tag_hint_qt','tag_hint_uc_preset'].includes(key):!isReferenceParameter(key)&&key!=='skip_cfg_above_sigma';
+ return isV45(model)?!['tag_hint_transparent_background','tag_hint_qt','tag_hint_uc_preset'].includes(key)
+   :(!isReferenceParameter(key)||isPreciseParameter(key))&&key!=='skip_cfg_above_sigma';
+}
+export const MAX_PRECISE_REFERENCES=16;
+const v5Descriptions=new Set(['character','character_mainoutfit','style','character&style','character&style_anyoutfit','costume']);
+export function preciseDescription(ref,v5){
+ const type=ref.type||'character';
+ if(!v5)return type;
+ if(type==='character'&&ref.sameOutfit)return 'character_mainoutfit';
+ if(type==='character&style'&&!ref.sameOutfit)return 'character&style_anyoutfit';
+ return type;
+}
+export function restorePreciseDescription(description,v5){
+ if(v5&&description==='character_mainoutfit')return {type:'character',sameOutfit:true};
+ if(v5&&description==='character&style_anyoutfit')return {type:'character&style',sameOutfit:false};
+ return {type:description||'character',...(v5&&description==='character&style'?{sameOutfit:true}:{})};
 }
 const draftKeys=['vibes','precise','referenceMode','noise_schedule','overrides','extraJSON','autoText','imageText','qualityPreset','effort'];
 export function switchModel(state,id){
@@ -61,13 +78,31 @@ export function validateModelPayload(payload){
     ||(p.v4_negative_prompt?.caption?.char_captions||[]).some(c=>c.char_caption!=='')
     ||(p.ucPreset??0)!==0||p.tag_hint_uc_preset!==officialPresetHint('heavy')))
   throw Error('V5 Full Medium 固定 14 步、Euler Ancestral 和 Heavy 负面预设，且不支持自写负面词或 PGR。');
- for(const key of Object.keys(p))if(!parameterSupported(spec.id,key))throw Error(`${spec.name} 不支持参数 ${key}；参考图功能仅用于 V4.5。`);
+ for(const key of Object.keys(p)){
+  if(!parameterSupported(spec.id,key)){
+   const hint=isReferenceParameter(key)?'Vibe Transfer 仅用于 V4.5。'
+     :key==='skip_cfg_above_sigma'?'此采样参数仅在 V4.5 中启用，请移除专家覆盖或扩展 JSON 中的该字段。'
+     :'请移除专家覆盖或扩展 JSON 中的该字段。';
+   throw Error(`${spec.name} 不支持参数 ${key}。${hint}`);
+  }
+  if(isPreciseParameter(key)&&(!supportsPreciseReference(payload.model,action)||(!isV45(payload.model)&&p.mask)))
+   throw Error('V5 局部重绘暂不支持精准参考。');
+ }
  const precise=p.director_reference_images||[],vibes=p.reference_image_multiple||[];
  if(precise.length&&(vibes.length||p.reference_image))throw Error('Precise Reference 与 Vibe Transfer 不能同时使用。');
  for(const [images,keys] of [[precise,['director_reference_descriptions','director_reference_information_extracted','director_reference_strength_values','director_reference_secondary_strength_values']],[vibes,['reference_strength_multiple']]]){
   if(!Array.isArray(images))throw Error('参考图必须是数组。');
-  if(images.length>16)throw Error('最多使用 16 张参考图。');
+  if(images.length>MAX_PRECISE_REFERENCES)throw Error(`最多使用 ${MAX_PRECISE_REFERENCES} 张参考图。`);
   for(const key of keys)if(images.length&&(!Array.isArray(p[key])||p[key].length!==images.length))throw Error(`参考图与 ${key} 数量不一致。`);
+ }
+ if(spec.v5&&precise.length){
+  if(precise.some(image=>typeof image!=='string'||!image))throw Error('精准参考缺少图像。');
+  if(p.director_reference_descriptions.some(ref=>!v5Descriptions.has(ref?.caption?.base_caption)))
+   throw Error('V5 精准参考类型无效。');
+  if(p.director_reference_strength_values.some(value=>!Number.isFinite(value)||value < -5||value > 5))
+   throw Error('V5 精准参考强度必须在 -5 到 5 之间。');
+  if(p.director_reference_secondary_strength_values.some(value=>value!==0))
+   throw Error('V5 精准参考不支持 Fidelity。');
  }
  for(const key of ['v4_prompt','v4_negative_prompt']){
   const chars=p[key]?.caption?.char_captions||[];

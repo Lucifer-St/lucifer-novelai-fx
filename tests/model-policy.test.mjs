@@ -75,7 +75,8 @@ test('V4.5 reference wire fidelity and type are isolated from V5',()=>{
  assert.equal(p.director_reference_images[0],'abc');assert.equal(p.director_reference_descriptions[0].caption.base_caption,'character&style');assert.equal(p.director_reference_descriptions[0].legacy_uc,false);assert.ok(Math.abs(p.director_reference_secondary_strength_values[0]-.3)<1e-10);
  const v5=switchModel(state,MODEL_IDS[0]);assert.equal(v5.referenceMode,'off');assert.equal(buildRequest(v5).novelai.body.parameters.director_reference_images,undefined);
  assert.deepEqual(switchModel(v5,MODEL_IDS[1]).precise,state.precise);
- for(const payload of [{model:MODEL_IDS[0],novelai:{parameters:{director_reference_images:['abc']}}},{model:MODEL_IDS[0],novelai:{endpoint:'/ai/generate-image',body:{model:MODEL_IDS[0],action:'generate',parameters:{reference_image_multiple:[]}}}}])assert.throws(()=>validateModelPayload(payload),/V4.5/);
+ assert.throws(()=>validateModelPayload({model:MODEL_IDS[0],novelai:{parameters:{director_reference_images:['abc']}}}),/数量不一致/);
+ assert.throws(()=>validateModelPayload({model:MODEL_IDS[0],novelai:{parameters:{reference_image_multiple:[]}}}),/V4.5/);
 });
 test('Vibe requires explicit valid cached encoding and cannot coexist with Precise',()=>{
  const state={...defaults(MODEL_IDS[2]),prompt:'landscape',seed:2,referenceMode:'vibe',vibes:[{image:'x',information:.6,strength:.4}]};
