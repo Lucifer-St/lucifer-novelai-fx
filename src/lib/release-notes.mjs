@@ -1,6 +1,7 @@
 import {RELEASE_CONFIG} from '../../shared/release-config.mjs';
 import {isAndroid} from './platform.mjs';
 const WINDOWS_NOTES={version:RELEASE_CONFIG.version,title:'更新说明',date:'2026-11-25',features:[
+ {title:'修正 V5 精准参考报价',description:'符合 Opus 免费条件时只免一张的基础生图费。每张启用的精准参考仍按每张生成结果收取 5 Anlas。'},
  {title:'V5 新增精准参考',description:'打开「参数 → 精准参考」，载入角色、风格、角色与风格或衣装参照。V5 Full 的 High / Medium 和 V5 Curated 均支持。'},
  {title:'参照强度与服装选项',description:'强度最高 5，角色类参照可勾选「尽量保留原服装」。每张启用的参考图为每张生成图附加 5 Anlas。切到 V5 局部重绘时会暂停参照，切回后可继续使用。'},
  {title:'新增 V5 Curated 模型',description:'在图像模型菜单选择 V5 Curated。默认仍是 V5 Full。使用 V5 Curated 时，局部重绘会采用 V4.5 Curated。'},

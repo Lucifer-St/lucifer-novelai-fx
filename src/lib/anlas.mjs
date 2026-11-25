@@ -23,10 +23,12 @@ export function opusEligibility(payload){
   else if(p.steps>28)reason='步数超过 28';
   else if(v45&&(body.action||'generate')!=='generate')reason='V4.5 免费基础生图不包含图生图或局部重绘';
   else if(v45&&(p.image||p.mask))reason='使用了底图或遮罩';
-  else if(p.director_reference_images?.length)reason='使用精准参考时不适用 Opus 免费生图';
+  else if(v45&&p.director_reference_images?.length)reason='使用精准参考时不适用 V4.5 免费基础生图';
   else if(v45&&count!==1)reason='V4.5 免费条件要求单次一张';
+ const baseQualifies=!reason;
+ if(baseQualifies&&p.director_reference_images?.length)reason='精准参考有 Anlas 附加费用';
  const qualifies=!reason;
- return {supported,qualifies,eligible:qualifies&&count===1,count,reason:reason||(count!==1?'单次请求超过一张':'符合 Opus 免费参数条件')};
+ return {supported,baseQualifies,qualifies,eligible:qualifies&&count===1,count,reason:reason||(count!==1?'单次请求超过一张':'符合 Opus 免费参数条件')};
 }
 export function quoteAnlas(payload,calibrations=[],{policy='opus'}={}){
  const body=payload?.novelai?.body||{},p=body.parameters||{},eligibility=opusEligibility(payload),count=eligibility.count;
@@ -55,7 +57,8 @@ export function quoteAnlas(payload,calibrations=[],{policy='opus'}={}){
   }
  }
  if(paidPerImage===undefined)return {known:false,amount:null,perImage:null,source:'unverified',label:'暂无法估算',reason:'此操作尚未核对；可以手动记录官网单张价格。'};
- // Official GI subtracts one eligible sample; a two-image batch still pays for one.
- const freeImages=policy==='opus'&&eligibility.qualifies?1:0,amount=paidPerImage*(count-freeImages);
- return {known:true,amount,perImage:freeImages?0:paidPerImage,paidPerImage,paidFallback:paidPerImage*count,freeImages,chargedImages:count-freeImages,source:freeImages?'official_opus_conditional':source,policy,conditional:!!freeImages,label:freeImages?'Opus 条件预估':source==='manual_calibration'?'手动标定预估':'V5 付费规则预估',calibratedAt:found?.updatedAt,clientBuild:provenance.clientBuild,reason:freeImages?'假设上游账号是有效 Opus 且 V5 免费额度足够；仍消耗 Opus 用量额度。网关实际计费未核验。':'未使用 Opus 免费权益；不等于实时余额或网关账单。'};
+ // The Opus discount applies to one base image. Precise Reference is billed for every result.
+ const freeImages=policy==='opus'&&eligibility.baseQualifies?1:0;
+ const amount=paidPerImage*(count-freeImages)+referenceExtra*freeImages;
+ return {known:true,amount,perImage:freeImages?referenceExtra:paidPerImage,paidPerImage,referenceExtra,basePaidPerImage:Math.max(0,paidPerImage-referenceExtra),paidFallback:paidPerImage*count,freeImages,chargedImages:count-freeImages,source:freeImages?'official_opus_conditional':source,policy,conditional:!!freeImages,label:freeImages?'Opus 条件预估':source==='manual_calibration'?'手动标定预估':'V5 付费规则预估',calibratedAt:found?.updatedAt,clientBuild:provenance.clientBuild,reason:freeImages?'按上游 Opus 免费额度足够估算。一张图免基础费，精准参考附加费仍按生成张数计算。':'未使用 Opus 免费权益；不等于实时余额或网关账单。'};
 }

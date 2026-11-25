@@ -1,5 +1,5 @@
 {
-  "version": "1.17.0",
+  "version": "1.17.1",
   "androidVersion": "1.13.0",
   "gitHistory": false,
   "license": "MIT",
@@ -583,7 +583,7 @@
     {
       "path": "docs/WINDOWS-QUICKSTART.md",
       "bytes": 10620,
-      "sha256": "0221b65e8e692035ae589bd39e999a593c2f9b15af1ad3d610617d8f87129611"
+      "sha256": "a9cfae2d65ac4cfc4001e3cd16f15df23ea8f3789fd9d147d27bd3ffa44dca08"
     },
     {
       "path": "docs/WINDOWS.md",
@@ -603,12 +603,12 @@
     {
       "path": "package-lock.json",
       "bytes": 105025,
-      "sha256": "527cea8cf29eefd9b2ee63093a133da040c6c0b37f5c4be829b83505910f4ec7"
+      "sha256": "7cbb73f7bd02a1901ac7b842f3d47c45908797c586941c0ecfb01f1bbf88ab42"
     },
     {
       "path": "package.json",
       "bytes": 1249,
-      "sha256": "8c966e40b9e6ae4dbb1aa5898754b94351c516d649eab916dfa932ddc1dba654"
+      "sha256": "75fd5d2f3dab65d0048d10c16bab706edb360cd0ee9336bad9e5073220611940"
     },
     {
       "path": "playwright.config.mjs",
@@ -877,8 +877,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 40560,
-      "sha256": "6ae1dfa59d49cc00de12757984325410f34ddd08e83c4f2c791dfd5c2d35fc96"
+      "bytes": 40830,
+      "sha256": "e8a617b1f1cdecea43bd29614d24248230cf8b9558a61c32006c167a4e32c4f0"
     },
     {
       "path": "scripts/apply-update.mjs",
@@ -1123,7 +1123,7 @@
     {
       "path": "shared/release-config.mjs",
       "bytes": 357,
-      "sha256": "80c64d938a64a603c2faf232e24e28d7ee6253f5f5e82b2cda97065962fa3219"
+      "sha256": "74f43b61622c23c98f34f1968ea77b2003e4f610e447e2cea46294142ee93c01"
     },
     {
       "path": "shared/schema.json",
@@ -1527,8 +1527,8 @@
     },
     {
       "path": "src/lib/anlas.mjs",
-      "bytes": 6676,
-      "sha256": "b60e11b1003a81d6ea1efd26f7efe5ed33f740473927bfa8186593feb655880a"
+      "bytes": 6957,
+      "sha256": "c48bd4df6f6c07a908859aa711f46592b19d40ff03d4af76f90eed4708f3267b"
     },
     {
       "path": "src/lib/api.mjs",
@@ -1637,8 +1637,8 @@
     },
     {
       "path": "src/lib/opus-usage.mjs",
-      "bytes": 1803,
-      "sha256": "5f37eb178b24b5f754ba3e4ea1193436c8adac36a8b628cc66e5ed40945e8773"
+      "bytes": 1821,
+      "sha256": "5ab38a7f4ec2149f689b33d7c56a32122d37a2602aa9d18d793acf2da681b450"
     },
     {
       "path": "src/lib/parameter-policy.mjs",
@@ -1687,8 +1687,8 @@
     },
     {
       "path": "src/lib/release-notes.mjs",
-      "bytes": 16528,
-      "sha256": "33f761eb739ba494bfb95bbd4cdb4038971b92d13b624125e4733fa21bc21783"
+      "bytes": 16712,
+      "sha256": "0ab0c2a4909267ea4dfbeb391fb8d6343dc450568f7ad38f94e9baa69cbca616"
     },
     {
       "path": "src/lib/request.mjs",
@@ -2302,8 +2302,8 @@
     },
     {
       "path": "tests/v5-precise.test.mjs",
-      "bytes": 3836,
-      "sha256": "eb26b8871ca90cc2105cb329b4c8867113998644e0c14daf1f64260d919ad80c"
+      "bytes": 4222,
+      "sha256": "d6e668c0193ff598d32097c8c29ee5e3fb7612a31c6dc3594605119894167b8e"
     }
   ]
 }

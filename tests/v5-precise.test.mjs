@@ -48,15 +48,20 @@ test('V5 inpaint pauses ref drafts including the Curated fallback and blocks raw
   }
 });
 
-test('each active V5 reference is charged for each result and removes free-generation eligibility',()=>{
+test('Opus waives one V5 base charge and bills precise references for every result',()=>{
   const state={...setup(DEFAULT_MODEL,'medium'),n:2};
   const withRefs=buildRequest(state);
   const without=buildRequest({...state,referenceMode:'off'});
   const paidBase=quoteAnlas(without,[],{policy:'paid'}).paidPerImage;
   const quoted=quoteAnlas(withRefs,[],{policy:'opus'});
-  assert.equal(quoted.amount,2*(paidBase+15));
-  assert.equal(quoted.freeImages,0);
+  assert.equal(quoted.amount,paidBase+30);
+  assert.equal(quoted.freeImages,1);
   assert.equal(opusEligibility(withRefs).qualifies,false);
+  const one={...setup(DEFAULT_MODEL,'high'),steps:23,precise:[precise[0]]};
+  assert.equal(quoteAnlas(buildRequest(one),[],{policy:'opus'}).amount,5);
+  assert.equal(quoteAnlas(buildRequest(one),[],{policy:'paid'}).amount,31);
+  const oversized=buildRequest({...one,width:1024,height:1536});
+  assert.equal(quoteAnlas(oversized,[],{policy:'opus'}).amount,quoteAnlas(oversized,[],{policy:'paid'}).amount);
 });
 
 test('V5 reference images use the closest official crop bucket',()=>{
