@@ -1,6 +1,6 @@
 import {useRef,useState} from 'react';
 import {ChevronDown,ScanFace,Trash2} from 'lucide-react';
-import {preparePreciseReference} from '../lib/image.mjs';
+import {createPreciseReference} from '../lib/image.mjs';
 import {MAX_PRECISE_REFERENCES,supportsPreciseReference} from '../lib/model-policy.mjs';
 import {Select,Slider,Toggle} from './Fields';
 import ImageInput from './ImageInput';
@@ -29,11 +29,7 @@ export default function V5PreciseReference({state,setState}){
     setError('');
     const model=state.model;
     try{
-      const prepared=await preparePreciseReference(image,{v5:true});
-      const ref={
-        id:crypto.randomUUID(),name:details?.name,originalImage:image,image:prepared.dataURL,
-        type:'character&style',sameOutfit:true,strength:1,enabled:true,
-      };
+      const ref=await createPreciseReference(image,{v5:true,name:details?.name});
       setState(old=>old.model===model&&old.precise.length<MAX_PRECISE_REFERENCES
         ? {...old,referenceMode:'precise',precise:[...old.precise,ref]} : old);
     }catch(cause){

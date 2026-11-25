@@ -3,15 +3,11 @@ import {Plus,Trash2} from 'lucide-react';
 import ImageInput from './ImageInput';
 import {Select,Slider,Toggle} from './Fields';
 import {preparePreciseReference} from '../lib/image.mjs';
-import {isV45,isReferenceParameter} from '../lib/model-policy.mjs';
+import {isV45} from '../lib/model-policy.mjs';
+import {changeReferenceMode} from '../lib/reference-drafts.mjs';
 import {api} from '../lib/api.mjs';
 import './reference-panel.css';
 
-export function changeReferenceMode(state,mode){
- let extraJSON=state.extraJSON;
- try{extraJSON=JSON.stringify(Object.fromEntries(Object.entries(JSON.parse(extraJSON||'{}')).filter(([key])=>!isReferenceParameter(key))),null,2);}catch{/* Preserve invalid manual JSON. */}
- return {...state,referenceMode:mode,extraJSON,overrides:Object.fromEntries(Object.entries(state.overrides||{}).filter(([key])=>!isReferenceParameter(key)))};
-}
 export default function ReferencePanel({state:s,setState}){
  const [error,setError]=useState(''),[working,setWorking]=useState('');
  const sequence=useRef(new Map());

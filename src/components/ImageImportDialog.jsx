@@ -86,11 +86,21 @@ export default function ImageImportDialog({
   onClose,
   onApply,
   onUseImage,
+  onUseReference,
 }) {
   const dialogRef = useRef(null);
   const isOpen = !!candidate;
   const titleId = useId();
   const [selected, setSelected] = useState(loadImportOptions);
+  const [referenceBusy,setReferenceBusy]=useState(false);
+  const [referenceError,setReferenceError]=useState('');
+  async function addReference(){
+    setReferenceBusy(true);
+    setReferenceError('');
+    try{await onUseReference(candidate);}
+    catch(error){setReferenceError(error.message);}
+    finally{setReferenceBusy(false);}
+  }
   const metadata = candidate?.metadata;
   const available = metadata?.available || {};
   const loading = !!candidate?.loading;
@@ -190,6 +200,11 @@ export default function ImageImportDialog({
           >
             <ImagePlus size={16} /> 仅用作图生图
           </button>
+          {onUseReference&&<button type="button" className="wide"
+            disabled={!candidate.dataURL||loading||referenceBusy} onClick={addReference}>
+            {referenceBusy?'正在准备参考图…':'设为精准参考'}
+          </button>}
+          {referenceError&&<p className="field-error" role="alert">{referenceError}</p>}
         </figure>
 
         <div className="image-import-options" aria-busy={loading}>

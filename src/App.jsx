@@ -5,7 +5,7 @@ import {quoteComparisonTotal} from './lib/generation-cost.mjs';
 import usePromptLayout from './hooks/usePromptLayout';
 import {openLocalFolder} from './lib/local-files.mjs';
 import {changeGenerationMode,restoreGenerationMode,cleanComparisonMode} from './lib/generation-mode.mjs';
-import {modelSpec,switchModel,isV45,requestModel,snapCharacterCoordinate} from './lib/model-policy.mjs';
+import {modelSpec,switchModel,isV45,requestModel,snapCharacterCoordinate,MAX_PRECISE_REFERENCES,supportsPreciseReference} from './lib/model-policy.mjs';
 import ModelChooser from './components/ModelChooser';
 import useReferenceDrafts from './hooks/useReferenceDrafts';
 import useAppUpdate from './hooks/useAppUpdate';
@@ -91,7 +91,9 @@ import {
   parseObject,
 } from "./lib/request.mjs";
 import { Select, Toggle } from "./components/Fields";
-import { resizeSource, readImageFile } from "./lib/image.mjs";
+import { resizeSource, readImageFile, createPreciseReference } from "./lib/image.mjs";
+import {changeReferenceMode} from "./lib/reference-drafts.mjs";
+import {danbooruImageUrl} from "./lib/danbooru.mjs";
 import {useComparisons} from './hooks/useComparisons';
 import {ComparisonControls,ComparisonBoard} from './components/ComparisonPanel';
 import {comparisonDefaults,planComparison,variantState,COMPARISON_FIELDS} from './lib/comparison.mjs';
@@ -281,7 +283,7 @@ export default function App() {
   useReferenceDrafts(state,setState,setError);
   useEffect(()=>{if(!editState.coords)setEditingPositions(false);},[editState.coords]);
   useEffect(()=>{setViewSource(true);},[state.mode,state.source]);
-  latestEditor.current={state:editState,variant:comparison.config.enabled?comparison.variant:'A'};
+  latestEditor.current={state:editState,variant:comparison.config.enabled?comparison.variant:'A',apply:comparison.setEffective};
   useEffect(()=>{setError('');},[feature?.type]);
   useEffect(()=>{api('/api/anlas').then(setAnlas).catch(()=>{});},[]);
   function exitImageMode(removeInput=false){setState(s=>changeGenerationMode(removeInput?{...s,source:'',mask:''}:s,'generate'));comparison.setConfig(c=>cleanComparisonMode(c,'generate'));setViewSource(false);setViewPending(false);setEditingPositions(false);setNotice(removeInput?'已移除输入图，返回文生图；提示词和其他参数保留。':'已返回文生图；提示词和参数保留，输入图仍留在当前窗口。');}
@@ -364,6 +366,41 @@ export default function App() {
     } catch (error) {
       setError(error.message);
     }
+  }
+  function preciseReferenceTarget(){
+    const target=latestEditor.current;
+    const {model,mode,precise}=target.state;
+    if(!supportsPreciseReference(model,mode))throw Error('当前生成模式不支持精准参考。');
+    if((precise?.length||0)>=MAX_PRECISE_REFERENCES)throw Error('精准参考已满，请先移除一张。');
+    return target;
+  }
+  async function appendImportedReference(picture,target){
+    const model=target.state.model;
+    const reference=await createPreciseReference(picture.dataURL,{name:picture.name,v5:!isV45(model)});
+    const latest=preciseReferenceTarget();
+    if(latest.state.model!==model||latest.variant!==target.variant)throw Error('编辑目标已切换，请在当前方案重新导入。');
+    latest.apply(state=>({
+      ...(state.referenceMode==='precise'?state:changeReferenceMode(state,'precise')),
+      precise:[...(state.precise||[]),reference],
+    }));
+    setPage('studio');
+    setInspectorTab('settings');
+    if(settingsHidden)toggleSettings();
+    setMobile('settings');
+    setNotice('已添加精准参考，生成尺寸保持不变。');
+  }
+  async function useImportedReference(candidate){
+    const request=imageImportRequest.current;
+    await appendImportedReference({dataURL:candidate.dataURL,name:candidate.file?.name},preciseReferenceTarget());
+    if(imageImportRequest.current===request)closeImageImport();
+  }
+  async function useDanbooruReference(post){
+    const target=preciseReferenceTarget();
+    const response=await fetch(danbooruImageUrl(post.original));
+    if(!response.ok)throw Error('读取 D 站原图失败，请稍后再试。');
+    const blob=await response.blob();
+    const picture=await readImageFile(new File([blob],`Danbooru #${post.id}`,{type:blob.type}));
+    await appendImportedReference(picture,target);
   }
   function useImportedImage(candidate = importCandidate) {
     if (!candidate?.dataURL) return;
@@ -1376,7 +1413,7 @@ export default function App() {
       {releaseCenterOpen&&<Suspense fallback={null}><ReleaseCenter open={releaseCenterOpen} onClose={()=>setReleaseCenterOpen(false)} appUpdate={appUpdate}/></Suspense>}
       {releaseOpen&&<ReleaseNotesDialog release={RELEASE_NOTES} onClose={closeReleaseNotes}/>}
       <AtlasWorkspace open={feature?.type==='atlas'} onClose={()=>setFeature(null)} onCollect={seed=>setFeature({type:'library',seed})} onImport={file=>{setFeature(null);return inspectImage(file);}}/>
-      <DanbooruWorkspace open={feature?.type==='danbooru'} onClose={()=>setFeature(null)} onCollect={seed=>setFeature({type:'library',seed})}/>
+      <DanbooruWorkspace open={feature?.type==='danbooru'} onClose={()=>setFeature(null)} onCollect={seed=>setFeature({type:'library',seed})} onUseReference={useDanbooruReference}/>
       {feature&&feature.type!=='atlas'&&feature.type!=='danbooru'&&<FeatureDialog title={feature.type==='generated-library'?'生成图库':feature.type==='agent'?'Agent / MCP 配置助手':feature.type==='settings'?'应用设置与教程':feature.type==='glossary'?'中文释义':feature.type==='appearance'?'皮肤与加载画面':feature.type==='anlas'?'Anlas 记录与估算':feature.type==='danbooru'?'D站图库':feature.type==='atlas'?'法典图鉴':feature.type==='drafts'?'创作草稿':'卡片 / 完整预设'} onClose={()=>setFeature(null)} error={error} onClearError={()=>setError('')}><Suspense fallback={<div className="feature-loading">正在打开面板…</div>}>
         {feature.type==='settings'&&<ShareSettings value={shareSettings||{provider:'official',baseURL:'https://image.novelai.net',beginner:basicMode}} onSaved={settingsSaved} onClose={()=>setFeature(null)} initialTab={feature.initialTab}/>}
         {feature.type==='glossary'&&<GlossaryPanel text={feature.text||''}/>}
@@ -1393,6 +1430,7 @@ export default function App() {
           onClose={closeImageImport}
           onApply={importImageParameters}
           onUseImage={useImportedImage}
+          onUseReference={useImportedReference}
         />
       )}
       <dialog

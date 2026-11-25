@@ -1,4 +1,4 @@
-import {MODEL_IDS} from './model-policy.mjs';
+import {MODEL_IDS,isReferenceParameter} from './model-policy.mjs';
 export const referencePart=state=>({vibes:state?.vibes||[],precise:state?.precise||[],referenceMode:state?.referenceMode||'off',normalize:state?.normalize??true});
 export function mergeReferenceDrafts(initial,current,saved={}){
  if(!saved||typeof saved!=='object'||Array.isArray(saved))throw Error('参考图草稿格式无效。');
@@ -11,4 +11,10 @@ export function mergeReferenceDrafts(initial,current,saved={}){
   modelDrafts[model]={...modelDrafts[model],...merged};
  }
  return {...current,...referencePart(modelDrafts[current.model]),modelDrafts};
+}
+
+export function changeReferenceMode(state,mode){
+ let extraJSON=state.extraJSON;
+ try{extraJSON=JSON.stringify(Object.fromEntries(Object.entries(JSON.parse(extraJSON||'{}')).filter(([key])=>!isReferenceParameter(key))),null,2);}catch{/* Preserve invalid manual JSON. */}
+ return {...state,referenceMode:mode,extraJSON,overrides:Object.fromEntries(Object.entries(state.overrides||{}).filter(([key])=>!isReferenceParameter(key)))};
 }

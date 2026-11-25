@@ -23,11 +23,18 @@ function Thumbnail({src,alt,queue,revision,active}){
 }
 function originalUrl(params,pageSize){return 'https://danbooru.donmai.us/posts?'+new URLSearchParams({tags:danbooruSearchTags(params),page:String(params.page),limit:String(pageSize||12)});}
 
-export default function DanbooruPanel({onCollect,active=true,refreshRevision=0}){
+export default function DanbooruPanel({onCollect,onUseReference,active=true,refreshRevision=0}){
  const [params,setParams]=useState(()=>initialDanbooruPreferences(localStorage)),[query,setQuery]=useState(params.q),[data,setData]=useState(null),[loading,setLoading]=useState(true),[error,setError]=useState('');
  const [selected,setSelected]=useState(null),[selection,setSelection]=useState(new Set()),[novelai,setNovelai]=useState(true),[notice,setNotice]=useState(''),[tagFilter,setTagFilter]=useState('');
  const [viewImage,setViewImage]=useState(null),[errorCode,setErrorCode]=useState('');
  const [imageRevision,setImageRevision]=useState(0);
+ const [referenceBusy,setReferenceBusy]=useState(false),[referenceStatus,setReferenceStatus]=useState(null);
+ async function addReference(post){
+  setReferenceBusy(true);setReferenceStatus(null);
+  try{await onUseReference(post);setReferenceStatus({id:post.id,text:'已添加精准参考，生成尺寸保持不变。'});}
+  catch(error){setReferenceStatus({id:post.id,text:error.message,error:true});}
+  finally{setReferenceBusy(false);}
+ }
  const [manualCopy,setManualCopy]=useState(null),[retryRevision,setRetryRevision]=useState(0);
  const [pageInput,setPageInput]=useState(String(params.page)),[pageError,setPageError]=useState('');
  const completed=useRef(null),refreshSeen=useRef('0:0'),forcePending=useRef(false);
@@ -90,6 +97,12 @@ export default function DanbooruPanel({onCollect,active=true,refreshRevision=0})
     <p className="danbooru-detail-hint">翻页保留本图详情；选择另一张图片或返回列表即可切换。</p>
     <button className="danbooru-large-preview" disabled={!selected.original&&!selected.preview&&!selected.thumbnail} aria-label={`放大查看图片 #${selected.id}`} onClick={()=>setViewImage(selected)} title="点击查看大图，支持缩放和拖拽"><Preview active={active} revision={imageRevision} src={selected.preview||selected.thumbnail} alt={`预览 #${selected.id}`}/><span className="danbooru-enlarge-hint">点击放大 · 查看原图</span></button>
     <div className="danbooru-post-info"><span>{selected.width} × {selected.height} · 评分 {selected.score} · 收藏 {selected.favorites}</span><a href={selected.pageUrl} target="_blank" rel="noreferrer">原帖 <ExternalLink size={11}/></a></div>
+    {onUseReference&&<div className="danbooru-copy-actions">
+      <button type="button" disabled={!selected.original||referenceBusy} title={selected.original?'使用原图，保留生成尺寸':'此帖的原图不可用'}
+        onClick={()=>addReference(selected)}><ImageIcon size={14}/>{referenceBusy?'正在读取原图…':'设为精准参考'}</button>
+    </div>}
+    {referenceStatus?.id===selected.id&&<p className={referenceStatus.error?'field-error':'danbooru-copy-notice'}
+      role={referenceStatus.error?'alert':'status'}>{referenceStatus.text}</p>}
     <div className="danbooru-tag-toolbar"><strong>选择要复制的标签</strong><button onClick={()=>setSelection(new Set(DANBOORU_GROUPS.flatMap(([g])=>(selected.tags[g]||[]).map(t=>danbooruTagKey(g,t)))))}>全选</button><button onClick={()=>setSelection(new Set())}>清空</button></div>
     <input className="danbooru-tag-filter" aria-label="筛选当前图片标签" placeholder="在本图标签中筛选…" value={tagFilter} onChange={e=>setTagFilter(e.target.value)}/>
     <div data-danbooru-scroll className="danbooru-tag-groups">{DANBOORU_GROUPS.map(([group,label])=>{const tags=selected.tags[group]||[],visible=tags.filter(t=>t.replace(/_/g,' ').toLowerCase().includes(tagFilter.replace(/_/g,' ').toLowerCase()));if(!tags.length)return null;const count=tags.filter(t=>selection.has(danbooruTagKey(group,t))).length;return <section key={group} className={'danbooru-tag-group group-'+group} aria-label={`${label}标签`}><div><strong>{label} <small>{count}/{tags.length}</small></strong><button onClick={()=>groupSelection(group,count!==tags.length)}>{count===tags.length?'取消整组':'选择整组'}</button></div><div className="danbooru-tag-chips">{visible.map(tag=><button key={tag} aria-pressed={selection.has(danbooruTagKey(group,tag))} title={tag} onClick={()=>toggle(group,tag)}>{tag.replace(/_/g,' ')}</button>)}{!visible.length&&<small>本组无匹配标签</small>}</div></section>;})}</div>

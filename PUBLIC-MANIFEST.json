@@ -1,5 +1,5 @@
 {
-  "version": "1.17.1",
+  "version": "1.17.2",
   "androidVersion": "1.13.0",
   "gitHistory": false,
   "license": "MIT",
@@ -583,7 +583,7 @@
     {
       "path": "docs/WINDOWS-QUICKSTART.md",
       "bytes": 10620,
-      "sha256": "a9cfae2d65ac4cfc4001e3cd16f15df23ea8f3789fd9d147d27bd3ffa44dca08"
+      "sha256": "5e785d8ffd5429e76d321e927089b3f30f8ea07ac3e0fe2d8527284cf21b91a4"
     },
     {
       "path": "docs/WINDOWS.md",
@@ -603,12 +603,12 @@
     {
       "path": "package-lock.json",
       "bytes": 105025,
-      "sha256": "7cbb73f7bd02a1901ac7b842f3d47c45908797c586941c0ecfb01f1bbf88ab42"
+      "sha256": "d2f107449af2f685fd9e8c7b5471c87dc6c336751a35f0438ce7ff3846c259f1"
     },
     {
       "path": "package.json",
       "bytes": 1249,
-      "sha256": "75fd5d2f3dab65d0048d10c16bab706edb360cd0ee9336bad9e5073220611940"
+      "sha256": "de1d0c1d228763c642061004fd19906697430f9c5986ce405eb43ae6da65bb0a"
     },
     {
       "path": "playwright.config.mjs",
@@ -877,8 +877,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 40830,
-      "sha256": "e8a617b1f1cdecea43bd29614d24248230cf8b9558a61c32006c167a4e32c4f0"
+      "bytes": 41095,
+      "sha256": "b99b19ac91d46c183e3860c2607fb5023c0667240b09f39d916ff8f54ca8afad"
     },
     {
       "path": "scripts/apply-update.mjs",
@@ -1123,7 +1123,7 @@
     {
       "path": "shared/release-config.mjs",
       "bytes": 357,
-      "sha256": "74f43b61622c23c98f34f1968ea77b2003e4f610e447e2cea46294142ee93c01"
+      "sha256": "89fee3319dbdc4290cf76aaf44c2ce70c3518634c7d05cdf139fe2761107e773"
     },
     {
       "path": "shared/schema.json",
@@ -1132,8 +1132,8 @@
     },
     {
       "path": "src/App.jsx",
-      "bytes": 90515,
-      "sha256": "350ab7f76119bff15992c9366eaefe871d5710dc6a0db897ed3683d8d3ccd3ab"
+      "bytes": 92673,
+      "sha256": "d92aa8d739b3b66219ea081cff99c213b93b3b74631b472847bc2c52ac671baa"
     },
     {
       "path": "src/appearance.css",
@@ -1217,8 +1217,8 @@
     },
     {
       "path": "src/components/DanbooruPanel.jsx",
-      "bytes": 16894,
-      "sha256": "b3516f332c1c319ca9d6ff38da431237043345f8fcb1842f944dbe89d75b2908"
+      "bytes": 17917,
+      "sha256": "d6a5d55984e64c35adbb79ebef02104aff0174fe97e531bf2a22eb3e765f489c"
     },
     {
       "path": "src/components/DanbooruSearch.jsx",
@@ -1227,8 +1227,8 @@
     },
     {
       "path": "src/components/DanbooruWorkspace.jsx",
-      "bytes": 2070,
-      "sha256": "27995352cf9e8baac8faec529de8d6fe448efadc8404f8a4b70bff3cb6251e6d"
+      "bytes": 2117,
+      "sha256": "13855a321df72ff462825a2605d8097a7576edeb78852f866895f69a3c11b20b"
     },
     {
       "path": "src/components/exstia-theme.css",
@@ -1282,8 +1282,8 @@
     },
     {
       "path": "src/components/ImageImportDialog.jsx",
-      "bytes": 9936,
-      "sha256": "1355f5a597ef715b6f984449ba5d6588893c81a74dcf024bd3c294791cb3a2fd"
+      "bytes": 10635,
+      "sha256": "cc6574ece5f97402d769229578dfb6ed2319b3ec82907ea3c3d494e97b30d9ed"
     },
     {
       "path": "src/components/ImageInput.jsx",
@@ -1377,8 +1377,8 @@
     },
     {
       "path": "src/components/ReferencePanel.jsx",
-      "bytes": 6022,
-      "sha256": "0595d3df334c131efd78668aa21c010fcf9e7501813358b8993adabadbbe4495"
+      "bytes": 5634,
+      "sha256": "9024a8c5232c45eba6d43f601bed46aea0f20ecd0395783faa13bf8a8ca01f88"
     },
     {
       "path": "src/components/ReleaseCenter.jsx",
@@ -1597,8 +1597,8 @@
     },
     {
       "path": "src/lib/image.mjs",
-      "bytes": 6712,
-      "sha256": "872312fc24c02edc6221326a927b6354f6de414205ab0fafd1b46d16239e3a5e"
+      "bytes": 7056,
+      "sha256": "3da33b0756559b4cc5b316ac935790920b4f8215ef749add9573dbe776de74a5"
     },
     {
       "path": "src/lib/import-options.mjs",
@@ -1682,13 +1682,13 @@
     },
     {
       "path": "src/lib/reference-drafts.mjs",
-      "bytes": 988,
-      "sha256": "fcb2f638216ad3e17e27138bb208787a6f3b1e47d42881d18e25bba103559862"
+      "bytes": 1442,
+      "sha256": "3c61fb42c4a972f326de72211f6b595f0f2bb63cd9e924aae99cca8d8604b621"
     },
     {
       "path": "src/lib/release-notes.mjs",
-      "bytes": 16712,
-      "sha256": "0ab0c2a4909267ea4dfbeb391fb8d6343dc450568f7ad38f94e9baa69cbca616"
+      "bytes": 16955,
+      "sha256": "4dee84a88793e4ea0b32d95f249514c571116d38f0ba2e8edacde1ecc4fd9119"
     },
     {
       "path": "src/lib/request.mjs",
@@ -2292,8 +2292,8 @@
     },
     {
       "path": "src/components/V5PreciseReference.jsx",
-      "bytes": 4579,
-      "sha256": "dc4e73605e850692945dae1a784ad6a4e54c06560bf45c4a07c1860a13f66636"
+      "bytes": 4398,
+      "sha256": "3ca059dda399d41c8bb4f9ae1cb8782996a2b9b5ddc7c3c5c4022b08565fb1cc"
     },
     {
       "path": "src/components/v5-precise.css",

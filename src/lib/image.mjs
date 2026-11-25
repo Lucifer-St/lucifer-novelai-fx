@@ -167,3 +167,12 @@ export async function makeThumbnail(dataURL,max=320){
   context.drawImage(image,0,0,canvas.width,canvas.height);return canvas.toDataURL('image/png');
 }
 export async function visionImage(dataURL,max=1536){return makeThumbnail(dataURL,max);}
+
+export async function createPreciseReference(dataURL,{name,v5=false}={}){
+  const prepared=await preparePreciseReference(dataURL,{v5});
+  return {
+    id:crypto.randomUUID(),name,originalImage:dataURL,image:prepared.dataURL,
+    type:v5?'character&style':'character',strength:1,enabled:true,
+    ...(v5?{sameOutfit:true}:{fidelity:1}),
+  };
+}
