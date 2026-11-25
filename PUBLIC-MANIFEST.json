@@ -1127,8 +1127,8 @@
     },
     {
       "path": "shared/schema.json",
-      "bytes": 65158,
-      "sha256": "22856785adec7bc9f6f7c164be789d5d8164804db90f2356136079faea5ce8d0"
+      "bytes": 67561,
+      "sha256": "7bdd32392f5e784d244d6dd6e62646fe8668438a7a0d5cbaa05c44f0ca8176ec"
     },
     {
       "path": "src/App.jsx",
@@ -1622,8 +1622,8 @@
     },
     {
       "path": "src/lib/model-policy.mjs",
-      "bytes": 8122,
-      "sha256": "cad53c35e5ee298351803b3a4bb6406629c50d840c2835e4fc12d64f5dd0a625"
+      "bytes": 8233,
+      "sha256": "dca960043c2fc4a6af48f01ea971fa078650aa86291a3ec601ffb34b82dff874"
     },
     {
       "path": "src/lib/official-presets.mjs",
@@ -2302,8 +2302,8 @@
     },
     {
       "path": "tests/v5-precise.test.mjs",
-      "bytes": 3749,
-      "sha256": "0980689546fa46dbc9d3cdbef6d0e65bbc64ffc9b9eb1d47eecceb78244705b4"
+      "bytes": 3836,
+      "sha256": "eb26b8871ca90cc2105cb329b4c8867113998644e0c14daf1f64260d919ad80c"
     }
   ]
 }

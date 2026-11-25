@@ -30,7 +30,10 @@ export function snapCharacterCoordinate(value){
  return Number.isFinite(value)?characterGrid[Math.min(4,Math.max(0,Math.floor(value*5)))]:value;
 }
 export const isV45=id=>modelSpec(id).id.startsWith('nai-diffusion-4-5-');
-export const supportsPreciseReference=(model,mode)=>isV45(model)||mode!=='infill';
+export function supportsPreciseReference(model,mode){
+ const {webCapabilities}=modelSpec(model);
+ return mode==='infill'?webCapabilities.charRefInpainting:webCapabilities.characterReferences;
+}
 export const isPreciseParameter=key=>key.startsWith('director_reference_');
 export const isReferenceParameter=key=>/^(?:reference_|director_reference_|normalize_reference_strength)/.test(key)||key==='characterRef';
 export function parameterSupported(model,key){

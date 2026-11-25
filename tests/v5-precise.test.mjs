@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {defaults,buildRequest,stateFromPayload} from '../src/lib/request.mjs';
-import {DEFAULT_MODEL,CURATED_V5,MEDIUM_V5,validateModelPayload} from '../src/lib/model-policy.mjs';
+import {DEFAULT_MODEL,CURATED_V5,MEDIUM_V5,modelSpec,validateModelPayload} from '../src/lib/model-policy.mjs';
 import {v5PreciseReferenceCrop} from '../src/lib/image.mjs';
 import {quoteAnlas,opusEligibility} from '../src/lib/anlas.mjs';
 
@@ -17,6 +17,7 @@ test('V5 Full, Medium and Curated send the official precise descriptions and res
   for(const [model,effort,wire] of [
     [DEFAULT_MODEL,'high',DEFAULT_MODEL],[DEFAULT_MODEL,'medium',MEDIUM_V5],[CURATED_V5,'high',CURATED_V5],
   ])for(const mode of ['generate','img2img']){
+    assert.equal(modelSpec(model).webCapabilities.characterReferences,true);
     const request=buildRequest({...setup(model,effort),mode,source:'source'});
     const {model:actual,parameters:p}=request.novelai.body;
     assert.equal(actual,wire);
